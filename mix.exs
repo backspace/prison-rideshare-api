@@ -44,7 +44,8 @@ defmodule PrisonRideshare.Mixfile do
      {:cowboy, "~> 1.0"},
 
      {:blacksmith, "~> 0.1"},
-     {:hound, "~> 1.0"}]
+     {:hound, "~> 1.0"},
+     {:page_object, "~> 0.3.0"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
