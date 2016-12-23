@@ -11,4 +11,5 @@ defmodule Forge do
   @save_all_function &Blacksmith.Config.save_all/1
 
   register :request, %PrisonRideshare.Request{}
+  register :institution, %PrisonRideshare.Institution{}
 end

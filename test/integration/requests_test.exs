@@ -11,11 +11,15 @@ defmodule PrisonRideshare.Integration.Requests do
   hound_session
 
   test "list requests and create one" do
-    Forge.saved_request contact: "5551212"
+    {_, milner} = Forge.saved_institution name: "Milner Ridge"
+
+    Forge.saved_request contact: "5551212", institution: milner
 
     Requests.visit
 
-    assert(Requests.Requests.get(0) |> Requests.Requests.contact == "5551212")
+    request = Requests.Requests.get(0)
+    assert(Requests.Requests.contact(request) == "5551212")
+    assert(Requests.Requests.institution(request) == "Milner Ridge")
 
     Requests.create
 
@@ -30,5 +34,6 @@ defmodule PrisonRideshare.Integration.Requests do
     new_request = Requests.Requests.get(1)
     assert Requests.Requests.start(new_request) == "11:30:00"
     assert Requests.Requests.end(new_request) == "12:30:00"
+    assert Requests.Requests.institution(new_request) == "ø"
   end
 end

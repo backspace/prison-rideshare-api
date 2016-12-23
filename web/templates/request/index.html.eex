@@ -10,6 +10,7 @@
       <th>Contact</th>
       <th>Passengers</th>
       <th>Notes</th>
+      <th>Institution</th>
 
       <th></th>
     </tr>
@@ -24,6 +25,11 @@
       <td><%= request.contact %></td>
       <td><%= request.passengers %></td>
       <td><%= request.notes %></td>
+      <%= if request.institution do %>
+      <td><%= request.institution.name %></td>
+      <% else %>
+      <td>ø</td>
+      <% end %>
 
       <td class="text-right">
         <%= link "Show", to: request_path(@conn, :show, request), class: "btn btn-default btn-xs" %>

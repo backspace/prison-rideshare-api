@@ -10,6 +10,8 @@ defmodule PrisonRideshare.Request do
     field :passengers, :integer
     field :notes, :string
 
+    belongs_to :institution, PrisonRideshare.Institution
+
     timestamps()
   end
 
