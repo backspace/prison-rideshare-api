@@ -6,37 +6,37 @@
   <% end %>
 
   <div class="form-group">
-    <%= label f, :date, class: "control-label" %>
+    <%= label f, :date, "What day’s the ride?", class: "control-label" %>
     <%= date_select f, :date, class: "form-control" %>
     <%= error_tag f, :date %>
   </div>
 
   <div class="form-group">
-    <%= label f, :start, class: "control-label" %>
+    <%= label f, :start, "Start of visit", class: "control-label" %>
     <%= text_input f, :start, class: "form-control" %>
     <%= error_tag f, :start %>
   </div>
 
   <div class="form-group">
-    <%= label f, :end, class: "control-label" %>
+    <%= label f, :end, "End of visit", class: "control-label" %>
     <%= text_input f, :end, class: "form-control" %>
     <%= error_tag f, :end %>
   </div>
 
   <div class="form-group">
-    <%= label f, :address, class: "control-label" %>
+    <%= label f, :address, "Pickup address", class: "control-label" %>
     <%= text_input f, :address, class: "form-control" %>
     <%= error_tag f, :address %>
   </div>
 
   <div class="form-group">
-    <%= label f, :contact, class: "control-label" %>
+    <%= label f, :contact, "Contact phone/email of visitor", class: "control-label" %>
     <%= text_input f, :contact, class: "form-control" %>
     <%= error_tag f, :contact %>
   </div>
 
   <div class="form-group">
-    <%= label f, :passengers, class: "control-label" %>
+    <%= label f, :passengers, "Number of passengers", class: "control-label" %>
     <%= number_input f, :passengers, class: "form-control" %>
     <%= error_tag f, :passengers %>
   </div>
