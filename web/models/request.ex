@@ -8,7 +8,7 @@ defmodule PrisonRideshare.Request do
     field :name, :string
     field :address, :string
     field :contact, :string
-    field :passengers, :integer
+    field :passengers, :integer, default: 1
     field :notes, :string
 
     belongs_to :institution, PrisonRideshare.Institution
