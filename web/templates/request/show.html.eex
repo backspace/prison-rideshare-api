@@ -1,0 +1,43 @@
+<h2>Show request</h2>
+
+<ul>
+
+  <li>
+    <strong>Date:</strong>
+    <%= @request.date %>
+  </li>
+
+  <li>
+    <strong>Start:</strong>
+    <%= @request.start %>
+  </li>
+
+  <li>
+    <strong>End:</strong>
+    <%= @request.end %>
+  </li>
+
+  <li>
+    <strong>Address:</strong>
+    <%= @request.address %>
+  </li>
+
+  <li>
+    <strong>Contact:</strong>
+    <%= @request.contact %>
+  </li>
+
+  <li>
+    <strong>Passengers:</strong>
+    <%= @request.passengers %>
+  </li>
+
+  <li>
+    <strong>Notes:</strong>
+    <%= @request.notes %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: request_path(@conn, :edit, @request) %>
+<%= link "Back", to: request_path(@conn, :index) %>

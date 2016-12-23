@@ -1,0 +1,38 @@
+<h2>Listing requests</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Address</th>
+      <th>Contact</th>
+      <th>Passengers</th>
+      <th>Notes</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for request <- @requests do %>
+    <tr>
+      <td><%= request.date %></td>
+      <td><%= request.start %></td>
+      <td><%= request.end %></td>
+      <td><%= request.address %></td>
+      <td><%= request.contact %></td>
+      <td><%= request.passengers %></td>
+      <td><%= request.notes %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: request_path(@conn, :show, request), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: request_path(@conn, :edit, request), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: request_path(@conn, :delete, request), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New request", to: request_path(@conn, :new) %>
