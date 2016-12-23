@@ -8,13 +8,27 @@ defmodule PrisonRideshare.Integration.Requests do
 
   alias PrisonRideshare.Pages.Requests
 
+  alias PrisonRideshare.Repo
+  alias PrisonRideshare.User
+
   hound_session
 
   test "list requests and create one" do
+    # FIXME unable to create with Forge: Failed to update lockable attributes [password: {"can't be blank", []}]
+    User.changeset(%User{}, %{name: "test", email: "test@example.com", password: "test", password_confirmation: "test", confirmed_at: DateTime.utc_now})
+    |> Repo.insert!
+
+    # Forge.saved_user name: "test", email: "test@example.com", password: "test", password_confirmation: "test", confirmed_at: Ecto.DateTime.utc
+
     {_, milner} = Forge.saved_institution name: "Milner Ridge"
     Forge.saved_institution name: "Stony Mountain"
 
     Forge.saved_request name: "Francine", contact: "5551212", institution: milner
+
+    navigate_to "/sessions/new"
+    fill_field({:css, "#session_email"}, "test@example.com")
+    fill_field({:css, "#session_password"}, "test")
+    click({:css, "button[type=submit]"})
 
     Requests.visit
 

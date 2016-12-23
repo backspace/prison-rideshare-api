@@ -1,9 +1,14 @@
 defmodule PrisonRideshare.InstitutionControllerTest do
   use PrisonRideshare.ConnCase
 
-  alias PrisonRideshare.Institution
+  alias PrisonRideshare.{Institution, User}
   @valid_attrs %{name: "some content", rate: "120.5"}
   @invalid_attrs %{}
+
+  setup %{conn: conn} do
+    user = %User{name: "test", email: "test@example.com", id: 1}
+    {:ok, conn: assign(conn, :current_user, user), user: user}
+  end
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, institution_path(conn, :index)

@@ -12,4 +12,6 @@ defmodule Forge do
 
   register :request, %PrisonRideshare.Request{}
   register :institution, %PrisonRideshare.Institution{}
+
+  register :user, %PrisonRideshare.User{}
 end

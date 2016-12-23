@@ -38,6 +38,11 @@ defmodule PrisonRideshare.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+  end
+
+  scope "/", PrisonRideshare do
+    pipe_through :protected
+
     resources "/requests", RequestController
     resources "/institutions", InstitutionController
   end
