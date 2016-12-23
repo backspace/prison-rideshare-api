@@ -9,3 +9,8 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+PrisonRideshare.Repo.delete_all PrisonRideshare.User
+
+PrisonRideshare.User.changeset(%PrisonRideshare.User{}, %{name: "Test User", email: "testuser@example.com", password: "secret", password_confirmation: "secret"})
+|> PrisonRideshare.Repo.insert!

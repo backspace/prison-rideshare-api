@@ -10,6 +10,14 @@ The initial target feature set will cover:
 * collecting and calculating gas and food expenses from the reports
 * tracking reïmbursements of expenses
 
+## Deployment
+
+This can be deployed to Heroku and Postgres. More on that to come. Required environment variables:
+
+* `MAILGUN_KEY`
+
+The Mailgun domain is currently hard-coded.
+
 ## Running
 
 To start your Phoenix app:
