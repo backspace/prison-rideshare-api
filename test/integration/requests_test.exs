@@ -25,7 +25,6 @@ defmodule PrisonRideshare.Integration.Requests do
     |> fill_address("91 Albert St.")
     |> fill_contact("5551313")
     |> fill_passengers("2")
-    |> fill_notes("mandatory")
     |> submit
 
     assert visible_text({:css, "tbody tr td:nth-child(2)"}) == "11:30:00"
