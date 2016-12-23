@@ -1,4 +1,4 @@
-# Prison Rideshare
+# Prison Rideshare [![Build Status](https://travis-ci.org/backspace/prison-rideshare.svg?branch=primary)](https://travis-ci.org/backspace/prison-rideshare)
 
 This is a database to track reïmbursements and miscellania for a prison rideshare project.
 
