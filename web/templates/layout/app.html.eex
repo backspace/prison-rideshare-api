@@ -14,12 +14,19 @@
   <body>
     <div class="container">
       <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
+        <nav class="navbar navbar-default" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <%= link "Prison Rideshare", to: "/", class: "navbar-brand" %>
+            </div>
+            <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li><%= link "Requests", to: request_path(@conn, :index) %></li>
+                <li><%= link "Institutions", to: institution_path(@conn, :index) %></li>
+              </ul>
+            </div>
+          </div>
         </nav>
-        <span class="logo"></span>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
