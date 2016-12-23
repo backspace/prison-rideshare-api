@@ -3,6 +3,7 @@ defmodule PrisonRideshare.Pages.NewRequest do
 
   fillable :fill_start, "#request_start"
   fillable :fill_end, "#request_end"
+  fillable :fill_name, "#request_name"
   fillable :fill_address, "#request_address"
   fillable :fill_contact, "#request_contact"
   fillable :fill_passengers, "#request_passengers"

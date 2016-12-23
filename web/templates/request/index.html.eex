@@ -6,6 +6,7 @@
       <th>Date</th>
       <th>Start</th>
       <th>End</th>
+      <th>Name</th>
       <th>Address</th>
       <th>Contact</th>
       <th>Passengers</th>
@@ -21,6 +22,7 @@
       <td><%= request.date %></td>
       <td><%= request.start %></td>
       <td><%= request.end %></td>
+      <td><%= request.name %></td>
       <td><%= request.address %></td>
       <td><%= request.contact %></td>
       <td><%= request.passengers %></td>

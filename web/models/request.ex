@@ -5,6 +5,7 @@ defmodule PrisonRideshare.Request do
     field :date, Ecto.Date
     field :start, Ecto.Time
     field :end, Ecto.Time
+    field :name, :string
     field :address, :string
     field :contact, :string
     field :passengers, :integer
@@ -20,7 +21,7 @@ defmodule PrisonRideshare.Request do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:date, :start, :end, :address, :contact, :passengers, :notes, :institution_id])
-    |> validate_required([:date, :start, :end, :address, :contact, :passengers])
+    |> cast(params, [:date, :start, :end, :name, :address, :contact, :passengers, :notes, :institution_id])
+    |> validate_required([:date, :start, :end, :name, :address, :contact, :passengers])
   end
 end
