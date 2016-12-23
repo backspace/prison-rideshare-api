@@ -18,6 +18,7 @@ defmodule PrisonRideshare.Router do
 
     get "/", PageController, :index
     resources "/requests", RequestController
+    resources "/institutions", InstitutionController
   end
 
   # Other scopes may use custom stacks.

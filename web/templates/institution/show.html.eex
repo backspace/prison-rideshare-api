@@ -1,0 +1,18 @@
+<h2>Show institution</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @institution.name %>
+  </li>
+
+  <li>
+    <strong>Rate:</strong>
+    <%= @institution.rate %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: institution_path(@conn, :edit, @institution) %>
+<%= link "Back", to: institution_path(@conn, :index) %>
