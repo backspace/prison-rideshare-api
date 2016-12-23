@@ -30,7 +30,8 @@ config :coherence,
   logged_out_url: "/",
   email_from_name: "Name to come",
   email_from_email: "b@chromatin.ca",
-  opts: [:invitable, :confirmable, :authenticatable, :recoverable, :lockable, :trackable, :unlockable_with_token, :registerable, :rememberable]
+  opts: [:invitable, :confirmable, :authenticatable, :recoverable, :lockable, :trackable, :unlockable_with_token, :registerable, :rememberable],
+  rememberable_cookie_expire_hours: 365*24
 
 config :coherence, PrisonRideshare.Coherence.Mailer,
   adapter: Swoosh.Adapters.Mailgun,
