@@ -1,0 +1,28 @@
+<h2>Show report</h2>
+
+<ul>
+
+  <li>
+    <strong>Request:</strong>
+    <%= @report.request_id %>
+  </li>
+
+  <li>
+    <strong>Distance:</strong>
+    <%= @report.distance %>
+  </li>
+
+  <li>
+    <strong>Expenses:</strong>
+    <%= @report.expenses %>
+  </li>
+
+  <li>
+    <strong>Notes:</strong>
+    <%= @report.notes %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: report_path(@conn, :edit, @report) %>
+<%= link "Back", to: report_path(@conn, :index) %>
