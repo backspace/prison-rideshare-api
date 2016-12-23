@@ -13,13 +13,13 @@
 
   <div class="form-group">
     <%= label f, :start, "Start of visit", class: "control-label" %>
-    <%= text_input f, :start, class: "form-control" %>
+    <%= time_select f, :start, class: "form-control" %>
     <%= error_tag f, :start %>
   </div>
 
   <div class="form-group">
     <%= label f, :end, "End of visit", class: "control-label" %>
-    <%= text_input f, :end, class: "form-control" %>
+    <%= time_select f, :end, class: "form-control" %>
     <%= error_tag f, :end %>
   </div>
 

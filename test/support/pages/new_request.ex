@@ -1,8 +1,10 @@
 defmodule PrisonRideshare.Pages.NewRequest do
   use PageObject
 
-  fillable :fill_start, "#request_start"
-  fillable :fill_end, "#request_end"
+  fillable :fill_start_hour, "#request_start_hour", clear: false
+  fillable :fill_start_minute, "#request_start_minute", clear: false
+  fillable :fill_end_hour, "#request_end_hour", clear: false
+  fillable :fill_end_minute, "#request_end_minute", clear: false
   fillable :fill_name, "#request_name"
   fillable :fill_address, "#request_address"
   fillable :fill_contact, "#request_contact"

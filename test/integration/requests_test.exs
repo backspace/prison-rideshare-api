@@ -40,8 +40,10 @@ defmodule PrisonRideshare.Integration.Requests do
     Requests.create
 
     NewRequest
-    |> fill_start("11:30:00")
-    |> fill_end("12:30:00")
+    |> fill_start_hour("11")
+    |> fill_start_minute("30")
+    |> fill_end_hour("12")
+    |> fill_end_minute("30")
     |> fill_name("Pascal")
     |> fill_address("91 Albert St.")
     |> fill_contact("5551313")
