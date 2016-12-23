@@ -1,8 +1,6 @@
 defmodule PrisonRideshare.Pages.NewRequest do
   use PageObject
 
-  visitable :visit, "/requests/new"
-
   fillable :fill_start, "#request_start"
   fillable :fill_end, "#request_end"
   fillable :fill_address, "#request_address"

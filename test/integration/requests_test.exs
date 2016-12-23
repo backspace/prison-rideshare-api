@@ -6,18 +6,18 @@ defmodule PrisonRideshare.Integration.Requests do
   alias PrisonRideshare.Pages.NewRequest
   import NewRequest
 
+  alias PrisonRideshare.Pages.Requests
+
   hound_session
 
-  test "list requests" do
+  test "list requests and create one" do
     Forge.saved_request contact: "5551212"
 
-    navigate_to "/requests"
+    Requests.visit
 
-    assert visible_text({:css, "tbody tr td:nth-child(5)"}) == "5551212"
-  end
+    assert(Requests.Requests.get(0) |> Requests.Requests.contact == "5551212")
 
-  test "creating a request" do
-    NewRequest.visit
+    Requests.create
 
     NewRequest
     |> fill_start("11:30:00")
@@ -27,7 +27,8 @@ defmodule PrisonRideshare.Integration.Requests do
     |> fill_passengers("2")
     |> submit
 
-    assert visible_text({:css, "tbody tr td:nth-child(2)"}) == "11:30:00"
-    assert visible_text({:css, "tbody tr td:nth-child(3)"}) == "12:30:00"
+    new_request = Requests.Requests.get(1)
+    assert Requests.Requests.start(new_request) == "11:30:00"
+    assert Requests.Requests.end(new_request) == "12:30:00"
   end
 end
