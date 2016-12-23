@@ -48,6 +48,19 @@
   </div>
 
   <div class="form-group">
+    <label>Institution</label>
+    <%= for institution <- @institutions do %>
+    <div class="radio">
+      <label>
+        <%= radio_button f, :institution_id, institution.id %>
+        <%= institution.name %>
+      </label>
+    </div>
+    <% end %>
+    <%= error_tag f, :institution_id %>
+  </div>
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>

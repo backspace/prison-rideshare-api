@@ -8,5 +8,10 @@ defmodule PrisonRideshare.Pages.NewRequest do
   fillable :fill_passengers, "#request_passengers"
   fillable :fill_notes, "#request_notes"
 
+  collection :institutions, item_scope: ".radio label" do
+    # FIXME without _: imported Hound.Helpers.Element.click/1 conflicts with local function
+    clickable :click_, "input"
+  end
+
   clickable :submit, ".btn"
 end

@@ -12,6 +12,7 @@ defmodule PrisonRideshare.Integration.Requests do
 
   test "list requests and create one" do
     {_, milner} = Forge.saved_institution name: "Milner Ridge"
+    Forge.saved_institution name: "Stony Mountain"
 
     Forge.saved_request contact: "5551212", institution: milner
 
@@ -29,11 +30,15 @@ defmodule PrisonRideshare.Integration.Requests do
     |> fill_address("91 Albert St.")
     |> fill_contact("5551313")
     |> fill_passengers("2")
-    |> submit
+
+    NewRequest.Institutions.get(1)
+    |> NewRequest.Institutions.click_
+
+    NewRequest.submit
 
     new_request = Requests.Requests.get(1)
     assert Requests.Requests.start(new_request) == "11:30:00"
     assert Requests.Requests.end(new_request) == "12:30:00"
-    assert Requests.Requests.institution(new_request) == "ø"
+    assert Requests.Requests.institution(new_request) == "Stony Mountain"
   end
 end

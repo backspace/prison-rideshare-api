@@ -2,6 +2,7 @@ defmodule PrisonRideshare.RequestController do
   use PrisonRideshare.Web, :controller
 
   alias PrisonRideshare.Request
+  alias PrisonRideshare.Institution
 
   def index(conn, _params) do
     requests = Repo.all(Request)
@@ -11,11 +12,13 @@ defmodule PrisonRideshare.RequestController do
 
   def new(conn, _params) do
     changeset = Request.changeset(%Request{})
-    render(conn, "new.html", changeset: changeset)
+    institutions = Repo.all(Institution)
+    render(conn, "new.html", institutions: institutions, changeset: changeset)
   end
 
   def create(conn, %{"request" => request_params}) do
     changeset = Request.changeset(%Request{}, request_params)
+    institutions = Repo.all(Institution)
 
     case Repo.insert(changeset) do
       {:ok, _request} ->
@@ -23,7 +26,7 @@ defmodule PrisonRideshare.RequestController do
         |> put_flash(:info, "Request created successfully.")
         |> redirect(to: request_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", institutions: institutions, changeset: changeset)
     end
   end
 
@@ -35,12 +38,14 @@ defmodule PrisonRideshare.RequestController do
   def edit(conn, %{"id" => id}) do
     request = Repo.get!(Request, id)
     changeset = Request.changeset(request)
-    render(conn, "edit.html", request: request, changeset: changeset)
+    institutions = Repo.all(Institution)
+    render(conn, "edit.html", request: request, institutions: institutions, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "request" => request_params}) do
     request = Repo.get!(Request, id)
     changeset = Request.changeset(request, request_params)
+    institutions = Repo.all(Institution)
 
     case Repo.update(changeset) do
       {:ok, request} ->
@@ -48,7 +53,7 @@ defmodule PrisonRideshare.RequestController do
         |> put_flash(:info, "Request updated successfully.")
         |> redirect(to: request_path(conn, :show, request))
       {:error, changeset} ->
-        render(conn, "edit.html", request: request, changeset: changeset)
+        render(conn, "edit.html", request: request, institutions: institutions, changeset: changeset)
     end
   end
 
