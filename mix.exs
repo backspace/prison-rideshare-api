@@ -18,9 +18,13 @@ defmodule PrisonRideshare.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {PrisonRideshare, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex]]
+     applications: applications(Mix.env)]
   end
+
+  defp applications(:test), do: applications(:all) ++ [:blacksmith]
+  defp applications(_all),  do:
+    [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
+     :phoenix_ecto, :postgrex]
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -37,7 +41,10 @@ defmodule PrisonRideshare.Mixfile do
      {:phoenix_html, "~> 2.6"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
-     {:cowboy, "~> 1.0"}]
+     {:cowboy, "~> 1.0"},
+
+     {:blacksmith, "~> 0.1"},
+     {:hound, "~> 1.0"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

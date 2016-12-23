@@ -4,7 +4,7 @@ use Mix.Config
 # you can enable the server option below.
 config :prison_rideshare, PrisonRideshare.Endpoint,
   http: [port: 4001],
-  server: false
+  server: true
 
 # Print only warnings and errors during test
 config :logger, level: :warn
@@ -17,3 +17,15 @@ config :prison_rideshare, PrisonRideshare.Repo,
   database: "prison_rideshare_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :hound, driver: "phantomjs"
+
+defmodule Blacksmith.Config do
+  def save(map) do
+    PrisonRideshare.Repo.insert(map)
+  end
+
+  def save_all(list) do
+    Enum.map(list, &PrisonRideshare.Repo.insert/1)
+  end
+end
