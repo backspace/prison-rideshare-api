@@ -1,1 +1,16 @@
 /* This file is for your main application css. */
+
+.nav form.link {
+  margin: 0;
+}
+
+.nav form.link a {
+  display: block;
+  padding: 15px 10px;
+  color: #777;
+}
+
+.nav form.link a:hover {
+  color: #333;
+  text-decoration: none;
+}
