@@ -1,4 +1,16 @@
-# PrisonRideshare
+# Prison Rideshare
+
+This is a database to track reïmbursements and miscellania for a prison rideshare project.
+
+It’s intended to replace an increasingly unwieldy and brittle set of spreadsheets.
+
+The initial target feature set will cover:
+* coördinators recording ride requests
+* ride-givers completing reports on their rides
+* collecting and calculating gas and food expenses from the reports
+* tracking reïmbursements of expenses
+
+## Running
 
 To start your Phoenix app:
 
