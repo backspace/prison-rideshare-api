@@ -45,8 +45,8 @@ defmodule Mix.Tasks.Import do
 
         request_attrs = Map.put(valid_attrs, :address, (if address != "", do: address, else: "MISSING"))
         |> Map.put(:date, Timex.parse!(date, "{M}/{D}/{YYYY}"))
-        |> Map.put(:start, Timex.parse!(start_time, "{h12}:{m}:{s} {AM}"))
-        |> Map.put(:end, Timex.parse!(end_time, "{h12}:{m}:{s} {AM}"))
+        |> Map.put(:start, parse_time(start_time))
+        |> Map.put(:end, parse_time(end_time))
         |> Map.put(:name, name)
         |> Map.put(:contact, contact)
         |> Map.put(:passengers, passengers)
@@ -61,5 +61,12 @@ defmodule Mix.Tasks.Import do
         institution_name_to_model
       end
     end)
+  end
+
+  defp parse_time(time) do
+    case Timex.parse(time, "{h12}:{m}:{s} {AM}") do
+      {:ok, parsed} -> parsed
+      {:error, _} -> Timex.parse!(time, "{h12}:{m} {AM}")
+    end
   end
 end
