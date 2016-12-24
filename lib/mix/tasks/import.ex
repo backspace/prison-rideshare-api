@@ -45,11 +45,11 @@ defmodule Mix.Tasks.Import do
 
         institution_model = Map.get(institution_name_to_model, matching_institution)
 
-        matching_driver = String.downcase(driver)
+        matching_driver = String.trim(String.downcase(driver))
 
         {person_name_to_model, driver_model} = maybe_add_person(person_name_to_model, matching_driver, driver)
 
-        matching_car_owner = String.downcase(car_owner)
+        matching_car_owner = String.trim(String.downcase(car_owner))
 
         {person_name_to_model, car_owner_model} = maybe_add_person(person_name_to_model, matching_car_owner, car_owner)
 
