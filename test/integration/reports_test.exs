@@ -32,6 +32,11 @@ defmodule PrisonRideshare.Integration.Reports do
     |> fill_distance("25.5")
     |> fill_expenses("10.11")
     |> fill_notes("Ere I saw Elba")
+
+    assert NewReport.Requests.get(0) |> NewReport.Requests.label == "08:30:00"
+    assert NewReport.Requests.get(1) |> NewReport.Requests.label == "14:30:00" 
+
+    NewReport
     |> submit
   end
 end

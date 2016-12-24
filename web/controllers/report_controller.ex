@@ -1,7 +1,7 @@
 defmodule PrisonRideshare.ReportController do
   use PrisonRideshare.Web, :controller
 
-  alias PrisonRideshare.Report
+  alias PrisonRideshare.{Report, Request}
 
   def index(conn, _params) do
     reports = Repo.all(Report)
@@ -10,7 +10,8 @@ defmodule PrisonRideshare.ReportController do
 
   def new(conn, _params) do
     changeset = Report.changeset(%Report{})
-    render(conn, "new.html", changeset: changeset)
+    requests = Repo.all(Request)
+    render(conn, "new.html", requests: requests, changeset: changeset)
   end
 
   def create(conn, %{"report" => report_params}) do
@@ -22,7 +23,7 @@ defmodule PrisonRideshare.ReportController do
         |> put_flash(:info, "Report created successfully.")
         |> redirect(to: report_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", requests: Repo.all(Request), changeset: changeset)
     end
   end
 
@@ -34,7 +35,7 @@ defmodule PrisonRideshare.ReportController do
   def edit(conn, %{"id" => id}) do
     report = Repo.get!(Report, id)
     changeset = Report.changeset(report)
-    render(conn, "edit.html", report: report, changeset: changeset)
+    render(conn, "edit.html", report: report, requests: Repo.all(Request), changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "report" => report_params}) do
@@ -47,7 +48,7 @@ defmodule PrisonRideshare.ReportController do
         |> put_flash(:info, "Report updated successfully.")
         |> redirect(to: report_path(conn, :show, report))
       {:error, changeset} ->
-        render(conn, "edit.html", report: report, changeset: changeset)
+        render(conn, "edit.html", report: report, requests: Repo.all(Request), changeset: changeset)
     end
   end
 

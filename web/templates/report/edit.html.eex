@@ -1,6 +1,7 @@
 <h2>Edit report</h2>
 
 <%= render "form.html", changeset: @changeset,
+                        requests: @requests,
                         action: report_path(@conn, :update, @report) %>
 
 <%= link "Back", to: report_path(@conn, :index) %>

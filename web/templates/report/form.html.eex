@@ -24,6 +24,19 @@
   </div>
 
   <div class="form-group">
+    <label>Ride</label>
+    <%= for request <- @requests do %>
+    <div class="radio">
+      <label>
+        <%= radio_button f, :request_id, request.id %>
+        <span><%= request.start %></span>
+      </label>
+    </div>
+    <% end %>
+    <%= error_tag f, :request_id %>
+  </div>
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>
