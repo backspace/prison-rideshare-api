@@ -18,6 +18,8 @@ defmodule Mix.Tasks.ImportTest do
     assert i2.rate == ~M[35]
 
     [req1, req2, req3] = Repo.all(Request)
+    |> Repo.preload(:driver)
+    |> Repo.preload(:car_owner)
 
     assert req1.address == "91 Albert"
     assert req1.institution_id == i1.id
@@ -28,11 +30,16 @@ defmodule Mix.Tasks.ImportTest do
     assert req1.contact == "2045551919"
     assert req1.passengers == 2
     assert req1.notes == "We need you"
+    assert req1.driver.name == "Lucy Parsons"
+    assert req1.car_owner.name == "Oliver Gathing"
 
     assert req2.address == "114 Spence"
     assert req2.institution_id == i2.id
     assert Ecto.Time.to_erl(req2.start) == {8, 15, 0}
     assert Ecto.Time.to_erl(req2.end) == {8, 15, 0}
+    assert req2.driver.name == "Chelsea Manning"
+    assert req2.car_owner.name == "Chelsea Manning"
+    assert req2.driver == req2.car_owner
 
     assert req3.address == "MISSING"
     assert req3.institution_id == i2.id

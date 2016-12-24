@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Import do
   use Mix.Task
 
-  alias PrisonRideshare.{Institution, Repo, Request}
+  alias PrisonRideshare.{Institution, Person, Repo, Request}
 
   @shortdoc "Imports CSVs"
 
@@ -24,9 +24,11 @@ defmodule Mix.Tasks.Import do
     File.stream!(requests)
     |> CSV.decode
     |> Stream.with_index
-    |> Enum.reduce(%{}, fn({row, i}, institution_name_to_model) ->
+    |> Enum.reduce(%{institution_name_to_model: %{}, person_name_to_model: %{}}, fn({row, i}, acc) ->
       if i > 0 do
-        [_, date, institution, start_time, end_time, address, name, contact, passengers, _, _, _, _, notes | _] = row
+        %{institution_name_to_model: institution_name_to_model, person_name_to_model: person_name_to_model} = acc
+
+        [_, date, institution, start_time, end_time, address, name, contact, passengers, _, _, driver, car_owner, notes | _] = row
 
         Mix.shell.info "Importing this request:"
         Mix.shell.info row
@@ -43,6 +45,20 @@ defmodule Mix.Tasks.Import do
 
         institution_model = Map.get(institution_name_to_model, matching_institution)
 
+        person_name_to_model = Map.put_new_lazy(person_name_to_model, driver, fn ->
+          Person.changeset(%Person{}, %{name: driver})
+          |> Repo.insert!
+        end)
+
+        driver_model = person_name_to_model[driver]
+
+        person_name_to_model = Map.put_new_lazy(person_name_to_model, car_owner, fn ->
+          Person.changeset(%Person{}, %{name: car_owner})
+          |> Repo.insert!
+        end)
+
+        car_owner_model = person_name_to_model[car_owner]
+
         request_attrs = Map.put(valid_attrs, :address, (if address != "", do: address, else: "MISSING"))
         |> Map.put(:date, Timex.parse!(date, "{M}/{D}/{YYYY}"))
         |> Map.put(:start, parse_time(start_time))
@@ -52,13 +68,15 @@ defmodule Mix.Tasks.Import do
         |> Map.put(:passengers, passengers)
         |> Map.put(:notes, notes)
         |> Map.put(:institution_id, institution_model.id)
+        |> Map.put(:driver_id, driver_model.id)
+        |> Map.put(:car_owner_id, car_owner_model.id)
 
-        Request.changeset(%Request{}, request_attrs)
+        r = Request.changeset(%Request{}, request_attrs)
         |> Repo.insert!
 
-        institution_name_to_model
+        %{institution_name_to_model: institution_name_to_model, person_name_to_model: person_name_to_model}
       else
-        institution_name_to_model
+        acc
       end
     end)
   end

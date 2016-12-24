@@ -25,7 +25,7 @@ defmodule PrisonRideshare.Request do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:date, :start, :end, :name, :address, :contact, :passengers, :notes, :institution_id])
+    |> cast(params, [:date, :start, :end, :name, :address, :contact, :passengers, :notes, :institution_id, :driver_id, :car_owner_id])
     |> validate_required([:date, :start, :end, :name, :address, :contact, :passengers])
   end
 end
