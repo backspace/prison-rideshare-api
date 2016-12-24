@@ -16,7 +16,10 @@ This can be deployed to Heroku and Postgres. More on that to come. Required envi
 
 * `MAILGUN_KEY`
 
-The Mailgun domain is currently hard-coded.
+Currently hardcoded:
+
+* Mailgun domain
+* currency
 
 ## Running
 
