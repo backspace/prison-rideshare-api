@@ -45,8 +45,9 @@ defmodule PrisonRideshare.Router do
   scope "/", PrisonRideshare do
     pipe_through :protected
 
-    resources "/requests", RequestController
     resources "/institutions", InstitutionController
+    resources "/people", PersonController
+    resources "/requests", RequestController
   end
 
   # Other scopes may use custom stacks.
