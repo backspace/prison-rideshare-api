@@ -46,6 +46,7 @@ defmodule PrisonRideshare.Mixfile do
      {:cowboy, "~> 1.0"},
 
      {:coherence, github: "smpallen99/coherence"},
+     {:csv, "~> 1.4.2"},
      {:money, "~> 1.2.0"},
      {:timex, "~> 3.0"},
 
