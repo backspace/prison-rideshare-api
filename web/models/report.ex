@@ -3,7 +3,7 @@ defmodule PrisonRideshare.Report do
 
   schema "reports" do
     field :distance, :float
-    field :expenses, :float
+    field :expenses, Money.Ecto.Type
     field :notes, :string
     belongs_to :request, PrisonRideshare.Request
 

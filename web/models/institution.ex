@@ -3,7 +3,7 @@ defmodule PrisonRideshare.Institution do
 
   schema "institutions" do
     field :name, :string
-    field :rate, :float
+    field :rate, Money.Ecto.Type
 
     timestamps()
   end

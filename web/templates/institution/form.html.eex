@@ -13,7 +13,10 @@
 
   <div class="form-group">
     <%= label f, :rate, class: "control-label" %>
-    <%= number_input f, :rate, step: "any", class: "form-control" %>
+    <div class="input-group">
+      <div class="input-group-addon">$</div>
+      <%= number_input f, :rate, step: "0.05", class: "form-control" %>
+    </div>
     <%= error_tag f, :rate %>
   </div>
 
