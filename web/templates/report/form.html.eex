@@ -6,7 +6,7 @@
   <% end %>
 
   <div class="form-group">
-    <label>Ride</label>
+    <label>Select the ride</label>
     <%= for request <- @requests do %>
     <div class="radio">
       <label>
@@ -19,21 +19,23 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :distance, class: "control-label" %>
+    <%= label f, :distance, "Total distance in kilometres", class: "control-label" %>
     <%= number_input f, :distance, step: "any", class: "form-control" %>
     <%= error_tag f, :distance %>
   </div>
 
   <div class="form-group">
-    <%= label f, :expenses, class: "control-label" %>
+    <%= label f, :expenses, "Food expenses", class: "control-label" %>
     <%= number_input f, :expenses, step: "any", class: "form-control" %>
     <%= error_tag f, :expenses %>
+    <p class="help-block">Please keep your receipts & give them to us when you get reimbursed</p>
   </div>
 
   <div class="form-group">
-    <%= label f, :notes, class: "control-label" %>
+    <%= label f, :notes, "Notes?", class: "control-label" %>
     <%= text_input f, :notes, class: "form-control" %>
     <%= error_tag f, :notes %>
+    <p class="help-block">Leave blank unless there's anything unusual about the ride or the reimbursement (like paying driver for gas instead of car owner, etc)</p>
   </div>
 
   <div class="form-group">
