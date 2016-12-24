@@ -25,7 +25,7 @@ defmodule Mix.Tasks.Import do
 
         institution_model = Map.get(institution_name_to_model, matching_institution)
 
-        request_attrs = Map.put(valid_attrs, :address, address)
+        request_attrs = Map.put(valid_attrs, :address, (if address != "", do: address, else: "MISSING"))
         |> Map.put(:institution_id, institution_model.id)
 
         Request.changeset(%Request{}, request_attrs)

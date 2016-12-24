@@ -20,6 +20,7 @@ defmodule Mix.Tasks.ImportTest do
     assert req2.address == "114 Spence"
     assert req2.institution_id == i2.id
 
+    assert req3.address == "MISSING"
     assert req3.institution_id == i2.id
   end
 end
