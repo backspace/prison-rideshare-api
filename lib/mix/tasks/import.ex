@@ -5,10 +5,8 @@ defmodule Mix.Tasks.Import do
 
   @shortdoc "Imports CSVs"
 
-  def run(args) do
+  def run([requests | _]) do
     Mix.Task.run "app.start"
-
-    [requests] = OptionParser.split(args)
 
     valid_attrs = %{name: "some content", address: "some content", contact: "some content", date: %{day: 17, month: 4, year: 2010}, end: %{hour: 14, min: 0, sec: 0}, notes: "some content", passengers: 42, start: %{hour: 14, min: 0, sec: 0}}
 

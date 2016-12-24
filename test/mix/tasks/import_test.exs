@@ -5,7 +5,7 @@ defmodule Mix.Tasks.ImportTest do
   alias PrisonRideshare.{Institution, Repo, Request}
 
   test "something" do
-    Mix.Tasks.Import.run "test/support/import/requests.csv"
+    Mix.Tasks.Import.run ["test/support/import/requests.csv"]
 
     [i1, i2] = Repo.all(Institution)
 
