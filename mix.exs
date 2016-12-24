@@ -26,7 +26,7 @@ defmodule PrisonRideshare.Mixfile do
     [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
      :phoenix_ecto, :postgrex,
 
-     :coherence]
+     :coherence, :timex]
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -45,7 +45,8 @@ defmodule PrisonRideshare.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
 
-     {:coherence, "~> 0.3"},
+     {:coherence, github: "smpallen99/coherence"},
+     {:timex, "~> 3.0"},
 
      {:blacksmith, "~> 0.1"},
      {:hound, "~> 1.0"},

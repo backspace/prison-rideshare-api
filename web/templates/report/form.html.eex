@@ -29,7 +29,7 @@
     <div class="radio">
       <label>
         <%= radio_button f, :request_id, request.id %>
-        <span><%= request.start %></span>
+        <span><%= format_request request %></span>
       </label>
     </div>
     <% end %>

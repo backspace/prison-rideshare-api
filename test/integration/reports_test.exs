@@ -33,8 +33,8 @@ defmodule PrisonRideshare.Integration.Reports do
     |> fill_expenses("10.11")
     |> fill_notes("Ere I saw Elba")
 
-    assert NewReport.Requests.get(0) |> NewReport.Requests.label == "08:30:00"
-    assert NewReport.Requests.get(1) |> NewReport.Requests.label == "14:30:00" 
+    assert NewReport.Requests.get(0) |> NewReport.Requests.label == "8:30 am on Thu, Dec 29 to Milner Ridge"
+    assert NewReport.Requests.get(1) |> NewReport.Requests.label == "2:30 pm on Fri, Dec 30 to Stony Mountain" 
 
     NewReport
     |> submit

@@ -10,7 +10,7 @@ defmodule PrisonRideshare.ReportController do
 
   def new(conn, _params) do
     changeset = Report.changeset(%Report{})
-    requests = Repo.all(Request)
+    requests = Repo.all(Request) |> Repo.preload(:institution)
     render(conn, "new.html", requests: requests, changeset: changeset)
   end
 
@@ -23,7 +23,7 @@ defmodule PrisonRideshare.ReportController do
         |> put_flash(:info, "Report created successfully.")
         |> redirect(to: report_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", requests: Repo.all(Request), changeset: changeset)
+        render(conn, "new.html", requests: Repo.all(Request) |> Repo.preload(:institution), changeset: changeset)
     end
   end
 
@@ -35,7 +35,7 @@ defmodule PrisonRideshare.ReportController do
   def edit(conn, %{"id" => id}) do
     report = Repo.get!(Report, id)
     changeset = Report.changeset(report)
-    render(conn, "edit.html", report: report, requests: Repo.all(Request), changeset: changeset)
+    render(conn, "edit.html", report: report, requests: Repo.all(Request) |> Repo.preload(:institution), changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "report" => report_params}) do
@@ -48,7 +48,7 @@ defmodule PrisonRideshare.ReportController do
         |> put_flash(:info, "Report updated successfully.")
         |> redirect(to: report_path(conn, :show, report))
       {:error, changeset} ->
-        render(conn, "edit.html", report: report, requests: Repo.all(Request), changeset: changeset)
+        render(conn, "edit.html", report: report, requests: Repo.all(Request) |> Repo.preload(:institution), changeset: changeset)
     end
   end
 
