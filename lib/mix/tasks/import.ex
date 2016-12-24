@@ -47,21 +47,11 @@ defmodule Mix.Tasks.Import do
 
         matching_driver = String.downcase(driver)
 
-        person_name_to_model = Map.put_new_lazy(person_name_to_model, matching_driver, fn ->
-          Person.changeset(%Person{}, %{name: driver})
-          |> Repo.insert!
-        end)
-
-        driver_model = person_name_to_model[matching_driver]
+        {person_name_to_model, driver_model} = maybe_add_person(person_name_to_model, matching_driver, driver)
 
         matching_car_owner = String.downcase(car_owner)
 
-        person_name_to_model = Map.put_new_lazy(person_name_to_model, matching_car_owner, fn ->
-          Person.changeset(%Person{}, %{name: car_owner})
-          |> Repo.insert!
-        end)
-
-        car_owner_model = person_name_to_model[matching_car_owner]
+        {person_name_to_model, car_owner_model} = maybe_add_person(person_name_to_model, matching_car_owner, car_owner)
 
         request_attrs = Map.put(valid_attrs, :address, (if address != "", do: address, else: "MISSING"))
         |> Map.put(:date, Timex.parse!(date, "{M}/{D}/{YYYY}"))
@@ -72,8 +62,9 @@ defmodule Mix.Tasks.Import do
         |> Map.put(:passengers, passengers)
         |> Map.put(:notes, notes)
         |> Map.put(:institution_id, institution_model.id)
-        |> Map.put(:driver_id, driver_model.id)
-        |> Map.put(:car_owner_id, car_owner_model.id)
+
+        request_attrs = maybe_put_id(request_attrs, :driver_id, driver_model)
+        request_attrs = maybe_put_id(request_attrs, :car_owner_id, car_owner_model)
 
         r = Request.changeset(%Request{}, request_attrs)
         |> Repo.insert!
@@ -96,5 +87,26 @@ defmodule Mix.Tasks.Import do
       {:ok, parsed} -> parsed
       {:error, _} -> Timex.parse!(time, "{h12}:{m} {AM}")
     end
+  end
+
+  defp maybe_add_person(person_name_to_model, _, "") do
+    {person_name_to_model, nil}
+  end
+
+  defp maybe_add_person(person_name_to_model, matching_name, name) do
+    new_map = Map.put_new_lazy(person_name_to_model, matching_name, fn ->
+      Person.changeset(%Person{}, %{name: name})
+      |> Repo.insert!
+    end)
+
+    {new_map, new_map[matching_name]}
+  end
+
+  defp maybe_put_id(map, _, nil) do
+    map
+  end
+
+  defp maybe_put_id(map, attr, model) do
+    Map.put(map, attr, model.id)
   end
 end

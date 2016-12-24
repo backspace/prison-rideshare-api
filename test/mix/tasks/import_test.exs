@@ -43,5 +43,7 @@ defmodule Mix.Tasks.ImportTest do
 
     assert req3.address == "MISSING"
     assert req3.institution_id == i2.id
+    refute req3.driver
+    refute req3.car_owner
   end
 end
