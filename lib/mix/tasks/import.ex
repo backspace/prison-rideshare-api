@@ -27,6 +27,10 @@ defmodule Mix.Tasks.Import do
     |> Enum.reduce(%{}, fn({row, i}, institution_name_to_model) ->
       if i > 0 do
         [_, date, institution, start_time, end_time, address, name, contact, passengers, _, _, _, _, notes | _] = row
+
+        Mix.shell.info "Importing this request:"
+        Mix.shell.info row
+
         matching_institution = String.downcase(institution)
         matching_institution = Map.get(institution_spelling_overrides, matching_institution, matching_institution)
 
