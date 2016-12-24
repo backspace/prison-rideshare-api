@@ -21,6 +21,13 @@ defmodule Mix.Tasks.ImportTest do
 
     assert req1.address == "91 Albert"
     assert req1.institution_id == i1.id
+    assert Ecto.Date.to_erl(req1.date) == {2016, 8, 5}
+    assert Ecto.Time.to_erl(req1.start) == {19, 45, 0}
+    assert Ecto.Time.to_erl(req1.end) == {20, 45, 0}
+    assert req1.name == "Albert"
+    assert req1.contact == "2045551919"
+    assert req1.passengers == 2
+    assert req1.notes == "We need you"
 
     assert req2.address == "114 Spence"
     assert req2.institution_id == i2.id

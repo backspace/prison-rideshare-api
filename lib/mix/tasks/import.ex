@@ -26,7 +26,7 @@ defmodule Mix.Tasks.Import do
     |> Stream.with_index
     |> Enum.reduce(%{}, fn({row, i}, institution_name_to_model) ->
       if i > 0 do
-        [_, _, institution, _, _, address | _] = row
+        [_, date, institution, start_time, end_time, address, name, contact, passengers, _, _, _, _, notes | _] = row
         matching_institution = String.downcase(institution)
         matching_institution = Map.get(institution_spelling_overrides, matching_institution, matching_institution)
 
@@ -40,6 +40,13 @@ defmodule Mix.Tasks.Import do
         institution_model = Map.get(institution_name_to_model, matching_institution)
 
         request_attrs = Map.put(valid_attrs, :address, (if address != "", do: address, else: "MISSING"))
+        |> Map.put(:date, Timex.parse!(date, "{M}/{D}/{YYYY}"))
+        |> Map.put(:start, Timex.parse!(start_time, "{h12}:{m}:{s} {AM}"))
+        |> Map.put(:end, Timex.parse!(end_time, "{h12}:{m}:{s} {AM}"))
+        |> Map.put(:name, name)
+        |> Map.put(:contact, contact)
+        |> Map.put(:passengers, passengers)
+        |> Map.put(:notes, notes)
         |> Map.put(:institution_id, institution_model.id)
 
         Request.changeset(%Request{}, request_attrs)
