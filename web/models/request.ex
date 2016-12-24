@@ -12,6 +12,7 @@ defmodule PrisonRideshare.Request do
     field :notes, :string
 
     belongs_to :institution, PrisonRideshare.Institution
+    has_one :report, PrisonRideshare.Report
 
     timestamps()
   end

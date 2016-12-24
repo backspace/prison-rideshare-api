@@ -1,6 +1,6 @@
 <h2>Listing requests</h2>
 
-<table class="table">
+<table class="table requests">
   <thead>
     <tr>
       <th>Date</th>
@@ -18,7 +18,7 @@
   </thead>
   <tbody>
 <%= for request <- @requests do %>
-    <tr>
+    <tr class="<%= if request.report, do: "complete" %>">
       <td><%= request.date %></td>
       <td><%= request.start %></td>
       <td><%= request.end %></td>

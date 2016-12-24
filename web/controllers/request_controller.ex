@@ -7,6 +7,7 @@ defmodule PrisonRideshare.RequestController do
   def index(conn, _params) do
     requests = Repo.all(Request)
     |> Repo.preload(:institution)
+    |> Repo.preload(:report)
     render(conn, "index.html", requests: requests)
   end
 

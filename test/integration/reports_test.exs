@@ -34,9 +34,24 @@ defmodule PrisonRideshare.Integration.Reports do
     |> fill_notes("Ere I saw Elba")
 
     assert NewReport.Requests.get(0) |> NewReport.Requests.label == "8:30 am on Thu, Dec 29 to Milner Ridge"
-    assert NewReport.Requests.get(1) |> NewReport.Requests.label == "2:30 pm on Fri, Dec 30 to Stony Mountain" 
+    assert NewReport.Requests.get(1) |> NewReport.Requests.label == "2:30 pm on Fri, Dec 30 to Stony Mountain"
+
+    NewReport.Requests.get(1) |> NewReport.Requests.click_
 
     NewReport
     |> submit
+
+    navigate_to "/sessions/new"
+    set_window_size current_window_handle, 1024, 768
+
+    fill_field({:css, "#session_email"}, "test@example.com")
+    fill_field({:css, "#session_password"}, "test")
+    click({:css, "button[type=submit]"})
+
+    Top.RequestsLink.click_
+
+    # FIXME replace with page object method
+    refute has_class?({:css, "tbody tr:nth-child(1)"}, "complete")
+    assert has_class?({:css, "tbody tr:nth-child(2)"}, "complete")
   end
 end
