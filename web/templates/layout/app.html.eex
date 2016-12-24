@@ -27,6 +27,7 @@
                 <li><%= link "Log out", to: session_path(@conn, :delete), method: :delete, class: "logout" %></li>
                 <% else %>
                 <li><%= link "Log in", to: session_path(@conn, :new) %></li>
+                <li><%= link "Submit ride report", to: report_path(@conn, :new), class: "report" %></li>
                 <% end %>
               </ul>
             </div>

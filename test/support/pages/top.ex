@@ -9,6 +9,10 @@ defmodule PrisonRideshare.Pages.Top do
     clickable :click_, "a.requests"
   end
 
+  defmodule ReportLink do
+    clickable :click_, "a.report"
+  end
+
   def logout_link do
     [:css, "a.logout"]
   end
