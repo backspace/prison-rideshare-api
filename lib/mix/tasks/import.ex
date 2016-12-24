@@ -16,6 +16,11 @@ defmodule Mix.Tasks.Import do
       "rockwood" => 35
     }
 
+    institution_spelling_overrides = %{
+      "headingly" => "headingley",
+      "stony mountian" => "stony mountain"
+    }
+
     File.stream!(requests)
     |> CSV.decode
     |> Stream.with_index
@@ -23,6 +28,7 @@ defmodule Mix.Tasks.Import do
       if i > 0 do
         [_, _, institution, _, _, address | _] = row
         matching_institution = String.downcase(institution)
+        matching_institution = Map.get(institution_spelling_overrides, matching_institution, matching_institution)
 
         institution_name_to_model = Map.put_new_lazy(institution_name_to_model, matching_institution, fn ->
           rate = Map.get(institution_rate_overrides, matching_institution, 25)
