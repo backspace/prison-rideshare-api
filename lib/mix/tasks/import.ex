@@ -45,19 +45,23 @@ defmodule Mix.Tasks.Import do
 
         institution_model = Map.get(institution_name_to_model, matching_institution)
 
-        person_name_to_model = Map.put_new_lazy(person_name_to_model, driver, fn ->
+        matching_driver = String.downcase(driver)
+
+        person_name_to_model = Map.put_new_lazy(person_name_to_model, matching_driver, fn ->
           Person.changeset(%Person{}, %{name: driver})
           |> Repo.insert!
         end)
 
-        driver_model = person_name_to_model[driver]
+        driver_model = person_name_to_model[matching_driver]
 
-        person_name_to_model = Map.put_new_lazy(person_name_to_model, car_owner, fn ->
+        matching_car_owner = String.downcase(car_owner)
+
+        person_name_to_model = Map.put_new_lazy(person_name_to_model, matching_car_owner, fn ->
           Person.changeset(%Person{}, %{name: car_owner})
           |> Repo.insert!
         end)
 
-        car_owner_model = person_name_to_model[car_owner]
+        car_owner_model = person_name_to_model[matching_car_owner]
 
         request_attrs = Map.put(valid_attrs, :address, (if address != "", do: address, else: "MISSING"))
         |> Map.put(:date, Timex.parse!(date, "{M}/{D}/{YYYY}"))
