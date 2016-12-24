@@ -12,6 +12,8 @@
       <th>Passengers</th>
       <th>Notes</th>
       <th>Institution</th>
+      <th>Driver</th>
+      <th>Car owner</th>
 
       <th></th>
     </tr>
@@ -32,6 +34,8 @@
       <% else %>
       <td>ø</td>
       <% end %>
+      <td><%= if request.driver, do: request.driver.name %></td>
+      <td><%= if request.car_owner, do: request.car_owner.name %></td>
 
       <td class="text-right">
         <%= link "Show", to: request_path(@conn, :show, request), class: "btn btn-default btn-xs" %>

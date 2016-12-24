@@ -13,5 +13,8 @@ defmodule PrisonRideshare.Pages.Requests do
     text :contact, "td:nth-child(6)"
 
     text :institution, "td:nth-child(9)"
+
+    text :driver, "td:nth-child(10)"
+    text :car_owner, "td:nth-child(11)"
   end
 end

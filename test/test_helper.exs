@@ -13,5 +13,6 @@ defmodule Forge do
   register :request, %PrisonRideshare.Request{}
   register :institution, %PrisonRideshare.Institution{}
 
+  register :person, %PrisonRideshare.Person{}
   register :user, %PrisonRideshare.User{}
 end

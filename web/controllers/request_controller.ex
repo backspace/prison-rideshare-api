@@ -8,6 +8,8 @@ defmodule PrisonRideshare.RequestController do
     requests = Repo.all(Request)
     |> Repo.preload(:institution)
     |> Repo.preload(:report)
+    |> Repo.preload(:driver)
+    |> Repo.preload(:car_owner)
     render(conn, "index.html", requests: requests)
   end
 

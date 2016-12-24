@@ -25,7 +25,10 @@ defmodule PrisonRideshare.Integration.Requests do
     {_, milner} = Forge.saved_institution name: "Milner Ridge"
     Forge.saved_institution name: "Stony Mountain"
 
-    Forge.saved_request name: "Francine", contact: "5551212", institution: milner
+    {_, bhagat} = Forge.saved_person name: "Bhagat Singh"
+    {_, john} = Forge.saved_person name: "John Wojtowicz"
+
+    Forge.saved_request name: "Francine", contact: "5551212", institution: milner, driver: bhagat, car_owner: john
 
     navigate_to "/sessions/new"
     set_window_size current_window_handle, 1024, 768
@@ -40,6 +43,8 @@ defmodule PrisonRideshare.Integration.Requests do
     assert(Requests.Requests.name(request) == "Francine")
     assert(Requests.Requests.contact(request) == "5551212")
     assert(Requests.Requests.institution(request) == "Milner Ridge")
+    assert(Requests.Requests.driver(request) == "Bhagat Singh")
+    assert(Requests.Requests.car_owner(request) == "John Wojtowicz")
 
     Requests.create
 
