@@ -4,13 +4,18 @@ defmodule Mix.Tasks.ImportTest do
 
   alias PrisonRideshare.{Institution, Repo, Request}
 
+  import Money.Sigils
+
   test "something" do
     Mix.Tasks.Import.run ["test/support/import/requests.csv"]
 
     [i1, i2] = Repo.all(Institution)
 
-    assert i1.name == "Headingley"
+    assert i1.name == "Milner Ridge"
+    assert i1.rate == ~M[25]
+
     assert i2.name == "stony mountain"
+    assert i2.rate == ~M[35]
 
     [req1, req2, req3] = Repo.all(Request)
 
