@@ -19,12 +19,12 @@ defmodule Mix.Tasks.Import do
       "stony mountian" => "stony mountain"
     }
 
-    File.stream!(requests)
+    %{request_row_to_model: request_row_to_model} = File.stream!(requests)
     |> CSV.decode
     |> Stream.with_index
-    |> Enum.reduce(%{institution_name_to_model: %{}, person_name_to_model: %{}}, fn({row, i}, acc) ->
+    |> Enum.reduce(%{institution_name_to_model: %{}, person_name_to_model: %{}, request_row_to_model: %{}}, fn({row, i}, acc) ->
       if i > 0 do
-        %{institution_name_to_model: institution_name_to_model, person_name_to_model: person_name_to_model} = acc
+        %{institution_name_to_model: institution_name_to_model, person_name_to_model: person_name_to_model, request_row_to_model: request_row_to_model} = acc
 
         [_, date, institution, start_time, end_time, address, name, contact, passengers, _, _, driver, car_owner, notes | _] = row
 
@@ -65,10 +65,12 @@ defmodule Mix.Tasks.Import do
         request_attrs = maybe_put_id(request_attrs, :driver_id, driver_model)
         request_attrs = maybe_put_id(request_attrs, :car_owner_id, car_owner_model)
 
-        r = Request.changeset(%Request{}, request_attrs)
+        request_model = Request.changeset(%Request{}, request_attrs)
         |> Repo.insert!
 
-        %{institution_name_to_model: institution_name_to_model, person_name_to_model: person_name_to_model}
+        request_row_to_model = Map.put(request_row_to_model, i + 1, request_model)
+
+        %{institution_name_to_model: institution_name_to_model, person_name_to_model: person_name_to_model, request_row_to_model: request_row_to_model}
       else
         acc
       end
@@ -79,12 +81,17 @@ defmodule Mix.Tasks.Import do
     |> Stream.with_index
     |> Enum.reduce(%{}, fn({row, i}, acc) ->
       if i > 0 do
-        [_, _, distance, _, expenses, notes | _] = row
+        [_, ride_string, distance, _, expenses, notes | _] = row
 
         Mix.shell.info "Importing this report:"
         Mix.shell.info row
 
-        Report.changeset(%Report{}, %{distance: distance, expenses: expenses, notes: notes})
+        [_,  original_request_row_string ] = Regex.run(~r/\[(\d+)\]/, ride_string)
+        original_request_row = String.to_integer(original_request_row_string)
+
+        request = request_row_to_model[original_request_row]
+
+        Report.changeset(%Report{}, %{distance: distance, expenses: expenses, notes: notes, request_id: request.id})
         |> Repo.insert!
 
         acc
