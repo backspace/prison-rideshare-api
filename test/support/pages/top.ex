@@ -12,6 +12,10 @@ defmodule PrisonRideshare.Pages.Top do
     clickable :click_, "a.requests"
   end
 
+  defmodule ReportsLink do
+    clickable :click_, "a.reports"
+  end
+
   defmodule ReportLink do
     clickable :click_, "a.report"
   end

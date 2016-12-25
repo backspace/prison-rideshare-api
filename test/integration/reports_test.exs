@@ -5,6 +5,7 @@ defmodule PrisonRideshare.Integration.Reports do
 
   alias PrisonRideshare.Pages.Top
   alias PrisonRideshare.Pages.NewReport
+  alias PrisonRideshare.Pages.Reports
   import NewReport
 
   alias PrisonRideshare.Repo
@@ -59,5 +60,12 @@ defmodule PrisonRideshare.Integration.Reports do
     # FIXME replace with page object method
     assert has_class?({:css, "tbody tr:nth-child(1)"}, "complete")
     refute has_class?({:css, "tbody tr:nth-child(2)"}, "complete")
+
+    Top.ReportsLink.click_
+
+    report = Reports.Reports.get(0)
+    assert Reports.Reports.distance(report) == "25.5"
+    assert Reports.Reports.food(report) == "10.11"
+    assert Reports.Reports.notes(report) == "Ere I saw Elba"
   end
 end

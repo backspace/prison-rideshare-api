@@ -15,9 +15,9 @@
 <%= for report <- @reports do %>
     <tr>
       <td><%= report.request_id %></td>
-      <td><%= report.distance %></td>
-      <td><%= report.food %></td>
-      <td><%= report.notes %></td>
+      <td class="distance"><%= report.distance %></td>
+      <td class="food"><%= report.food %></td>
+      <td class="notes"><%= report.notes %></td>
 
       <td class="text-right">
         <%= link "Show", to: report_path(@conn, :show, report), class: "btn btn-default btn-xs" %>
