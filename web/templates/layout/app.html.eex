@@ -24,6 +24,7 @@
                 <%= if Coherence.logged_in?(@conn) do %>
                 <%= if Coherence.current_user(@conn).admin do %>
                 <li><%= link "Requests", to: request_path(@conn, :index), class: "requests" %></li>
+                <li><%= link "Reports", to: report_path(@conn, :index), class: "reports" %></li>
                 <li><%= link "Institutions", to: institution_path(@conn, :index) %></li>
                 <%= end %>
                 <li><%= link "Log out", to: session_path(@conn, :delete), method: :delete, class: "logout" %></li>
