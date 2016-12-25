@@ -6,7 +6,7 @@ defmodule PrisonRideshare.InstitutionControllerTest do
   @invalid_attrs %{}
 
   setup %{conn: conn} do
-    user = %User{name: "test", email: "test@example.com", id: 1}
+    user = %User{name: "test", email: "test@example.com", id: 1, admin: true}
     {:ok, conn: assign(conn, :current_user, user), user: user}
   end
 

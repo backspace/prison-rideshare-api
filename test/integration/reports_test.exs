@@ -14,7 +14,7 @@ defmodule PrisonRideshare.Integration.Reports do
 
   test "submitting a report (eventually) marks the request as filled" do
     # FIXME unable to create with Forge: Failed to update lockable attributes [password: {"can't be blank", []}]
-    User.changeset(%User{}, %{name: "test", email: "test@example.com", password: "test", password_confirmation: "test", confirmed_at: DateTime.utc_now})
+    User.changeset(%User{}, %{name: "test", admin: true, email: "test@example.com", password: "test", password_confirmation: "test", confirmed_at: DateTime.utc_now})
     |> Repo.insert!
 
     {_, milner} = Forge.saved_institution name: "Milner Ridge"

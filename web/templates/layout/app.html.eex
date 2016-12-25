@@ -22,8 +22,10 @@
             <div class="collapse navbar-collapse">
               <ul class="nav navbar-nav">
                 <%= if Coherence.logged_in?(@conn) do %>
+                <%= if Coherence.current_user(@conn).admin do %>
                 <li><%= link "Requests", to: request_path(@conn, :index), class: "requests" %></li>
                 <li><%= link "Institutions", to: institution_path(@conn, :index) %></li>
+                <%= end %>
                 <li><%= link "Log out", to: session_path(@conn, :delete), method: :delete, class: "logout" %></li>
                 <% else %>
                 <li><%= link "Log in", to: session_path(@conn, :new) %></li>

@@ -18,6 +18,7 @@ defmodule PrisonRideshare.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug Coherence.Authentication.Session, protected: true
+    plug PrisonRideshare.Plugs.Admin
   end
 
   pipeline :api do

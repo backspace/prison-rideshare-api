@@ -1,6 +1,8 @@
 defmodule PrisonRideshare.Pages.Top do
   use PageObject
 
+  text :error_alert, ".alert-danger"
+
   def requests_link do
     [:css, "a.requests"]
   end
