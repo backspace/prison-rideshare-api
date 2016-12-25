@@ -1,5 +1,6 @@
 defmodule PrisonRideshare.Request do
   use PrisonRideshare.Web, :model
+  import Ecto.Query
 
   schema "requests" do
     field :date, Ecto.Date
@@ -27,5 +28,10 @@ defmodule PrisonRideshare.Request do
     struct
     |> cast(params, [:date, :start, :end, :name, :address, :contact, :passengers, :notes, :institution_id, :driver_id, :car_owner_id])
     |> validate_required([:date, :start, :end, :name, :address, :contact, :passengers])
+  end
+
+  def sorted(query) do
+    from r in query,
+    order_by: [r.date]
   end
 end

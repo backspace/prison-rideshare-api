@@ -20,8 +20,8 @@ defmodule PrisonRideshare.Integration.Reports do
     {_, milner} = Forge.saved_institution name: "Milner Ridge"
     {_, stony} = Forge.saved_institution name: "Stony Mountain"
 
-    Forge.saved_request institution: milner, date: Ecto.Date.from_erl({2016, 12, 29}), start: Ecto.Time.from_erl({8, 30, 0})
     Forge.saved_request institution: stony, date: Ecto.Date.from_erl({2016, 12, 30}), start: Ecto.Time.from_erl({14, 30, 0})
+    Forge.saved_request institution: milner, date: Ecto.Date.from_erl({2016, 12, 29}), start: Ecto.Time.from_erl({8, 30, 0})
 
     set_window_size current_window_handle, 1024, 768
     navigate_to "/"
@@ -51,7 +51,7 @@ defmodule PrisonRideshare.Integration.Reports do
     Top.RequestsLink.click_
 
     # FIXME replace with page object method
-    refute has_class?({:css, "tbody tr:nth-child(1)"}, "complete")
-    assert has_class?({:css, "tbody tr:nth-child(2)"}, "complete")
+    assert has_class?({:css, "tbody tr:nth-child(1)"}, "complete")
+    refute has_class?({:css, "tbody tr:nth-child(2)"}, "complete")
   end
 end
