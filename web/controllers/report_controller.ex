@@ -15,7 +15,7 @@ defmodule PrisonRideshare.ReportController do
   end
 
   def create(conn, %{"report" => report_params}) do
-    changeset = Report.changeset(%Report{}, report_params)
+    changeset = Report.changeset(%Report{}, copy_rate(report_params))
 
     case Repo.insert(changeset) do
       {:ok, _report} ->
@@ -42,6 +42,7 @@ defmodule PrisonRideshare.ReportController do
 
   def update(conn, %{"id" => id, "report" => report_params}) do
     report = Repo.get!(Report, id)
+    # FIXME copy rate only when request changes!
     changeset = Report.changeset(report, report_params)
 
     case Repo.update(changeset) do
@@ -68,5 +69,25 @@ defmodule PrisonRideshare.ReportController do
 
   defp requests do
     Request.sorted(Request) |> Repo.all |> Repo.preload(:institution)
+  end
+
+  defp copy_rate(report_params = %{"request_id" => nil}) do
+    report_params
+  end
+
+  defp copy_rate(report_params = %{"request_id" => request_id}) do
+    case Repo.get(Request, request_id) |> Repo.preload(:institution) do
+      nil -> report_params
+      request ->
+        if request.institution do
+          Map.put(report_params, "rate", request.institution.rate)
+        else
+          report_params
+        end
+    end
+  end
+
+  defp copy_rate(report_params = %{}) do
+    report_params
   end
 end

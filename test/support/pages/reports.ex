@@ -7,5 +7,6 @@ defmodule PrisonRideshare.Pages.Reports do
     text :distance, ".distance"
     text :food, ".food"
     text :notes, ".notes"
+    text :rate, ".rate"
   end
 end

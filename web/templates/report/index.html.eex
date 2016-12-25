@@ -5,6 +5,7 @@
     <tr>
       <th>Request</th>
       <th>Distance</th>
+      <th>Rate</th>
       <th>Food expenses</th>
       <th>Notes</th>
 
@@ -16,6 +17,7 @@
     <tr>
       <td><%= report.request_id %></td>
       <td class="distance"><%= report.distance %></td>
+      <td class="rate"><%= report.rate %></td>
       <td class="food"><%= report.food %></td>
       <td class="notes"><%= report.notes %></td>
 

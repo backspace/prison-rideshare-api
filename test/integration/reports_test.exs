@@ -18,8 +18,8 @@ defmodule PrisonRideshare.Integration.Reports do
     User.changeset(%User{}, %{name: "test", admin: true, email: "test@example.com", password: "test", password_confirmation: "test", confirmed_at: DateTime.utc_now})
     |> Repo.insert!
 
-    {_, milner} = Forge.saved_institution name: "Milner Ridge"
-    {_, stony} = Forge.saved_institution name: "Stony Mountain"
+    {_, milner} = Forge.saved_institution name: "Milner Ridge", rate: 22
+    {_, stony} = Forge.saved_institution name: "Stony Mountain", rate: 33
 
     Forge.saved_request institution: stony, date: Ecto.Date.from_erl({2016, 12, 30}), start: Ecto.Time.from_erl({14, 30, 0})
     Forge.saved_request institution: milner, date: Ecto.Date.from_erl({2016, 12, 29}), start: Ecto.Time.from_erl({8, 30, 0})
@@ -65,6 +65,7 @@ defmodule PrisonRideshare.Integration.Reports do
 
     report = Reports.Reports.get(0)
     assert Reports.Reports.distance(report) == "25.5"
+    assert Reports.Reports.rate(report) == "0.33"
     assert Reports.Reports.food(report) == "10.11"
     assert Reports.Reports.notes(report) == "Ere I saw Elba"
   end
