@@ -19,9 +19,11 @@ defmodule PrisonRideshare.ReportController do
 
     case Repo.insert(changeset) do
       {:ok, _report} ->
+        user = Coherence.current_user(conn)
+        redirection = if user && user.admin, do: report_path(conn, :index), else: page_path(conn, :index)
         conn
         |> put_flash(:info, "Report created successfully.")
-        |> redirect(to: report_path(conn, :index))
+        |> redirect(to: redirection)
       {:error, changeset} ->
         render(conn, "new.html", requests: requests, changeset: changeset)
     end

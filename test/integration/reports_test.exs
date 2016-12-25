@@ -41,6 +41,8 @@ defmodule PrisonRideshare.Integration.Reports do
     NewReport
     |> submit
 
+    assert Top.info_alert == "Report created successfully."
+
     navigate_to "/reports"
 
     assert Top.error_alert == "You do not have the proper authorisation to do that"

@@ -16,9 +16,16 @@ defmodule PrisonRideshare.ReportControllerTest do
     assert html_response(conn, 200) =~ "New report"
   end
 
-  test "creates resource and redirects when data is valid", %{conn: conn} do
+  test "creates resource and redirects to report index when data is valid and logged in", %{conn: conn} do
+    conn = login(conn)
     conn = post conn, report_path(conn, :create), report: @valid_attrs
     assert redirected_to(conn) == report_path(conn, :index)
+    assert Repo.get_by(Report, @valid_attrs)
+  end
+
+  test "creates resource and redirects to main index when data is valid and not logged in", %{conn: conn} do
+    conn = post conn, report_path(conn, :create), report: @valid_attrs
+    assert redirected_to(conn) == page_path(conn, :index)
     assert Repo.get_by(Report, @valid_attrs)
   end
 
