@@ -60,7 +60,12 @@ defmodule Mix.Tasks.ImportTest do
     [rei1, rei2, rei3] = Repo.all(Reimbursement)
 
     assert rei1.person_id == p1.id
+    assert rei1.amount == ~M[4675]
+
     assert rei2.person_id == p2.id
+    assert rei2.amount == ~M[6500]
+
     assert rei3.person_id == p3.id
+    assert rei3.amount == ~M[9250]
   end
 end

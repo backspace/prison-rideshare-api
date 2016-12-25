@@ -120,8 +120,13 @@ defmodule Mix.Tasks.Import do
 
         person = person_name_to_model[matching_name]
 
+        parsed_amount = -1 * case String.contains?(amount, ".") do
+          true -> round(String.to_float(amount) * 100)
+          false -> String.to_integer(amount) * 100
+        end
+
         r = Reimbursement.changeset(%Reimbursement{}, %{
-          amount: round(String.to_float(amount) * 100),
+          amount: parsed_amount,
           person_id: person.id
         })
         |> Repo.insert!
