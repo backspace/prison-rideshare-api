@@ -16,6 +16,6 @@ defmodule PrisonRideshare.Report do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:distance, :expenses, :notes, :request_id])
-    |> validate_required([:distance, :expenses, :notes])
+    |> validate_required([:distance, :expenses])
   end
 end
