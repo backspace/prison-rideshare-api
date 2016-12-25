@@ -12,5 +12,12 @@
 
 PrisonRideshare.Repo.delete_all PrisonRideshare.User
 
-PrisonRideshare.User.changeset(%PrisonRideshare.User{}, %{name: "Test User", email: "testuser@example.com", password: "secret", password_confirmation: "secret"})
+PrisonRideshare.User.changeset(%PrisonRideshare.User{}, %{
+  name: "Test User",
+  admin: true, email:
+  "testuser@example.com",
+  password: "secret",
+  password_confirmation: "secret",
+  confirmed_at: Ecto.DateTime.utc
+})
 |> PrisonRideshare.Repo.insert!
