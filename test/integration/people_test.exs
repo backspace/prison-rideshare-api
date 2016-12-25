@@ -22,6 +22,8 @@ defmodule PrisonRideshare.Integration.People do
     {_, request} = Forge.saved_request institution: leavenworth, driver: sun, car_owner: lito
     Forge.saved_report request: request, rate: 11, distance: 111.0, food: 1919
 
+    Forge.saved_reimbursement person: lito, amount: 789
+
     PrisonRideshare.IntegrationHelper.log_in_as_admin
 
     People.visit
@@ -33,6 +35,6 @@ defmodule PrisonRideshare.Integration.People do
     assert People.People.get(5) |> People.People.owed == "19.19"
 
     assert People.People.get(2) |> People.People.name == "Lito"
-    assert People.People.get(2) |> People.People.owed == "12.21"
+    assert People.People.get(2) |> People.People.owed == "4.32"
   end
 end

@@ -6,7 +6,7 @@ defmodule PrisonRideshare.PersonController do
   def index(conn, _params) do
     people = Person.sorted(Person)
     |> Repo.all
-    |> Repo.preload([car_uses: [:report], drivings: [:report]])
+    |> Repo.preload([{:car_uses, :report}, {:drivings, :report}, :reimbursements])
 
     people_owed = Enum.reduce(people, %{}, fn person, people_owed ->
       car_expenses = Enum.reduce(person.car_uses, Money.new(0), fn request, sum ->
@@ -23,7 +23,13 @@ defmodule PrisonRideshare.PersonController do
         end
       end)
 
-      Map.put(people_owed, person, Money.add(car_expenses, food_expenses))
+      reimbursements = Enum.reduce(person.reimbursements, Money.new(0), fn reimbursement, sum ->
+        Money.add(reimbursement.amount, sum)
+      end)
+
+      owed = Money.subtract(Money.add(car_expenses, food_expenses), reimbursements)
+
+      Map.put(people_owed, person, owed)
     end)
     render(conn, "index.html", people: people, people_owed: people_owed)
   end

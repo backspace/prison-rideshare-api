@@ -6,6 +6,8 @@ defmodule PrisonRideshare.Person do
     has_many :car_uses, PrisonRideshare.Request, foreign_key: :car_owner_id
     has_many :drivings, PrisonRideshare.Request, foreign_key: :driver_id
 
+    has_many :reimbursements, PrisonRideshare.Reimbursement
+
     timestamps()
   end
 
