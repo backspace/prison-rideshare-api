@@ -20,6 +20,7 @@ end
 
 defmodule PrisonRideshare.IntegrationHelper do
   use ExUnit.CaseTemplate
+  use Hound.Helpers
 
   alias PrisonRideshare.Repo
   alias PrisonRideshare.User
@@ -32,5 +33,13 @@ defmodule PrisonRideshare.IntegrationHelper do
     # Forge.saved_user name: "test", email: "test@example.com", password: "test", password_confirmation: "test", confirmed_at: Ecto.DateTime.utc
 
     :ok
+  end
+
+  # FIXME how to get this callable without full namespace?
+  def log_in_as_admin do
+    navigate_to "/sessions/new"
+    fill_field({:css, "#session_email"}, "test@example.com")
+    fill_field({:css, "#session_password"}, "test")
+    click({:css, "button[type=submit]"})
   end
 end

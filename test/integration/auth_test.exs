@@ -40,10 +40,7 @@ defmodule PrisonRideshare.Integration.Auth do
   end
 
   test "when logged in, request, institution, and logout links are visible" do
-    navigate_to "/sessions/new"
-    fill_field({:css, "#session_email"}, "test@example.com")
-    fill_field({:css, "#session_password"}, "test")
-    click({:css, "button[type=submit]"})
+    PrisonRideshare.IntegrationHelper.log_in_as_admin
 
     navigate_to "/"
 

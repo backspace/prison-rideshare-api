@@ -27,12 +27,9 @@ defmodule PrisonRideshare.Integration.Requests do
 
     Forge.saved_request name: "Francine", contact: "5551212", institution: milner, driver: bhagat, car_owner: john, report: report
 
-    navigate_to "/sessions/new"
     set_window_size current_window_handle, 1024, 768
 
-    fill_field({:css, "#session_email"}, "test@example.com")
-    fill_field({:css, "#session_password"}, "test")
-    click({:css, "button[type=submit]"})
+    PrisonRideshare.IntegrationHelper.log_in_as_admin
 
     Top.RequestsLink.click_
 

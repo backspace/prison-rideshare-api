@@ -42,12 +42,9 @@ defmodule PrisonRideshare.Integration.Reports do
 
     assert Top.error_alert == "You do not have the proper authorisation to do that"
 
-    navigate_to "/sessions/new"
     set_window_size current_window_handle, 1024, 768
 
-    fill_field({:css, "#session_email"}, "test@example.com")
-    fill_field({:css, "#session_password"}, "test")
-    click({:css, "button[type=submit]"})
+    PrisonRideshare.IntegrationHelper.log_in_as_admin
 
     Top.RequestsLink.click_
 
