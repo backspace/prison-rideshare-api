@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Owed</th>
 
       <th></th>
     </tr>
@@ -12,6 +13,7 @@
 <%= for person <- @people do %>
     <tr>
       <td class="name"><%= person.name %></td>
+      <td class="owed"><%= @people_owed[person] %></td>
 
       <td class="text-right">
         <%= link "Show", to: person_path(@conn, :show, person), class: "btn btn-default btn-xs" %>

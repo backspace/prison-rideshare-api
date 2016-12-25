@@ -5,5 +5,6 @@ defmodule PrisonRideshare.Pages.People do
 
   collection :people, item_scope: "tbody tr" do
     text :name, ".name"
+    text :owed, ".owed"
   end
 end

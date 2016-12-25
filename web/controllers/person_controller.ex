@@ -4,8 +4,28 @@ defmodule PrisonRideshare.PersonController do
   alias PrisonRideshare.Person
 
   def index(conn, _params) do
-    people = Person.sorted(Person) |> Repo.all
-    render(conn, "index.html", people: people)
+    people = Person.sorted(Person)
+    |> Repo.all
+    |> Repo.preload([car_uses: [:report], drivings: [:report]])
+
+    people_owed = Enum.reduce(people, %{}, fn person, people_owed ->
+      car_expenses = Enum.reduce(person.car_uses, Money.new(0), fn request, sum ->
+        case request.report do
+          nil -> sum
+          report -> Money.add(Money.multiply(report.rate, report.distance), sum)
+        end
+      end)
+
+      food_expenses = Enum.reduce(person.drivings, Money.new(0), fn request, sum ->
+        case request.report do
+          nil -> sum
+          report -> Money.add(report.food, sum)
+        end
+      end)
+
+      Map.put(people_owed, person, Money.add(car_expenses, food_expenses))
+    end)
+    render(conn, "index.html", people: people, people_owed: people_owed)
   end
 
   def new(conn, _params) do
