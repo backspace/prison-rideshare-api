@@ -33,8 +33,11 @@ defmodule PrisonRideshare.Integration.People do
 
     assert People.People.get(5) |> People.People.name == "Sun"
     assert People.People.get(5) |> People.People.owed == "19.19"
+    assert People.People.get(5) |> People.People.food == "19.19"
 
     assert People.People.get(2) |> People.People.name == "Lito"
     assert People.People.get(2) |> People.People.owed == "4.32"
+    assert People.People.get(2) |> People.People.car == "12.21"
+    assert People.People.get(2) |> People.People.reimbursements == "7.89"
   end
 end

@@ -29,7 +29,12 @@ defmodule PrisonRideshare.PersonController do
 
       owed = Money.subtract(Money.add(car_expenses, food_expenses), reimbursements)
 
-      Map.put(people_owed, person, owed)
+      Map.put(people_owed, person, %{
+        owed: owed,
+        car_expenses: car_expenses,
+        food_expenses: food_expenses,
+        reimbursements: reimbursements
+      })
     end)
     render(conn, "index.html", people: people, people_owed: people_owed)
   end
