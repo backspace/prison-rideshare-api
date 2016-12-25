@@ -14,7 +14,10 @@ defmodule PrisonRideshare.Pages.Requests do
 
     text :institution, "td:nth-child(9)"
 
-    text :driver, "td:nth-child(10)"
-    text :car_owner, "td:nth-child(11)"
+    text :report_text, "td:nth-child(10)"
+    attribute :report_href, "href", "td:nth-child(10) a"
+
+    text :driver, "td:nth-child(11)"
+    text :car_owner, "td:nth-child(12)"
   end
 end

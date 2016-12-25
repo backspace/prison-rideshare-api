@@ -10,6 +10,7 @@ defmodule Forge do
   @save_one_function &Blacksmith.Config.save/1
   @save_all_function &Blacksmith.Config.save_all/1
 
+  register :report, %PrisonRideshare.Report{}
   register :request, %PrisonRideshare.Request{}
   register :institution, %PrisonRideshare.Institution{}
 

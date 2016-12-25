@@ -28,7 +28,9 @@ defmodule PrisonRideshare.Integration.Requests do
     {_, bhagat} = Forge.saved_person name: "Bhagat Singh"
     {_, john} = Forge.saved_person name: "John Wojtowicz"
 
-    Forge.saved_request name: "Francine", contact: "5551212", institution: milner, driver: bhagat, car_owner: john
+    {_, report} = Forge.saved_report
+
+    Forge.saved_request name: "Francine", contact: "5551212", institution: milner, driver: bhagat, car_owner: john, report: report
 
     navigate_to "/sessions/new"
     set_window_size current_window_handle, 1024, 768
@@ -42,6 +44,8 @@ defmodule PrisonRideshare.Integration.Requests do
     request = Requests.Requests.get(0)
     assert(Requests.Requests.name(request) == "Francine")
     assert(Requests.Requests.contact(request) == "5551212")
+    assert(Requests.Requests.report_text(request) == "Report")
+    assert String.ends_with?(Requests.Requests.report_href(request), "/reports/#{report.id}")
     assert(Requests.Requests.institution(request) == "Milner Ridge")
     assert(Requests.Requests.driver(request) == "Bhagat Singh")
     assert(Requests.Requests.car_owner(request) == "John Wojtowicz")
@@ -68,5 +72,6 @@ defmodule PrisonRideshare.Integration.Requests do
     assert Requests.Requests.end(new_request) == "12:30:00"
     assert Requests.Requests.name(new_request) == "Pascal"
     assert Requests.Requests.institution(new_request) == "Stony Mountain"
+    assert Requests.Requests.report_text(new_request) == ""
   end
 end
