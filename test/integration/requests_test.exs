@@ -11,9 +11,6 @@ defmodule PrisonRideshare.Integration.Requests do
 
   alias PrisonRideshare.Pages.Requests
 
-  alias PrisonRideshare.Repo
-  alias PrisonRideshare.User
-
   hound_session
 
   test "list requests and create one" do
