@@ -4,7 +4,7 @@ defmodule PrisonRideshare.PersonController do
   alias PrisonRideshare.Person
 
   def index(conn, _params) do
-    people = Repo.all(Person)
+    people = Person.sorted(Person) |> Repo.all
     render(conn, "index.html", people: people)
   end
 

@@ -23,6 +23,6 @@ defmodule PrisonRideshare.Integration.Requests do
     People.visit
 
     assert People.People.get(0) |> People.People.name == "Capheus"
-    assert People.People.get(7) |> People.People.name == "Will"
+    assert People.People.get(7) |> People.People.name == "Wolfgang"
   end
 end
