@@ -57,6 +57,7 @@ defmodule PrisonRideshare.Router do
 
     resources "/institutions", InstitutionController
     resources "/people", PersonController
+    resources "/reimbursements", ReimbursementController
     resources "/requests", RequestController
   end
 
