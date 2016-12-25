@@ -3,7 +3,7 @@ defmodule PrisonRideshare.Repo.Migrations.AddRequestInstitution do
 
   def change do
     alter table(:requests) do
-      add :institution_id, references(:institutions)
+      add :institution_id, references(:institutions, type: :binary_id)
     end
   end
 end

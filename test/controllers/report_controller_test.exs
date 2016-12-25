@@ -44,7 +44,7 @@ defmodule PrisonRideshare.ReportControllerTest do
   test "renders page not found when id is nonexistent", %{conn: conn} do
     conn = login(conn)
     assert_error_sent 404, fn ->
-      get conn, report_path(conn, :show, -1)
+      get conn, report_path(conn, :show, "00000000-0000-0000-0000-000000000000")
     end
   end
 

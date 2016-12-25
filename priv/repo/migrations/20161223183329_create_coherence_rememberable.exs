@@ -1,11 +1,12 @@
 defmodule PrisonRideshare.Repo.Migrations.CreateCoherenceRememberable do
   use Ecto.Migration
   def change do
-    create table(:rememberables) do
+    create table(:rememberables, primary_key: false) do
+      add :id, :binary_id, primary_key: true
       add :series_hash, :string
       add :token_hash, :string
       add :token_created_at, :datetime
-      add :user_id, references(:users, on_delete: :delete_all)
+      add :user_id, references(:users, on_delete: :delete_all, type: :binary_id)
 
       timestamps
     end

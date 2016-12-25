@@ -39,7 +39,7 @@ defmodule PrisonRideshare.PersonControllerTest do
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
     assert_error_sent 404, fn ->
-      get conn, person_path(conn, :show, -1)
+      get conn, person_path(conn, :show, "00000000-0000-0000-0000-000000000000")
     end
   end
 

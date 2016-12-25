@@ -3,8 +3,8 @@ defmodule PrisonRideshare.Repo.Migrations.AddRequestPeople do
 
   def change do
     alter table(:requests) do
-      add :car_owner_id, references(:people)
-      add :driver_id, references(:people)
+      add :car_owner_id, references(:people, type: :binary_id)
+      add :driver_id, references(:people, type: :binary_id)
     end
 
     create index(:requests, [:car_owner_id])

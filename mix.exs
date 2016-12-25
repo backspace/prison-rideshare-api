@@ -45,7 +45,7 @@ defmodule PrisonRideshare.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
 
-     {:coherence, github: "smpallen99/coherence"},
+     {:coherence, github: "backspace/coherence", branch: "uuid-everywhere"},
      {:csv, "~> 1.4.2"},
      {:money, "~> 1.2.0"},
      {:timex, "~> 3.0"},
