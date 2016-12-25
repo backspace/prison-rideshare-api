@@ -1,11 +1,11 @@
 defmodule Mix.Tasks.Import do
   use Mix.Task
 
-  alias PrisonRideshare.{Institution, Person, Repo, Report, Request}
+  alias PrisonRideshare.{Institution, Person, Reimbursement, Repo, Report, Request}
 
   @shortdoc "Imports CSVs"
 
-  def run([requests, reports | _]) do
+  def run([requests, reports, reimbursements | _]) do
     Mix.Task.run "app.start"
 
     institution_rate_overrides = %{
@@ -19,7 +19,7 @@ defmodule Mix.Tasks.Import do
       "stony mountian" => "stony mountain"
     }
 
-    %{request_row_to_model: request_row_to_model} = File.stream!(requests)
+    %{request_row_to_model: request_row_to_model, person_name_to_model: person_name_to_model} = File.stream!(requests)
     |> CSV.decode
     |> Stream.with_index
     |> Enum.reduce(%{institution_name_to_model: %{}, person_name_to_model: %{}, request_row_to_model: %{}}, fn({row, i}, acc) ->
@@ -103,6 +103,28 @@ defmodule Mix.Tasks.Import do
         acc
       else
         acc
+      end
+    end)
+
+    File.stream!(reimbursements)
+    |> CSV.decode
+    |> Stream.with_index
+    |> Enum.each(fn {row, i} ->
+      if i > 0 do
+        [name, _, amount] = row
+
+        Mix.shell.info "Importing this reïmbursement:"
+        Mix.shell.info row
+
+        matching_name = String.trim(String.downcase(name))
+
+        person = person_name_to_model[matching_name]
+
+        r = Reimbursement.changeset(%Reimbursement{}, %{
+          amount: round(String.to_float(amount) * 100),
+          person_id: person.id
+        })
+        |> Repo.insert!
       end
     end)
   end

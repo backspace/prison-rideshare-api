@@ -2,12 +2,12 @@ defmodule Mix.Tasks.ImportTest do
   use ExUnit.Case
   use PrisonRideshare.ConnCase
 
-  alias PrisonRideshare.{Institution, Repo, Report, Request}
+  alias PrisonRideshare.{Institution, Person, Reimbursement, Repo, Report, Request}
 
   import Money.Sigils
 
   test "something" do
-    Mix.Tasks.Import.run ["test/support/import/requests.csv", "test/support/import/reports.csv"]
+    Mix.Tasks.Import.run ["test/support/import/requests.csv", "test/support/import/reports.csv", "test/support/import/reimbursements.csv"]
 
     [i1, i2] = Repo.all(Institution)
 
@@ -55,5 +55,12 @@ defmodule Mix.Tasks.ImportTest do
     assert rep1.notes == "These R the Notes"
 
     assert req1.report.id == rep1.id
+
+    [p1, p2, p3] = Repo.all(Person)
+    [rei1, rei2, rei3] = Repo.all(Reimbursement)
+
+    assert rei1.person_id == p1.id
+    assert rei2.person_id == p2.id
+    assert rei3.person_id == p3.id
   end
 end

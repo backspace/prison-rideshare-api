@@ -13,7 +13,7 @@ defmodule PrisonRideshare.Reimbursement do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:amount])
+    |> cast(params, [:amount, :person_id])
     |> validate_required([:amount])
   end
 end
