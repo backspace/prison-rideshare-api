@@ -1,5 +1,6 @@
 defmodule PrisonRideshare.Integration.Reports do
   use PrisonRideshare.ConnCase
+  use PrisonRideshare.IntegrationHelper
 
   use Hound.Helpers
 
@@ -8,16 +9,9 @@ defmodule PrisonRideshare.Integration.Reports do
   alias PrisonRideshare.Pages.Reports
   import NewReport
 
-  alias PrisonRideshare.Repo
-  alias PrisonRideshare.User
-
   hound_session
 
   test "submitting a report (eventually) marks the request as filled" do
-    # FIXME unable to create with Forge: Failed to update lockable attributes [password: {"can't be blank", []}]
-    User.changeset(%User{}, %{name: "test", admin: true, email: "test@example.com", password: "test", password_confirmation: "test", confirmed_at: DateTime.utc_now})
-    |> Repo.insert!
-
     {_, milner} = Forge.saved_institution name: "Milner Ridge", rate: 22
     {_, stony} = Forge.saved_institution name: "Stony Mountain", rate: 33
 
