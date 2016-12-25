@@ -8,8 +8,6 @@ defmodule Mix.Tasks.Import do
   def run([requests, reports | _]) do
     Mix.Task.run "app.start"
 
-    valid_attrs = %{name: "some content", address: "some content", contact: "some content", date: %{day: 17, month: 4, year: 2010}, end: %{hour: 14, min: 0, sec: 0}, notes: "some content", passengers: 42, start: %{hour: 14, min: 0, sec: 0}}
-
     institution_rate_overrides = %{
       "headingley" => 35,
       "stony mountain" => 35,
@@ -53,7 +51,8 @@ defmodule Mix.Tasks.Import do
 
         {person_name_to_model, car_owner_model} = maybe_add_person(person_name_to_model, matching_car_owner, car_owner)
 
-        request_attrs = Map.put(valid_attrs, :address, (if address != "", do: address, else: "MISSING"))
+        request_attrs = %{}
+        |> Map.put(:address, (if address != "", do: address, else: "MISSING"))
         |> Map.put(:date, Timex.parse!(date, "{M}/{D}/{YYYY}"))
         |> Map.put(:start, parse_time(start_time))
         |> Map.put(:end, parse_time(end_time, start_time))
