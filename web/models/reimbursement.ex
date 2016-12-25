@@ -2,7 +2,7 @@ defmodule PrisonRideshare.Reimbursement do
   use PrisonRideshare.Web, :model
 
   schema "reimbursements" do
-    field :amount, :integer
+    field :amount, Money.Ecto.Type
     belongs_to :person, PrisonRideshare.Person
 
     timestamps()
