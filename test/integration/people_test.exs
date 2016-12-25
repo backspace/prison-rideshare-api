@@ -19,7 +19,7 @@ defmodule PrisonRideshare.Integration.People do
     Forge.saved_person %{name: "Will"}
 
     {_, leavenworth} = Forge.saved_institution name: "Fort Leavenworth", rate: 11
-    {_, request} = Forge.saved_request institution: leavenworth, driver: sun, car_owner: lito#, date: Ecto.Date.from_erl({2016, 12, 30}), start: Ecto.Time.from_erl({14, 30, 0})
+    {_, request} = Forge.saved_request institution: leavenworth, driver: sun, car_owner: lito
     Forge.saved_report request: request, rate: 11, distance: 111.0, food: 1919
 
     PrisonRideshare.IntegrationHelper.log_in_as_admin
