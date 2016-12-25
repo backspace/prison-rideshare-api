@@ -2,12 +2,12 @@ defmodule Mix.Tasks.ImportTest do
   use ExUnit.Case
   use PrisonRideshare.ConnCase
 
-  alias PrisonRideshare.{Institution, Repo, Request}
+  alias PrisonRideshare.{Institution, Repo, Report, Request}
 
   import Money.Sigils
 
   test "something" do
-    Mix.Tasks.Import.run ["test/support/import/requests.csv"]
+    Mix.Tasks.Import.run ["test/support/import/requests.csv", "test/support/import/reports.csv"]
 
     [i1, i2] = Repo.all(Institution)
 
@@ -18,6 +18,7 @@ defmodule Mix.Tasks.ImportTest do
     assert i2.rate == ~M[35]
 
     [req1, req2, req3] = Repo.all(Request)
+    |> Repo.preload(:report)
     |> Repo.preload(:driver)
     |> Repo.preload(:car_owner)
 
@@ -45,5 +46,11 @@ defmodule Mix.Tasks.ImportTest do
     assert req3.institution_id == i2.id
     refute req3.driver
     refute req3.car_owner
+
+    [rep1] = Repo.all(Report)
+
+    assert rep1.distance == 75
+    assert rep1.expenses == ~M[1200]
+    assert rep1.notes == "These R the Notes"
   end
 end

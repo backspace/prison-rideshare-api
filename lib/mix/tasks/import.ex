@@ -1,11 +1,11 @@
 defmodule Mix.Tasks.Import do
   use Mix.Task
 
-  alias PrisonRideshare.{Institution, Person, Repo, Request}
+  alias PrisonRideshare.{Institution, Person, Repo, Report, Request}
 
   @shortdoc "Imports CSVs"
 
-  def run([requests | _]) do
+  def run([requests, reports | _]) do
     Mix.Task.run "app.start"
 
     valid_attrs = %{name: "some content", address: "some content", contact: "some content", date: %{day: 17, month: 4, year: 2010}, end: %{hour: 14, min: 0, sec: 0}, notes: "some content", passengers: 42, start: %{hour: 14, min: 0, sec: 0}}
@@ -70,6 +70,25 @@ defmodule Mix.Tasks.Import do
         |> Repo.insert!
 
         %{institution_name_to_model: institution_name_to_model, person_name_to_model: person_name_to_model}
+      else
+        acc
+      end
+    end)
+
+    File.stream!(reports)
+    |> CSV.decode
+    |> Stream.with_index
+    |> Enum.reduce(%{}, fn({row, i}, acc) ->
+      if i > 0 do
+        [_, _, distance, _, expenses, notes | _] = row
+
+        Mix.shell.info "Importing this report:"
+        Mix.shell.info row
+
+        Report.changeset(%Report{}, %{distance: distance, expenses: expenses, notes: notes})
+        |> Repo.insert!
+
+        acc
       else
         acc
       end
