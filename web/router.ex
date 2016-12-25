@@ -18,6 +18,15 @@ defmodule PrisonRideshare.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug Coherence.Authentication.Session, protected: true
+  end
+
+  pipeline :admin do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+    plug Coherence.Authentication.Session, protected: true
     plug PrisonRideshare.Plugs.Admin
   end
 
@@ -44,7 +53,7 @@ defmodule PrisonRideshare.Router do
   end
 
   scope "/", PrisonRideshare do
-    pipe_through :protected
+    pipe_through :admin
 
     resources "/institutions", InstitutionController
     resources "/people", PersonController
