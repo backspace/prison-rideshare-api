@@ -1,4 +1,4 @@
-defmodule PrisonRideshare.Integration.Requests do
+defmodule PrisonRideshare.Integration.People do
   use PrisonRideshare.ConnCase
   use PrisonRideshare.IntegrationHelper
 
