@@ -50,7 +50,7 @@ defmodule Mix.Tasks.ImportTest do
     [rep1 | _] = Repo.all(Report)
 
     assert rep1.distance == 75
-    assert rep1.expenses == ~M[1200]
+    assert rep1.food == ~M[1200]
     assert rep1.notes == "These R the Notes"
 
     assert req1.report.id == rep1.id

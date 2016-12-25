@@ -13,8 +13,8 @@
   </li>
 
   <li>
-    <strong>Expenses:</strong>
-    <%= @report.expenses %>
+    <strong>Food expenses:</strong>
+    <%= @report.food %>
   </li>
 
   <li>

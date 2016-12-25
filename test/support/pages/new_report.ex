@@ -2,7 +2,7 @@ defmodule PrisonRideshare.Pages.NewReport do
   use PageObject
 
   fillable :fill_distance, "#report_distance"
-  fillable :fill_expenses, "#report_expenses"
+  fillable :fill_food, "#report_food"
   fillable :fill_notes, "#report_notes"
 
   collection :requests, item_scope: ".radio label" do

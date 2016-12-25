@@ -5,7 +5,7 @@ defmodule PrisonRideshare.Repo.Migrations.CreateReport do
     create table(:reports, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :distance, :float
-      add :expenses, :float
+      add :food, :float
       add :notes, :string
       add :request_id, references(:requests, on_delete: :nothing, type: :binary_id)
 

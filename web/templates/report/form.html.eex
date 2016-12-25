@@ -25,12 +25,12 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :expenses, "Food expenses", class: "control-label" %>
+    <%= label f, :food, "Food expenses", class: "control-label" %>
     <div class="input-group">
       <div class="input-group-addon">$</div>
-      <%= number_input f, :expenses, step: "0.01", class: "form-control" %>
+      <%= number_input f, :food, step: "0.01", class: "form-control" %>
     </div>
-    <%= error_tag f, :expenses %>
+    <%= error_tag f, :food %>
     <p class="help-block">Please keep your receipts & give them to us when you get reimbursed</p>
   </div>
 

@@ -3,7 +3,7 @@ defmodule PrisonRideshare.ReportTest do
 
   alias PrisonRideshare.Report
 
-  @valid_attrs %{distance: "120.5", expenses: "120.5", notes: "some content"}
+  @valid_attrs %{distance: "120.5", food: "120.5", notes: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

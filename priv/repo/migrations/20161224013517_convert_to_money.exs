@@ -3,7 +3,7 @@ defmodule PrisonRideshare.Repo.Migrations.ConvertToMoney do
 
   def up do
     alter table(:reports) do
-      modify :expenses, :integer
+      modify :food, :integer
     end
 
     alter table(:institutions) do
@@ -13,7 +13,7 @@ defmodule PrisonRideshare.Repo.Migrations.ConvertToMoney do
 
   def down do
     alter table(:reports) do
-      modify :expenses, :float
+      modify :food, :float
     end
 
     alter table(:institutions) do
