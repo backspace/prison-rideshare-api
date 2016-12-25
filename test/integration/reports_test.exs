@@ -41,6 +41,10 @@ defmodule PrisonRideshare.Integration.Reports do
     NewReport
     |> submit
 
+    navigate_to "/reports"
+
+    assert Top.error_alert == "You do not have the proper authorisation to do that"
+
     navigate_to "/sessions/new"
     set_window_size current_window_handle, 1024, 768
 

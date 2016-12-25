@@ -6,6 +6,10 @@ defmodule PrisonRideshare.Plugs.Admin do
 
   def init(default), do: default
 
+  def call(%{assigns: %{current_user: nil}} = conn, _) do
+    conn |> flash_and_redirect
+  end
+
   def call(%{assigns: %{current_user: current_user}} = conn, _) do
     if current_user.admin do
       conn

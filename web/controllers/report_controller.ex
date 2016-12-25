@@ -1,5 +1,6 @@
 defmodule PrisonRideshare.ReportController do
   use PrisonRideshare.Web, :controller
+  plug PrisonRideshare.Plugs.Admin when action in [:index, :show, :edit, :update, :delete]
 
   alias PrisonRideshare.{Report, Request}
 
