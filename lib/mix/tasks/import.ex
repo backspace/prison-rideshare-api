@@ -91,7 +91,12 @@ defmodule Mix.Tasks.Import do
 
         request = request_row_to_model[original_request_row]
 
-        Report.changeset(%Report{}, %{distance: distance, expenses: expenses, notes: notes, request_id: request.id})
+        Report.changeset(%Report{}, %{
+          distance: distance,
+          expenses: (if expenses == "", do: 0, else: expenses),
+          notes: notes,
+          request_id: request.id
+        })
         |> Repo.insert!
 
         acc

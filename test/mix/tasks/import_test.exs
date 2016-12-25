@@ -47,7 +47,7 @@ defmodule Mix.Tasks.ImportTest do
     refute req3.driver
     refute req3.car_owner
 
-    [rep1] = Repo.all(Report)
+    [rep1 | _] = Repo.all(Report)
 
     assert rep1.distance == 75
     assert rep1.expenses == ~M[1200]
