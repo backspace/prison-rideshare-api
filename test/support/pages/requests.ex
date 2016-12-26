@@ -6,17 +6,17 @@ defmodule PrisonRideshare.Pages.Requests do
   clickable :create, "main > a"
 
   collection :requests, item_scope: "tbody tr" do
-    text :times, "td:nth-child(2)"
+    text :times, "td.times"
 
-    text :name, "td:nth-child(3)"
-    text :contact, "td:nth-child(5)"
+    text :name, "td.name"
+    text :contact, "td.contact"
 
-    text :institution, "td:nth-child(8)"
+    text :institution, "td.institution"
 
-    text :report_text, "td:nth-child(9)"
-    attribute :report_href, "href", "td:nth-child(9) a"
+    text :report_text, "td.report"
+    attribute :report_href, "href", "td.report a"
 
-    text :driver, "td:nth-child(10)"
-    text :car_owner, "td:nth-child(11)"
+    text :driver, "td.driver"
+    text :car_owner, "td.car_owner"
   end
 end

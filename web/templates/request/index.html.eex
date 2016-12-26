@@ -21,21 +21,21 @@
   <tbody>
 <%= for request <- @requests do %>
     <tr class="<%= if request.report, do: "complete" %>">
-      <td><%= request.date %></td>
-      <td><%= format_request_times request %></td>
-      <td><%= request.name %></td>
-      <td><%= request.address %></td>
-      <td><%= request.contact %></td>
-      <td><%= request.passengers %></td>
-      <td><%= request.notes %></td>
+      <td class="date"><%= request.date %></td>
+      <td class="times"><%= format_request_times request %></td>
+      <td class="name"><%= request.name %></td>
+      <td class="address"><%= request.address %></td>
+      <td class="contact"><%= request.contact %></td>
+      <td class="passengers"><%= request.passengers %></td>
+      <td class="notes"><%= request.notes %></td>
       <%= if request.institution do %>
-      <td><%= request.institution.name %></td>
+      <td class="institution"><%= request.institution.name %></td>
       <% else %>
-      <td>ø</td>
+      <td class="institution">ø</td>
       <% end %>
-      <td><%= if request.report do %><%= link "Report", to: report_path(@conn, :show, request.report) %><% end %></td>
-      <td><%= if request.driver, do: request.driver.name %></td>
-      <td><%= if request.car_owner, do: request.car_owner.name %></td>
+      <td class="report"><%= if request.report do %><%= link "Report", to: report_path(@conn, :show, request.report) %><% end %></td>
+      <td class="driver"><%= if request.driver, do: request.driver.name %></td>
+      <td class="car_owner"><%= if request.car_owner, do: request.car_owner.name %></td>
 
       <td class="text-right">
         <%= link "Show", to: request_path(@conn, :show, request), class: "btn btn-default btn-xs" %>
