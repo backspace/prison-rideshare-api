@@ -106,12 +106,12 @@ defmodule Mix.Tasks.Import do
     |> Stream.with_index
     |> Enum.reduce(%{}, fn({row, i}, acc) ->
       if i > 0 do
-        [_, ride_string, distance, _, food, notes, rate | _] = row
+        [_, ride_string, distance, _, food, notes, rate, _, _, _, driver, car_owner | _] = row
 
         Mix.shell.info "Importing this report:"
         Mix.shell.info row
 
-        request = find_request_from_ride_string(uncombined_requests, ride_string)
+        request = find_request_from_ride_string_and_names(uncombined_requests, ride_string, driver, car_owner)
 
         Report.changeset(%Report{}, %{
           distance: distance,
@@ -193,14 +193,27 @@ defmodule Mix.Tasks.Import do
     Map.put(map, attr, model.id)
   end
 
-  defp find_request_from_ride_string(requests, ride_string) do
+  defp find_request_from_ride_string_and_names(requests, ride_string, driver, car_owner) do
     # Example ride string: 07:45 PM on Fri, Aug 5 to Milner Ridge [X]
     [_, time_and_date_string] = Regex.run(~r/(\d\d:\d\d .M on ...\, ... \d+) to .* \[.*\]/, ride_string)
 
     Enum.find(requests, fn request ->
+      request = Repo.get!(Request, request.id)
+      |> Repo.preload(:institution)
+      |> Repo.preload(:driver)
+      |> Repo.preload(:car_owner)
+
       formatted_request = PrisonRideshare.ReportView.format_request_without_institution(request)
 
-      String.contains? time_and_date_string, formatted_request
+      # This is a mess but the original data has integrity problems.
+      case {request.driver, request.car_owner} do
+        {nil, _} -> false
+        {_, nil} -> false
+        {rdriver, rowner} ->
+          String.contains?(time_and_date_string, formatted_request) &&
+          String.jaro_distance(driver, rdriver.name) > 0.8 &&
+          String.jaro_distance(car_owner, rowner.name) > 0.8
+      end
     end)
   end
 
