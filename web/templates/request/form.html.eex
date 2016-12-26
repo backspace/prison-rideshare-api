@@ -56,7 +56,7 @@
   <div class="form-group">
     <label>Institution</label>
     <%= for institution <- @institutions do %>
-    <div class="radio">
+    <div class="institution radio">
       <label>
         <%= radio_button f, :institution_id, institution.id %>
         <%= institution.name %>
@@ -64,6 +64,18 @@
     </div>
     <% end %>
     <%= error_tag f, :institution_id %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :driver_id, "Driver" %>
+    <%= select f, :driver_id, [{"", nil}] ++ Enum.map(@people, fn p -> {p.name, p.id} end) %>
+    <%= error_tag f, :driver_id %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :car_owner_id, "Car owner" %>
+    <%= select f, :car_owner_id, [{"", nil}] ++ Enum.map(@people, fn p -> {p.name, p.id} end) %>
+    <%= error_tag f, :car_owner_id %>
   </div>
 
   <div class="form-group">

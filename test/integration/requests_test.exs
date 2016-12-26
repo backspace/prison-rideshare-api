@@ -51,6 +51,8 @@ defmodule PrisonRideshare.Integration.Requests do
     |> fill_address("91 Albert St.")
     |> fill_contact("5551313")
     |> fill_passengers("2")
+    |> fill_driver("John Wojtowicz")
+    |> fill_car_owner("Bhagat Singh")
 
     NewRequest.Institutions.get(1)
     |> NewRequest.Institutions.click_
@@ -62,5 +64,7 @@ defmodule PrisonRideshare.Integration.Requests do
     assert Requests.Requests.name(new_request) == "Pascal"
     assert Requests.Requests.institution(new_request) == "Stony Mountain"
     assert Requests.Requests.report_text(new_request) == ""
+    assert Requests.Requests.driver(new_request) == "John Wojtowicz"
+    assert Requests.Requests.car_owner(new_request) == "Bhagat Singh"
   end
 end
