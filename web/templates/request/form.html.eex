@@ -49,7 +49,7 @@
 
   <div class="form-group">
     <%= label f, :notes, class: "control-label" %>
-    <%= text_input f, :notes, class: "form-control" %>
+    <%= textarea f, :notes, class: "form-control" %>
     <%= error_tag f, :notes %>
   </div>
 

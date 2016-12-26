@@ -36,7 +36,7 @@
 
   <div class="form-group">
     <%= label f, :notes, "Notes?", class: "control-label" %>
-    <%= text_input f, :notes, class: "form-control" %>
+    <%= textarea f, :notes, class: "form-control" %>
     <%= error_tag f, :notes %>
     <p class="help-block">Leave blank unless there's anything unusual about the ride or the reimbursement (like paying driver for gas instead of car owner, etc)</p>
   </div>
