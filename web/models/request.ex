@@ -12,7 +12,7 @@ defmodule PrisonRideshare.Request do
     field :passengers, :integer, default: 1
     field :notes, :string
 
-    belongs_to :request, PrisonRideshare.Request, foreign_key: :combined_with_request_id
+    belongs_to :combined_with, PrisonRideshare.Request, foreign_key: :combined_with_request_id
 
     belongs_to :institution, PrisonRideshare.Institution
     has_one :report, PrisonRideshare.Report
