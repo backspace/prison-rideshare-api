@@ -32,13 +32,13 @@ defmodule PrisonRideshare.Integration.Requests do
     Top.RequestsLink.click_
 
     request = Requests.Requests.get(0)
-    assert(Requests.Requests.name(request) == "Francine")
-    assert(Requests.Requests.contact(request) == "5551212")
-    assert(Requests.Requests.report_text(request) == "Report")
+    assert Requests.Requests.name(request) == "Francine"
+    assert Requests.Requests.contact(request) == "5551212"
+    assert Requests.Requests.report_text(request) == "Report"
     assert String.ends_with?(Requests.Requests.report_href(request), "/reports/#{report.id}")
-    assert(Requests.Requests.institution(request) == "Milner Ridge")
-    assert(Requests.Requests.driver(request) == "Bhagat Singh")
-    assert(Requests.Requests.car_owner(request) == "John Wojtowicz")
+    assert Requests.Requests.institution(request) == "Milner Ridge"
+    assert Requests.Requests.driver(request) == "Bhagat Singh"
+    assert Requests.Requests.car_owner(request) == "John Wojtowicz"
 
     Requests.create
 
