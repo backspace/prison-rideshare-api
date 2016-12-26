@@ -22,7 +22,8 @@ defmodule PrisonRideshare.Integration.Requests do
 
     {_, report} = Forge.saved_report
 
-    Forge.saved_request name: "Francine", contact: "5551212", institution: milner, driver: bhagat, car_owner: john, report: report
+    future_date = Timex.to_erl(Timex.to_date(Timex.add(Timex.now, Timex.Duration.from_days(3))))
+    Forge.saved_request name: "Francine", contact: "5551212", institution: milner, driver: bhagat, car_owner: john, report: report, date: Ecto.Date.from_erl(future_date)
 
     set_window_size current_window_handle, 1024, 768
 
@@ -56,7 +57,7 @@ defmodule PrisonRideshare.Integration.Requests do
 
     NewRequest.submit
 
-    new_request = Requests.Requests.get(1)
+    new_request = Requests.Requests.get(0)
     assert Requests.Requests.start(new_request) == "11:30:00"
     assert Requests.Requests.end(new_request) == "12:30:00"
     assert Requests.Requests.name(new_request) == "Pascal"

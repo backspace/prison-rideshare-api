@@ -5,7 +5,8 @@ defmodule PrisonRideshare.RequestController do
   alias PrisonRideshare.Institution
 
   def index(conn, _params) do
-    requests = Repo.all(Request)
+    requests = Request.sorted(Request)
+    |> Repo.all
     |> Repo.preload(:institution)
     |> Repo.preload(:report)
     |> Repo.preload(:driver)
