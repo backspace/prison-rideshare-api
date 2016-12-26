@@ -175,10 +175,7 @@ defmodule Mix.Tasks.Import do
 
   defp maybe_add_person(person_name_to_model, matching_name, name) do
     new_map = Map.put_new_lazy(person_name_to_model, matching_name, fn ->
-      {first, rest} = String.split_at(name, 1)
-      capitalised_name = String.upcase(first) <> rest
-
-      Person.changeset(%Person{}, %{name: capitalised_name})
+      Person.changeset(%Person{}, %{name: capitalised_name(name)})
       |> Repo.insert!
     end)
 
@@ -191,6 +188,15 @@ defmodule Mix.Tasks.Import do
 
   defp maybe_put_id(map, attr, model) do
     Map.put(map, attr, model.id)
+  end
+
+  defp capitalised_name(name) do
+    String.split(name)
+    |> Enum.map(fn piece ->
+      {first, rest} = String.split_at(piece, 1)
+      String.upcase(first) <> rest
+    end)
+    |> Enum.join(" ")
   end
 
   defp find_request_from_ride_string_and_names(requests, ride_string, driver, car_owner) do
