@@ -49,8 +49,8 @@ defmodule PrisonRideshare.Integration.Reports do
     Top.RequestsLink.click_
 
     # FIXME replace with page object method
-    assert has_class?({:css, "tbody tr:nth-child(1)"}, "complete")
-    refute has_class?({:css, "tbody tr:nth-child(2)"}, "complete")
+    refute has_class?({:css, "tbody tr:nth-child(1)"}, "complete")
+    assert has_class?({:css, "tbody tr:nth-child(2)"}, "complete")
 
     Top.ReportsLink.click_
 
