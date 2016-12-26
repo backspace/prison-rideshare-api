@@ -22,7 +22,7 @@
   </thead>
   <tbody>
 <%= for request <- @requests do %>
-    <tr class="<%= if request.report, do: "complete" %>">
+    <tr class="request <%= if request.report, do: "complete" %>">
       <td class="date"><%= request.date %></td>
       <td class="times"><%= format_request_times request %></td>
       <td class="name"><%= request.name %></td>
@@ -45,6 +45,17 @@
         <%= link "Delete", to: request_path(@conn, :delete, request), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
+    <%= if request.report do %>
+    <tr class="report">
+      <td colspan=6></td>
+      <td class="notes"><%= request.report.notes %></td>
+      <td class="rate"><%= request.report.rate %></td>
+      <td></td>
+      <td class="food"><%= request.report.food %></td>
+      <td class="car"></td>
+      <td></td>
+    </tr>
+    <% end %>
 <% end %>
   </tbody>
 </table>

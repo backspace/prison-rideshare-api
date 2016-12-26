@@ -5,7 +5,7 @@ defmodule PrisonRideshare.Pages.Requests do
 
   clickable :create, "main > a"
 
-  collection :requests, item_scope: "tbody tr" do
+  collection :requests, item_scope: "tbody tr.request" do
     text :times, "td.times"
 
     text :name, "td.name"
@@ -18,5 +18,11 @@ defmodule PrisonRideshare.Pages.Requests do
 
     text :driver, "td.driver"
     text :car_owner, "td.car_owner"
+  end
+
+  collection :reports, item_scope: "tbody tr.report" do
+    text :rate, "td.rate"
+    text :notes, "td.notes"
+    text :food, "td.food"
   end
 end

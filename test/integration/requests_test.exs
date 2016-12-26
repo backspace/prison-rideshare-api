@@ -20,7 +20,7 @@ defmodule PrisonRideshare.Integration.Requests do
     {_, bhagat} = Forge.saved_person name: "Bhagat Singh"
     {_, john} = Forge.saved_person name: "John Wojtowicz"
 
-    {_, report} = Forge.saved_report
+    {_, report} = Forge.saved_report food: 1919, rate: 33, notes: "Schnimbleby Tortonhortons"
 
     future_date = Timex.to_erl(Timex.to_date(Timex.add(Timex.now, Timex.Duration.from_days(3))))
     Forge.saved_request name: "Francine", contact: "5551212", institution: milner, driver: bhagat, car_owner: john, report: report, date: Ecto.Date.from_erl(future_date)
@@ -39,6 +39,11 @@ defmodule PrisonRideshare.Integration.Requests do
     assert Requests.Requests.institution(request) == "Milner Ridge"
     assert Requests.Requests.driver(request) == "Bhagat Singh"
     assert Requests.Requests.car_owner(request) == "John Wojtowicz"
+
+    report = Requests.Reports.get(0)
+    assert Requests.Reports.food(report) == "19.19"
+    assert Requests.Reports.notes(report) == "Schnimbleby Tortonhortons"
+    assert Requests.Reports.rate(report) == "0.33"
 
     Requests.create
 
