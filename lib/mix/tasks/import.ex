@@ -76,6 +76,8 @@ defmodule Mix.Tasks.Import do
       end
     end)
 
+    request_models = Map.values(request_row_to_model)
+
     File.stream!(reports)
     |> CSV.decode
     |> Stream.with_index
@@ -86,10 +88,7 @@ defmodule Mix.Tasks.Import do
         Mix.shell.info "Importing this report:"
         Mix.shell.info row
 
-        [_,  original_request_row_string ] = Regex.run(~r/\[(\d+)\]/, ride_string)
-        original_request_row = String.to_integer(original_request_row_string)
-
-        request = request_row_to_model[original_request_row]
+        request = find_request_from_ride_string(request_models, ride_string)
 
         Report.changeset(%Report{}, %{
           distance: distance,
@@ -166,5 +165,16 @@ defmodule Mix.Tasks.Import do
 
   defp maybe_put_id(map, attr, model) do
     Map.put(map, attr, model.id)
+  end
+
+  defp find_request_from_ride_string(requests, ride_string) do
+    # Example ride string: 07:45 PM on Fri, Aug 5 to Milner Ridge [X]
+    [_, time_and_date_string] = Regex.run(~r/(\d\d:\d\d .M on ...\, ... \d+) to .* \[.*\]/, ride_string)
+
+    Enum.find(requests, fn request ->
+      formatted_request = PrisonRideshare.ReportView.format_request_without_institution(request)
+
+      String.contains? time_and_date_string, formatted_request
+    end)
   end
 end
