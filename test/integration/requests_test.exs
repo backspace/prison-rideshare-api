@@ -58,8 +58,7 @@ defmodule PrisonRideshare.Integration.Requests do
     NewRequest.submit
 
     new_request = Requests.Requests.get(0)
-    assert Requests.Requests.start(new_request) == "11:30:00"
-    assert Requests.Requests.end(new_request) == "12:30:00"
+    assert Requests.Requests.times(new_request) == "11:30 AM — 12:30"
     assert Requests.Requests.name(new_request) == "Pascal"
     assert Requests.Requests.institution(new_request) == "Stony Mountain"
     assert Requests.Requests.report_text(new_request) == ""

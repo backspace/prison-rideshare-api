@@ -4,8 +4,7 @@
   <thead>
     <tr>
       <th>Date</th>
-      <th>Start</th>
-      <th>End</th>
+      <th>Times</th>
       <th>Name</th>
       <th>Address</th>
       <th>Contact</th>
@@ -23,8 +22,7 @@
 <%= for request <- @requests do %>
     <tr class="<%= if request.report, do: "complete" %>">
       <td><%= request.date %></td>
-      <td><%= request.start %></td>
-      <td><%= request.end %></td>
+      <td><%= format_request_times request %></td>
       <td><%= request.name %></td>
       <td><%= request.address %></td>
       <td><%= request.contact %></td>
