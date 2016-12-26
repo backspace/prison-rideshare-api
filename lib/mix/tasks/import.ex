@@ -19,14 +19,23 @@ defmodule Mix.Tasks.Import do
       "stony mountian" => "stony mountain"
     }
 
-    %{request_row_to_model: request_row_to_model, person_name_to_model: person_name_to_model} = File.stream!(requests)
+    %{
+      request_row_number_to_model: request_row_number_to_model,
+      person_name_to_model: person_name_to_model,
+      combined_requests: combined_requests
+    } = File.stream!(requests)
     |> CSV.decode
     |> Stream.with_index
-    |> Enum.reduce(%{institution_name_to_model: %{}, person_name_to_model: %{}, request_row_to_model: %{}}, fn({row, i}, acc) ->
+    |> Enum.reduce(%{
+      institution_name_to_model: %{},
+      person_name_to_model: %{},
+      request_row_number_to_model: %{},
+      combined_requests: []
+    }, fn({row, i}, acc) ->
       if i > 0 do
-        %{institution_name_to_model: institution_name_to_model, person_name_to_model: person_name_to_model, request_row_to_model: request_row_to_model} = acc
+        %{institution_name_to_model: institution_name_to_model, person_name_to_model: person_name_to_model, request_row_number_to_model: request_row_number_to_model, combined_requests: combined_requests} = acc
 
-        [_, date, institution, start_time, end_time, address, name, contact, passengers, _, _, driver, car_owner, notes | _] = row
+        [_, date, institution, start_time, end_time, address, name, contact, passengers, _, combined, driver, car_owner, notes | _] = row
 
         Mix.shell.info "Importing this request:"
         Mix.shell.info row
@@ -68,15 +77,29 @@ defmodule Mix.Tasks.Import do
         request_model = Request.changeset(%Request{}, request_attrs)
         |> Repo.insert!
 
-        request_row_to_model = Map.put(request_row_to_model, i + 1, request_model)
+        request_row_number_to_model = Map.put(request_row_number_to_model, i + 1, request_model)
 
-        %{institution_name_to_model: institution_name_to_model, person_name_to_model: person_name_to_model, request_row_to_model: request_row_to_model}
+        combined_requests = case combined do
+          "" -> combined_requests
+          _ -> combined_requests ++ [request_model]
+        end
+
+        %{
+          institution_name_to_model: institution_name_to_model,
+          person_name_to_model: person_name_to_model,
+          request_row_number_to_model: request_row_number_to_model,
+          combined_requests: combined_requests
+        }
       else
         acc
       end
     end)
 
-    request_models = Map.values(request_row_to_model)
+    request_models = Map.values(request_row_number_to_model)
+
+    uncombined_requests = request_models -- combined_requests
+
+    combine_requests(combined_requests, uncombined_requests)
 
     File.stream!(reports)
     |> CSV.decode
@@ -88,7 +111,7 @@ defmodule Mix.Tasks.Import do
         Mix.shell.info "Importing this report:"
         Mix.shell.info row
 
-        request = find_request_from_ride_string(request_models, ride_string)
+        request = find_request_from_ride_string(uncombined_requests, ride_string)
 
         Report.changeset(%Report{}, %{
           distance: distance,
@@ -175,6 +198,19 @@ defmodule Mix.Tasks.Import do
       formatted_request = PrisonRideshare.ReportView.format_request_without_institution(request)
 
       String.contains? time_and_date_string, formatted_request
+    end)
+  end
+
+  defp combine_requests(combined_requests, uncombined_requests) do
+    Enum.each(combined_requests, fn combined ->
+      match = Enum.find(uncombined_requests, fn request ->
+        request.driver_id == combined.driver_id &&
+        request.car_owner_id == combined.car_owner_id &&
+        request.date == combined.date
+      end)
+
+      Request.changeset(combined, %{combined_with_request_id: match.id})
+      |> Repo.update
     end)
   end
 end

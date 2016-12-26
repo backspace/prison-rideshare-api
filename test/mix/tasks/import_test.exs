@@ -17,7 +17,8 @@ defmodule Mix.Tasks.ImportTest do
     assert i2.name == "stony mountain"
     assert i2.rate == ~M[35]
 
-    [req1, req2, req3] = Repo.all(Request)
+    [req1, reqCombinedWith2, req2, req3] = Ecto.Query.order_by(Request, :inserted_at)
+    |> Repo.all
     |> Repo.preload(:report)
     |> Repo.preload(:driver)
     |> Repo.preload(:car_owner)
@@ -34,6 +35,8 @@ defmodule Mix.Tasks.ImportTest do
     assert req1.driver.name == "Lucy Parsons"
     assert req1.car_owner.name == "Oliver Gathing"
 
+    assert reqCombinedWith2.combined_with_request_id == req2.id
+
     assert req2.address == "114 Spence"
     assert req2.institution_id == i2.id
     assert Ecto.Time.to_erl(req2.start) == {8, 15, 0}
@@ -47,7 +50,7 @@ defmodule Mix.Tasks.ImportTest do
     refute req3.driver
     refute req3.car_owner
 
-    [rep1 | _] = Repo.all(Report)
+    [rep1, rep2] = Repo.all(Report)
 
     assert rep1.distance == 75
     assert rep1.rate == ~M[25]
@@ -55,6 +58,8 @@ defmodule Mix.Tasks.ImportTest do
     assert rep1.notes == "These R the Notes"
 
     assert req1.report.id == rep1.id
+
+    assert req2.report.id == rep2.id
 
     [p1, p2, p3] = Repo.all(Person)
     [rei1, rei2, rei3] = Repo.all(Reimbursement)
