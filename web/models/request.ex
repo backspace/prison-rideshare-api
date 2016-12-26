@@ -12,6 +12,8 @@ defmodule PrisonRideshare.Request do
     field :passengers, :integer, default: 1
     field :notes, :string
 
+    belongs_to :request, PrisonRideshare.Request, foreign_key: :combined_with_request_id
+
     belongs_to :institution, PrisonRideshare.Institution
     has_one :report, PrisonRideshare.Report
 
@@ -26,7 +28,7 @@ defmodule PrisonRideshare.Request do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:date, :start, :end, :name, :address, :contact, :passengers, :notes, :institution_id, :driver_id, :car_owner_id])
+    |> cast(params, [:date, :start, :end, :name, :address, :contact, :passengers, :notes, :combined_with_request_id, :institution_id, :driver_id, :car_owner_id])
     |> validate_required([:date, :start, :end, :name, :address, :contact, :passengers])
   end
 
