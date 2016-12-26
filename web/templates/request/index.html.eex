@@ -1,5 +1,7 @@
 <h2>Listing requests</h2>
 
+<%= link "New request", to: request_path(@conn, :new) %>
+
 <table class="table requests">
   <thead>
     <tr>
@@ -46,5 +48,3 @@
 <% end %>
   </tbody>
 </table>
-
-<%= link "New request", to: request_path(@conn, :new) %>
