@@ -15,7 +15,7 @@
   <tbody>
 <%= for report <- @reports do %>
     <tr>
-      <td><%= report.request_id %></td>
+      <td><%= link "Request", to: request_path(@conn, :show, report.request_id) %></td>
       <td class="distance"><%= report.distance %></td>
       <td class="rate"><%= report.rate %></td>
       <td class="food"><%= report.food %></td>
