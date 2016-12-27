@@ -29,7 +29,7 @@ defmodule PrisonRideshare.RequestController do
         |> put_flash(:info, "Request created successfully.")
         |> redirect(to: request_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", institutions: institutions, changeset: changeset)
+        render(conn, "new.html", institutions: institutions, people: people, changeset: changeset)
     end
   end
 
@@ -62,7 +62,7 @@ defmodule PrisonRideshare.RequestController do
         |> put_flash(:info, "Request updated successfully.")
         |> redirect(to: request_path(conn, :show, request))
       {:error, changeset} ->
-        render(conn, "edit.html", request: request, institutions: institutions, changeset: changeset)
+        render(conn, "edit.html", request: request, institutions: institutions, people: people, changeset: changeset)
     end
   end
 
