@@ -147,7 +147,7 @@ defmodule Mix.Tasks.Import do
           false -> String.to_integer(amount) * 100
         end
 
-        r = Reimbursement.changeset(%Reimbursement{}, %{
+        Reimbursement.changeset(%Reimbursement{}, %{
           amount: parsed_amount,
           person_id: person.id
         })
