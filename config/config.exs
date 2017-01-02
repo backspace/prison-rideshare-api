@@ -22,22 +22,6 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-# %% Coherence Configuration %%   Don't remove this line
-config :coherence,
-  user_schema: PrisonRideshare.User,
-  repo: PrisonRideshare.Repo,
-  module: PrisonRideshare,
-  logged_out_url: "/",
-  email_from_name: "Name to come",
-  email_from_email: "b@chromatin.ca",
-  opts: [:invitable, :confirmable, :authenticatable, :recoverable, :lockable, :trackable, :unlockable_with_token, :registerable, :rememberable],
-  rememberable_cookie_expire_hours: 365*24
-
-config :coherence, PrisonRideshare.Coherence.Mailer,
-  adapter: Swoosh.Adapters.Mailgun,
-  domain: "mg.chromatin.ca"
-# %% End Coherence Configuration %%
-
 config :money, default_currency: :CAD, symbol: false
 
 # Import environment specific config. This must remain at the bottom

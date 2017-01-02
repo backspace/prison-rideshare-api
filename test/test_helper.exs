@@ -13,5 +13,4 @@ defmodule Forge do
 
   register :person, %PrisonRideshare.Person{}
   register :reimbursement, %PrisonRideshare.Reimbursement{}
-  register :user, %PrisonRideshare.User{}
 end

@@ -1,14 +1,9 @@
 defmodule PrisonRideshare.ReimbursementControllerTest do
   use PrisonRideshare.ConnCase
 
-  alias PrisonRideshare.{Reimbursement, User}
+  alias PrisonRideshare.Reimbursement
   @valid_attrs %{amount: 42}
   @invalid_attrs %{}
-
-  setup %{conn: conn} do
-    user = %User{name: "test", email: "test@example.com", id: 1, admin: true}
-    {:ok, conn: assign(conn, :current_user, user), user: user}
-  end
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, reimbursement_path(conn, :index)

@@ -1,14 +1,9 @@
 defmodule PrisonRideshare.RideControllerTest do
   use PrisonRideshare.ConnCase
 
-  alias PrisonRideshare.{Ride, User}
+  alias PrisonRideshare.Ride
   @valid_attrs %{name: "some content", address: "some content", contact: "some content", date: %{day: 17, month: 4, year: 2010}, end: %{hour: 14, min: 0, sec: 0}, request_notes: "some content", passengers: 42, start: %{hour: 14, min: 0, sec: 0}}
   @invalid_attrs %{}
-
-  setup %{conn: conn} do
-    user = %User{name: "test", email: "test@example.com", id: 1, admin: true}
-    {:ok, conn: assign(conn, :current_user, user), user: user}
-  end
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, ride_path(conn, :index)

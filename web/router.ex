@@ -1,6 +1,5 @@
 defmodule PrisonRideshare.Router do
   use PrisonRideshare.Web, :router
-  use Coherence.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -8,7 +7,6 @@ defmodule PrisonRideshare.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug Coherence.Authentication.Session
   end
 
   pipeline :protected do
@@ -17,7 +15,6 @@ defmodule PrisonRideshare.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug Coherence.Authentication.Session, protected: true
   end
 
   pipeline :admin do
@@ -26,8 +23,6 @@ defmodule PrisonRideshare.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug Coherence.Authentication.Session, protected: true
-    plug PrisonRideshare.Plugs.Admin
   end
 
   pipeline :api do
@@ -36,12 +31,10 @@ defmodule PrisonRideshare.Router do
 
   scope "/" do
     pipe_through :browser
-    coherence_routes
   end
 
   scope "/" do
     pipe_through :protected
-    coherence_routes :protected
   end
 
   scope "/", PrisonRideshare do
