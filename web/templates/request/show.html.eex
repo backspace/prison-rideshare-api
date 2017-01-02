@@ -34,7 +34,7 @@
 
   <li>
     <strong>Notes:</strong>
-    <%= @request.notes %>
+    <%= @request.request_notes %>
   </li>
 
   <li>
@@ -45,11 +45,6 @@
   <li>
     <strong>Car owner:</strong>
     <%= if @request.car_owner do %><%= link @request.car_owner.name, to: person_path(@conn, :show, @request.car_owner) %><% end %>
-  </li>
-
-  <li>
-    <strong>Report:</strong>
-    <%= if @request.report do %><%= link @request.report.id, to: report_path(@conn, :show, @request.report) %><% end %>
   </li>
 
   <li>

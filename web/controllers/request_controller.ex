@@ -7,7 +7,6 @@ defmodule PrisonRideshare.RequestController do
     requests = Request.sorted(Request)
     |> Repo.all
     |> Repo.preload(:institution)
-    |> Repo.preload(:report)
     |> Repo.preload(:driver)
     |> Repo.preload(:car_owner)
     render(conn, "index.html", requests: requests)
@@ -36,7 +35,6 @@ defmodule PrisonRideshare.RequestController do
   def show(conn, %{"id" => id}) do
     request = Repo.get!(Request, id)
     |> Repo.preload(:institution)
-    |> Repo.preload(:report)
     |> Repo.preload(:driver)
     |> Repo.preload(:car_owner)
     |> Repo.preload(:combined_with)

@@ -10,7 +10,12 @@ defmodule PrisonRideshare.Repo.Migrations.CreateRequest do
       add :address, :string
       add :contact, :string
       add :passengers, :integer
-      add :notes, :string
+      add :request_notes, :string
+
+      add :rate, :integer
+      add :distance, :float
+      add :food, :integer
+      add :report_notes, :string
 
       timestamps()
     end

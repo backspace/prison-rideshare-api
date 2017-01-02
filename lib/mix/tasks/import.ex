@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Import do
   use Mix.Task
 
-  alias PrisonRideshare.{Institution, Person, Reimbursement, Repo, Report, Request}
+  alias PrisonRideshare.{Institution, Person, Reimbursement, Repo, Request}
 
   @shortdoc "Imports CSVs"
 
@@ -68,7 +68,7 @@ defmodule Mix.Tasks.Import do
         |> Map.put(:name, name)
         |> Map.put(:contact, contact)
         |> Map.put(:passengers, passengers)
-        |> Map.put(:notes, notes)
+        |> Map.put(:request_notes, notes)
         |> Map.put(:institution_id, institution_model.id)
 
         request_attrs = maybe_put_id(request_attrs, :driver_id, driver_model)
@@ -113,14 +113,14 @@ defmodule Mix.Tasks.Import do
 
         request = find_request_from_ride_string_and_names(uncombined_requests, ride_string, driver, car_owner)
 
-        Report.changeset(%Report{}, %{
+        Request.changeset(request, %{
           distance: distance,
           rate: round(String.to_float(rate) * 100),
           food: (if food == "", do: 0, else: food),
-          notes: notes,
+          report_notes: notes,
           request_id: request.id
         })
-        |> Repo.insert!
+        |> Repo.update!
 
         acc
       else
@@ -209,7 +209,7 @@ defmodule Mix.Tasks.Import do
       |> Repo.preload(:driver)
       |> Repo.preload(:car_owner)
 
-      formatted_request = PrisonRideshare.ReportView.format_request_without_institution(request)
+      formatted_request = format_request_without_institution(request)
 
       # This is a mess but the original data has integrity problems.
       case {request.driver, request.car_owner} do
@@ -234,5 +234,33 @@ defmodule Mix.Tasks.Import do
       Request.changeset(combined, %{combined_with_request_id: match.id})
       |> Repo.update
     end)
+  end
+
+  # FIXME these are taken from ReportView which is now dead
+  def format_request_without_institution(request) do
+    # TODO does this appending of the date indicate a data model problem?
+    time = Timex.format({Ecto.Date.to_erl(request.date), Ecto.Time.to_erl(request.start)}, "{h12}:{m} {AM}")
+    |> valid_date!
+
+    date = Timex.format(Ecto.Date.to_erl(request.date), "{WDshort}, {Mshort} {D}")
+    |> valid_date!
+
+    "#{time} on #{date}"
+  end
+
+  def format_request(request) do
+    "#{format_request_without_institution(request)} to #{institution_name(request.institution)}"
+  end
+
+  def institution_name(nil) do
+    "ø"
+  end
+
+  def institution_name(institution) do
+    institution.name
+  end
+
+  defp valid_date!({:ok, date}) do
+    date
   end
 end
