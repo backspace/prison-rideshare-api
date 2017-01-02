@@ -1,6 +1,0 @@
-<h2>Edit reimbursement</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: reimbursement_path(@conn, :update, @reimbursement) %>
-
-<%= link "Back", to: reimbursement_path(@conn, :index) %>

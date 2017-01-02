@@ -13,9 +13,16 @@ config :prison_rideshare,
 config :prison_rideshare, PrisonRideshare.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "Cs7GQrRAb0eRHwFHrArQ14GQFFHTitFITDF8igX3AHoewb8zo2z0/KCteAdK1EIe",
-  render_errors: [view: PrisonRideshare.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: PrisonRideshare.ErrorView, accepts: ~w(json-api)],
   pubsub: [name: PrisonRideshare.PubSub,
            adapter: Phoenix.PubSub.PG2]
+
+config :phoenix, :format_encoders,
+  "json-api": Poison
+
+config :mime, :types, %{
+  "application/vnd.api+json" => ["json-api"]
+}
 
 # Configures Elixir's Logger
 config :logger, :console,

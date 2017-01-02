@@ -26,7 +26,7 @@ defmodule PrisonRideshare.Router do
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug :accepts, ["json-api"]
   end
 
   scope "/" do
@@ -50,8 +50,13 @@ defmodule PrisonRideshare.Router do
 
     resources "/institutions", InstitutionController
     resources "/people", PersonController
-    resources "/reimbursements", ReimbursementController
     resources "/rides", RideController
+  end
+
+  scope "/", PrisonRideshare do
+    pipe_through :api
+
+    resources "/reimbursements", ReimbursementController, except: [:new, :edit]
   end
 
   # Other scopes may use custom stacks.

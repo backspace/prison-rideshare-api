@@ -46,6 +46,7 @@ defmodule PrisonRideshare.Mixfile do
      {:cowboy, "~> 1.0"},
 
      {:csv, "~> 1.4.2"},
+     {:ja_serializer, "~> 0.11.2"},
      {:money, "~> 1.2.0"},
      {:timex, "~> 3.0"},
 

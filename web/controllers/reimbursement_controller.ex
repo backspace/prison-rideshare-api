@@ -2,52 +2,47 @@ defmodule PrisonRideshare.ReimbursementController do
   use PrisonRideshare.Web, :controller
 
   alias PrisonRideshare.Reimbursement
+  alias JaSerializer.Params
+
+  plug :scrub_params, "data" when action in [:create, :update]
 
   def index(conn, _params) do
     reimbursements = Repo.all(Reimbursement)
-    render(conn, "index.html", reimbursements: reimbursements)
+    render(conn, "index.json-api", data: reimbursements)
   end
 
-  def new(conn, _params) do
-    changeset = Reimbursement.changeset(%Reimbursement{})
-    render(conn, "new.html", changeset: changeset)
-  end
-
-  def create(conn, %{"reimbursement" => reimbursement_params}) do
-    changeset = Reimbursement.changeset(%Reimbursement{}, reimbursement_params)
+  def create(conn, %{"data" => data = %{"type" => "reimbursement", "attributes" => _reimbursement_params}}) do
+    changeset = Reimbursement.changeset(%Reimbursement{}, Params.to_attributes(data))
 
     case Repo.insert(changeset) do
-      {:ok, _reimbursement} ->
+      {:ok, reimbursement} ->
         conn
-        |> put_flash(:info, "Reimbursement created successfully.")
-        |> redirect(to: reimbursement_path(conn, :index))
+        |> put_status(:created)
+        |> put_resp_header("location", reimbursement_path(conn, :show, reimbursement))
+        |> render("show.json-api", data: reimbursement)
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(:errors, data: changeset)
     end
   end
 
   def show(conn, %{"id" => id}) do
     reimbursement = Repo.get!(Reimbursement, id)
-    render(conn, "show.html", reimbursement: reimbursement)
+    render(conn, "show.json-api", data: reimbursement)
   end
 
-  def edit(conn, %{"id" => id}) do
+  def update(conn, %{"id" => id, "data" => data = %{"type" => "reimbursement", "attributes" => _reimbursement_params}}) do
     reimbursement = Repo.get!(Reimbursement, id)
-    changeset = Reimbursement.changeset(reimbursement)
-    render(conn, "edit.html", reimbursement: reimbursement, changeset: changeset)
-  end
-
-  def update(conn, %{"id" => id, "reimbursement" => reimbursement_params}) do
-    reimbursement = Repo.get!(Reimbursement, id)
-    changeset = Reimbursement.changeset(reimbursement, reimbursement_params)
+    changeset = Reimbursement.changeset(reimbursement, Params.to_attributes(data))
 
     case Repo.update(changeset) do
       {:ok, reimbursement} ->
-        conn
-        |> put_flash(:info, "Reimbursement updated successfully.")
-        |> redirect(to: reimbursement_path(conn, :show, reimbursement))
+        render(conn, "show.json-api", data: reimbursement)
       {:error, changeset} ->
-        render(conn, "edit.html", reimbursement: reimbursement, changeset: changeset)
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(:errors, data: changeset)
     end
   end
 
@@ -58,8 +53,7 @@ defmodule PrisonRideshare.ReimbursementController do
     # it to always work (and if it does not, it will raise).
     Repo.delete!(reimbursement)
 
-    conn
-    |> put_flash(:info, "Reimbursement deleted successfully.")
-    |> redirect(to: reimbursement_path(conn, :index))
+    send_resp(conn, :no_content, "")
   end
+
 end

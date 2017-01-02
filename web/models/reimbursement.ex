@@ -13,6 +13,8 @@ defmodule PrisonRideshare.Reimbursement do
   """
   def changeset(struct, params \\ %{}) do
     struct
+    # FIXME the JaSerializer generator didn’t include person_id here, probably wrong but
+    # currently relied upon in import code.
     |> cast(params, [:amount, :person_id])
     |> validate_required([:amount])
   end
