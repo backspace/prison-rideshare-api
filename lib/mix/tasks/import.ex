@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Import do
   use Mix.Task
 
-  alias PrisonRideshare.{Institution, Person, Reimbursement, Repo, Request}
+  alias PrisonRideshare.{Institution, Person, Reimbursement, Repo, Ride}
 
   @shortdoc "Imports CSVs"
 
@@ -74,7 +74,7 @@ defmodule Mix.Tasks.Import do
         request_attrs = maybe_put_id(request_attrs, :driver_id, driver_model)
         request_attrs = maybe_put_id(request_attrs, :car_owner_id, car_owner_model)
 
-        request_model = Request.changeset(%Request{}, request_attrs)
+        request_model = Ride.changeset(%Ride{}, request_attrs)
         |> Repo.insert!
 
         request_row_number_to_model = Map.put(request_row_number_to_model, i + 1, request_model)
@@ -113,7 +113,7 @@ defmodule Mix.Tasks.Import do
 
         request = find_request_from_ride_string_and_names(uncombined_requests, ride_string, driver, car_owner)
 
-        Request.changeset(request, %{
+        Ride.changeset(request, %{
           distance: distance,
           rate: round(String.to_float(rate) * 100),
           food: (if food == "", do: 0, else: food),
@@ -204,7 +204,7 @@ defmodule Mix.Tasks.Import do
     [_, time_and_date_string] = Regex.run(~r/(\d\d:\d\d .M on ...\, ... \d+) to .* \[.*\]/, ride_string)
 
     Enum.find(requests, fn request ->
-      request = Repo.get!(Request, request.id)
+      request = Repo.get!(Ride, request.id)
       |> Repo.preload(:institution)
       |> Repo.preload(:driver)
       |> Repo.preload(:car_owner)
@@ -231,7 +231,7 @@ defmodule Mix.Tasks.Import do
         request.date == combined.date
       end)
 
-      Request.changeset(combined, %{combined_with_request_id: match.id})
+      Ride.changeset(combined, %{combined_with_ride_id: match.id})
       |> Repo.update
     end)
   end

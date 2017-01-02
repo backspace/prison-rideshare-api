@@ -1,0 +1,64 @@
+<h2>Show ride</h2>
+
+<ul>
+
+  <li>
+    <strong>Date:</strong>
+    <%= @ride.date %>
+  </li>
+
+  <li>
+    <strong>Start:</strong>
+    <%= @ride.start %>
+  </li>
+
+  <li>
+    <strong>End:</strong>
+    <%= @ride.end %>
+  </li>
+
+  <li>
+    <strong>Address:</strong>
+    <%= @ride.address %>
+  </li>
+
+  <li>
+    <strong>Contact:</strong>
+    <%= @ride.contact %>
+  </li>
+
+  <li>
+    <strong>Passengers:</strong>
+    <%= @ride.passengers %>
+  </li>
+
+  <li>
+    <strong>Notes:</strong>
+    <%= @ride.request_notes %>
+  </li>
+
+  <li>
+    <strong>Driver:</strong>
+    <%= if @ride.driver do %><%= link @ride.driver.name, to: person_path(@conn, :show, @ride.driver) %><% end %>
+  </li>
+
+  <li>
+    <strong>Car owner:</strong>
+    <%= if @ride.car_owner do %><%= link @ride.car_owner.name, to: person_path(@conn, :show, @ride.car_owner) %><% end %>
+  </li>
+
+  <li>
+    <strong>Institution:</strong>
+    <%= if @ride.institution do %><%= link @ride.institution.name, to: institution_path(@conn, :show, @ride.institution) %><% end %>
+  </li>
+
+
+  <li>
+    <strong>Combined into:</strong>
+    <%= if @ride.combined_with do %><%= link @ride.combined_with.id, to: ride_path(@conn, :show, @ride.combined_with) %><% end %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: ride_path(@conn, :edit, @ride) %>
+<%= link "Back", to: ride_path(@conn, :index) %>

@@ -1,8 +1,8 @@
-defmodule PrisonRideshare.Repo.Migrations.CreateRequest do
+defmodule PrisonRideshare.Repo.Migrations.CreateRide do
   use Ecto.Migration
 
   def change do
-    create table(:requests, primary_key: false) do
+    create table(:rides, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :date, :date
       add :start, :time

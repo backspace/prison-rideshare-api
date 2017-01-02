@@ -58,7 +58,7 @@ defmodule PrisonRideshare.Router do
     resources "/institutions", InstitutionController
     resources "/people", PersonController
     resources "/reimbursements", ReimbursementController
-    resources "/requests", RequestController
+    resources "/rides", RideController
   end
 
   # Other scopes may use custom stacks.

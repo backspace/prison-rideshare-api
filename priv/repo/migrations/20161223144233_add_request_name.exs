@@ -1,8 +1,8 @@
-defmodule PrisonRideshare.Repo.Migrations.AddRequestName do
+defmodule PrisonRideshare.Repo.Migrations.AddRideName do
   use Ecto.Migration
 
   def change do
-    alter table(:requests) do
+    alter table(:rides) do
       add :name, :string
     end
   end

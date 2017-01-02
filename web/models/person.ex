@@ -3,8 +3,8 @@ defmodule PrisonRideshare.Person do
 
   schema "people" do
     field :name, :string
-    has_many :car_uses, PrisonRideshare.Request, foreign_key: :car_owner_id
-    has_many :drivings, PrisonRideshare.Request, foreign_key: :driver_id
+    has_many :car_uses, PrisonRideshare.Ride, foreign_key: :car_owner_id
+    has_many :drivings, PrisonRideshare.Ride, foreign_key: :driver_id
 
     has_many :reimbursements, PrisonRideshare.Reimbursement
 

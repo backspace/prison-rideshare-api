@@ -1,8 +1,8 @@
-defmodule PrisonRideshare.Request do
+defmodule PrisonRideshare.Ride do
   use PrisonRideshare.Web, :model
   import Ecto.Query
 
-  schema "requests" do
+  schema "rides" do
     field :date, Ecto.Date
     field :start, Ecto.Time
     field :end, Ecto.Time
@@ -17,7 +17,7 @@ defmodule PrisonRideshare.Request do
     field :food, Money.Ecto.Type
     field :report_notes, :string
 
-    belongs_to :combined_with, PrisonRideshare.Request, foreign_key: :combined_with_request_id
+    belongs_to :combined_with, PrisonRideshare.Ride, foreign_key: :combined_with_ride_id
 
     belongs_to :institution, PrisonRideshare.Institution
 
@@ -32,7 +32,7 @@ defmodule PrisonRideshare.Request do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:date, :start, :end, :name, :address, :contact, :passengers, :request_notes, :combined_with_request_id, :institution_id, :driver_id, :car_owner_id, :distance, :rate, :food, :report_notes])
+    |> cast(params, [:date, :start, :end, :name, :address, :contact, :passengers, :request_notes, :combined_with_ride_id, :institution_id, :driver_id, :car_owner_id, :distance, :rate, :food, :report_notes])
     |> validate_required([:date, :start, :end, :name, :address, :contact, :passengers])
   end
 

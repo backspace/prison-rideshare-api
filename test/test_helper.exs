@@ -8,7 +8,7 @@ defmodule Forge do
   @save_one_function &Blacksmith.Config.save/1
   @save_all_function &Blacksmith.Config.save_all/1
 
-  register :request, %PrisonRideshare.Request{start: Ecto.Time.from_erl({10,0,0}), end: Ecto.Time.from_erl({11,30,0})}
+  register :ride, %PrisonRideshare.Ride{start: Ecto.Time.from_erl({10,0,0}), end: Ecto.Time.from_erl({11,30,0})}
   register :institution, %PrisonRideshare.Institution{}
 
   register :person, %PrisonRideshare.Person{}

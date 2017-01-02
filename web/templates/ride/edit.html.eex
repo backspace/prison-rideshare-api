@@ -1,8 +1,8 @@
-<h2>New request</h2>
+<h2>Edit ride</h2>
 
 <%= render "form.html", changeset: @changeset,
                         institutions: @institutions,
                         people: @people,
-                        action: request_path(@conn, :create) %>
+                        action: ride_path(@conn, :update, @ride) %>
 
-<%= link "Back", to: request_path(@conn, :index) %>
+<%= link "Back", to: ride_path(@conn, :index) %>

@@ -2,7 +2,7 @@ defmodule Mix.Tasks.ImportTest do
   use ExUnit.Case
   use PrisonRideshare.ConnCase
 
-  alias PrisonRideshare.{Institution, Person, Reimbursement, Repo, Request}
+  alias PrisonRideshare.{Institution, Person, Reimbursement, Repo, Ride}
 
   import Money.Sigils
 
@@ -17,7 +17,7 @@ defmodule Mix.Tasks.ImportTest do
     assert i2.name == "stony mountain"
     assert i2.rate == ~M[35]
 
-    [req1, reqCombinedWith2, req2, req3] = Ecto.Query.order_by(Request, :inserted_at)
+    [req1, reqCombinedWith2, req2, req3] = Ecto.Query.order_by(Ride, :inserted_at)
     |> Repo.all
     |> Repo.preload(:driver)
     |> Repo.preload(:car_owner)
@@ -39,7 +39,7 @@ defmodule Mix.Tasks.ImportTest do
     assert req1.food == ~M[1200]
     assert req1.report_notes == "These R the Notes"
 
-    assert reqCombinedWith2.combined_with_request_id == req2.id
+    assert reqCombinedWith2.combined_with_ride_id == req2.id
 
     assert req2.address == "114 Spence"
     assert req2.institution_id == i2.id

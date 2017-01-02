@@ -1,11 +1,11 @@
-defmodule PrisonRideshare.Repo.Migrations.AddRequestCombination do
+defmodule PrisonRideshare.Repo.Migrations.AddRideCombination do
   use Ecto.Migration
 
   def change do
-    alter table(:requests) do
-      add :combined_with_request_id, references(:requests, type: :binary_id)
+    alter table(:rides) do
+      add :combined_with_ride_id, references(:rides, type: :binary_id)
     end
 
-    create index(:requests, [:combined_with_request_id])
+    create index(:rides, [:combined_with_ride_id])
   end
 end
