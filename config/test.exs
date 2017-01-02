@@ -18,8 +18,6 @@ config :prison_rideshare, PrisonRideshare.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
-config :hound, driver: "phantomjs"
-
 defmodule Blacksmith.Config do
   def save(map) do
     PrisonRideshare.Repo.insert(map)

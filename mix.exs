@@ -50,9 +50,7 @@ defmodule PrisonRideshare.Mixfile do
      {:money, "~> 1.2.0"},
      {:timex, "~> 3.0"},
 
-     {:blacksmith, "~> 0.1"},
-     {:hound, "~> 1.0"},
-     {:page_object, github: "backspace/page_object", branch: "fillable-with-clearing"}]
+     {:blacksmith, "~> 0.1"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
