@@ -14,7 +14,7 @@ defmodule PrisonRideshare.PersonControllerTest do
 
     {:ok, conn: conn}
   end
-  
+
   defp relationships do
     %{}
   end
@@ -35,7 +35,7 @@ defmodule PrisonRideshare.PersonControllerTest do
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
     assert_error_sent 404, fn ->
-      get conn, person_path(conn, :show, -1)
+      get conn, person_path(conn, :show, "00000000-0000-0000-0000-000000000000")
     end
   end
 
