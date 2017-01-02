@@ -7,9 +7,10 @@ defmodule PrisonRideshare.Repo.Migrations.CreateRide do
       add :date, :date
       add :start, :time
       add :end, :time
+      add :name, :string
       add :address, :string
       add :contact, :string
-      add :passengers, :integer
+      add :passengers, :integer, default: 1
       add :request_notes, :string
 
       add :rate, :integer
@@ -17,8 +18,12 @@ defmodule PrisonRideshare.Repo.Migrations.CreateRide do
       add :food, :integer
       add :report_notes, :string
 
+      add :combined_with_ride_id, references(:rides, type: :binary_id)
+
       timestamps()
     end
+
+    create index(:rides, [:combined_with_ride_id])
 
   end
 end

@@ -5,7 +5,7 @@ defmodule PrisonRideshare.Repo.Migrations.CreateInstitution do
     create table(:institutions, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :name, :string
-      add :rate, :float
+      add :rate, :integer
 
       timestamps()
     end
