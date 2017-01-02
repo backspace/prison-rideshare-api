@@ -1,6 +1,0 @@
-<h2>Edit institution</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: institution_path(@conn, :update, @institution) %>
-
-<%= link "Back", to: institution_path(@conn, :index) %>

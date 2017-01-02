@@ -1,8 +1,0 @@
-<h2>Edit ride</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        institutions: @institutions,
-                        people: @people,
-                        action: ride_path(@conn, :update, @ride) %>
-
-<%= link "Back", to: ride_path(@conn, :index) %>

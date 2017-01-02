@@ -38,22 +38,6 @@ defmodule PrisonRideshare.Router do
   end
 
   scope "/", PrisonRideshare do
-    pipe_through :browser # Use the default browser stack
-
-    get "/", PageController, :index
-
-    resources "/reports", ReportController
-  end
-
-  scope "/", PrisonRideshare do
-    pipe_through :admin
-
-    resources "/institutions", InstitutionController
-    resources "/people", PersonController
-    resources "/rides", RideController
-  end
-
-  scope "/", PrisonRideshare do
     pipe_through :api
 
     resources "/reimbursements", ReimbursementController, except: [:new, :edit]
