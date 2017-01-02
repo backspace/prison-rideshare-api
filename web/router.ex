@@ -40,6 +40,7 @@ defmodule PrisonRideshare.Router do
   scope "/", PrisonRideshare do
     pipe_through :api
 
+    resources "/institutions", InstitutionController, except: [:new, :edit]
     resources "/people", PersonController, except: [:new, :edit]
     resources "/reimbursements", ReimbursementController, except: [:new, :edit]
   end
