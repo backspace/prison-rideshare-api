@@ -34,7 +34,7 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    reimbursement = Repo.insert! %Reimbursement{}
+    reimbursement = Repo.insert! %Reimbursement{amount: 1919}
     conn = get conn, reimbursement_path(conn, :show, reimbursement)
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{reimbursement.id}"

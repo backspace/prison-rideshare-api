@@ -9,6 +9,10 @@ defmodule PrisonRideshare.ReimbursementView do
     type: "person"
 
   def amount(reimbursement, _conn) do
-    reimbursement.amount.amount
+    amount_or_zero(reimbursement.amount)
   end
+
+  # FIXME extract to shared?
+  defp amount_or_zero(nil), do: 0
+  defp amount_or_zero(%{amount: amount}), do: amount
 end

@@ -25,7 +25,7 @@ defmodule PrisonRideshare.InstitutionControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    institution = Repo.insert! %Institution{}
+    institution = Repo.insert! %Institution{rate: 33}
     conn = get conn, institution_path(conn, :show, institution)
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{institution.id}"

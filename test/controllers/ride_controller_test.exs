@@ -55,7 +55,7 @@ defmodule PrisonRideshare.RideControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    ride = Repo.insert! %Ride{}
+    ride = Repo.insert! %Ride{rate: 35}
     conn = get conn, ride_path(conn, :show, ride)
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{ride.id}"
