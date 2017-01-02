@@ -106,7 +106,7 @@ defmodule Mix.Tasks.Import do
     |> Stream.with_index
     |> Enum.reduce(%{}, fn({row, i}, acc) ->
       if i > 0 do
-        [_, ride_string, distance, _, food, notes, rate, _, _, _, driver, car_owner | _] = row
+        [_, ride_string, distance, _, food, notes, rate, car_expenses, _, _, driver, car_owner | _] = row
 
         Mix.shell.info "Importing this report:"
         Mix.shell.info row
@@ -117,6 +117,7 @@ defmodule Mix.Tasks.Import do
           distance: distance,
           rate: round(String.to_float(rate) * 100),
           food_expenses: (if food == "", do: 0, else: food),
+          car_expenses: (if car_expenses == "", do: 0, else: car_expenses),
           report_notes: notes,
           request_id: request.id
         })
