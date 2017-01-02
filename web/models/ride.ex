@@ -3,9 +3,8 @@ defmodule PrisonRideshare.Ride do
   import Ecto.Query
 
   schema "rides" do
-    field :date, Ecto.Date
-    field :start, Ecto.Time
-    field :end, Ecto.Time
+    field :start, Ecto.DateTime
+    field :end, Ecto.DateTime
     field :name, :string
     field :address, :string
     field :contact, :string
@@ -33,12 +32,12 @@ defmodule PrisonRideshare.Ride do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:date, :start, :end, :name, :address, :contact, :passengers, :request_notes, :combined_with_ride_id, :institution_id, :driver_id, :car_owner_id, :distance, :rate, :food_expenses, :car_expenses, :report_notes])
-    |> validate_required([:date, :start, :end, :name, :address, :contact, :passengers])
+    |> cast(params, [:start, :end, :name, :address, :contact, :passengers, :request_notes, :combined_with_ride_id, :institution_id, :driver_id, :car_owner_id, :distance, :rate, :food_expenses, :car_expenses, :report_notes])
+    |> validate_required([:start, :end, :name, :address, :contact, :passengers])
   end
 
   def sorted(query) do
     from r in query,
-    order_by: [r.date]
+    order_by: [r.start]
   end
 end

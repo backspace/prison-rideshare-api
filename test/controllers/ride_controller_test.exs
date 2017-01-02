@@ -4,7 +4,7 @@ defmodule PrisonRideshare.RideControllerTest do
   alias PrisonRideshare.Ride
   alias PrisonRideshare.Repo
 
-  @valid_attrs %{address: "some content", car_expenses: 42, contact: "some content", date: %{day: 17, month: 4, year: 2010}, distance: "120.5", end: %{hour: 14, min: 0, sec: 0}, food_expenses: 42, name: "some content", passengers: 42, rate: 42, report_notes: "some content", request_notes: "some content", start: %{hour: 14, min: 0, sec: 0}}
+  @valid_attrs %{address: "some content", car_expenses: 42, contact: "some content", distance: "120.5", end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}, food_expenses: 42, name: "some content", passengers: 42, rate: 42, report_notes: "some content", request_notes: "some content", start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}}
   @invalid_attrs %{}
 
   setup do
@@ -60,7 +60,6 @@ defmodule PrisonRideshare.RideControllerTest do
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{ride.id}"
     assert data["type"] == "ride"
-    assert data["attributes"]["date"] == ride.date
     assert data["attributes"]["start"] == ride.start
     assert data["attributes"]["end"] == ride.end
     assert data["attributes"]["name"] == ride.name

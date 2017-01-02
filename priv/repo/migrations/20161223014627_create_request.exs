@@ -4,9 +4,8 @@ defmodule PrisonRideshare.Repo.Migrations.CreateRide do
   def change do
     create table(:rides, primary_key: false) do
       add :id, :binary_id, primary_key: true
-      add :date, :date
-      add :start, :time
-      add :end, :time
+      add :start, :datetime
+      add :end, :datetime
       add :name, :string
       add :address, :string
       add :contact, :string

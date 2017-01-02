@@ -62,9 +62,8 @@ defmodule Mix.Tasks.Import do
 
         request_attrs = %{}
         |> Map.put(:address, (if address != "", do: address, else: "MISSING"))
-        |> Map.put(:date, Timex.parse!(date, "{M}/{D}/{YYYY}"))
-        |> Map.put(:start, parse_time(start_time))
-        |> Map.put(:end, parse_time(end_time, start_time))
+        |> Map.put(:start, parse_date_and_time(date, start_time))
+        |> Map.put(:end, parse_date_and_time(date, end_time, start_time))
         |> Map.put(:name, name)
         |> Map.put(:contact, contact)
         |> Map.put(:passengers, passengers)
@@ -157,16 +156,15 @@ defmodule Mix.Tasks.Import do
     end)
   end
 
-  defp parse_time(time, fallback \\ nil)
+  defp parse_date_and_time(date, time, fallback \\ nil)
 
-  defp parse_time("", fallback) do
-    parse_time(fallback)
-  end
+  defp parse_date_and_time(date, "", fallback), do: parse_date_and_time(date, fallback)
 
-  defp parse_time(time, _) do
-    case Timex.parse(time, "{h12}:{m}:{s} {AM}") do
+  defp parse_date_and_time(date, time, _) do
+    full_string = "#{date} #{time}"
+    case Timex.parse(full_string, "{M}/{D}/{YYYY} {h12}:{m}:{s} {AM}") do
       {:ok, parsed} -> parsed
-      {:error, _} -> Timex.parse!(time, "{h12}:{m} {AM}")
+      {:error, _} -> Timex.parse!(full_string, "{M}/{D}/{YYYY} {h12}:{m} {AM}")
     end
   end
 
@@ -229,7 +227,7 @@ defmodule Mix.Tasks.Import do
       match = Enum.find(uncombined_requests, fn request ->
         request.driver_id == combined.driver_id &&
         request.car_owner_id == combined.car_owner_id &&
-        request.date == combined.date
+        request.start == combined.start
       end)
 
       Ride.changeset(combined, %{combined_with_ride_id: match.id})
@@ -239,14 +237,7 @@ defmodule Mix.Tasks.Import do
 
   # FIXME these are taken from ReportView which is now dead
   def format_request_without_institution(request) do
-    # TODO does this appending of the date indicate a data model problem?
-    time = Timex.format({Ecto.Date.to_erl(request.date), Ecto.Time.to_erl(request.start)}, "{h12}:{m} {AM}")
-    |> valid_date!
-
-    date = Timex.format(Ecto.Date.to_erl(request.date), "{WDshort}, {Mshort} {D}")
-    |> valid_date!
-
-    "#{time} on #{date}"
+    Timex.format!(Ecto.DateTime.to_erl(request.start), "{h12}:{m} {AM} on {WDshort}, {Mshort} {D}")
   end
 
   def format_request(request) do
@@ -259,9 +250,5 @@ defmodule Mix.Tasks.Import do
 
   def institution_name(institution) do
     institution.name
-  end
-
-  defp valid_date!({:ok, date}) do
-    date
   end
 end
