@@ -19,7 +19,7 @@ defmodule PrisonRideshare.PersonController do
       food_expenses = Enum.reduce(person.drivings, Money.new(0), fn request, sum ->
         case request.report do
           nil -> sum
-          report -> Money.add(report.food, sum)
+          report -> Money.add(report.food_expenses, sum)
         end
       end)
 

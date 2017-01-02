@@ -15,7 +15,7 @@ defmodule PrisonRideshare.Repo.Migrations.CreateRide do
 
       add :rate, :integer
       add :distance, :float
-      add :food, :integer
+      add :food_expenses, :integer
       add :report_notes, :string
 
       add :combined_with_ride_id, references(:rides, type: :binary_id)

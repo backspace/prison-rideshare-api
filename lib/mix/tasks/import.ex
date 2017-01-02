@@ -116,7 +116,7 @@ defmodule Mix.Tasks.Import do
         Ride.changeset(request, %{
           distance: distance,
           rate: round(String.to_float(rate) * 100),
-          food: (if food == "", do: 0, else: food),
+          food_expenses: (if food == "", do: 0, else: food),
           report_notes: notes,
           request_id: request.id
         })

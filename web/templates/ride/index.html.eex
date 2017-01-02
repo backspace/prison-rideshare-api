@@ -51,7 +51,7 @@
       <td class="notes"><%= ride.report.notes %></td>
       <td class="rate"><%= ride.report.rate %></td>
       <td></td>
-      <td class="food"><%= ride.report.food %></td>
+      <td class="food"><%= ride.report.food_expenses %></td>
       <td class="car"></td>
       <td></td>
     </tr>

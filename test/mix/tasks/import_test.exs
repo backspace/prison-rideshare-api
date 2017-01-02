@@ -36,7 +36,7 @@ defmodule Mix.Tasks.ImportTest do
 
     assert req1.distance == 75
     assert req1.rate == ~M[25]
-    assert req1.food == ~M[1200]
+    assert req1.food_expenses == ~M[1200]
     assert req1.report_notes == "These R the Notes"
 
     assert reqCombinedWith2.combined_with_ride_id == req2.id
