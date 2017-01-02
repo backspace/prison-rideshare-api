@@ -43,6 +43,7 @@ defmodule PrisonRideshare.Router do
     resources "/institutions", InstitutionController, except: [:new, :edit]
     resources "/people", PersonController, except: [:new, :edit]
     resources "/reimbursements", ReimbursementController, except: [:new, :edit]
+    resources "/rides", RideController, except: [:new, :edit]
   end
 
   # Other scopes may use custom stacks.
