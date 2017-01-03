@@ -17,18 +17,7 @@ defmodule PrisonRideshare.RideView do
     field: :car_owner_id,
     type: "person"
 
-  def rate(ride, _) do
-    amount_or_zero(ride.rate)
-  end
-
-  def food_expenses(ride, _) do
-    amount_or_zero(ride.food_expenses)
-  end
-
-  def car_expenses(ride, _) do
-    amount_or_zero(ride.car_expenses)
-  end
-
-  defp amount_or_zero(nil), do: 0
-  defp amount_or_zero(%{amount: amount}), do: amount
+  money_amount :rate
+  money_amount :food_expenses
+  money_amount :car_expenses
 end

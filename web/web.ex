@@ -55,6 +55,8 @@ defmodule PrisonRideshare.Web do
       import PrisonRideshare.Router.Helpers
       import PrisonRideshare.ErrorHelpers
       import PrisonRideshare.Gettext
+
+      import PrisonRideshare.MoneyHelper
     end
   end
 
