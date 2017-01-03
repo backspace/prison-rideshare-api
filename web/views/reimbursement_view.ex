@@ -5,8 +5,8 @@ defmodule PrisonRideshare.ReimbursementView do
   attributes [:amount, :inserted_at, :updated_at]
 
   has_one :person,
-    field: :person_id,
-    type: "person"
+    include: true,
+    serializer: PrisonRideshare.PersonView
 
   money_amount :amount
 end
