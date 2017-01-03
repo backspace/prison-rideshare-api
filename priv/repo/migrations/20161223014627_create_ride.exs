@@ -11,6 +11,7 @@ defmodule PrisonRideshare.Repo.Migrations.CreateRide do
       add :contact, :string
       add :passengers, :integer, default: 1
       add :request_notes, :string
+      add :enabled, :boolean, default: true
 
       add :rate, :integer
       add :distance, :float

@@ -10,6 +10,7 @@ defmodule PrisonRideshare.Ride do
     field :contact, :string
     field :passengers, :integer, default: 1
     field :request_notes, :string
+    field :enabled, :boolean
 
     field :distance, :float
     field :rate, Money.Ecto.Type
@@ -32,7 +33,7 @@ defmodule PrisonRideshare.Ride do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:start, :end, :name, :address, :contact, :passengers, :request_notes, :combined_with_ride_id, :institution_id, :driver_id, :car_owner_id, :distance, :rate, :food_expenses, :car_expenses, :report_notes])
+    |> cast(params, [:start, :end, :name, :address, :contact, :passengers, :request_notes, :enabled, :combined_with_ride_id, :institution_id, :driver_id, :car_owner_id, :distance, :rate, :food_expenses, :car_expenses, :report_notes])
     |> validate_required([:start, :end, :name, :address, :contact, :passengers])
   end
 

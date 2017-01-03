@@ -69,6 +69,7 @@ defmodule Mix.Tasks.Import do
         |> Map.put(:passengers, passengers)
         |> Map.put(:request_notes, notes)
         |> Map.put(:institution_id, institution_model.id)
+        |> Map.put(:enabled, determine_enablement(notes))
 
         request_attrs = maybe_put_id(request_attrs, :driver_id, driver_model)
         request_attrs = maybe_put_id(request_attrs, :car_owner_id, car_owner_model)
@@ -233,6 +234,11 @@ defmodule Mix.Tasks.Import do
       Ride.changeset(combined, %{combined_with_ride_id: match.id})
       |> Repo.update
     end)
+  end
+
+  # FIXME more patterns here
+  defp determine_enablement(request_notes) do
+    !String.contains?(request_notes, "cancelled")
   end
 
   # FIXME these are taken from ReportView which is now dead
