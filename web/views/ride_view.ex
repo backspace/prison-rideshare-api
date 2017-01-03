@@ -8,14 +8,14 @@ defmodule PrisonRideshare.RideView do
     field: :combined_with_ride_id,
     type: "ride"
   has_one :institution,
-    field: :institution_id,
-    type: "institution"
+    include: true,
+    serializer: PrisonRideshare.InstitutionView
   has_one :driver,
-    field: :driver_id,
-    type: "person"
+    include: true,
+    serializer: PrisonRideshare.PersonView
   has_one :car_owner,
-    field: :car_owner_id,
-    type: "person"
+    include: true,
+    serializer: PrisonRideshare.PersonView
 
   money_amount :rate
   money_amount :food_expenses

@@ -8,6 +8,7 @@ defmodule PrisonRideshare.RideController do
 
   def index(conn, _params) do
     rides = Repo.all(Ride)
+    |> preload
     render(conn, "index.json-api", data: rides)
   end
 
@@ -19,7 +20,7 @@ defmodule PrisonRideshare.RideController do
         conn
         |> put_status(:created)
         |> put_resp_header("location", ride_path(conn, :show, ride))
-        |> render("show.json-api", data: ride)
+        |> render("show.json-api", data: ride |> preload)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -29,11 +30,13 @@ defmodule PrisonRideshare.RideController do
 
   def show(conn, %{"id" => id}) do
     ride = Repo.get!(Ride, id)
+    |> preload
     render(conn, "show.json-api", data: ride)
   end
 
   def update(conn, %{"id" => id, "data" => data = %{"type" => "ride", "attributes" => _ride_params}}) do
     ride = Repo.get!(Ride, id)
+    |> preload
     changeset = Ride.changeset(ride, Params.to_attributes(data))
 
     case Repo.update(changeset) do
@@ -56,4 +59,8 @@ defmodule PrisonRideshare.RideController do
     send_resp(conn, :no_content, "")
   end
 
+  defp preload(model) do
+    model
+    |> Repo.preload([:institution, :driver, :car_owner])
+  end
 end
