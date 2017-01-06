@@ -69,7 +69,13 @@ defmodule Mix.Tasks.Import do
         |> Map.put(:passengers, passengers)
         |> Map.put(:request_notes, notes)
         |> Map.put(:institution_id, institution_model.id)
-        |> Map.put(:enabled, determine_enablement(notes))
+
+        cancellation_reason = determine_cancellation_reason(notes)
+
+        request_attrs = case cancellation_reason do
+          false -> request_attrs |> Map.put(:enabled, true)
+          reason -> request_attrs |> Map.put(:enabled, false) |> Map.put(:cancellation_reason, reason)
+        end
 
         request_attrs = maybe_put_id(request_attrs, :driver_id, driver_model)
         request_attrs = maybe_put_id(request_attrs, :car_owner_id, car_owner_model)
@@ -236,9 +242,14 @@ defmodule Mix.Tasks.Import do
     end)
   end
 
-  # FIXME more patterns here
-  defp determine_enablement(request_notes) do
-    !String.contains?(request_notes, "cancelled")
+  defp determine_cancellation_reason(request_notes) do
+    cond do
+      String.contains?(request_notes, "lockdown") -> "lockdown"
+      String.contains?(request_notes, "by rider") -> "visitor"
+      String.contains?(request_notes, "no car") -> "no car"
+      String.contains?(request_notes, "no driver") -> "no driver"
+      true -> false
+    end
   end
 
   # FIXME these are taken from ReportView which is now dead
