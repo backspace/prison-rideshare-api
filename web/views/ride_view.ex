@@ -2,7 +2,7 @@ defmodule PrisonRideshare.RideView do
   use PrisonRideshare.Web, :view
   use JaSerializer.PhoenixView
 
-  attributes [:start, :end, :name, :address, :contact, :passengers, :request_notes, :enabled, :distance, :rate, :food_expenses, :car_expenses, :report_notes, :inserted_at, :updated_at]
+  attributes [:start, :end, :name, :address, :contact, :passengers, :request_notes, :enabled, :cancellation_reason, :distance, :rate, :food_expenses, :car_expenses, :report_notes, :inserted_at, :updated_at]
 
   has_one :combined_with,
     field: :combined_with_ride_id,
