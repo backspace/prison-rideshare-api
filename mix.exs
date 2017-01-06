@@ -45,6 +45,7 @@ defmodule PrisonRideshare.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
 
+     {:cors_plug, "~> 1.1"},
      {:csv, "~> 1.4.2"},
      {:ja_serializer, "~> 0.11.2"},
      {:money, "~> 1.2.0"},

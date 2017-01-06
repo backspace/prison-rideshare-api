@@ -38,5 +38,6 @@ defmodule PrisonRideshare.Endpoint do
     key: "_prison_rideshare_key",
     signing_salt: "JctOIKvI"
 
+  plug CORSPlug
   plug PrisonRideshare.Router
 end
