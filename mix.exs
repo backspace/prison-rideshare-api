@@ -26,7 +26,7 @@ defmodule PrisonRideshare.Mixfile do
     [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
      :phoenix_ecto, :postgrex,
 
-     :timex]
+     :comeonin, :timex]
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -45,8 +45,10 @@ defmodule PrisonRideshare.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
 
+     {:comeonin, "~> 3.0"},
      {:cors_plug, "~> 1.1"},
      {:csv, "~> 1.4.2"},
+     {:guardian, "~> 0.14"},
      {:ja_serializer, "~> 0.11.2"},
      {:money, "~> 1.2.0"},
      {:timex, "~> 3.0"},
