@@ -41,6 +41,7 @@ defmodule PrisonRideshare.Router do
     pipe_through :api
 
     post "/register", RegistrationController, :create
+    post "/token", SessionController, :create, as: :login
 
     resources "/institutions", InstitutionController, except: [:new, :edit]
     resources "/people", PersonController, except: [:new, :edit]
