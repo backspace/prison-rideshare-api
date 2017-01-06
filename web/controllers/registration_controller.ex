@@ -3,10 +3,10 @@ defmodule PrisonRideshare.RegistrationController do
 
   alias PrisonRideshare.User
 
-  def create(conn, %{"data" => %{"type" => "user",
+  def create(conn, %{"data" => %{"type" => "users",
   	"attributes" => %{"email" => email,
   	  "password" => password,
-  	  "password_confirmation" => password_confirmation}}}) do
+  	  "password-confirmation" => password_confirmation}}}) do
 
     changeset = User.changeset %User{}, %{email: email,
       password_confirmation: password_confirmation,
