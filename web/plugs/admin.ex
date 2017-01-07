@@ -6,17 +6,12 @@ defmodule PrisonRideshare.Plugs.Admin do
 
   def init(default), do: default
 
-  def call(%{assigns: %{current_user: nil}} = conn, _) do
+  def call(%{private: %{guardian_default_resource: nil}} = conn, _) do
     conn |> flash_and_redirect
   end
 
-  def call(%{assigns: %{current_user: current_user}} = conn, _) do
-    if current_user.admin do
-      conn
-    else
-      conn
-        |> flash_and_redirect
-    end
+  def call(%{private: %{guardian_default_resource: %{admin: true}}} = conn, _) do
+    conn
   end
 
   def call(conn, _) do
@@ -25,8 +20,9 @@ defmodule PrisonRideshare.Plugs.Admin do
   end
 
   defp flash_and_redirect(conn) do
+    # FIXME obvsy, is this private guardian_default_resource thing even okay?
     conn
-      |> put_flash(:error, "You do not have the proper authorisation to do that")
+      # |> put_flash(:error, "You do not have the proper authorisation to do that")
       |> redirect(to: "/")
       |> halt
   end

@@ -10,6 +10,7 @@ defmodule PrisonRideshare.Router do
     plug Guardian.Plug.VerifyHeader, realm: "Bearer"
     plug Guardian.Plug.LoadResource
     plug Guardian.Plug.EnsureAuthenticated, handler: PrisonRideshare.AuthErrorHandler
+    plug PrisonRideshare.Plugs.Admin
   end
 
   scope "/", PrisonRideshare do

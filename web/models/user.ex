@@ -5,6 +5,8 @@ defmodule PrisonRideshare.User do
     field :email, :string
     field :password_hash, :string
 
+    field :admin, :boolean
+
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
 
