@@ -47,7 +47,7 @@ defmodule PrisonRideshare.InstitutionControllerTest do
       "data" => %{
         "type" => "institution",
         "attributes" => @valid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 
@@ -61,7 +61,7 @@ defmodule PrisonRideshare.InstitutionControllerTest do
       "data" => %{
         "type" => "institution",
         "attributes" => @invalid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 
@@ -76,7 +76,7 @@ defmodule PrisonRideshare.InstitutionControllerTest do
         "type" => "institution",
         "id" => institution.id,
         "attributes" => @valid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 
@@ -92,7 +92,7 @@ defmodule PrisonRideshare.InstitutionControllerTest do
         "type" => "institution",
         "id" => institution.id,
         "attributes" => @invalid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 

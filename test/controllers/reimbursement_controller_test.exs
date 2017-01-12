@@ -56,7 +56,7 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
       "data" => %{
         "type" => "reimbursement",
         "attributes" => @valid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 
@@ -70,7 +70,7 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
       "data" => %{
         "type" => "reimbursement",
         "attributes" => @invalid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 
@@ -85,7 +85,7 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
         "type" => "reimbursement",
         "id" => reimbursement.id,
         "attributes" => @valid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 
@@ -101,7 +101,7 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
         "type" => "reimbursement",
         "id" => reimbursement.id,
         "attributes" => @invalid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 

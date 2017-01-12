@@ -3,7 +3,7 @@ defmodule PrisonRideshare.SessionController do
 
   import Ecto.Query, only: [where: 2]
   import Comeonin.Bcrypt
-  import Logger
+  require Logger
 
   alias PrisonRideshare.User
 
@@ -44,7 +44,7 @@ defmodule PrisonRideshare.SessionController do
     end
   end
 
-  def create(conn, %{"grant_type" => _}) do
+  def create(_conn, %{"grant_type" => _}) do
     ## Handle unknown grant type
     throw "Unsupported grant_type"
   end

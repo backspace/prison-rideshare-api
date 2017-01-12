@@ -46,7 +46,7 @@ defmodule PrisonRideshare.PersonControllerTest do
       "data" => %{
         "type" => "person",
         "attributes" => @valid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 
@@ -60,7 +60,7 @@ defmodule PrisonRideshare.PersonControllerTest do
       "data" => %{
         "type" => "person",
         "attributes" => @invalid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 
@@ -75,7 +75,7 @@ defmodule PrisonRideshare.PersonControllerTest do
         "type" => "person",
         "id" => person.id,
         "attributes" => @valid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 
@@ -91,7 +91,7 @@ defmodule PrisonRideshare.PersonControllerTest do
         "type" => "person",
         "id" => person.id,
         "attributes" => @invalid_attrs,
-        "relationships" => relationships
+        "relationships" => relationships()
       }
     }
 
