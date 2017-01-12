@@ -11,6 +11,7 @@ defmodule PrisonRideshare.InstitutionControllerTest do
     conn = build_conn()
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
+      |> auth_as_admin
 
     {:ok, conn: conn}
   end

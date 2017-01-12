@@ -29,6 +29,14 @@ defmodule PrisonRideshare.ConnCase do
 
       # The default endpoint for testing
       @endpoint PrisonRideshare.Endpoint
+
+      defp auth_as_admin(conn) do
+        user = Repo.insert! %PrisonRideshare.User{email: "test@example.com", admin: true, id: Ecto.UUID.generate}
+        { :ok, jwt, _ } = Guardian.encode_and_sign(user, :token)
+
+        conn
+        |> put_req_header("authorization", "Bearer #{jwt}")
+      end
     end
   end
 
