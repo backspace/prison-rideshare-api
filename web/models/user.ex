@@ -27,6 +27,11 @@ defmodule PrisonRideshare.User do
     |> unique_constraint(:email)
   end
 
+  def admin_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:admin])
+  end
+
   defp hash_password(%{valid?: false} = changeset), do: changeset
   defp hash_password(%{valid?: true} = changeset) do
       hashedpw = Comeonin.Bcrypt.hashpwsalt(Ecto.Changeset.get_field(changeset, :password))

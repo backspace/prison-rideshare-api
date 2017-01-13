@@ -28,5 +28,6 @@ defmodule PrisonRideshare.Router do
     resources "/people", PersonController, except: [:new, :edit]
     resources "/reimbursements", ReimbursementController, except: [:new, :edit]
     resources "/rides", RideController, except: [:new, :edit]
+    resources "/users", UserController, expect: [:new, :edit]
   end
 end
