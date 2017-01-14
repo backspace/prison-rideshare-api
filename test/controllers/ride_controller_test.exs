@@ -60,6 +60,7 @@ defmodule PrisonRideshare.RideControllerTest do
     conn = get conn, ride_path(conn, :show, ride)
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{ride.id}"
+    # FIXME type should be plural in all responses
     assert data["type"] == "ride"
     assert data["attributes"]["start"] == ride.start
     assert data["attributes"]["end"] == ride.end
