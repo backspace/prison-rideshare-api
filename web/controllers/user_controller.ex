@@ -32,6 +32,14 @@ defmodule PrisonRideshare.UserController do
     render(conn, "show.json-api", data: user)
   end
 
+  def current(conn, _) do
+    user = conn
+    |> Guardian.Plug.current_resource
+
+    conn
+    |> render("show.json-api", data: user)
+  end
+
   def update(conn, %{"id" => id, "data" => data = %{"type" => "users", "attributes" => _user_params}}) do
     user = Repo.get!(User, id)
     changeset = User.admin_changeset(user, Params.to_attributes(data))

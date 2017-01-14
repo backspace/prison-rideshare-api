@@ -36,6 +36,14 @@ defmodule PrisonRideshare.UserControllerTest do
     assert data["attributes"]["admin"] == user.admin
   end
 
+  test "shows the current user", %{conn: conn} do
+    conn = get conn, user_path(conn, :current)
+    data = json_response(conn, 200)["data"]
+
+    assert data["attributes"]["email"] == "test@example.com"
+    assert data["attributes"]["admin"]
+  end
+
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
     assert_error_sent 404, fn ->
       get conn, user_path(conn, :show, "00000000-0000-0000-0000-000000000000")

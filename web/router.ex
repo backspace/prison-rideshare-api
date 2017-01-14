@@ -3,6 +3,9 @@ defmodule PrisonRideshare.Router do
 
   pipeline :api do
     plug :accepts, ["json-api"]
+    plug Guardian.Plug.VerifyHeader, realm: "Bearer"
+    plug Guardian.Plug.LoadResource
+    plug Guardian.Plug.EnsureAuthenticated, handler: PrisonRideshare.AuthErrorHandler
   end
 
   pipeline :protected_api do
@@ -19,6 +22,7 @@ defmodule PrisonRideshare.Router do
     post "/register", RegistrationController, :create
     post "/token", SessionController, :create, as: :login
 
+    get "/users/current", UserController, :current
   end
 
   scope "/", PrisonRideshare do
