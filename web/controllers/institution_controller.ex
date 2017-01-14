@@ -11,7 +11,7 @@ defmodule PrisonRideshare.InstitutionController do
     render(conn, "index.json-api", data: institutions)
   end
 
-  def create(conn, %{"data" => data = %{"type" => "institution", "attributes" => _institution_params}}) do
+  def create(conn, %{"data" => data = %{"type" => "institutions", "attributes" => _institution_params}}) do
     changeset = Institution.changeset(%Institution{}, Params.to_attributes(data))
 
     case Repo.insert(changeset) do
@@ -32,7 +32,7 @@ defmodule PrisonRideshare.InstitutionController do
     render(conn, "show.json-api", data: institution)
   end
 
-  def update(conn, %{"id" => id, "data" => data = %{"type" => "institution", "attributes" => _institution_params}}) do
+  def update(conn, %{"id" => id, "data" => data = %{"type" => "institutions", "attributes" => _institution_params}}) do
     institution = Repo.get!(Institution, id)
     changeset = Institution.changeset(institution, Params.to_attributes(data))
 

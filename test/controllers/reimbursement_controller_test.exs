@@ -54,7 +54,7 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
     conn = post conn, reimbursement_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
-        "type" => "reimbursement",
+        "type" => "reimbursements",
         "attributes" => @valid_attrs,
         "relationships" => relationships()
       }
@@ -68,7 +68,7 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
     conn = post conn, reimbursement_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
-        "type" => "reimbursement",
+        "type" => "reimbursements",
         "attributes" => @invalid_attrs,
         "relationships" => relationships()
       }
@@ -82,7 +82,7 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
     conn = put conn, reimbursement_path(conn, :update, reimbursement), %{
       "meta" => %{},
       "data" => %{
-        "type" => "reimbursement",
+        "type" => "reimbursements",
         "id" => reimbursement.id,
         "attributes" => @valid_attrs,
         "relationships" => relationships()
@@ -98,7 +98,7 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
     conn = put conn, reimbursement_path(conn, :update, reimbursement), %{
       "meta" => %{},
       "data" => %{
-        "type" => "reimbursement",
+        "type" => "reimbursements",
         "id" => reimbursement.id,
         "attributes" => @invalid_attrs,
         "relationships" => relationships()

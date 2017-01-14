@@ -44,7 +44,7 @@ defmodule PrisonRideshare.PersonControllerTest do
     conn = post conn, person_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
-        "type" => "person",
+        "type" => "people",
         "attributes" => @valid_attrs,
         "relationships" => relationships()
       }
@@ -58,7 +58,7 @@ defmodule PrisonRideshare.PersonControllerTest do
     conn = post conn, person_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
-        "type" => "person",
+        "type" => "people",
         "attributes" => @invalid_attrs,
         "relationships" => relationships()
       }
@@ -72,7 +72,7 @@ defmodule PrisonRideshare.PersonControllerTest do
     conn = put conn, person_path(conn, :update, person), %{
       "meta" => %{},
       "data" => %{
-        "type" => "person",
+        "type" => "people",
         "id" => person.id,
         "attributes" => @valid_attrs,
         "relationships" => relationships()
@@ -88,7 +88,7 @@ defmodule PrisonRideshare.PersonControllerTest do
     conn = put conn, person_path(conn, :update, person), %{
       "meta" => %{},
       "data" => %{
-        "type" => "person",
+        "type" => "people",
         "id" => person.id,
         "attributes" => @invalid_attrs,
         "relationships" => relationships()

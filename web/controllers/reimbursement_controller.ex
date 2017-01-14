@@ -12,7 +12,7 @@ defmodule PrisonRideshare.ReimbursementController do
     render(conn, "index.json-api", data: reimbursements)
   end
 
-  def create(conn, %{"data" => data = %{"type" => "reimbursement", "attributes" => _reimbursement_params}}) do
+  def create(conn, %{"data" => data = %{"type" => "reimbursements", "attributes" => _reimbursement_params}}) do
     changeset = Reimbursement.changeset(%Reimbursement{}, Params.to_attributes(data))
 
     case Repo.insert(changeset) do
@@ -34,7 +34,7 @@ defmodule PrisonRideshare.ReimbursementController do
     render(conn, "show.json-api", data: reimbursement)
   end
 
-  def update(conn, %{"id" => id, "data" => data = %{"type" => "reimbursement", "attributes" => _reimbursement_params}}) do
+  def update(conn, %{"id" => id, "data" => data = %{"type" => "reimbursements", "attributes" => _reimbursement_params}}) do
     reimbursement = Repo.get!(Reimbursement, id)
     |> Repo.preload(:person)
     changeset = Reimbursement.changeset(reimbursement, Params.to_attributes(data))

@@ -12,7 +12,7 @@ defmodule PrisonRideshare.RideController do
     render(conn, "index.json-api", data: rides)
   end
 
-  def create(conn, %{"data" => data = %{"type" => "ride", "attributes" => _ride_params}}) do
+  def create(conn, %{"data" => data = %{"type" => "rides", "attributes" => _ride_params}}) do
     changeset = Ride.changeset(%Ride{}, Params.to_attributes(data))
 
     case Repo.insert(changeset) do
@@ -34,7 +34,7 @@ defmodule PrisonRideshare.RideController do
     render(conn, "show.json-api", data: ride)
   end
 
-  def update(conn, %{"id" => id, "data" => data = %{"type" => "ride", "attributes" => _ride_params}}) do
+  def update(conn, %{"id" => id, "data" => data = %{"type" => "rides", "attributes" => _ride_params}}) do
     ride = Repo.get!(Ride, id)
     |> preload
     changeset = Ride.changeset(ride, Params.to_attributes(data))

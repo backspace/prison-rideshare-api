@@ -11,7 +11,7 @@ defmodule PrisonRideshare.PersonController do
     render(conn, "index.json-api", data: people)
   end
 
-  def create(conn, %{"data" => data = %{"type" => "person", "attributes" => _person_params}}) do
+  def create(conn, %{"data" => data = %{"type" => "people", "attributes" => _person_params}}) do
     changeset = Person.changeset(%Person{}, Params.to_attributes(data))
 
     case Repo.insert(changeset) do
@@ -32,7 +32,7 @@ defmodule PrisonRideshare.PersonController do
     render(conn, "show.json-api", data: person)
   end
 
-  def update(conn, %{"id" => id, "data" => data = %{"type" => "person", "attributes" => _person_params}}) do
+  def update(conn, %{"id" => id, "data" => data = %{"type" => "people", "attributes" => _person_params}}) do
     person = Repo.get!(Person, id)
     changeset = Person.changeset(person, Params.to_attributes(data))
 

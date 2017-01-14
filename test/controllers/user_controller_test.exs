@@ -46,7 +46,7 @@ defmodule PrisonRideshare.UserControllerTest do
     conn = post conn, user_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
-        "type" => "user",
+        "type" => "users",
         "attributes" => @valid_attrs,
         "relationships" => relationships()
       }
@@ -75,7 +75,7 @@ defmodule PrisonRideshare.UserControllerTest do
     conn = put conn, user_path(conn, :update, user), %{
       "meta" => %{},
       "data" => %{
-        "type" => "user",
+        "type" => "users",
         "id" => user.id,
         "attributes" => @valid_attrs,
         "relationships" => relationships()

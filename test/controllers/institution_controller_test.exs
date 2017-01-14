@@ -45,7 +45,7 @@ defmodule PrisonRideshare.InstitutionControllerTest do
     conn = post conn, institution_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
-        "type" => "institution",
+        "type" => "institutions",
         "attributes" => @valid_attrs,
         "relationships" => relationships()
       }
@@ -59,7 +59,7 @@ defmodule PrisonRideshare.InstitutionControllerTest do
     conn = post conn, institution_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
-        "type" => "institution",
+        "type" => "institutions",
         "attributes" => @invalid_attrs,
         "relationships" => relationships()
       }
@@ -73,7 +73,7 @@ defmodule PrisonRideshare.InstitutionControllerTest do
     conn = put conn, institution_path(conn, :update, institution), %{
       "meta" => %{},
       "data" => %{
-        "type" => "institution",
+        "type" => "institutions",
         "id" => institution.id,
         "attributes" => @valid_attrs,
         "relationships" => relationships()
@@ -89,7 +89,7 @@ defmodule PrisonRideshare.InstitutionControllerTest do
     conn = put conn, institution_path(conn, :update, institution), %{
       "meta" => %{},
       "data" => %{
-        "type" => "institution",
+        "type" => "institutions",
         "id" => institution.id,
         "attributes" => @invalid_attrs,
         "relationships" => relationships()
