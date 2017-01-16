@@ -1,7 +1,7 @@
 defmodule PrisonRideshare.RideControllerTest do
   use PrisonRideshare.ConnCase
 
-  alias PrisonRideshare.Ride
+  alias PrisonRideshare.{Institution, Person, Ride}
   alias PrisonRideshare.Repo
 
   @valid_attrs %{address: "some content", car_expenses: 42, contact: "some content", distance: "120.5", end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}, food_expenses: 42, name: "some content", passengers: 42, rate: 42, report_notes: "some content", request_notes: "some content", start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}}
@@ -51,8 +51,75 @@ defmodule PrisonRideshare.RideControllerTest do
   end
 
   test "lists all entries on index", %{conn: conn} do
+    institution = Repo.insert! %Institution{name: "Stony Mountain"}
+    driver = Repo.insert! %Person{name: "Driver"}
+    car_owner = Repo.insert! %Person{name: "Car Owner"}
+    ride = Repo.insert! %Ride{
+      start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
+      end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+      institution: institution,
+      rate: 35,
+      passengers: 2,
+      name: "Janis",
+      contact: "jorts@jants.ca",
+      address: "114 Spence St.",
+      cancellation_reason: "",
+      car_expenses: 44,
+      distance: 55.0,
+      enabled: true,
+      food_expenses: 66,
+      request_notes: "request!",
+      report_notes: "report!",
+      driver: driver,
+      car_owner: car_owner
+    }
+
     conn = get conn, ride_path(conn, :index)
-    assert json_response(conn, 200)["data"] == []
+    assert json_response(conn, 200)["data"] == [%{
+      "id" => ride.id,
+      "type" => "ride",
+      "attributes" => %{
+        "start" => "2017-01-15T18:00:00",
+        "end" => "2017-01-15T20:00:00",
+        "rate" => ride.rate,
+        "passengers" => ride.passengers,
+        "name" => ride.name,
+        "contact" => ride.contact,
+        "address" => ride.address,
+        "cancellation-reason" => ride.cancellation_reason,
+        "car-expenses" => ride.car_expenses,
+        "distance" => ride.distance,
+        "enabled" => ride.enabled,
+        "food-expenses" => ride.food_expenses,
+        "request-notes" => ride.request_notes,
+        "report-notes" => ride.report_notes,
+        "inserted-at" => NaiveDateTime.to_iso8601(ride.inserted_at),
+        "updated-at" => NaiveDateTime.to_iso8601(ride.updated_at)
+      },
+      "relationships" => %{
+        "institution" => %{
+          "data" => %{
+            "type" => "institution",
+            "id" => institution.id
+          }
+        },
+        "driver" => %{
+          "data" => %{
+            "type" => "person",
+            "id" => driver.id
+          }
+        },
+        "car-owner" => %{
+          "data" => %{
+            "type" => "person",
+            "id" => car_owner.id
+          }
+        },
+        "combined-with" => %{
+          "data" => nil
+        }
+      }
+    }]
   end
 
   test "shows chosen resource", %{conn: conn} do
