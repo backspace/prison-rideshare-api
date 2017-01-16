@@ -5,11 +5,23 @@ defmodule PrisonRideshare.RideController do
   alias JaSerializer.Params
 
   plug :scrub_params, "data" when action in [:create, :update]
+  plug PrisonRideshare.Plugs.Admin when not action in [:index]
 
-  def index(conn, _params) do
+  def index(%{private: %{guardian_default_resource: %{admin: true}}} = conn, _params) do
     rides = Repo.all(Ride)
     |> preload
-    render(conn, "index.json-api", data: rides)
+
+    conn
+    |> render("index.json-api", data: rides)
+  end
+
+  def index(conn, _) do
+    rides = Repo.all(Ride)
+    |> Repo.preload(:institution)
+
+    conn
+    |> put_view(PrisonRideshare.UnauthRideView)
+    |> render("index.json-api", data: rides)
   end
 
   def create(conn, %{"data" => data = %{"type" => "rides", "attributes" => _ride_params}}) do

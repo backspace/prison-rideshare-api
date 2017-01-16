@@ -3,6 +3,8 @@ defmodule PrisonRideshare.Router do
 
   pipeline :api do
     plug :accepts, ["json-api"]
+    plug Guardian.Plug.VerifyHeader, realm: "Bearer"
+    plug Guardian.Plug.LoadResource
   end
 
   pipeline :authenticated_api do
@@ -25,6 +27,8 @@ defmodule PrisonRideshare.Router do
 
     post "/register", RegistrationController, :create
     post "/token", SessionController, :create, as: :login
+
+    resources "/rides", RideController, except: [:new, :edit]
   end
 
   scope "/", PrisonRideshare do
@@ -39,7 +43,6 @@ defmodule PrisonRideshare.Router do
     resources "/institutions", InstitutionController, except: [:new, :edit]
     resources "/people", PersonController, except: [:new, :edit]
     resources "/reimbursements", ReimbursementController, except: [:new, :edit]
-    resources "/rides", RideController, except: [:new, :edit]
     resources "/users", UserController, expect: [:new, :edit]
   end
 end
