@@ -41,7 +41,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     }]
   end
 
-  test "updates and renders chosen resource when data is valid, ignoring auth-requiring attributes", %{conn: conn} do
+  test "updates and renders chosen resource when data is valid, ignoring auth-requiring attributes and calculating car expenses", %{conn: conn} do
     ride_institution = Repo.insert! %Institution{name: "Stony Mountain"}
 
     ride = Repo.insert! %Ride{
@@ -98,6 +98,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     assert ride.institution_id == ride_institution.id
     assert ride.distance == 77.0
     assert ride.food_expenses == ~M[1000]
+    assert ride.car_expenses == ~M[3388]
     assert ride.report_notes == "Some report notes"
     assert ride.request_notes == "The original request notes"
   end

@@ -42,10 +42,17 @@ defmodule PrisonRideshare.Ride do
     struct
     |> cast(params, [:distance, :food_expenses, :report_notes])
     |> validate_required([:distance, :food_expenses])
+    |> calculate_car_expenses(struct)
   end
 
   def sorted(query) do
     from r in query,
     order_by: [r.start]
+  end
+
+  defp calculate_car_expenses(%{valid?: false} = changeset, _), do: changeset
+  defp calculate_car_expenses(%{valid?: true} = changeset, struct) do
+    distance = Ecto.Changeset.get_field(changeset, :distance)
+    Ecto.Changeset.put_change(changeset, :car_expenses, Money.multiply(struct.rate, distance))
   end
 end
