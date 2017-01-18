@@ -2,13 +2,13 @@ defmodule PrisonRideshare.Router do
   use PrisonRideshare.Web, :router
 
   pipeline :api do
-    plug :accepts, ["json-api"]
+    plug :accepts, ["json", "json-api"]
     plug Guardian.Plug.VerifyHeader, realm: "Bearer"
     plug Guardian.Plug.LoadResource
   end
 
   pipeline :authenticated_api do
-    plug :accepts, ["json-api"]
+    plug :accepts, ["json", "json-api"]
     plug Guardian.Plug.VerifyHeader, realm: "Bearer"
     plug Guardian.Plug.LoadResource
     plug Guardian.Plug.EnsureAuthenticated, handler: PrisonRideshare.AuthErrorHandler
