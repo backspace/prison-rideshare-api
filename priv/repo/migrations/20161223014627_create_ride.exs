@@ -15,7 +15,7 @@ defmodule PrisonRideshare.Repo.Migrations.CreateRide do
       add :cancellation_reason, :string
 
       add :rate, :integer
-      add :distance, :float
+      add :distance, :integer
       add :food_expenses, :integer
       add :car_expenses, :integer
       add :report_notes, :string

@@ -60,7 +60,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
         "type" => "rides",
         "id" => ride.id,
         "attributes" => %{
-          "distance" => 77.0,
+          "distance" => 77,
           "food_expenses" => 1000,
           "report_notes" => "Some report notes",
           "request_notes" => "Trying it!"
@@ -96,7 +96,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     ride = Repo.get!(Ride, ride.id)
 
     assert ride.institution_id == ride_institution.id
-    assert ride.distance == 77.0
+    assert ride.distance == 77
     assert ride.food_expenses == ~M[1000]
     assert ride.car_expenses == ~M[3388]
     assert ride.report_notes == "Some report notes"

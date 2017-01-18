@@ -13,7 +13,7 @@ defmodule PrisonRideshare.Ride do
     field :enabled, :boolean
     field :cancellation_reason, :string
 
-    field :distance, :float
+    field :distance, :integer
     field :rate, Money.Ecto.Type
     field :food_expenses, Money.Ecto.Type
     field :car_expenses, Money.Ecto.Type

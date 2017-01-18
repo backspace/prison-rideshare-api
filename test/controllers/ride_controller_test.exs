@@ -4,7 +4,7 @@ defmodule PrisonRideshare.RideControllerTest do
   alias PrisonRideshare.{Institution, Person, Ride}
   alias PrisonRideshare.Repo
 
-  @valid_attrs %{address: "some content", car_expenses: 42, contact: "some content", distance: "120.5", end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}, food_expenses: 42, name: "some content", passengers: 42, rate: 42, report_notes: "some content", request_notes: "some content", start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}}
+  @valid_attrs %{address: "some content", car_expenses: 42, contact: "some content", distance: 120, end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}, food_expenses: 42, name: "some content", passengers: 42, rate: 42, report_notes: "some content", request_notes: "some content", start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}}
   @invalid_attrs %{}
 
   setup do
@@ -65,7 +65,7 @@ defmodule PrisonRideshare.RideControllerTest do
       address: "114 Spence St.",
       cancellation_reason: "",
       car_expenses: 44,
-      distance: 55.0,
+      distance: 55,
       enabled: true,
       food_expenses: 66,
       request_notes: "request!",

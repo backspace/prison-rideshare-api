@@ -19,7 +19,7 @@ defmodule PrisonRideshare.RideTest do
   end
 
   @valid_report_attrs %{
-    distance: 10.0,
+    distance: 10,
     report_notes: "Notes!",
     food_expenses: 100
   }
