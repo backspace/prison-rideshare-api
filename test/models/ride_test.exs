@@ -15,4 +15,20 @@ defmodule PrisonRideshare.RideTest do
     changeset = Ride.changeset(%Ride{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+  @valid_report_attrs %{
+    distance: 10.0,
+    report_notes: "Notes!",
+    food_expenses: 100
+  }
+
+  test "report changeset with valid attributes" do
+    changeset = Ride.report_changeset(%Ride{}, @valid_report_attrs)
+    assert changeset.valid?
+  end
+
+  test "report changeset with invalid attributes" do
+    changeset = Ride.report_changeset(%Ride{}, @invalid_attrs)
+    refute changeset.valid?
+  end
 end

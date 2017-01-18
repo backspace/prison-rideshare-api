@@ -38,6 +38,12 @@ defmodule PrisonRideshare.Ride do
     |> validate_required([:start, :end, :name, :address, :contact, :passengers])
   end
 
+  def report_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:distance, :food_expenses, :report_notes])
+    |> validate_required([:distance, :food_expenses])
+  end
+
   def sorted(query) do
     from r in query,
     order_by: [r.start]
