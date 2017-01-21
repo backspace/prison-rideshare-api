@@ -16,8 +16,8 @@ PrisonRideshare.User.changeset(%PrisonRideshare.User{}, %{
   name: "Test User",
   admin: true,
   email: "testuser@example.com",
-  password: "secret",
-  password_confirmation: "secret",
+  password: "secretsecret",
+  password_confirmation: "secretsecret",
   confirmed_at: Ecto.DateTime.utc
 })
 |> PrisonRideshare.Repo.insert!
