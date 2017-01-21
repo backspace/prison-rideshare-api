@@ -247,7 +247,7 @@ defmodule Mix.Tasks.Import do
       String.contains?(request_notes, "lockdown") -> "lockdown"
       String.contains?(request_notes, "by rider") -> "visitor"
       String.contains?(request_notes, "no car") -> "no car"
-      String.contains?(request_notes, "no driver") -> "no driver"
+      String.contains?(request_notes, "no driver") || String.contains?(request_notes, "no ride") -> "no driver"
       true -> false
     end
   end
