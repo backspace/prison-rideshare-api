@@ -17,15 +17,15 @@ defmodule PrisonRideshare.RideControllerTest do
   end
 
   defp relationships do
-    combined_with_ride = Repo.insert!(%PrisonRideshare.Ride{})
+    combined_with_ride = Repo.insert!(%PrisonRideshare.Ride{request_notes: "Combined"})
     institution = Repo.insert!(%PrisonRideshare.Institution{})
-    driver = Repo.insert!(%PrisonRideshare.Person{})
-    car_owner = Repo.insert!(%PrisonRideshare.Person{})
+    driver = Repo.insert!(%PrisonRideshare.Person{name: "Driver"})
+    car_owner = Repo.insert!(%PrisonRideshare.Person{name: "Car Owner"})
 
     %{
-      "combined_with_ride" => %{
+      "combined-with-ride" => %{
         "data" => %{
-          "type" => "combined_with_ride",
+          "type" => "ride",
           "id" => combined_with_ride.id
         }
       },
@@ -37,13 +37,13 @@ defmodule PrisonRideshare.RideControllerTest do
       },
       "driver" => %{
         "data" => %{
-          "type" => "driver",
+          "type" => "person",
           "id" => driver.id
         }
       },
-      "car_owner" => %{
+      "car-owner" => %{
         "data" => %{
-          "type" => "car_owner",
+          "type" => "person",
           "id" => car_owner.id
         }
       },
@@ -192,8 +192,20 @@ defmodule PrisonRideshare.RideControllerTest do
       }
     }
 
+    driver = Repo.get_by(Person, name: "Driver")
+    car_owner = Repo.get_by(Person, name: "Car Owner")
+
+    combined_with_ride = Repo.get_by(Ride, request_notes: "Combined")
+
     assert json_response(conn, 200)["data"]["id"]
-    assert Repo.get_by(Ride, @valid_attrs)
+
+    saved = Repo.get!(Ride, ride.id)
+
+    assert saved
+
+    assert saved.driver_id == driver.id
+    assert saved.car_owner_id == car_owner.id
+    assert saved.combined_with_ride_id == combined_with_ride.id
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

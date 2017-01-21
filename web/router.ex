@@ -5,6 +5,7 @@ defmodule PrisonRideshare.Router do
     plug :accepts, ["json", "json-api"]
     plug Guardian.Plug.VerifyHeader, realm: "Bearer"
     plug Guardian.Plug.LoadResource
+    plug JaSerializer.Deserializer
   end
 
   pipeline :authenticated_api do
@@ -12,6 +13,7 @@ defmodule PrisonRideshare.Router do
     plug Guardian.Plug.VerifyHeader, realm: "Bearer"
     plug Guardian.Plug.LoadResource
     plug Guardian.Plug.EnsureAuthenticated, handler: PrisonRideshare.AuthErrorHandler
+    plug JaSerializer.Deserializer
   end
 
   pipeline :admin_api do
@@ -20,6 +22,7 @@ defmodule PrisonRideshare.Router do
     plug Guardian.Plug.LoadResource
     plug Guardian.Plug.EnsureAuthenticated, handler: PrisonRideshare.AuthErrorHandler
     plug PrisonRideshare.Plugs.Admin
+    plug JaSerializer.Deserializer
   end
 
   scope "/", PrisonRideshare do
