@@ -7,6 +7,9 @@ defmodule PrisonRideshare.RideView do
   has_one :combined_with,
     field: :combined_with_ride_id,
     type: "ride"
+  has_many :children,
+    type: "ride"
+
   has_one :institution,
     include: true,
     serializer: PrisonRideshare.InstitutionView

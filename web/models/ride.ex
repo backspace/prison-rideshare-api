@@ -19,7 +19,9 @@ defmodule PrisonRideshare.Ride do
     field :car_expenses, Money.Ecto.Type
     field :report_notes, :string
 
+    # FIXME now that both ends of this seem necessary, the naming is awkward.
     belongs_to :combined_with, PrisonRideshare.Ride, foreign_key: :combined_with_ride_id
+    has_many :children, PrisonRideshare.Ride, foreign_key: :combined_with_ride_id
 
     belongs_to :institution, PrisonRideshare.Institution
 

@@ -117,6 +117,9 @@ defmodule PrisonRideshare.RideControllerTest do
         },
         "combined-with" => %{
           "data" => nil
+        },
+        "children" => %{
+          "data" => []
         }
       }
     }]
