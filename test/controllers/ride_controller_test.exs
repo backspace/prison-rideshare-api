@@ -200,8 +200,6 @@ defmodule PrisonRideshare.RideControllerTest do
 
     combined_with_ride = Repo.get_by(Ride, request_notes: "Combined")
 
-    assert json_response(conn, 200)["data"]["id"]
-
     saved = Repo.get!(Ride, ride.id)
 
     assert saved
@@ -209,6 +207,39 @@ defmodule PrisonRideshare.RideControllerTest do
     assert saved.driver_id == driver.id
     assert saved.car_owner_id == car_owner.id
     assert saved.combined_with_ride_id == combined_with_ride.id
+
+    data = json_response(conn, 200)["data"]
+
+    assert data["relationships"] == %{
+      "institution" => %{
+        "data" => %{
+          "type" => "institution",
+          "id" => saved.institution_id
+        }
+      },
+      "driver" => %{
+        "data" => %{
+          "type" => "person",
+          "id" => driver.id
+        }
+      },
+      "car-owner" => %{
+        "data" => %{
+          "type" => "person",
+          "id" => car_owner.id
+        }
+      },
+      "combined-with" => %{
+        "data" => %{
+          "type" => "ride",
+          "id" => combined_with_ride.id
+        }
+      },
+      "children" => %{
+        "data" => []
+      }
+    }
+
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

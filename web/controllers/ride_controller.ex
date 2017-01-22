@@ -57,6 +57,7 @@ defmodule PrisonRideshare.RideController do
 
     case Repo.update(changeset) do
       {:ok, ride} ->
+        ride = preload(ride)
         render(conn, "show.json-api", data: ride)
       {:error, changeset} ->
         conn
