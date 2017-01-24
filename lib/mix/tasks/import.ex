@@ -243,11 +243,18 @@ defmodule Mix.Tasks.Import do
   end
 
   defp determine_cancellation_reason(request_notes) do
+    request_notes = String.downcase(request_notes)
+
     cond do
       String.contains?(request_notes, "lockdown") -> "lockdown"
-      String.contains?(request_notes, "by rider") -> "visitor"
+      String.contains?(request_notes, "by rider") || String.contains?(request_notes, "my rider") || String.contains?(request_notes, "other ride") -> "visitor"
       String.contains?(request_notes, "no car") -> "no car"
       String.contains?(request_notes, "no driver") || String.contains?(request_notes, "no ride") -> "no driver"
+      String.contains?(request_notes, "weather") -> "weather"
+      String.contains?(request_notes, "transfer") -> "transfer"
+      String.contains?(request_notes, "wrong") -> "error"
+      String.contains?(request_notes, "mia") -> "visitor missing"
+      String.contains?(request_notes, "no show") -> "driver missing"
       true -> false
     end
   end
