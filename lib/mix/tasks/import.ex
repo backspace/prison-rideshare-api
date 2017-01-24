@@ -245,6 +245,8 @@ defmodule Mix.Tasks.Import do
   defp determine_cancellation_reason(request_notes) do
     request_notes = String.downcase(request_notes)
 
+    # FIXME “This ride was cancelled” in report notes!
+
     cond do
       String.contains?(request_notes, "lockdown") -> "lockdown"
       String.contains?(request_notes, "by rider") || String.contains?(request_notes, "my rider") || String.contains?(request_notes, "other ride") -> "visitor"
