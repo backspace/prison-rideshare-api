@@ -4,6 +4,8 @@ defmodule PrisonRideshare.RideController do
   alias PrisonRideshare.Ride
   alias JaSerializer.Params
 
+  import Ecto.Query
+
   plug :scrub_params, "data" when action in [:create, :update]
   plug PrisonRideshare.Plugs.Admin when not action in [:index, :update]
 
@@ -16,8 +18,7 @@ defmodule PrisonRideshare.RideController do
   end
 
   def index(conn, _) do
-    rides = Repo.all(Ride)
-    |> Repo.preload(:institution)
+    rides = Repo.all from r in Ride, where: r.enabled and is_nil(r.distance) and is_nil(r.combined_with_ride_id), preload: [:institution]
 
     conn
     |> put_view(PrisonRideshare.UnauthRideView)

@@ -10,7 +10,7 @@ defmodule PrisonRideshare.Ride do
     field :contact, :string
     field :passengers, :integer, default: 1
     field :request_notes, :string
-    field :enabled, :boolean
+    field :enabled, :boolean, default: true
     field :cancellation_reason, :string
 
     field :distance, :integer
