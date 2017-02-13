@@ -184,7 +184,9 @@ defmodule PrisonRideshare.RideControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
-    ride = Repo.insert! %Ride{}
+    other_driver = Repo.insert!(%PrisonRideshare.Person{name: "Other Driver"})
+
+    ride = Repo.insert! %Ride{driver: other_driver}
     conn = put conn, ride_path(conn, :update, ride), %{
       "meta" => %{},
       "data" => %{
