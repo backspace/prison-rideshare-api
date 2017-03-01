@@ -75,7 +75,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
           "distance" => 77,
           "food_expenses" => 1000,
           "report_notes" => "Some report notes",
-          "request_notes" => "Trying it!"
+          "request_notes" => "Trying it!",
+          "donation" => true
         },
         "relationships" => %{
           "institution" => %{
@@ -113,6 +114,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     assert ride.car_expenses == ~M[3388]
     assert ride.report_notes == "Some report notes"
     assert ride.request_notes == "The original request notes"
+    assert ride.donation
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

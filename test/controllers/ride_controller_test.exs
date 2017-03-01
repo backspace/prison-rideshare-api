@@ -70,6 +70,7 @@ defmodule PrisonRideshare.RideControllerTest do
       food_expenses: 66,
       request_notes: "request!",
       report_notes: "report!",
+      donation: true,
       driver: driver,
       car_owner: car_owner
     }
@@ -93,6 +94,7 @@ defmodule PrisonRideshare.RideControllerTest do
         "food-expenses" => ride.food_expenses,
         "request-notes" => ride.request_notes,
         "report-notes" => ride.report_notes,
+        "donation" => true,
         "inserted-at" => NaiveDateTime.to_iso8601(ride.inserted_at),
         "updated-at" => NaiveDateTime.to_iso8601(ride.updated_at)
       },

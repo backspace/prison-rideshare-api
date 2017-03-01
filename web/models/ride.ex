@@ -18,6 +18,7 @@ defmodule PrisonRideshare.Ride do
     field :food_expenses, Money.Ecto.Type
     field :car_expenses, Money.Ecto.Type
     field :report_notes, :string
+    field :donation, :boolean, default: false
 
     # FIXME now that both ends of this seem necessary, the naming is awkward.
     belongs_to :combined_with, PrisonRideshare.Ride, foreign_key: :combined_with_ride_id
@@ -36,13 +37,13 @@ defmodule PrisonRideshare.Ride do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:start, :end, :name, :address, :contact, :passengers, :request_notes, :enabled, :cancellation_reason, :combined_with_ride_id, :institution_id, :driver_id, :car_owner_id, :distance, :rate, :food_expenses, :car_expenses, :report_notes])
+    |> cast(params, [:start, :end, :name, :address, :contact, :passengers, :request_notes, :enabled, :cancellation_reason, :combined_with_ride_id, :institution_id, :driver_id, :car_owner_id, :distance, :rate, :food_expenses, :car_expenses, :report_notes, :donation])
     |> validate_required([:start, :end, :name, :address, :contact, :passengers])
   end
 
   def report_changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:distance, :food_expenses, :report_notes])
+    |> cast(params, [:distance, :food_expenses, :report_notes, :donation])
     |> validate_required([:distance, :food_expenses])
     |> calculate_car_expenses(struct)
   end
