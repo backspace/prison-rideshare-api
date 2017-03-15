@@ -1,6 +1,6 @@
 # Prison Rideshare [![Build Status](https://travis-ci.org/backspace/prison-rideshare.svg?branch=primary)](https://travis-ci.org/backspace/prison-rideshare-api)
 
-This is a database to track reïmbursements and miscellania for a prison rideshare project.
+This is a database to track reïmbursements and miscellania for a prison rideshare project. It serves the API for the [Ember UI](https://github.com/backspace/prison-rideshare-ui).
 
 It’s intended to replace an increasingly unwieldy and brittle set of spreadsheets.
 
