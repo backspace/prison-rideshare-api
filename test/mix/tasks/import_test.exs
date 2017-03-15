@@ -66,15 +66,18 @@ defmodule Mix.Tasks.ImportTest do
     assert req7.cancellation_reason == "no driver"
 
     [p1, p2, p3] = Repo.all(Person)
-    [rei1, rei2, rei3] = Repo.all(Reimbursement)
+    [rei1, rei2, rei3, rei4] = Repo.all(Reimbursement)
 
     assert rei1.person_id == p1.id
-    assert rei1.amount == ~M[4675]
+    assert rei1.food_amount == ~M[1200]
 
     assert rei2.person_id == p2.id
-    assert rei2.amount == ~M[6500]
+    assert rei2.car_amount == ~M[2625]
 
     assert rei3.person_id == p3.id
-    assert rei3.amount == ~M[9250]
+    assert rei3.car_amount == ~M[2625]
+
+    assert rei4.person_id == p3.id
+    assert rei4.food_amount == ~M[1100]
   end
 end

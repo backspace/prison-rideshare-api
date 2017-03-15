@@ -1,3 +1,5 @@
+import Money.Sigils
+
 defmodule Mix.Tasks.Import do
   use Mix.Task
 
@@ -154,13 +156,45 @@ defmodule Mix.Tasks.Import do
           false -> String.to_integer(amount) * 100
         end
 
-        Reimbursement.changeset(%Reimbursement{}, %{
-          amount: parsed_amount,
-          person_id: person.id
-        })
-        |> Repo.insert!
+        if parsed_amount > 0 do
+          reimbursements = determine_reimbursements(person, parsed_amount)
+
+          Enum.each(reimbursements, fn reimbursement -> Repo.insert!(Reimbursement.changeset(%Reimbursement{}, reimbursement)) end)
+        end
       end
     end)
+  end
+
+  defp determine_reimbursements(person, amount) do
+    person = Repo.preload(person, [:car_uses, :drivings, :reimbursements], force: true)
+
+    unassigned_car_reimbursements = person.car_uses
+    |> Repo.preload([:reimbursements])
+    |> Enum.reject(fn(ride) -> !ride.car_expenses || ride.car_expenses == ~M[0] || Enum.any?(ride.reimbursements, fn(reimbursement) -> reimbursement.car_amount == ride.car_expenses end) end)
+    |> Enum.map(fn(ride) -> %{person: person, ride: ride, amount: ride.car_expenses, type: :car} end)
+
+    unassigned_food_reimbursements = person.drivings
+    |> Repo.preload([:reimbursements])
+    |> Enum.reject(fn(ride) -> !ride.food_expenses || ride.food_expenses == ~M[0] || Enum.any?(ride.reimbursements, fn(reimbursement) -> reimbursement.food_amount == ride.food_expenses end) end)
+    |> Enum.map(fn(ride) -> %{person: person, ride: ride, amount: ride.food_expenses, type: :food} end)
+
+    matching_unassigned_reimbursements = PrisonRideshare.DecomposeAmount.decompose_amount(Money.new(amount), unassigned_car_reimbursements ++ unassigned_food_reimbursements)
+
+    if matching_unassigned_reimbursements do
+      Enum.map(matching_unassigned_reimbursements, fn reimbursement ->
+        amount_attribute = case reimbursement.type do
+          :car -> %{car_amount: reimbursement.amount}
+          :food -> %{food_amount: reimbursement.amount}
+        end
+
+        Map.merge(amount_attribute, %{
+          person_id: reimbursement.person.id,
+          ride_id: reimbursement.ride.id
+        })
+      end)
+    else
+      Mix.shell.info "CRISIS! No matches found."
+    end
   end
 
   defp parse_date_and_time(date, time, fallback \\ nil)

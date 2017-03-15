@@ -29,6 +29,8 @@ defmodule PrisonRideshare.Ride do
     belongs_to :car_owner, PrisonRideshare.Person, foreign_key: :car_owner_id
     belongs_to :driver, PrisonRideshare.Person, foreign_key: :driver_id
 
+    has_many :reimbursements, PrisonRideshare.Reimbursement
+
     timestamps()
   end
 
