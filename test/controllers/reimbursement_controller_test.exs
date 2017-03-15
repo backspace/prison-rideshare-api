@@ -4,7 +4,7 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
   alias PrisonRideshare.Reimbursement
   alias PrisonRideshare.Repo
 
-  @valid_attrs %{amount: 42}
+  @valid_attrs %{car_amount: 42}
   @invalid_attrs %{}
 
   setup do
@@ -35,12 +35,12 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    reimbursement = Repo.insert! %Reimbursement{amount: 1919}
+    reimbursement = Repo.insert! %Reimbursement{car_amount: 1919}
     conn = get conn, reimbursement_path(conn, :show, reimbursement)
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{reimbursement.id}"
     assert data["type"] == "reimbursement"
-    assert data["attributes"]["amount"] == reimbursement.amount
+    assert data["attributes"]["car-amount"] == reimbursement.car_amount
     assert data["attributes"]["person_id"] == reimbursement.person_id
   end
 
@@ -64,19 +64,6 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
     assert Repo.get_by(Reimbursement, @valid_attrs)
   end
 
-  test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    conn = post conn, reimbursement_path(conn, :create), %{
-      "meta" => %{},
-      "data" => %{
-        "type" => "reimbursements",
-        "attributes" => @invalid_attrs,
-        "relationships" => relationships()
-      }
-    }
-
-    assert json_response(conn, 422)["errors"] != %{}
-  end
-
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
     reimbursement = Repo.insert! %Reimbursement{}
     conn = put conn, reimbursement_path(conn, :update, reimbursement), %{
@@ -91,21 +78,6 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
 
     assert json_response(conn, 200)["data"]["id"]
     assert Repo.get_by(Reimbursement, @valid_attrs)
-  end
-
-  test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    reimbursement = Repo.insert! %Reimbursement{}
-    conn = put conn, reimbursement_path(conn, :update, reimbursement), %{
-      "meta" => %{},
-      "data" => %{
-        "type" => "reimbursements",
-        "id" => reimbursement.id,
-        "attributes" => @invalid_attrs,
-        "relationships" => relationships()
-      }
-    }
-
-    assert json_response(conn, 422)["errors"] != %{}
   end
 
   test "deletes chosen resource", %{conn: conn} do
