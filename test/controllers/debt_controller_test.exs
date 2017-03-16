@@ -69,12 +69,7 @@ defmodule PrisonRideshare.DebtControllerTest do
         "car-expenses" => 1000
       },
       "relationships" => %{
-        "person" => %{
-          "data" => %{
-            "type" => "person",
-            "id" => curtis.id
-          }
-        }
+        "person" => person_relationship_json(curtis)
       }
     }, %{
       "id" => sara.id,
@@ -84,13 +79,17 @@ defmodule PrisonRideshare.DebtControllerTest do
         "car-expenses" => 1919
       },
       "relationships" => %{
-        "person" => %{
-          "data" => %{
-            "type" => "person",
-            "id" => sara.id
-          }
-        }
+        "person" => person_relationship_json(sara)
       }
     }]
+  end
+
+  defp person_relationship_json(person) do
+    %{
+      "data" => %{
+        "type" => "person",
+        "id" => person.id
+      }
+    }
   end
 end
