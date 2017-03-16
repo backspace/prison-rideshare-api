@@ -170,12 +170,12 @@ defmodule Mix.Tasks.Import do
 
     unassigned_car_reimbursements = person.car_uses
     |> Repo.preload([:reimbursements])
-    |> Enum.reject(fn(ride) -> !ride.car_expenses || ride.car_expenses == ~M[0] || Enum.any?(ride.reimbursements, fn(reimbursement) -> reimbursement.car_amount == ride.car_expenses end) end)
+    |> Enum.reject(fn(ride) -> !ride.car_expenses || ride.car_expenses == ~M[0] || Enum.any?(ride.reimbursements, fn(reimbursement) -> reimbursement.car_expenses == ride.car_expenses end) end)
     |> Enum.map(fn(ride) -> %{person: person, ride: ride, amount: ride.car_expenses, type: :car} end)
 
     unassigned_food_reimbursements = person.drivings
     |> Repo.preload([:reimbursements])
-    |> Enum.reject(fn(ride) -> !ride.food_expenses || ride.food_expenses == ~M[0] || Enum.any?(ride.reimbursements, fn(reimbursement) -> reimbursement.food_amount == ride.food_expenses end) end)
+    |> Enum.reject(fn(ride) -> !ride.food_expenses || ride.food_expenses == ~M[0] || Enum.any?(ride.reimbursements, fn(reimbursement) -> reimbursement.food_expenses == ride.food_expenses end) end)
     |> Enum.map(fn(ride) -> %{person: person, ride: ride, amount: ride.food_expenses, type: :food} end)
 
     matching_unassigned_reimbursements = PrisonRideshare.DecomposeAmount.decompose_amount(Money.new(amount), unassigned_car_reimbursements ++ unassigned_food_reimbursements)
@@ -183,8 +183,8 @@ defmodule Mix.Tasks.Import do
     if matching_unassigned_reimbursements do
       Enum.map(matching_unassigned_reimbursements, fn reimbursement ->
         amount_attribute = case reimbursement.type do
-          :car -> %{car_amount: reimbursement.amount}
-          :food -> %{food_amount: reimbursement.amount}
+          :car -> %{car_expenses: reimbursement.amount}
+          :food -> %{food_expenses: reimbursement.amount}
         end
 
         Map.merge(amount_attribute, %{

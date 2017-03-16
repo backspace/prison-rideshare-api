@@ -3,7 +3,7 @@ defmodule PrisonRideshare.ReimbursementTest do
 
   alias PrisonRideshare.Reimbursement
 
-  @valid_attrs %{car_amount: 42}
+  @valid_attrs %{car_expenses: 42}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

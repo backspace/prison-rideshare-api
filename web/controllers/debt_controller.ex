@@ -15,22 +15,18 @@ defmodule PrisonRideshare.DebtController do
         person: person,
         drivings: person.drivings,
         car_uses: person.car_uses,
-        food_amount: total_ride_attributes(person.drivings, :food_expenses),
-        car_amount: total_ride_attributes(person.car_uses, :car_expenses)
+        food_expenses: total_ride_attributes(person.drivings, :food_expenses),
+        car_expenses: total_ride_attributes(person.car_uses, :car_expenses)
       }
     end)
-    |> Enum.reject(fn person_debt -> person_debt.food_amount == Money.new(0) && person_debt.car_amount == Money.new(0) end)
+    |> Enum.reject(fn person_debt -> person_debt.food_expenses == Money.new(0) && person_debt.car_expenses == Money.new(0) end)
 
     render(conn, "index.json-api", data: debts)
   end
 
   defp total_ride_attributes(rides, attribute) do
-    # FIXME why not standardise on expenses instead of amount?
-    [prefix, _] = Atom.to_string(attribute) |> String.split("_")
-    reimbursement_attribute = String.to_atom("#{prefix}_amount")
-
     Enum.reduce(rides, Money.new(0), fn ride, sum ->
-      Money.subtract(Money.add(sum, Map.fetch!(ride, attribute)), total_reimbursement_attributes(ride.reimbursements, reimbursement_attribute))
+      Money.subtract(Money.add(sum, Map.fetch!(ride, attribute)), total_reimbursement_attributes(ride.reimbursements, attribute))
     end)
   end
 

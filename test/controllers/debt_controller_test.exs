@@ -35,8 +35,8 @@ defmodule PrisonRideshare.DebtControllerTest do
     Repo.insert! %Reimbursement{
       person: sara,
       ride: curtis_ride_sara_car,
-      car_amount: 42284,
-      food_amount: 0
+      car_expenses: 42284,
+      food_expenses: 0
     }
 
     conn = get conn, debt_path(conn, :index)
@@ -44,8 +44,8 @@ defmodule PrisonRideshare.DebtControllerTest do
       "id" => curtis.id,
       "type" => "debt",
       "attributes" => %{
-        "food-amount" => 150,
-        "car-amount" => 1000
+        "food-expenses" => 150,
+        "car-expenses" => 1000
       },
       "relationships" => %{
         "person" => %{
@@ -59,8 +59,8 @@ defmodule PrisonRideshare.DebtControllerTest do
       "id" => sara.id,
       "type" => "debt",
       "attributes" => %{
-        "food-amount" => 0,
-        "car-amount" => 1919
+        "food-expenses" => 0,
+        "car-expenses" => 1919
       },
       "relationships" => %{
         "person" => %{

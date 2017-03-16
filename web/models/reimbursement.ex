@@ -2,8 +2,8 @@ defmodule PrisonRideshare.Reimbursement do
   use PrisonRideshare.Web, :model
 
   schema "reimbursements" do
-    field :car_amount, Money.Ecto.Type
-    field :food_amount, Money.Ecto.Type
+    field :car_expenses, Money.Ecto.Type
+    field :food_expenses, Money.Ecto.Type
     belongs_to :person, PrisonRideshare.Person
     belongs_to :ride, PrisonRideshare.Ride
 
@@ -17,6 +17,6 @@ defmodule PrisonRideshare.Reimbursement do
     struct
     # FIXME the JaSerializer generator didn’t include person_id here, probably wrong but
     # currently relied upon in import code. (And ride_id now too.)
-    |> cast(params, [:car_amount, :food_amount, :person_id, :ride_id])
+    |> cast(params, [:car_expenses, :food_expenses, :person_id, :ride_id])
   end
 end
