@@ -2,7 +2,6 @@ defmodule PrisonRideshare.DebtController do
   use PrisonRideshare.Web, :controller
 
   alias PrisonRideshare.Person
-  alias JaSerializer.Params
 
   plug :scrub_params, "data" when action in [:create, :update]
 
@@ -41,7 +40,7 @@ defmodule PrisonRideshare.DebtController do
 
       {ride, total}
     end) |>
-    Enum.reject(fn {ride, total} -> total == Money.new(0) end) |>
+    Enum.reject(fn {_, total} -> total == Money.new(0) end) |>
     Map.new
   end
 

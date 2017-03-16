@@ -5,7 +5,6 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
   alias PrisonRideshare.Repo
 
   @valid_attrs %{car_expenses: 42}
-  @invalid_attrs %{}
 
   setup do
     conn = build_conn()
