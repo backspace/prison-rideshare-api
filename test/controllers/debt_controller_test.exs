@@ -18,7 +18,7 @@ defmodule PrisonRideshare.DebtControllerTest do
     sara = Repo.insert! %Person{name: "Sara Ahmed"}
     Repo.insert! %Person{name: "Chelsea Manning"}
 
-    Repo.insert! %Ride{
+    unreimbursed_ride = Repo.insert! %Ride{
       driver: curtis,
       car_owner: curtis,
       food_expenses: 100,
@@ -69,7 +69,13 @@ defmodule PrisonRideshare.DebtControllerTest do
         "car-expenses" => 1000
       },
       "relationships" => %{
-        "person" => person_relationship_json(curtis)
+        "person" => person_relationship_json(curtis),
+        "rides" => %{
+          "data" => [
+            ride_relationship_json(unreimbursed_ride),
+            ride_relationship_json(curtis_ride_sara_car)
+          ]
+        }
       }
     }, %{
       "id" => sara.id,
@@ -79,7 +85,12 @@ defmodule PrisonRideshare.DebtControllerTest do
         "car-expenses" => 1919
       },
       "relationships" => %{
-        "person" => person_relationship_json(sara)
+        "person" => person_relationship_json(sara),
+        "rides" => %{
+          "data" => [
+            ride_relationship_json(curtis_ride_sara_car)
+          ]
+        }
       }
     }]
   end
@@ -90,6 +101,13 @@ defmodule PrisonRideshare.DebtControllerTest do
         "type" => "person",
         "id" => person.id
       }
+    }
+  end
+
+  defp ride_relationship_json(ride) do
+    %{
+      "type" => "ride",
+      "id" => ride.id
     }
   end
 end

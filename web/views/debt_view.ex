@@ -9,4 +9,7 @@ defmodule PrisonRideshare.DebtView do
 
   has_one :person,
     type: "person"
+
+  has_many :rides,
+    type: "ride"
 end
