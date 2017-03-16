@@ -15,8 +15,8 @@ defmodule PrisonRideshare.Ride do
 
     field :distance, :integer
     field :rate, Money.Ecto.Type
-    field :food_expenses, Money.Ecto.Type
-    field :car_expenses, Money.Ecto.Type
+    field :food_expenses, Money.Ecto.Type, default: 0
+    field :car_expenses, Money.Ecto.Type, default: 0
     field :report_notes, :string
     field :donation, :boolean, default: false
 
