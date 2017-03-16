@@ -16,7 +16,7 @@ defmodule PrisonRideshare.DebtControllerTest do
   test "lists people with outstanding debts and ignores settled debts", %{conn: conn} do
     curtis = Repo.insert! %Person{name: "Curtis"}
     sara = Repo.insert! %Person{name: "Sara Ahmed"}
-    Repo.insert! %Person{name: "Chelsea Manning"}
+    chelsea = Repo.insert! %Person{name: "Chelsea Manning"}
 
     unreimbursed_ride = Repo.insert! %Ride{
       driver: curtis,
@@ -39,6 +39,13 @@ defmodule PrisonRideshare.DebtControllerTest do
       car_expenses: 2010
     }
 
+    other_reimbursed_ride = Repo.insert! %Ride{
+      driver: chelsea,
+      car_owner: chelsea,
+      food_expenses: 2017,
+      car_expenses: 2017
+    }
+
     Repo.insert! %Reimbursement{
       person: sara,
       ride: curtis_ride_sara_car,
@@ -58,6 +65,20 @@ defmodule PrisonRideshare.DebtControllerTest do
       ride: reimbursed_ride,
       car_expenses: 0,
       food_expenses: 2006
+    }
+
+    Repo.insert! %Reimbursement{
+      person: chelsea,
+      ride: other_reimbursed_ride,
+      car_expenses: 2017,
+      food_expenses: 0
+    }
+
+    Repo.insert! %Reimbursement{
+      person: chelsea,
+      ride: other_reimbursed_ride,
+      car_expenses: 0,
+      food_expenses: 2017
     }
 
     conn = get conn, debt_path(conn, :index)
