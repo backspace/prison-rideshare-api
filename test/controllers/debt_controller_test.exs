@@ -32,11 +32,32 @@ defmodule PrisonRideshare.DebtControllerTest do
       car_expenses: 44203
     }
 
+    reimbursed_ride = Repo.insert! %Ride{
+      driver: sara,
+      car_owner: sara,
+      food_expenses: 2006,
+      car_expenses: 2010
+    }
+
     Repo.insert! %Reimbursement{
       person: sara,
       ride: curtis_ride_sara_car,
       car_expenses: 42284,
       food_expenses: 0
+    }
+
+    Repo.insert! %Reimbursement{
+      person: sara,
+      ride: reimbursed_ride,
+      car_expenses: 2010,
+      food_expenses: 0
+    }
+
+    Repo.insert! %Reimbursement{
+      person: sara,
+      ride: reimbursed_ride,
+      car_expenses: 0,
+      food_expenses: 2006
     }
 
     conn = get conn, debt_path(conn, :index)
