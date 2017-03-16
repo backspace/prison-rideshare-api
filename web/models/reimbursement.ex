@@ -2,8 +2,8 @@ defmodule PrisonRideshare.Reimbursement do
   use PrisonRideshare.Web, :model
 
   schema "reimbursements" do
-    field :car_expenses, Money.Ecto.Type
-    field :food_expenses, Money.Ecto.Type
+    field :car_expenses, Money.Ecto.Type, default: 0
+    field :food_expenses, Money.Ecto.Type, default: 0
     belongs_to :person, PrisonRideshare.Person
     belongs_to :ride, PrisonRideshare.Ride
 

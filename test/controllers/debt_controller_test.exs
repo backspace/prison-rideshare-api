@@ -49,35 +49,30 @@ defmodule PrisonRideshare.DebtControllerTest do
     Repo.insert! %Reimbursement{
       person: sara,
       ride: curtis_ride_sara_car,
-      car_expenses: 42284,
-      food_expenses: 0
+      car_expenses: 42284
     }
 
     Repo.insert! %Reimbursement{
       person: sara,
       ride: reimbursed_ride,
-      car_expenses: 2010,
-      food_expenses: 0
+      car_expenses: 2010
     }
 
     Repo.insert! %Reimbursement{
       person: sara,
       ride: reimbursed_ride,
-      car_expenses: 0,
       food_expenses: 2006
     }
 
     Repo.insert! %Reimbursement{
       person: chelsea,
       ride: other_reimbursed_ride,
-      car_expenses: 2017,
-      food_expenses: 0
+      car_expenses: 2017
     }
 
     Repo.insert! %Reimbursement{
       person: chelsea,
       ride: other_reimbursed_ride,
-      car_expenses: 0,
       food_expenses: 2017
     }
 
