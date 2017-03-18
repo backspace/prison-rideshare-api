@@ -10,6 +10,11 @@ defmodule PrisonRideshare.RideView do
   has_many :children,
     type: "ride"
 
+  has_many :reimbursements,
+    type: "reimbursement",
+    include: true,
+    serializer: PrisonRideshare.ReimbursementView
+
   has_one :institution,
     include: true,
     serializer: PrisonRideshare.InstitutionView

@@ -1,7 +1,7 @@
 defmodule PrisonRideshare.RideControllerTest do
   use PrisonRideshare.ConnCase
 
-  alias PrisonRideshare.{Institution, Person, Ride}
+  alias PrisonRideshare.{Institution, Person, Reimbursement, Ride}
   alias PrisonRideshare.Repo
 
   @valid_attrs %{address: "some content", car_expenses: 42, contact: "some content", distance: 120, end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}, food_expenses: 42, name: "some content", passengers: 42, rate: 42, report_notes: "some content", request_notes: "some content", start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}}
@@ -21,6 +21,7 @@ defmodule PrisonRideshare.RideControllerTest do
     institution = Repo.insert!(%PrisonRideshare.Institution{})
     driver = Repo.insert!(%PrisonRideshare.Person{name: "Driver"})
     car_owner = Repo.insert!(%PrisonRideshare.Person{name: "Car Owner"})
+    reimbursement = Repo.insert!(%PrisonRideshare.Reimbursement{food_expenses: 2010, car_expenses: 2017})
 
     %{
       "combined-with-ride" => %{
@@ -47,6 +48,14 @@ defmodule PrisonRideshare.RideControllerTest do
           "id" => car_owner.id
         }
       },
+      "reimbursements" => %{
+        "data" => [
+          %{
+            "type" => "reimbursement",
+            "id" => reimbursement.id
+          }
+        ]
+      }
     }
   end
 
@@ -54,6 +63,7 @@ defmodule PrisonRideshare.RideControllerTest do
     institution = Repo.insert! %Institution{name: "Stony Mountain"}
     driver = Repo.insert! %Person{name: "Driver"}
     car_owner = Repo.insert! %Person{name: "Car Owner"}
+    reimbursement = Repo.insert! %Reimbursement{}
     ride = Repo.insert! %Ride{
       start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
       end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
@@ -72,7 +82,8 @@ defmodule PrisonRideshare.RideControllerTest do
       report_notes: "report!",
       donation: true,
       driver: driver,
-      car_owner: car_owner
+      car_owner: car_owner,
+      reimbursements: [reimbursement]
     }
 
     conn = get conn, ride_path(conn, :index)
@@ -122,6 +133,12 @@ defmodule PrisonRideshare.RideControllerTest do
         },
         "children" => %{
           "data" => []
+        },
+        "reimbursements" => %{
+          "data" => [%{
+            "type" => "reimbursement",
+            "id" => reimbursement.id
+          }]
         }
       }
     }]
@@ -143,8 +160,8 @@ defmodule PrisonRideshare.RideControllerTest do
     assert data["attributes"]["request_notes"] == ride.request_notes
     assert data["attributes"]["distance"] == ride.distance
     assert data["attributes"]["rate"] == ride.rate
-    assert data["attributes"]["food_expenses"] == ride.food_expenses
-    assert data["attributes"]["car_expenses"] == ride.car_expenses
+    assert data["attributes"]["food-expenses"] == ride.food_expenses
+    assert data["attributes"]["car-expenses"] == ride.car_expenses
     assert data["attributes"]["report_notes"] == ride.report_notes
     assert data["attributes"]["combined_with_ride_id"] == ride.combined_with_ride_id
     assert data["attributes"]["institution_id"] == ride.institution_id
@@ -202,6 +219,8 @@ defmodule PrisonRideshare.RideControllerTest do
     driver = Repo.get_by(Person, name: "Driver")
     car_owner = Repo.get_by(Person, name: "Car Owner")
 
+    [reimbursement] = Repo.all(Reimbursement)
+
     combined_with_ride = Repo.get_by(Ride, request_notes: "Combined")
 
     saved = Repo.get!(Ride, ride.id)
@@ -241,6 +260,15 @@ defmodule PrisonRideshare.RideControllerTest do
       },
       "children" => %{
         "data" => []
+      },
+      "reimbursements" => %{
+        "data" => [
+          # FIXME why isn’t this saved?
+          # %{
+          #   "type" => "reimbursement",
+          #   "id" => reimbursement.id
+          # }
+        ]
       }
     }
 

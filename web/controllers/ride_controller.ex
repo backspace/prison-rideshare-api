@@ -79,6 +79,6 @@ defmodule PrisonRideshare.RideController do
 
   defp preload(model) do
     model
-    |> Repo.preload([:institution, :driver, :car_owner, :children], force: true)
+    |> Repo.preload([:institution, :driver, :car_owner, :children, [reimbursements: :person]], force: true)
   end
 end
