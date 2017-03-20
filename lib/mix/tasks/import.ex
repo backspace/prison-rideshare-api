@@ -119,17 +119,21 @@ defmodule Mix.Tasks.Import do
         Mix.shell.info "Importing this report:"
         Mix.shell.info row
 
-        request = find_request_from_ride_string_and_names(uncombined_requests, ride_string, driver, car_owner)
+        if ride_string != "" do
+          request = find_request_from_ride_string_and_names(uncombined_requests, ride_string, driver, car_owner)
 
-        Ride.changeset(request, %{
-          distance: distance,
-          rate: round(String.to_float(rate) * 100),
-          food_expenses: (if food == "", do: 0, else: food),
-          car_expenses: (if car_expenses == "", do: 0, else: car_expenses),
-          report_notes: notes,
-          request_id: request.id
-        })
-        |> Repo.update!
+          Ride.changeset(request, %{
+            distance: distance,
+            rate: round(String.to_float(rate) * 100),
+            food_expenses: (if food == "", do: 0, else: food),
+            car_expenses: (if car_expenses == "", do: 0, else: car_expenses),
+            report_notes: notes,
+            request_id: request.id
+          })
+          |> Repo.update!
+        else
+          Mix.shell.info "Skipping empty ride string"
+        end
 
         acc
       else
