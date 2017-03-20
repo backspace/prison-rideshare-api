@@ -146,7 +146,7 @@ defmodule Mix.Tasks.Import do
     |> Stream.with_index
     |> Enum.each(fn {row, i} ->
       if i > 0 do
-        [name, _, amount] = row
+        [name, inserted_at, amount] = row
 
         Mix.shell.info "Importing this reïmbursement:"
         Mix.shell.info row
@@ -161,15 +161,15 @@ defmodule Mix.Tasks.Import do
         end
 
         if parsed_amount > 0 do
-          reimbursements = determine_reimbursements(person, parsed_amount)
+          reimbursements = determine_reimbursements(person, parsed_amount, parse_inserted_at(inserted_at))
 
-          Enum.each(reimbursements, fn reimbursement -> Repo.insert!(Reimbursement.changeset(%Reimbursement{}, reimbursement)) end)
+          Enum.each(reimbursements, fn reimbursement -> Repo.insert!(Reimbursement.import_changeset(%Reimbursement{}, reimbursement)) end)
         end
       end
     end)
   end
 
-  defp determine_reimbursements(person, amount) do
+  defp determine_reimbursements(person, amount, inserted_at) do
     person = Repo.preload(person, [:car_uses, :drivings, :reimbursements], force: true)
 
     unassigned_car_reimbursements = person.car_uses
@@ -207,6 +207,8 @@ defmodule Mix.Tasks.Import do
         Map.merge(amount_attribute, %{
           person_id: reimbursement.person.id,
           ride_id: reimbursement.ride.id,
+          inserted_at: inserted_at,
+          updated_at: inserted_at,
           processed: true
         })
       end)
@@ -224,6 +226,12 @@ defmodule Mix.Tasks.Import do
     case Timex.parse(full_string, "{M}/{D}/{YYYY} {h12}:{m}:{s} {AM}") do
       {:ok, parsed} -> parsed
       {:error, _} -> Timex.parse!(full_string, "{M}/{D}/{YYYY} {h12}:{m} {AM}")
+    end
+  end
+
+  defp parse_inserted_at(date) do
+    case Timex.parse(date, "{M}/{D}/{YYYY} {h24}:{m}:{s}") do
+      {:ok, parsed} -> parsed
     end
   end
 

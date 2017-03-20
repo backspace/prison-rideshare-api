@@ -22,4 +22,9 @@ defmodule PrisonRideshare.Reimbursement do
     # currently relied upon in import code. (And ride_id now too.)
     |> cast(params, [:car_expenses, :food_expenses, :person_id, :ride_id, :donation, :processed])
   end
+
+  def import_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:car_expenses, :food_expenses, :person_id, :ride_id, :donation, :processed, :inserted_at, :updated_at])
+  end
 end
