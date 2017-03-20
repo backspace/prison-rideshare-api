@@ -8,8 +8,12 @@ defmodule PrisonRideshare.DebtView do
   money_amount :car_expenses
 
   has_one :person,
-    type: "person"
+    type: "person",
+    include: true,
+    serializer: PrisonRideshare.PersonView
 
   has_many :rides,
-    type: "ride"
+    type: "ride",
+    include: true,
+    serializer: PrisonRideshare.RideView
 end
