@@ -189,7 +189,8 @@ defmodule Mix.Tasks.Import do
 
         Map.merge(amount_attribute, %{
           person_id: reimbursement.person.id,
-          ride_id: reimbursement.ride.id
+          ride_id: reimbursement.ride.id,
+          processed: true
         })
       end)
     else
