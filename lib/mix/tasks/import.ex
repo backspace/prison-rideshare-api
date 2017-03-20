@@ -182,10 +182,23 @@ defmodule Mix.Tasks.Import do
     |> Enum.reject(fn(ride) -> !ride.food_expenses || ride.food_expenses == ~M[0] || Enum.any?(ride.reimbursements, fn(reimbursement) -> reimbursement.food_expenses == ride.food_expenses end) end)
     |> Enum.map(fn(ride) -> %{person: person, ride: ride, amount: ride.food_expenses, type: :food} end)
 
+    Mix.shell.info "For person #{person.name}, looking for this amount #{amount}"
+    Mix.shell.info ""
+
+    Mix.shell.info "Unassigned car reimbursements:"
+    Enum.each(unassigned_car_reimbursements, fn(reimbursement) -> Mix.shell.info(Money.to_string(reimbursement.amount)) end)
+
+    Mix.shell.info "Unassigned food reimbursements:"
+    Enum.each(unassigned_food_reimbursements, fn(reimbursement) -> Mix.shell.info(Money.to_string(reimbursement.amount)) end)
+
     matching_unassigned_reimbursements = PrisonRideshare.DecomposeAmount.decompose_amount(Money.new(amount), unassigned_car_reimbursements ++ unassigned_food_reimbursements)
 
     if matching_unassigned_reimbursements do
+      Mix.shell.info "Found these matching reimbursements:"
+
       Enum.map(matching_unassigned_reimbursements, fn reimbursement ->
+        Mix.shell.info inspect(reimbursement)
+
         amount_attribute = case reimbursement.type do
           :car -> %{car_expenses: reimbursement.amount}
           :food -> %{food_expenses: reimbursement.amount}
