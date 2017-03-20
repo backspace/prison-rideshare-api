@@ -266,6 +266,8 @@ defmodule Mix.Tasks.Import do
 
   defp combine_requests(combined_requests, uncombined_requests) do
     Enum.each(combined_requests, fn combined ->
+      Mix.shell.info "Trying to find parent of combined ride #{inspect(combined)}"
+
       match = Enum.find(uncombined_requests, fn request ->
         request.driver_id == combined.driver_id &&
         request.car_owner_id == combined.car_owner_id &&
