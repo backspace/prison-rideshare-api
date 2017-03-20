@@ -7,6 +7,9 @@ defmodule PrisonRideshare.Reimbursement do
     belongs_to :person, PrisonRideshare.Person
     belongs_to :ride, PrisonRideshare.Ride
 
+    field :donation, :boolean, default: false
+    field :processed, :boolean, default: false
+
     timestamps()
   end
 
@@ -17,6 +20,6 @@ defmodule PrisonRideshare.Reimbursement do
     struct
     # FIXME the JaSerializer generator didn’t include person_id here, probably wrong but
     # currently relied upon in import code. (And ride_id now too.)
-    |> cast(params, [:car_expenses, :food_expenses, :person_id, :ride_id])
+    |> cast(params, [:car_expenses, :food_expenses, :person_id, :ride_id, :donation, :processed])
   end
 end

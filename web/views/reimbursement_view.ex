@@ -2,7 +2,7 @@ defmodule PrisonRideshare.ReimbursementView do
   use PrisonRideshare.Web, :view
   use JaSerializer.PhoenixView
 
-  attributes [:car_expenses, :food_expenses, :inserted_at, :updated_at]
+  attributes [:car_expenses, :food_expenses, :donation, :processed, :inserted_at, :updated_at]
 
   has_one :person,
     include: true,

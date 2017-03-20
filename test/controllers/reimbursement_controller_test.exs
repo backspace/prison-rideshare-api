@@ -4,7 +4,7 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
   alias PrisonRideshare.Reimbursement
   alias PrisonRideshare.Repo
 
-  @valid_attrs %{car_expenses: 42}
+  @valid_attrs %{car_expenses: 42, processed: true}
 
   setup do
     conn = build_conn()
@@ -34,13 +34,15 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    reimbursement = Repo.insert! %Reimbursement{car_expenses: 1919}
+    reimbursement = Repo.insert! %Reimbursement{car_expenses: 1919, donation: true, processed: true}
     conn = get conn, reimbursement_path(conn, :show, reimbursement)
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{reimbursement.id}"
     assert data["type"] == "reimbursement"
     assert data["attributes"]["car-expenses"] == reimbursement.car_expenses
     assert data["attributes"]["person_id"] == reimbursement.person_id
+    assert data["attributes"]["donation"]
+    assert data["attributes"]["processed"]
   end
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
@@ -64,7 +66,7 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
-    reimbursement = Repo.insert! %Reimbursement{}
+    reimbursement = Repo.insert! %Reimbursement{processed: false}
     conn = put conn, reimbursement_path(conn, :update, reimbursement), %{
       "meta" => %{},
       "data" => %{

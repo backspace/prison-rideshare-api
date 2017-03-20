@@ -11,6 +11,9 @@ defmodule PrisonRideshare.Repo.Migrations.CreateReimbursement do
       add :person_id, references(:people, on_delete: :nothing, type: :binary_id)
       add :ride_id, references(:rides, type: :binary_id)
 
+      add :donation, :boolean, default: false
+      add :processed, :boolean, default: false
+
       timestamps()
     end
     create index(:reimbursements, [:person_id])
