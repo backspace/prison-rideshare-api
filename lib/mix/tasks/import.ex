@@ -174,15 +174,15 @@ defmodule Mix.Tasks.Import do
 
     unassigned_car_reimbursements = person.car_uses
     |> Repo.preload([:reimbursements])
-    |> Enum.reject(fn(ride) -> !ride.car_expenses || ride.car_expenses == ~M[0] || Enum.any?(ride.reimbursements, fn(reimbursement) -> reimbursement.car_expenses == ride.car_expenses end) end)
+    |> Enum.reject(fn(ride) -> Ecto.DateTime.compare(ride.start, Ecto.DateTime.cast!(inserted_at)) == :gt || !ride.car_expenses || ride.car_expenses == ~M[0] || Enum.any?(ride.reimbursements, fn(reimbursement) -> reimbursement.car_expenses == ride.car_expenses end) end)
     |> Enum.map(fn(ride) -> %{person: person, ride: ride, amount: ride.car_expenses, type: :car} end)
 
     unassigned_food_reimbursements = person.drivings
     |> Repo.preload([:reimbursements])
-    |> Enum.reject(fn(ride) -> !ride.food_expenses || ride.food_expenses == ~M[0] || Enum.any?(ride.reimbursements, fn(reimbursement) -> reimbursement.food_expenses == ride.food_expenses end) end)
+    |> Enum.reject(fn(ride) -> Ecto.DateTime.compare(ride.start, Ecto.DateTime.cast!(inserted_at)) == :gt || !ride.food_expenses || ride.food_expenses == ~M[0] || Enum.any?(ride.reimbursements, fn(reimbursement) -> reimbursement.food_expenses == ride.food_expenses end) end)
     |> Enum.map(fn(ride) -> %{person: person, ride: ride, amount: ride.food_expenses, type: :food} end)
 
-    Mix.shell.info "For person #{person.name}, looking for this amount #{amount}"
+    Mix.shell.info "For person #{person.name}, looking for this amount #{amount} from #{inserted_at}"
     Mix.shell.info ""
 
     Mix.shell.info "Unassigned car reimbursements:"
