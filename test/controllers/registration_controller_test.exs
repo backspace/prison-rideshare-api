@@ -6,17 +6,21 @@ defmodule PrisonRideshare.RegistrationControllerTest do
   @valid_attrs %{
     email: "mike@example.com",
     password: "fqhi12hrrfasf",
-    password_confirmation: "fqhi12hrrfasf"
+    "password-confirmation": "fqhi12hrrfasf"
   }
 
   @invalid_attrs %{}
 
-  setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+  setup do
+    conn = build_conn()
+      |> put_req_header("accept", "application/vnd.api+json")
+      |> put_req_header("content-type", "application/vnd.api+json")
+
+    {:ok, conn: conn}
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
-    conn = post conn, registration_path(conn, :create), %{data: %{type: "user",
+    conn = post conn, registration_path(conn, :create), %{data: %{type: "users",
       attributes: @valid_attrs
       }}
     assert json_response(conn, 201)["data"]["id"]
@@ -25,7 +29,7 @@ defmodule PrisonRideshare.RegistrationControllerTest do
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     assert_error_sent 400, fn ->
-      conn = post conn, registration_path(conn, :create),  %{data: %{type: "user",
+      post conn, registration_path(conn, :create),  %{data: %{type: "user",
         attributes: @invalid_attrs
       }}
     end
