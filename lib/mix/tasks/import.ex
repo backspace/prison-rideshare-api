@@ -282,7 +282,8 @@ defmodule Mix.Tasks.Import do
         {nil, _} -> false
         {_, nil} -> false
         {rdriver, rowner} ->
-          String.contains?(time_and_date_string, formatted_request) &&
+          # This hideousness means XX Mar 1 won’t match XX Mar 15
+          String.contains?("#{time_and_date_string} ", "#{formatted_request} ") &&
           String.jaro_distance(driver, rdriver.name) > 0.8 &&
           String.jaro_distance(car_owner, rowner.name) > 0.8
       end
