@@ -5,7 +5,7 @@ defmodule PrisonRideshare.Institution do
     field :name, :string
     field :rate, Money.Ecto.Type
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc """

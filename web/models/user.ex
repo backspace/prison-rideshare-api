@@ -10,7 +10,7 @@ defmodule PrisonRideshare.User do
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc """

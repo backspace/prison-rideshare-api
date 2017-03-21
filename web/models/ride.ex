@@ -31,7 +31,7 @@ defmodule PrisonRideshare.Ride do
 
     has_many :reimbursements, PrisonRideshare.Reimbursement
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc """

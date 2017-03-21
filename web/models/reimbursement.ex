@@ -10,7 +10,7 @@ defmodule PrisonRideshare.Reimbursement do
     field :donation, :boolean, default: false
     field :processed, :boolean, default: false
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc """
