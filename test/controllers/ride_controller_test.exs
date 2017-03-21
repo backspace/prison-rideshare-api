@@ -106,8 +106,8 @@ defmodule PrisonRideshare.RideControllerTest do
         "request-notes" => ride.request_notes,
         "report-notes" => ride.report_notes,
         "donation" => true,
-        "inserted-at" => NaiveDateTime.to_iso8601(ride.inserted_at),
-        "updated-at" => NaiveDateTime.to_iso8601(ride.updated_at)
+        "inserted-at" => DateTime.to_iso8601(ride.inserted_at),
+        "updated-at" => DateTime.to_iso8601(ride.updated_at)
       },
       "relationships" => %{
         "institution" => %{
