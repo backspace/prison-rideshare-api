@@ -1,3 +1,5 @@
+import Money.Sigils
+
 defmodule PrisonRideshare.DebtControllerTest do
   use PrisonRideshare.ConnCase
 
@@ -109,6 +111,54 @@ defmodule PrisonRideshare.DebtControllerTest do
         }
       }
     }]
+  end
+
+  test "creates reimbursements for debts", %{conn: conn} do
+    curtis = Repo.insert! %Person{name: "Curtis"}
+    other = Repo.insert! %Person{}
+
+    ride = Repo.insert! %Ride{
+      driver: curtis,
+      car_owner: curtis,
+      food_expenses: 100,
+      car_expenses: 1000
+    }
+
+    food_ride = Repo.insert! %Ride{
+      driver: curtis,
+      car_owner: curtis,
+      food_expenses: 200,
+      car_expenses: 0
+    }
+
+    Repo.insert! %Ride{
+      driver: curtis,
+      car_owner: other,
+      food_expenses: 0,
+      car_expenses: 100
+    }
+
+    conn = delete conn, debt_path(conn, :delete, curtis)
+
+    [food_reimbursement_one, car_reimbursement, food_reimbursement_two] = Repo.all(Reimbursement)
+    |> Repo.preload([:ride, :person])
+
+    assert food_reimbursement_one.ride_id == ride.id
+    assert food_reimbursement_one.person == curtis
+    assert food_reimbursement_one.food_expenses == ~M[100]
+    assert food_reimbursement_one.car_expenses == ~M[0]
+
+    assert car_reimbursement.ride_id == ride.id
+    assert car_reimbursement.person == curtis
+    assert car_reimbursement.food_expenses == ~M[0]
+    assert car_reimbursement.car_expenses == ~M[1000]
+
+    assert food_reimbursement_two.ride_id == food_ride.id
+    assert food_reimbursement_two.person == curtis
+    assert food_reimbursement_two.food_expenses == ~M[200]
+    assert food_reimbursement_two.car_expenses == ~M[0]
+
+    assert response(conn, 204)
   end
 
   defp person_relationship_json(person) do

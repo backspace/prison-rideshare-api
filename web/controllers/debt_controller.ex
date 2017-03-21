@@ -1,13 +1,12 @@
 defmodule PrisonRideshare.DebtController do
   use PrisonRideshare.Web, :controller
 
-  alias PrisonRideshare.Person
+  alias PrisonRideshare.{Person, Reimbursement}
 
   plug :scrub_params, "data" when action in [:create, :update]
 
   def index(conn, _params) do
-    ride_preloads = [:car_owner, :driver, :children, :institution, reimbursements: [:person]]
-    people = Repo.all(Person) |> Repo.preload([drivings: ride_preloads, car_uses: ride_preloads])
+    people = Repo.all(Person) |> Repo.preload([drivings: ride_preloads(), car_uses: ride_preloads()])
 
     debts = Enum.map(people, fn person ->
       rides_and_expenses = collect_rides_with_expenses(person)
@@ -20,6 +19,34 @@ defmodule PrisonRideshare.DebtController do
     |> Enum.reject(fn person_debt -> person_debt.food_expenses == Money.new(0) && person_debt.car_expenses == Money.new(0) end)
 
     render(conn, "index.json-api", data: debts)
+  end
+
+  def delete(conn, %{"id" => id}) do
+    person = Repo.get!(Person, id) |> Repo.preload([drivings: ride_preloads(), car_uses: ride_preloads()])
+
+    rides_and_expenses = collect_rides_with_expenses(person)
+
+    Enum.each(rides_and_expenses.rides, fn(ride) ->
+      if ride.driver_id == person.id && ride.food_expenses.amount > 0 do
+        changeset = Reimbursement.changeset(%Reimbursement{}, %{
+          person_id: person.id,
+          ride_id: ride.id,
+          food_expenses: ride.food_expenses
+        })
+        Repo.insert!(changeset)
+      end
+
+      if ride.car_owner_id == person.id && ride.car_expenses.amount > 0 do
+        changeset = Reimbursement.changeset(%Reimbursement{}, %{
+          person_id: person.id,
+          ride_id: ride.id,
+          car_expenses: ride.car_expenses
+        })
+        Repo.insert!(changeset)
+      end
+    end)
+
+    send_resp(conn, :no_content, "")
   end
 
   defp collect_rides_with_expenses(person) do
@@ -53,5 +80,9 @@ defmodule PrisonRideshare.DebtController do
 
   defp sum_money(values) do
     Enum.reduce(values, Money.new(0), fn value, sum -> Money.add(sum, value) end)
+  end
+
+  defp ride_preloads do
+    [:car_owner, :driver, :children, :institution, reimbursements: [:person]]
   end
 end
