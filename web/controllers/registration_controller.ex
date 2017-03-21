@@ -6,7 +6,7 @@ defmodule PrisonRideshare.RegistrationController do
   def create(conn, %{"data" => %{"type" => "users",
   	"attributes" => %{"email" => email,
   	  "password" => password,
-  	  "password-confirmation" => password_confirmation}}}) do
+  	  "password_confirmation" => password_confirmation}}}) do
 
     changeset = User.changeset %User{}, %{email: email,
       password_confirmation: password_confirmation,
@@ -22,5 +22,15 @@ defmodule PrisonRideshare.RegistrationController do
         |> put_status(:unprocessable_entity)
         |> render(PrisonRideshare.ChangesetView, "show.json-api", data: changeset)
     end
+  end
+
+  # FIXME this is only here because I‘ve given up on making the accompanying test submit with dash instead of underscore’
+  def create(conn, %{"data" => %{"type" => "users",
+    "attributes" => %{"email" => email,
+      "password" => password,
+      "password-confirmation" => password_confirmation}}}) do
+    create(conn, %{"data" => %{"type" => "users",
+      "attributes" => %{"email" => email,
+        "password" => password, "password_confirmation" => password_confirmation}}})
   end
 end
