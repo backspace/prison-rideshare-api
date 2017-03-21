@@ -16,11 +16,11 @@ defmodule PrisonRideshare.RegistrationController do
       {:ok, user} ->
         conn
         |> put_status(:created)
-        |> render(PrisonRideshare.UserView, "show.json", user: user)
+        |> render(PrisonRideshare.UserView, "show.json-api", data: user)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(PrisonRideshare.ChangesetView, "error.json", changeset: changeset)
+        |> render(PrisonRideshare.ChangesetView, "show.json-api", data: changeset)
     end
   end
 end
