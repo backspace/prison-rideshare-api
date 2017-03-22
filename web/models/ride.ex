@@ -18,6 +18,7 @@ defmodule PrisonRideshare.Ride do
     field :food_expenses, Money.Ecto.Type, default: 0
     field :car_expenses, Money.Ecto.Type, default: 0
     field :report_notes, :string
+    field :donation, :boolean, default: false
 
     # FIXME now that both ends of this seem necessary, the naming is awkward.
     belongs_to :combined_with, PrisonRideshare.Ride, foreign_key: :combined_with_ride_id
