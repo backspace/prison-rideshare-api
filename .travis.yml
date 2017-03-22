@@ -1,6 +1,7 @@
 language: elixir
 elixir:
   - 1.4.2
+dist: trusty
 
 before_install:
   # FIXME Creates an expected file excluded by .gitignore
