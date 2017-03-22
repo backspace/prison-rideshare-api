@@ -19,4 +19,4 @@ deploy:
 # FIXME this is less than ideal if non-sandbox deployments happen but heroku pg:reset won’t run in the Heroku shell!
 after_deploy:
   - "heroku pg:reset DATABASE -a prison-rideshare-api-sandbox --confirm prison-rideshare-api-sandbox"
-  - "heroku run -a prison-rideshare-api-sandbox mix ecto.migrate && mix run priv/repo/seeds.exs"
+  - "heroku run -a prison-rideshare-api-sandbox 'MIX_ENV=prod mix ecto.migrate && mix run priv/repo/seeds.exs'"
