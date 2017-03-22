@@ -14,7 +14,8 @@ deploy:
   on:
     repo: backspace/prison-rideshare-api
     branch: primary
-  run:
-    - "heroku pg:reset DATABASE"
-    - "mix ecto.migrate"
-    - "mix run priv/repo/seeds.exs"
+
+# FIXME this is less than ideal if non-sandbox deployments happen but heroku pg:reset won’t run in the Heroku shell!
+after_deploy:
+  - "heroku pg:reset $(heroku config:get DATABASE_URL -a prison-rideshare-api-sandbox)"
+  - "heroku run mix ecto.migrate && mix run priv/repo/seeds.exs"
