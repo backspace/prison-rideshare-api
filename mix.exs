@@ -50,8 +50,8 @@ defmodule PrisonRideshare.Mixfile do
      {:csv, "~> 1.4.2"},
      {:guardian, "~> 0.14"},
      {:ja_serializer, "~> 0.12.0"},
-     {:money, "~> 1.2.0"},
-     {:timex, "~> 3.0"},
+     {:money, "~> 1.2.1"},
+     {:timex, "~> 3.1.13"},
 
      {:blacksmith, "~> 0.1"}]
   end
