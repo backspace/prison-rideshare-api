@@ -14,3 +14,7 @@ deploy:
   on:
     repo: backspace/prison-rideshare-api
     branch: primary
+  run:
+    - "heroku pg:reset DATABASE"
+    - "mix ecto.migrate"
+    - "mix run priv/repo/seeds.exs"
