@@ -46,10 +46,10 @@ defmodule PrisonRideshare.Mixfile do
      {:cowboy, "~> 1.0"},
 
      {:comeonin, "~> 3.0"},
-     {:cors_plug, "~> 1.1"},
+     {:cors_plug, "~> 1.2.1"},
      {:csv, "~> 1.4.2"},
      {:guardian, "~> 0.14"},
-     {:ja_serializer, "~> 0.11.2"},
+     {:ja_serializer, "~> 0.12.0"},
      {:money, "~> 1.2.0"},
      {:timex, "~> 3.0"},
 
