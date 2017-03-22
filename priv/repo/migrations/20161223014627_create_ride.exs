@@ -19,7 +19,6 @@ defmodule PrisonRideshare.Repo.Migrations.CreateRide do
       add :food_expenses, :integer
       add :car_expenses, :integer
       add :report_notes, :string
-      add :donation, :boolean, default: false
 
       add :combined_with_ride_id, references(:rides, type: :binary_id)
 
