@@ -5,7 +5,7 @@ defmodule PrisonRideshare.DecomposeAmount do
     if match do
       [match]
     else
-      mm = Enum.reduce_while(components, [], fn component, acc ->
+      mm = Enum.reduce_while(components, [], fn component, _acc ->
         if component.amount.amount < amount.amount do
           components_without_this_one = components -- [component]
           reduced_amount = Money.subtract(amount, component.amount)
