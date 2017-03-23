@@ -107,11 +107,12 @@ Repo.insert! %Reimbursement{
   food_expenses: ~M[1414]
 }
 
-Repo.insert! %Reimbursement{
-  ride: lastMonthRide,
-  person: sara,
-  car_expenses: ~M[100]
-}
+# FIXME restore this when partial reimbursements make sense
+# Repo.insert! %Reimbursement{
+#   ride: lastMonthRide,
+#   person: sara,
+#   car_expenses: ~M[100]
+# }
 
 cancelledRide = Lol.createRide(%{
   relative_start: [days: -11, hours: 9],
