@@ -1,6 +1,5 @@
 defmodule PrisonRideshare.Ride do
   use PrisonRideshare.Web, :model
-  import Ecto.Query
 
   schema "rides" do
     field :start, Ecto.DateTime
@@ -48,11 +47,6 @@ defmodule PrisonRideshare.Ride do
     |> cast(params, [:distance, :food_expenses, :report_notes, :donation])
     |> validate_required([:distance, :food_expenses])
     |> calculate_car_expenses(struct)
-  end
-
-  def sorted(query) do
-    from r in query,
-    order_by: [r.start]
   end
 
   defp calculate_car_expenses(%{valid?: false} = changeset, _), do: changeset

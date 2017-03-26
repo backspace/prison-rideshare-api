@@ -19,9 +19,4 @@ defmodule PrisonRideshare.Person do
     |> cast(params, [:name])
     |> validate_required([:name])
   end
-
-  def sorted(query) do
-    from r in query,
-    order_by: [r.name]
-  end
 end
