@@ -51,9 +51,11 @@ defmodule PrisonRideshare.RideController do
     ride = Repo.get!(Ride, id)
     |> preload
 
+    fixed_params = rename_combined_with(Params.to_attributes(data))
+
     {changeset, conn} = case conn do
-      %{private: %{guardian_default_resource: %{admin: true}}} -> {Ride.changeset(ride, Params.to_attributes(data)), conn}
-      _ -> {Ride.report_changeset(ride, Params.to_attributes(data)), put_view(conn, PrisonRideshare.UnauthRideView)}
+      %{private: %{guardian_default_resource: %{admin: true}}} -> {Ride.changeset(ride, fixed_params), conn}
+      _ -> {Ride.report_changeset(ride, fixed_params), put_view(conn, PrisonRideshare.UnauthRideView)}
     end
 
     case Repo.update(changeset) do
@@ -80,5 +82,10 @@ defmodule PrisonRideshare.RideController do
   defp preload(model) do
     model
     |> Repo.preload([:institution, :driver, :car_owner, :children, [reimbursements: :person]], force: true)
+  end
+
+  # FIXME figure out where this magic is broken
+  defp rename_combined_with(params) do
+    Map.put(params, "combined_with_ride_id", params["combined_with_id"])
   end
 end

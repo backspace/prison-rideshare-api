@@ -24,7 +24,7 @@ defmodule PrisonRideshare.RideControllerTest do
     reimbursement = Repo.insert!(%PrisonRideshare.Reimbursement{food_expenses: 2010, car_expenses: 2017})
 
     %{
-      "combined-with-ride" => %{
+      "combined-with" => %{
         "data" => %{
           "type" => "ride",
           "id" => combined_with_ride.id
