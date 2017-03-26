@@ -28,19 +28,23 @@ defmodule PrisonRideshare.DebtController do
 
     Enum.each(rides_and_expenses.rides, fn(ride) ->
       if ride.driver_id == person.id && ride.food_expenses.amount > 0 do
+        food_expenses_without_reimbursements = Money.subtract(ride.food_expenses, total_reimbursement_attributes(ride.reimbursements, :food_expenses))
+
         changeset = Reimbursement.changeset(%Reimbursement{}, %{
           person_id: person.id,
           ride_id: ride.id,
-          food_expenses: ride.food_expenses
+          food_expenses: food_expenses_without_reimbursements
         })
         Repo.insert!(changeset)
       end
 
       if ride.car_owner_id == person.id && ride.car_expenses.amount > 0 do
+        car_expenses_without_reimbursements = Money.subtract(ride.car_expenses, total_reimbursement_attributes(ride.reimbursements, :car_expenses))
+
         changeset = Reimbursement.changeset(%Reimbursement{}, %{
           person_id: person.id,
           ride_id: ride.id,
-          car_expenses: ride.car_expenses
+          car_expenses: car_expenses_without_reimbursements
         })
         Repo.insert!(changeset)
       end

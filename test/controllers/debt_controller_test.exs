@@ -138,14 +138,20 @@ defmodule PrisonRideshare.DebtControllerTest do
       car_expenses: 100
     }
 
+    Repo.insert! %Reimbursement{
+      person: curtis,
+      food_expenses: 5,
+      ride: ride
+    }
+
     conn = delete conn, debt_path(conn, :delete, curtis)
 
-    [food_reimbursement_one, car_reimbursement, food_reimbursement_two] = Repo.all(Reimbursement)
+    [_existingreimbursement, food_reimbursement_one, car_reimbursement, food_reimbursement_two] = Repo.all(Reimbursement)
     |> Repo.preload([:ride, :person])
 
     assert food_reimbursement_one.ride_id == ride.id
     assert food_reimbursement_one.person == curtis
-    assert food_reimbursement_one.food_expenses == ~M[100]
+    assert food_reimbursement_one.food_expenses == ~M[95]
     assert food_reimbursement_one.car_expenses == ~M[0]
 
     assert car_reimbursement.ride_id == ride.id
