@@ -70,6 +70,12 @@ nextWeekRide = Lol.createRide(%{
   institution: milner_ridge
 })
 
+similarRide = Lol.createRide(%{
+  relative_start: [days: 7, hours: 15, minutes: 15],
+  relative_end: [hours: 3, minutes: 30],
+  institution: milner_ridge
+})
+
 Lol.createRide(%{
   relative_start: [days: 7, hours: 15],
   relative_end: [hours: 3, minutes: 15],
