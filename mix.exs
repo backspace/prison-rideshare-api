@@ -10,7 +10,8 @@ defmodule PrisonRideshare.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
-     deps: deps()]
+     deps: deps(),
+     test_coverage: [tool: ExCoveralls]]
   end
 
   # Configuration for the OTP application.
@@ -53,7 +54,8 @@ defmodule PrisonRideshare.Mixfile do
      {:money, "~> 1.2.1"},
      {:timex, "~> 3.1.13"},
 
-     {:blacksmith, "~> 0.1"}]
+     {:blacksmith, "~> 0.1"},
+     {:excoveralls, "~> 0.6", only: :test}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
