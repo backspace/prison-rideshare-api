@@ -44,6 +44,16 @@ defmodule PrisonRideshare.UserControllerTest do
     assert data["attributes"]["admin"]
   end
 
+  test "returns a 401 if the token is unrecognised" do
+    conn = build_conn()
+      |> put_req_header("accept", "application/vnd.api+json")
+      |> put_req_header("content-type", "application/vnd.api+json")
+      |> put_req_header("authorization", "Bearer XXX")
+
+    conn = get conn, user_path(conn, :current)
+    assert json_response(conn, 401)
+  end
+
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
     assert_error_sent 404, fn ->
       get conn, user_path(conn, :show, "00000000-0000-0000-0000-000000000000")
