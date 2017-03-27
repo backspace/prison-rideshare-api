@@ -152,7 +152,7 @@ Repo.insert! %Reimbursement{
   food_expenses: ~M[999]
 }
 
-Repo.insert! %Reimbursement%{
+Repo.insert! %Reimbursement{
   ride: reimbursedRide,
   person: sara,
   car_expenses: ~M[770]
