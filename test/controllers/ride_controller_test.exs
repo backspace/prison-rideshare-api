@@ -219,7 +219,7 @@ defmodule PrisonRideshare.RideControllerTest do
     driver = Repo.get_by(Person, name: "Driver")
     car_owner = Repo.get_by(Person, name: "Car Owner")
 
-    [reimbursement] = Repo.all(Reimbursement)
+    [_reimbursement] = Repo.all(Reimbursement)
 
     combined_with_ride = Repo.get_by(Ride, request_notes: "Combined")
 
