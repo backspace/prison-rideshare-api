@@ -134,3 +134,26 @@ yesterdayRide = Lol.createRide(%{
   driver: chelsea,
   car_owner: chelsea
 })
+
+reimbursedRide = Lol.createRide(%{
+  relative_start: [days: -45, hours: 9],
+  relative_end: [hours: 2, minutes: 30],
+  institution: headingley,
+  distance: 22,
+  food_expenses: ~M[999],
+  car_expenses: ~M[770],
+  driver: sara,
+  car_owner: sara
+})
+
+Repo.insert! %Reimbursement{
+  ride: reimbursedRide,
+  person: sara,
+  food_expenses: ~M[999]
+}
+
+Repo.insert! %Reimbursement%{
+  ride: reimbursedRide,
+  person: sara,
+  car_expenses: ~M[770]
+}
