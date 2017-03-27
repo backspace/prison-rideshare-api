@@ -8,6 +8,8 @@ defmodule PrisonRideshare.ReimbursementView do
     include: true,
     serializer: PrisonRideshare.PersonView
 
+  has_one :ride, type: "ride", identifiers: :always
+
   money_amount :car_expenses
   money_amount :food_expenses
 end

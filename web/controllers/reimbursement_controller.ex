@@ -8,7 +8,7 @@ defmodule PrisonRideshare.ReimbursementController do
 
   def index(conn, _params) do
     reimbursements = Repo.all(Reimbursement)
-    |> Repo.preload(:person)
+    |> Repo.preload([:person, :ride])
     render(conn, "index.json-api", data: reimbursements)
   end
 
@@ -20,7 +20,7 @@ defmodule PrisonRideshare.ReimbursementController do
         conn
         |> put_status(:created)
         |> put_resp_header("location", reimbursement_path(conn, :show, reimbursement))
-        |> render("show.json-api", data: reimbursement |> Repo.preload(:person))
+        |> render("show.json-api", data: reimbursement |> Repo.preload([:person, :ride]))
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -30,13 +30,13 @@ defmodule PrisonRideshare.ReimbursementController do
 
   def show(conn, %{"id" => id}) do
     reimbursement = Repo.get!(Reimbursement, id)
-    |> Repo.preload(:person)
+    |> Repo.preload([:person, :ride])
     render(conn, "show.json-api", data: reimbursement)
   end
 
   def update(conn, %{"id" => id, "data" => data = %{"type" => "reimbursements", "attributes" => _reimbursement_params}}) do
     reimbursement = Repo.get!(Reimbursement, id)
-    |> Repo.preload(:person)
+    |> Repo.preload([:person, :ride])
     changeset = Reimbursement.changeset(reimbursement, Params.to_attributes(data))
 
     case Repo.update(changeset) do
