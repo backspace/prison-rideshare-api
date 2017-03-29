@@ -157,3 +157,30 @@ Repo.insert! %Reimbursement{
   person: sara,
   car_expenses: ~M[770]
 }
+
+processedRide = Lol.createRide(%{
+  relative_start: [days: -50, hours: 8],
+  relative_end: [hours: 2, minutes: 15],
+  institution: headingley,
+  distance: 25,
+  food_expenses: ~M[500],
+  car_expenses: ~M[700],
+  driver: sara,
+  car_owner: sara
+})
+
+Repo.insert! %Reimbursement{
+  ride: processedRide,
+  person: sara,
+  food_expenses: ~M[500],
+  processed: true,
+  donation: true
+}
+
+Repo.insert! %Reimbursement{
+  ride: processedRide,
+  person: sara,
+  car_expenses: ~M[700],
+  processed: true,
+  donation: true
+}
