@@ -37,7 +37,7 @@ defmodule Mix.Tasks.Import do
       if i > 0 do
         %{institution_name_to_model: institution_name_to_model, person_name_to_model: person_name_to_model, request_row_number_to_model: request_row_number_to_model, combined_requests: combined_requests} = acc
 
-        [_, date, institution, start_time, end_time, address, name, contact, passengers, _, combined, driver, car_owner, notes | _] = row
+        [_, date, institution, start_time, end_time, address, name, contact, passengers_and_notes, _, combined, driver, car_owner, rest_of_notes | _] = row
 
         Mix.shell.info "Importing this request:"
         Mix.shell.info row
@@ -61,6 +61,13 @@ defmodule Mix.Tasks.Import do
         matching_car_owner = String.trim(String.downcase(car_owner))
 
         {person_name_to_model, car_owner_model} = maybe_add_person(person_name_to_model, matching_car_owner, car_owner)
+
+        [_, passengers, passenger_notes] = Regex.run(~r/(\d*)(.*)/, passengers_and_notes)
+
+        notes = case passenger_notes do
+          "" -> rest_of_notes
+          _ -> "#{passenger_notes}|#{rest_of_notes}"
+        end
 
         request_attrs = %{}
         |> Map.put(:address, (if address != "", do: address, else: "MISSING"))

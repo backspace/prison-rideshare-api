@@ -29,7 +29,7 @@ defmodule Mix.Tasks.ImportTest do
     assert req1.name == "Albert"
     assert req1.contact == "2045551919"
     assert req1.passengers == 2
-    assert req1.request_notes == "We need you"
+    assert req1.request_notes == " + walker|We need you"
     assert req1.driver.name == "Lucy Parsons"
     assert req1.car_owner.name == "Oliver Gathing"
     assert req1.enabled
