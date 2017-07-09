@@ -7,3 +7,5 @@ Timestamp,date,institution, start of visit,end of visit,pickup address,name,cont
 8/16/2016 11:55:56,8/23/2016,Stony Mountian,8:15:00 AM,10:30:00 AM,,Bobby,2045552010,1,XX,,,,by rider
 8/16/2016 11:55:56,8/23/2016,Stony Mountian,8:15:00 AM,10:30:00 AM,,Bobby,2045552010,1,XX,,,,no car
 8/16/2016 11:55:56,8/23/2016,Stony Mountian,8:15:00 AM,10:30:00 AM,,Bobby,2045552010,1,XX,,,,no driver
+8/16/2016 11:55:56,8/23/2016,Stony Mountian,8:15:00 AM,10:30:00 AM,,Bobby,2045552010,1,XX,,no driver found,,
+8/16/2016 11:55:56,8/23/2016,Stony Mountian,8:15:00 AM,10:30:00 AM,,Bobby,2045552010,1,XX,,found different ride,,

@@ -17,7 +17,7 @@ defmodule Mix.Tasks.ImportTest do
     assert i2.name == "stony mountain"
     assert i2.rate == ~M[35]
 
-    [req1, reqCombinedWith2, req2, req3, req4, req5, req6, req7] = Ecto.Query.order_by(Ride, :inserted_at)
+    [req1, reqCombinedWith2, req2, req3, req4, req5, req6, req7, req8, req9] = Ecto.Query.order_by(Ride, :inserted_at)
     |> Repo.all
     |> Repo.preload(:driver)
     |> Repo.preload(:car_owner)
@@ -64,6 +64,9 @@ defmodule Mix.Tasks.ImportTest do
     assert req5.cancellation_reason == "visitor"
     assert req6.cancellation_reason == "no car"
     assert req7.cancellation_reason == "no driver"
+
+    assert req8.cancellation_reason == "no driver"
+    assert req9.cancellation_reason == "visitor"
 
     [p1, p2, p3] = Repo.all(Person)
     [rei1, rei2, rei3, rei4] = Repo.all(Reimbursement)
