@@ -91,7 +91,7 @@ defmodule PrisonRideshare.PersonControllerTest do
     [version] = Repo.all PrisonRideshare.Whatwasit.Version
 
     assert version.action == "update"
-    assert version.object["name"] == "oldname"
+    assert version.object["name"] == "some content"
     assert version.whodoneit_name == "Name?"
   end
 

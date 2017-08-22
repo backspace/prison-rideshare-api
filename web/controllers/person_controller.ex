@@ -34,9 +34,9 @@ defmodule PrisonRideshare.PersonController do
 
   def update(conn, %{"id" => id, "data" => data = %{"type" => "people", "attributes" => _person_params}}) do
     person = Repo.get!(Person, id)
-    changeset = Person.changeset(person, Params.to_attributes(data), whodoneit(conn))
+    changeset = Person.changeset(person, Params.to_attributes(data))
 
-    case Repo.update(changeset) do
+    case Repo.update_with_version(changeset, whodoneit(conn)) do
       {:ok, person} ->
         render(conn, "show.json-api", data: person)
       {:error, changeset} ->
@@ -47,12 +47,11 @@ defmodule PrisonRideshare.PersonController do
   end
 
   def delete(conn, %{"id" => id}) do
-    changeset = Repo.get!(Person, id)
-    |> Person.changeset(%{}, whodoneit(conn))
+    person = Repo.get!(Person, id)
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Repo.delete!(changeset)
+    Repo.delete_with_version(person, whodoneit(conn))
 
     send_resp(conn, :no_content, "")
   end

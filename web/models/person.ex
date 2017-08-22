@@ -1,6 +1,5 @@
 defmodule PrisonRideshare.Person do
   use PrisonRideshare.Web, :model
-  use Whatwasit
 
   schema "people" do
     field :name, :string
@@ -15,10 +14,9 @@ defmodule PrisonRideshare.Person do
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
-  def changeset(struct, params \\ %{}, opts \\ []) do
+  def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:name])
     |> validate_required([:name])
-    |> prepare_version(opts)
   end
 end
