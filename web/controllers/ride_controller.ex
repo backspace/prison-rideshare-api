@@ -91,6 +91,6 @@ defmodule PrisonRideshare.RideController do
 
   defp whodoneit(conn) do
     #user = Guardian.Plug.current_resource(conn)
-    [whodoneit: :none, whodoneit_name: "Name?"]
+    [whodoneit: :none, whodoneit_name: to_string(:inet_parse.ntoa(conn.remote_ip))]
   end
 end
