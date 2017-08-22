@@ -283,6 +283,7 @@ defmodule Mix.Tasks.Import do
       |> Repo.preload(:car_owner)
 
       formatted_request = format_request_without_institution(request)
+      Mix.shell.info "Comparing to #{formatted_request}"
 
       # This is a mess but the original data has integrity problems.
       case {request.driver, request.car_owner} do
