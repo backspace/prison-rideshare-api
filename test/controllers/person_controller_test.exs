@@ -52,6 +52,12 @@ defmodule PrisonRideshare.PersonControllerTest do
 
     assert json_response(conn, 201)["data"]["id"]
     assert Repo.get_by(Person, @valid_attrs)
+
+    [version] = Repo.all PrisonRideshare.Whatwasit.Version
+
+    assert version.action == "insert"
+    assert version.object["name"] == "some content"
+    assert version.whodoneit_name == "Name?"
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do

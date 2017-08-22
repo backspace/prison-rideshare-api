@@ -14,7 +14,7 @@ defmodule PrisonRideshare.PersonController do
   def create(conn, %{"data" => data = %{"type" => "people", "attributes" => _person_params}}) do
     changeset = Person.changeset(%Person{}, Params.to_attributes(data))
 
-    case Repo.insert(changeset) do
+    case Repo.insert_with_version(changeset, whodoneit(conn)) do
       {:ok, person} ->
         conn
         |> put_status(:created)
