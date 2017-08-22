@@ -52,7 +52,7 @@ defmodule Lol do
   end
 end
 
-curtis = Lol.createPerson("Curtis")
+cnuth = Lol.createPerson("Cnuth")
 sara = Lol.createPerson("Sara Ahmed")
 chelsea = Lol.createPerson("Chelsea Manning")
 
@@ -60,7 +60,7 @@ tomorrowRide = Lol.createRide(%{
   relative_start: [days: 1, hours: 13, minutes: 30],
   relative_end: [hours: 1, minutes: 30],
   institution: headingley,
-  driver: curtis,
+  driver: cnuth,
   car_owner: sara,
   request_notes: "This ride is in the future!"
 })

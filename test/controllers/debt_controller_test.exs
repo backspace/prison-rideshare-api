@@ -16,19 +16,19 @@ defmodule PrisonRideshare.DebtControllerTest do
   end
 
   test "lists people with outstanding debts and ignores settled debts", %{conn: conn} do
-    curtis = Repo.insert! %Person{name: "Curtis"}
+    cnuth = Repo.insert! %Person{name: "Cnuth"}
     sara = Repo.insert! %Person{name: "Sara Ahmed"}
     chelsea = Repo.insert! %Person{name: "Chelsea Manning"}
 
     unreimbursed_ride = Repo.insert! %Ride{
-      driver: curtis,
-      car_owner: curtis,
+      driver: cnuth,
+      car_owner: cnuth,
       food_expenses: 100,
       car_expenses: 1000
     }
 
-    curtis_ride_sara_car = Repo.insert! %Ride{
-      driver: curtis,
+    cnuth_ride_sara_car = Repo.insert! %Ride{
+      driver: cnuth,
       car_owner: sara,
       food_expenses: 50,
       car_expenses: 44203
@@ -50,7 +50,7 @@ defmodule PrisonRideshare.DebtControllerTest do
 
     Repo.insert! %Reimbursement{
       person: sara,
-      ride: curtis_ride_sara_car,
+      ride: cnuth_ride_sara_car,
       car_expenses: 42284
     }
 
@@ -80,18 +80,18 @@ defmodule PrisonRideshare.DebtControllerTest do
 
     conn = get conn, debt_path(conn, :index)
     assert json_response(conn, 200)["data"] == [%{
-      "id" => curtis.id,
+      "id" => cnuth.id,
       "type" => "debt",
       "attributes" => %{
         "food-expenses" => 150,
         "car-expenses" => 1000
       },
       "relationships" => %{
-        "person" => person_relationship_json(curtis),
+        "person" => person_relationship_json(cnuth),
         "rides" => %{
           "data" => [
             ride_relationship_json(unreimbursed_ride),
-            ride_relationship_json(curtis_ride_sara_car)
+            ride_relationship_json(cnuth_ride_sara_car)
           ]
         }
       }
@@ -106,7 +106,7 @@ defmodule PrisonRideshare.DebtControllerTest do
         "person" => person_relationship_json(sara),
         "rides" => %{
           "data" => [
-            ride_relationship_json(curtis_ride_sara_car)
+            ride_relationship_json(cnuth_ride_sara_car)
           ]
         }
       }
@@ -114,53 +114,53 @@ defmodule PrisonRideshare.DebtControllerTest do
   end
 
   test "creates reimbursements for debts", %{conn: conn} do
-    curtis = Repo.insert! %Person{name: "Curtis"}
+    cnuth = Repo.insert! %Person{name: "Cnuth"}
     other = Repo.insert! %Person{}
 
     ride = Repo.insert! %Ride{
-      driver: curtis,
-      car_owner: curtis,
+      driver: cnuth,
+      car_owner: cnuth,
       food_expenses: 100,
       car_expenses: 1000
     }
 
     food_ride = Repo.insert! %Ride{
-      driver: curtis,
-      car_owner: curtis,
+      driver: cnuth,
+      car_owner: cnuth,
       food_expenses: 200,
       car_expenses: 0
     }
 
     Repo.insert! %Ride{
-      driver: curtis,
+      driver: cnuth,
       car_owner: other,
       food_expenses: 0,
       car_expenses: 100
     }
 
     Repo.insert! %Reimbursement{
-      person: curtis,
+      person: cnuth,
       food_expenses: 5,
       ride: ride
     }
 
-    conn = delete conn, debt_path(conn, :delete, curtis)
+    conn = delete conn, debt_path(conn, :delete, cnuth)
 
     [_existingreimbursement, food_reimbursement_one, car_reimbursement, food_reimbursement_two] = Repo.all(Reimbursement)
     |> Repo.preload([:ride, :person])
 
     assert food_reimbursement_one.ride_id == ride.id
-    assert food_reimbursement_one.person == curtis
+    assert food_reimbursement_one.person == cnuth
     assert food_reimbursement_one.food_expenses == ~M[95]
     assert food_reimbursement_one.car_expenses == ~M[0]
 
     assert car_reimbursement.ride_id == ride.id
-    assert car_reimbursement.person == curtis
+    assert car_reimbursement.person == cnuth
     assert car_reimbursement.food_expenses == ~M[0]
     assert car_reimbursement.car_expenses == ~M[1000]
 
     assert food_reimbursement_two.ride_id == food_ride.id
-    assert food_reimbursement_two.person == curtis
+    assert food_reimbursement_two.person == cnuth
     assert food_reimbursement_two.food_expenses == ~M[200]
     assert food_reimbursement_two.car_expenses == ~M[0]
 
