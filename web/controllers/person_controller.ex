@@ -34,7 +34,7 @@ defmodule PrisonRideshare.PersonController do
 
   def update(conn, %{"id" => id, "data" => data = %{"type" => "people", "attributes" => _person_params}}) do
     person = Repo.get!(Person, id)
-    changeset = Person.changeset(person, Params.to_attributes(data))
+    changeset = Person.changeset(person, Params.to_attributes(data), whodoneit(conn))
 
     case Repo.update(changeset) do
       {:ok, person} ->
@@ -56,4 +56,8 @@ defmodule PrisonRideshare.PersonController do
     send_resp(conn, :no_content, "")
   end
 
+  defp whodoneit(conn) do
+    user = Guardian.Plug.current_resource(conn)
+    [whodoneit: user, whodoneit_name: "Name?"]
+  end
 end

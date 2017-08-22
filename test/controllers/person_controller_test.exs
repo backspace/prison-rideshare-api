@@ -68,7 +68,7 @@ defmodule PrisonRideshare.PersonControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
-    person = Repo.insert! %Person{}
+    person = Repo.insert! %Person{name: "oldname"}
     conn = put conn, person_path(conn, :update, person), %{
       "meta" => %{},
       "data" => %{
@@ -81,6 +81,12 @@ defmodule PrisonRideshare.PersonControllerTest do
 
     assert json_response(conn, 200)["data"]["id"]
     assert Repo.get_by(Person, @valid_attrs)
+
+    [version] = Repo.all PrisonRideshare.Whatwasit.Version
+
+    assert version.action == "update"
+    assert version.object["name"] == "oldname"
+    assert version.whodoneit_name == "Name?"
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
