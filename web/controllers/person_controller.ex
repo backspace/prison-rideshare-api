@@ -47,11 +47,12 @@ defmodule PrisonRideshare.PersonController do
   end
 
   def delete(conn, %{"id" => id}) do
-    person = Repo.get!(Person, id)
+    changeset = Repo.get!(Person, id)
+    |> Person.changeset(%{}, whodoneit(conn))
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Repo.delete!(person)
+    Repo.delete!(changeset)
 
     send_resp(conn, :no_content, "")
   end

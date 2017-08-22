@@ -105,10 +105,16 @@ defmodule PrisonRideshare.PersonControllerTest do
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    person = Repo.insert! %Person{}
+    person = Repo.insert! %Person{name: "deletedname"}
     conn = delete conn, person_path(conn, :delete, person)
     assert response(conn, 204)
     refute Repo.get(Person, person.id)
+
+    [version] = Repo.all PrisonRideshare.Whatwasit.Version
+
+    assert version.action == "delete"
+    assert version.object["name"] == "deletedname"
+    assert version.whodoneit_name == "Name?"
   end
 
 end
