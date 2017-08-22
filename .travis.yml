@@ -3,6 +3,9 @@ elixir:
   - 1.4.2
 dist: trusty
 
+addons:
+  postgresql: 9.6
+
 cache:
   directories:
     - _build
