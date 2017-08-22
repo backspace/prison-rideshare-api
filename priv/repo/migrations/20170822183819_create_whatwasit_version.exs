@@ -3,7 +3,7 @@ defmodule PrisonRideshare.Repo.Migrations.CreateWhatwasitVersion do
   def change do
     create table(:versions) do
       add :item_type, :string, null: false
-      add :item_id, :integer, null: false
+      add :item_id, :binary_id, null: false
       add :action, :string
       add :object, :map, null: false
       add :whodoneit_name, :string

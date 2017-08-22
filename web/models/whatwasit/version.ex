@@ -13,7 +13,7 @@ defmodule PrisonRideshare.Whatwasit.Version do
 
   schema "versions" do
     field :item_type, :string
-    field :item_id, :integer
+    field :item_id, :binary_id
     field :action, :string  # ~w(update delete)
     field :object, :map     # versioned schema stored as a map
     field :whodoneit_name, :string
