@@ -61,7 +61,8 @@ tomorrowRide = Lol.createRide(%{
   relative_end: [hours: 1, minutes: 30],
   institution: headingley,
   driver: curtis,
-  car_owner: sara
+  car_owner: sara,
+  request_notes: "This ride is in the future!"
 })
 
 nextWeekRide = Lol.createRide(%{
