@@ -58,7 +58,7 @@ defmodule PrisonRideshare.RideController do
       _ -> {Ride.report_changeset(ride, fixed_params), put_view(conn, PrisonRideshare.UnauthRideView)}
     end
 
-    case Repo.update(changeset) do
+    case Repo.update_with_version(changeset, whodoneit(conn)) do
       {:ok, ride} ->
         ride = preload(ride)
         render(conn, "show.json-api", data: ride)
@@ -87,5 +87,10 @@ defmodule PrisonRideshare.RideController do
   # FIXME figure out where this magic is broken
   defp rename_combined_with(params) do
     Map.put(params, "combined_with_ride_id", params["combined_with_id"])
+  end
+
+  defp whodoneit(conn) do
+    #user = Guardian.Plug.current_resource(conn)
+    [whodoneit: :none, whodoneit_name: "Name?"]
   end
 end

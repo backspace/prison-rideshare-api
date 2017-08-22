@@ -154,6 +154,8 @@ defmodule PrisonRideshare.Whatwasit.Version do
         id = Map.get(user, user.__struct__.__schema__(:primary_key) |> hd)
 
         {id, opts[:whodoneit_name]}
+      :none ->
+        {nil, opts[:whodoneit_name]}
     end
   end
 end
