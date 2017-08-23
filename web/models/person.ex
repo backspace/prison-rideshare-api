@@ -19,4 +19,15 @@ defmodule PrisonRideshare.Person do
     |> cast(params, [:name])
     |> validate_required([:name])
   end
+
+  def initials(%{name: ""}), do: "??"
+  def initials(%{name: nil}), do: "??"
+  def initials(nil), do: "??"
+
+  def initials(%{name: name}) do
+    String.split(name, ~r/ |-/)
+    |> Enum.reject(fn(part) -> part == "" end)
+    |> Enum.map(fn(word) -> String.first(word) |> String.upcase end)
+    |> Enum.join
+  end
 end
