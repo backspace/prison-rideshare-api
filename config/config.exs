@@ -40,6 +40,12 @@ config :guardian, Guardian,
   secret_key: System.get_env("GUARDIAN_SECRET") || "ru/JyaWA1jnKDh8U0KABWzBnDsLR6tHIKOS8C9BOWmd+izwz82zym8AyHWRpRIRy",
   serializer: PrisonRideshare.GuardianSerializer
 
+config :sentry, dsn: System.get_env("SENTRY_DSN"),
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!,
+  included_environments: [:prod],
+  environment_name: Mix.env
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
