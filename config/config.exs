@@ -42,7 +42,6 @@ config :guardian, Guardian,
 
 config :whatwasit, repo: PrisonRideshare.Repo
 
-
 config :sentry, dsn: System.get_env("SENTRY_DSN"),
   enable_source_code_context: true,
   root_source_code_path: File.cwd!,
