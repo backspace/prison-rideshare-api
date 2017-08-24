@@ -232,6 +232,12 @@ defmodule PrisonRideshare.RideControllerTest do
     assert saved.car_owner_id == car_owner.id
     assert saved.combined_with_ride_id == combined_with_ride.id
 
+    [version] = Repo.all PrisonRideshare.Whatwasit.Version
+
+    assert version.action == "update"
+    assert version.object["report_notes"] == "some content"
+    assert version.whodoneit_name == "127.0.0.1"
+
     data = json_response(conn, 200)["data"]
 
     assert data["relationships"] == %{
