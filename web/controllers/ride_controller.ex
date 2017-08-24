@@ -88,9 +88,4 @@ defmodule PrisonRideshare.RideController do
   defp rename_combined_with(params) do
     Map.put(params, "combined_with_ride_id", params["combined_with_id"])
   end
-
-  defp whodoneit(conn) do
-    #user = Guardian.Plug.current_resource(conn)
-    [whodoneit: :none, whodoneit_name: to_string(:inet_parse.ntoa(conn.remote_ip))]
-  end
 end

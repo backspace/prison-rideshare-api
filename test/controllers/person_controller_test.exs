@@ -57,7 +57,7 @@ defmodule PrisonRideshare.PersonControllerTest do
 
     assert version.action == "insert"
     assert version.object["name"] == "some content"
-    assert version.whodoneit_name == "Name?"
+    assert version.whodoneit_name == "127.0.0.1"
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -92,7 +92,7 @@ defmodule PrisonRideshare.PersonControllerTest do
 
     assert version.action == "update"
     assert version.object["name"] == "some content"
-    assert version.whodoneit_name == "Name?"
+    assert version.whodoneit_name == "127.0.0.1"
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
@@ -120,7 +120,7 @@ defmodule PrisonRideshare.PersonControllerTest do
 
     assert version.action == "delete"
     assert version.object["name"] == "deletedname"
-    assert version.whodoneit_name == "Name?"
+    assert version.whodoneit_name == "127.0.0.1"
   end
 
 end

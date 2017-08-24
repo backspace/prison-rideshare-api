@@ -55,9 +55,4 @@ defmodule PrisonRideshare.PersonController do
 
     send_resp(conn, :no_content, "")
   end
-
-  defp whodoneit(conn) do
-    user = Guardian.Plug.current_resource(conn)
-    [whodoneit: user, whodoneit_name: "Name?"]
-  end
 end
