@@ -19,7 +19,7 @@ defmodule PrisonRideshare.RideControllerTest do
   defp relationships do
     combined_with_ride = Repo.insert!(%PrisonRideshare.Ride{request_notes: "Combined"})
     institution = Repo.insert!(%PrisonRideshare.Institution{})
-    driver = Repo.insert!(%PrisonRideshare.Person{name: "Driver"})
+    driver = Repo.insert!(%PrisonRideshare.Person{name: "Driver Name"})
     car_owner = Repo.insert!(%PrisonRideshare.Person{name: "Car Owner"})
     reimbursement = Repo.insert!(%PrisonRideshare.Reimbursement{food_expenses: 2010, car_expenses: 2017})
 
@@ -61,7 +61,7 @@ defmodule PrisonRideshare.RideControllerTest do
 
   test "lists all entries on index", %{conn: conn} do
     institution = Repo.insert! %Institution{name: "Stony Mountain"}
-    driver = Repo.insert! %Person{name: "Driver"}
+    driver = Repo.insert! %Person{name: "Driver Name"}
     car_owner = Repo.insert! %Person{name: "Car Owner"}
     reimbursement = Repo.insert! %Reimbursement{}
     ride = Repo.insert! %Ride{
@@ -106,6 +106,7 @@ defmodule PrisonRideshare.RideControllerTest do
         "request-notes" => ride.request_notes,
         "report-notes" => ride.report_notes,
         "donation" => true,
+        "initials" => "DN",
         "inserted-at" => DateTime.to_iso8601(ride.inserted_at),
         "updated-at" => DateTime.to_iso8601(ride.updated_at)
       },
@@ -216,7 +217,7 @@ defmodule PrisonRideshare.RideControllerTest do
       }
     }
 
-    driver = Repo.get_by(Person, name: "Driver")
+    driver = Repo.get_by(Person, name: "Driver Name")
     car_owner = Repo.get_by(Person, name: "Car Owner")
 
     [_reimbursement] = Repo.all(Reimbursement)

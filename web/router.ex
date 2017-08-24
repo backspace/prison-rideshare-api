@@ -1,5 +1,7 @@
 defmodule PrisonRideshare.Router do
   use PrisonRideshare.Web, :router
+  use Plug.ErrorHandler
+  use Sentry.Plug
 
   pipeline :api do
     plug :accepts, ["json", "json-api"]

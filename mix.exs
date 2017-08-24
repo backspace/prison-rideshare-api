@@ -27,7 +27,7 @@ defmodule PrisonRideshare.Mixfile do
     [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
      :phoenix_ecto, :postgrex,
 
-     :comeonin, :timex]
+     :comeonin, :timex, :sentry, :logger]
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -57,7 +57,9 @@ defmodule PrisonRideshare.Mixfile do
      {:whatwasit, git: "https://github.com/linges/whatwasit.git", branch: "auditing"},
 
      {:blacksmith, "~> 0.1"},
-     {:excoveralls, "~> 0.6", only: :test}]
+     {:excoveralls, "~> 0.6", only: :test},
+
+     {:sentry, "~> 5.0.1"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

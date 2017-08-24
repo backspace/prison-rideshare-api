@@ -320,12 +320,12 @@ defmodule Mix.Tasks.Import do
 
     cond do
       String.contains?(request_notes, "lockdown") -> "lockdown"
-      String.contains?(request_notes, "postponed") || String.contains?(request_notes, "by rider") || String.contains?(request_notes, "my rider") || String.contains?(request_notes, "other ride") || String.contains?(request_notes, "different ride") || String.contains?(request_notes, "ride cancelled") -> "visitor"
+      String.contains?(request_notes, "postponed") || String.contains?(request_notes, "by rider") || String.contains?(request_notes, "my rider") || String.contains?(request_notes, "other ride") || String.contains?(request_notes, "different ride") || String.contains?(request_notes, "ride cancelled") || String.contains?(request_notes, "did not answer") || String.contains?(request_notes, "rescheduled") || String.contains?(request_notes, "no response") -> "visitor"
       String.contains?(request_notes, "no car") || String.contains?(request_notes, "car broke down") -> "no car"
       String.contains?(request_notes, "no driver") || String.contains?(request_notes, "no ride") -> "no driver"
       String.contains?(request_notes, "weather") -> "weather"
       String.contains?(request_notes, "transfer") -> "transfer"
-      String.contains?(request_notes, "wrong") || String.contains?(request_notes, "mistake") -> "error"
+      String.contains?(request_notes, "wrong") || String.contains?(request_notes, "mistake") || String.contains?(request_notes, "confused") -> "error"
       String.contains?(request_notes, "mia") || String.contains?(request_notes, "show up") -> "visitor missing"
       String.contains?(request_notes, "no show") -> "driver missing"
       String.contains?(request_notes, "driver not able") -> "driver cancelled"

@@ -1,7 +1,7 @@
 defmodule PrisonRideshare.UnauthRideControllerTest do
   use PrisonRideshare.ConnCase
 
-  alias PrisonRideshare.{Institution, Ride}
+  alias PrisonRideshare.{Institution, Person, Ride}
   alias PrisonRideshare.Repo
 
   import Money.Sigils
@@ -16,10 +16,12 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
 
   test "lists all publicly-available enabled-and-not-complete-and-not-combined ride data on index", %{conn: conn} do
     institution = Repo.insert! %Institution{name: "Stony Mountain"}
+    driver = Repo.insert! %Person{name: "Chelsea Manning"}
     ride = Repo.insert! %Ride{
       start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
       end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
-      institution: institution
+      institution: institution,
+      driver: driver
     }
 
     Repo.insert! %Ride{
@@ -40,7 +42,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       "type" => "ride",
       "attributes" => %{
         "start" => "2017-01-15T18:00:00",
-        "end" => "2017-01-15T20:00:00"
+        "end" => "2017-01-15T20:00:00",
+        "initials" => "CM"
       },
       "relationships" => %{
         "institution" => %{
@@ -94,7 +97,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       "type" => "ride",
       "attributes" => %{
         "start" => "2017-01-15T18:00:00",
-        "end" => "2017-01-15T20:00:00"
+        "end" => "2017-01-15T20:00:00",
+        "initials" => "??"
       },
       "relationships" => %{
         "institution" => %{
