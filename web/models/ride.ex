@@ -52,6 +52,8 @@ defmodule PrisonRideshare.Ride do
   defp calculate_car_expenses(%{valid?: false} = changeset, _), do: changeset
   defp calculate_car_expenses(%{valid?: true} = changeset, struct) do
     distance = Ecto.Changeset.get_field(changeset, :distance)
-    Ecto.Changeset.put_change(changeset, :car_expenses, Money.multiply(struct.rate, distance))
+    institution = Ecto.Changeset.get_field(changeset, :institution)
+    Ecto.Changeset.put_change(changeset, :rate, institution.rate)
+    |> Ecto.Changeset.put_change(:car_expenses, Money.multiply(institution.rate, distance))
   end
 end
