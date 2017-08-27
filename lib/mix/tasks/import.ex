@@ -49,7 +49,8 @@ defmodule Mix.Tasks.Import do
           rate = Map.get(institution_rate_overrides, matching_institution, 25)
 
           Institution.changeset(%Institution{}, %{name: institution, rate: rate})
-          |> Repo.insert!
+          |> Repo.insert_with_version(whodoneit())
+          |> elem(1)
         end)
 
         institution_model = Map.get(institution_name_to_model, matching_institution)
@@ -90,7 +91,8 @@ defmodule Mix.Tasks.Import do
         request_attrs = maybe_put_id(request_attrs, :car_owner_id, car_owner_model)
 
         request_model = Ride.changeset(%Ride{}, request_attrs)
-        |> Repo.insert!
+        |> Repo.insert_with_version(whodoneit())
+        |> elem(1)
 
         request_row_number_to_model = Map.put(request_row_number_to_model, i + 1, request_model)
 
@@ -137,7 +139,7 @@ defmodule Mix.Tasks.Import do
             report_notes: notes,
             request_id: request.id
           })
-          |> Repo.update!
+          |> Repo.update_with_version(whodoneit())
         else
           Mix.shell.info "Skipping empty ride string"
         end
@@ -170,7 +172,7 @@ defmodule Mix.Tasks.Import do
         if parsed_amount > 0 do
           reimbursements = determine_reimbursements(person, parsed_amount, parse_inserted_at(inserted_at))
 
-          Enum.each(reimbursements, fn reimbursement -> Repo.insert!(Reimbursement.import_changeset(%Reimbursement{}, reimbursement)) end)
+          Enum.each(reimbursements, fn reimbursement -> Repo.insert_with_version(Reimbursement.import_changeset(%Reimbursement{}, reimbursement), whodoneit()) end)
         end
       end
     end)
@@ -249,7 +251,8 @@ defmodule Mix.Tasks.Import do
   defp maybe_add_person(person_name_to_model, matching_name, name) do
     new_map = Map.put_new_lazy(person_name_to_model, matching_name, fn ->
       Person.changeset(%Person{}, %{name: capitalised_name(name)})
-      |> Repo.insert!
+      |> Repo.insert_with_version(whodoneit())
+      |> elem(1)
     end)
 
     {new_map, new_map[matching_name]}
@@ -309,7 +312,8 @@ defmodule Mix.Tasks.Import do
       end)
 
       Ride.changeset(combined, %{combined_with_ride_id: match.id})
-      |> Repo.update
+      |> Repo.update_with_version(whodoneit())
+      |> elem(1)
     end)
   end
 
@@ -351,5 +355,9 @@ defmodule Mix.Tasks.Import do
 
   def institution_name(institution) do
     institution.name
+  end
+
+  defp whodoneit do
+    [whodoneit: :none, whodoneit_name: "import"]
   end
 end
