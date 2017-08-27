@@ -1,7 +1,7 @@
 defmodule PrisonRideshare.RideTest do
   use PrisonRideshare.ModelCase
 
-  alias PrisonRideshare.Ride
+  alias PrisonRideshare.{Institution, Ride}
 
   import Money.Sigils
 
@@ -25,7 +25,7 @@ defmodule PrisonRideshare.RideTest do
   }
 
   test "report changeset with valid attributes calculates the car expenses" do
-    changeset = Ride.report_changeset(%Ride{rate: ~M[40]}, @valid_report_attrs)
+    changeset = Ride.report_changeset(%Ride{institution: %Institution{rate: ~M[40]}}, @valid_report_attrs)
     assert changeset.valid?
     assert Ecto.Changeset.get_field(changeset, :car_expenses) == ~M[400]
   end
