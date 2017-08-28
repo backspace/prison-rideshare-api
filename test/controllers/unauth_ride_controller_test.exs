@@ -118,6 +118,12 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     assert ride.report_notes == "Some report notes"
     assert ride.request_notes == "The original request notes"
     assert ride.donation
+
+    [version] = Repo.all PrisonRideshare.Whatwasit.Version
+
+    assert version.action == "update"
+    assert version.object["report_notes"] == "Some report notes"
+    assert version.whodoneit_name == "127.0.0.1"
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

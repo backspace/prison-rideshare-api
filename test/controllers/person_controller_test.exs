@@ -52,6 +52,12 @@ defmodule PrisonRideshare.PersonControllerTest do
 
     assert json_response(conn, 201)["data"]["id"]
     assert Repo.get_by(Person, @valid_attrs)
+
+    [version] = Repo.all PrisonRideshare.Whatwasit.Version
+
+    assert version.action == "insert"
+    assert version.object["name"] == "some content"
+    assert version.whodoneit_name == "127.0.0.1"
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -68,7 +74,7 @@ defmodule PrisonRideshare.PersonControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
-    person = Repo.insert! %Person{}
+    person = Repo.insert! %Person{name: "oldname"}
     conn = put conn, person_path(conn, :update, person), %{
       "meta" => %{},
       "data" => %{
@@ -81,6 +87,12 @@ defmodule PrisonRideshare.PersonControllerTest do
 
     assert json_response(conn, 200)["data"]["id"]
     assert Repo.get_by(Person, @valid_attrs)
+
+    [version] = Repo.all PrisonRideshare.Whatwasit.Version
+
+    assert version.action == "update"
+    assert version.object["name"] == "some content"
+    assert version.whodoneit_name == "127.0.0.1"
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
@@ -99,10 +111,16 @@ defmodule PrisonRideshare.PersonControllerTest do
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    person = Repo.insert! %Person{}
+    person = Repo.insert! %Person{name: "deletedname"}
     conn = delete conn, person_path(conn, :delete, person)
     assert response(conn, 204)
     refute Repo.get(Person, person.id)
+
+    [version] = Repo.all PrisonRideshare.Whatwasit.Version
+
+    assert version.action == "delete"
+    assert version.object["name"] == "deletedname"
+    assert version.whodoneit_name == "127.0.0.1"
   end
 
 end

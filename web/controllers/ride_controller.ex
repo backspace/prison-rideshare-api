@@ -58,7 +58,7 @@ defmodule PrisonRideshare.RideController do
       _ -> {Ride.report_changeset(ride, fixed_params), put_view(conn, PrisonRideshare.UnauthRideView)}
     end
 
-    case Repo.update(changeset) do
+    case Repo.update_with_version(changeset, whodoneit(conn)) do
       {:ok, ride} ->
         ride = preload(ride)
         render(conn, "show.json-api", data: ride)

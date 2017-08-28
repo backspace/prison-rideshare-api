@@ -39,6 +39,8 @@ defmodule PrisonRideshare.Web do
 
       import PrisonRideshare.Router.Helpers
       import PrisonRideshare.Gettext
+
+      import PrisonRideshare.WhoDoneIt
     end
   end
 
