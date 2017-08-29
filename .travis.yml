@@ -27,7 +27,7 @@ deploy:
   app: prison-rideshare-api-sandbox
   on:
     repo: backspace/prison-rideshare-api
-    branch: papertrail
+    branch: primary
 
 # FIXME this is less than ideal if non-sandbox deployments happen but heroku pg:reset won’t run in the Heroku shell!
 after_deploy:
