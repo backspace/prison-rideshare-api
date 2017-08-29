@@ -11,6 +11,7 @@ defmodule PrisonRideshare.PersonControllerTest do
     conn = build_conn()
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
+      |> put_req_header("user-agent", "HELLO")
       |> auth_as_admin
 
     {:ok, conn: conn}
@@ -60,6 +61,7 @@ defmodule PrisonRideshare.PersonControllerTest do
     assert version.event == "insert"
     assert version.item_changes["name"] == "some content"
     assert version.meta["ip"] == "127.0.0.1"
+    assert version.meta["user-agent"] == "HELLO"
     assert version.originator_id == user.id
   end
 
