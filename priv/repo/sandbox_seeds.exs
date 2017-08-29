@@ -5,24 +5,6 @@ import Money.Sigils
 
 Faker.start
 
-version_information = [origin: "sandbox"]
-
-user = User.changeset(%User{}, %{
-  name: "Sandbox",
-  email: "jorts@jants.ca",
-  password: "password",
-  password_confirmation: "password",
-  confirmed_at: Ecto.DateTime.utc
-})
-|> PaperTrail.insert!(version_information)
-
-User.admin_changeset(user, %{admin: true})
-|> PaperTrail.update!(version_information)
-
-headingley = PaperTrail.insert! Institution.changeset(%Institution{name: "Headingley", rate: ~M[35]}), version_information
-milner_ridge = PaperTrail.insert! Institution.changeset(%Institution{name: "Milner Ridge", rate: ~M[25]}), version_information
-
-
 defmodule Lol do
   def createRide(params) do
     today = Timex.beginning_of_day(Timex.local)
@@ -46,13 +28,32 @@ defmodule Lol do
       false -> merged
     end
 
-    PaperTrail.insert! Ride.changeset(%Ride{}, merged), version_information
+    PaperTrail.insert! Ride.changeset(%Ride{}, merged), Lol.version_information
   end
 
   def createPerson(name) do
-    PaperTrail.insert! Person.changeset(%Person{name: name}), version_information
+    PaperTrail.insert! Person.changeset(%Person{name: name}), Lol.version_information
+  end
+
+  def version_information do
+    [origin: "sandbox"]
   end
 end
+
+user = User.changeset(%User{}, %{
+  name: "Sandbox",
+  email: "jorts@jants.ca",
+  password: "password",
+  password_confirmation: "password",
+  confirmed_at: Ecto.DateTime.utc
+})
+|> PaperTrail.insert!(Lol.version_information)
+
+User.admin_changeset(user, %{admin: true})
+|> PaperTrail.update!(Lol.version_information)
+
+headingley = PaperTrail.insert! Institution.changeset(%Institution{name: "Headingley", rate: ~M[35]}), Lol.version_information
+milner_ridge = PaperTrail.insert! Institution.changeset(%Institution{name: "Milner Ridge", rate: ~M[25]}), Lol.version_information
 
 cnuth = Lol.createPerson("Cnuth")
 sara = Lol.createPerson("Sara Ahmed")
@@ -114,13 +115,13 @@ PaperTrail.insert! %Reimbursement{
   ride: lastMonthRide,
   person: sara,
   food_expenses: ~M[1414]
-}, version_information
+}, Lol.version_information
 
 PaperTrail.insert! %Reimbursement{
   ride: lastMonthRide,
   person: sara,
   car_expenses: ~M[100]
-}, version_information
+}, Lol.version_information
 
 cancelledRide = Lol.createRide(%{
   relative_start: [days: -11, hours: 9],
@@ -153,13 +154,13 @@ PaperTrail.insert! %Reimbursement{
   ride: reimbursedRide,
   person: sara,
   food_expenses: ~M[999]
-}, version_information
+}, Lol.version_information
 
 PaperTrail.insert! %Reimbursement{
   ride: reimbursedRide,
   person: sara,
   car_expenses: ~M[770]
-}, version_information
+}, Lol.version_information
 
 processedRide = Lol.createRide(%{
   relative_start: [days: -50, hours: 8],
@@ -178,7 +179,7 @@ PaperTrail.insert! %Reimbursement{
   food_expenses: ~M[500],
   processed: true,
   donation: true
-}, version_information
+}, Lol.version_information
 
 PaperTrail.insert! %Reimbursement{
   ride: processedRide,
@@ -186,4 +187,4 @@ PaperTrail.insert! %Reimbursement{
   car_expenses: ~M[700],
   processed: true,
   donation: true
-}, version_information
+}, Lol.version_information
