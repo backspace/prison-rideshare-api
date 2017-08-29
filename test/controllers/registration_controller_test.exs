@@ -23,8 +23,8 @@ defmodule PrisonRideshare.RegistrationControllerTest do
     conn = post conn, registration_path(conn, :create), %{data: %{type: "users",
       attributes: @valid_attrs
       }}
-    assert json_response(conn, 201)["data"]["id"]
-    assert Repo.get_by(User, %{email: @valid_attrs[:email]})
+    user = Repo.get_by(User, %{email: @valid_attrs[:email]})
+    assert json_response(conn, 201)["data"]["id"] == user.id
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do

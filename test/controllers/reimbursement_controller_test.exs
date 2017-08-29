@@ -61,8 +61,9 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
       }
     }
 
-    assert json_response(conn, 201)["data"]["id"]
-    assert Repo.get_by(Reimbursement, @valid_attrs)
+    reimbursement = Repo.get_by(Reimbursement, @valid_attrs)
+    assert json_response(conn, 201)["data"]["id"] == reimbursement.id
+    assert json_response(conn, 201)["data"]["attributes"]["processed"] == true
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
@@ -77,8 +78,9 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
       }
     }
 
-    assert json_response(conn, 200)["data"]["id"]
-    assert Repo.get_by(Reimbursement, @valid_attrs)
+    reimbursement = Repo.get_by(Reimbursement, @valid_attrs)
+    assert json_response(conn, 200)["data"]["id"] == reimbursement.id
+    assert json_response(conn, 200)["data"]["attributes"]["processed"] == true
   end
 
   test "deletes chosen resource", %{conn: conn} do

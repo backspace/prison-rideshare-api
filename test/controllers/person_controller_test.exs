@@ -50,8 +50,9 @@ defmodule PrisonRideshare.PersonControllerTest do
       }
     }
 
-    assert json_response(conn, 201)["data"]["id"]
-    assert Repo.get_by(Person, @valid_attrs)
+    person = Repo.get_by(Person, @valid_attrs)
+    assert json_response(conn, 201)["data"]["id"] == person.id
+    assert json_response(conn, 201)["data"]["attributes"]["name"] == "some content"
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -79,8 +80,9 @@ defmodule PrisonRideshare.PersonControllerTest do
       }
     }
 
-    assert json_response(conn, 200)["data"]["id"]
-    assert Repo.get_by(Person, @valid_attrs)
+    person = Repo.get_by(Person, @valid_attrs)
+    assert json_response(conn, 200)["data"]["id"] == person.id
+    assert json_response(conn, 200)["data"]["attributes"]["name"] == "some content"
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

@@ -186,8 +186,9 @@ defmodule PrisonRideshare.RideControllerTest do
       }
     }
 
-    assert json_response(conn, 201)["data"]["id"]
-    assert Repo.get_by(Ride, @valid_attrs)
+    ride = Repo.get_by(Ride, @valid_attrs)
+    assert json_response(conn, 201)["data"]["id"] == ride.id
+    assert json_response(conn, 201)["data"]["attributes"]["address"] == "some content"
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
