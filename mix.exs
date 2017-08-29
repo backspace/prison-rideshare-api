@@ -54,6 +54,8 @@ defmodule PrisonRideshare.Mixfile do
      {:money, "~> 1.2.1"},
      {:timex, "~> 3.1.13"},
 
+     {:paper_trail, "~> 0.7.3"},
+
      {:blacksmith, "~> 0.1"},
      {:excoveralls, "~> 0.6", only: :test},
 
