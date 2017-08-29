@@ -3,11 +3,14 @@ defmodule Mix.Tasks.ImportTest do
   use PrisonRideshare.ConnCase
 
   alias PrisonRideshare.{Institution, Person, Reimbursement, Repo, Ride}
+  alias PaperTrail.Version
 
   import Money.Sigils
 
   test "something" do
     Mix.Tasks.Import.run ["test/support/import/requests.csv", "test/support/import/reports.csv", "test/support/import/reimbursements.csv"]
+
+    [i1version, i2version] = Repo.all(Version)
 
     [i1, i2] = Repo.all(Institution)
 

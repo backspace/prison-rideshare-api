@@ -49,7 +49,7 @@ defmodule Mix.Tasks.Import do
           rate = Map.get(institution_rate_overrides, matching_institution, 25)
 
           Institution.changeset(%Institution{}, %{name: institution, rate: rate})
-          |> Repo.insert!
+          |> PaperTrail.insert!
         end)
 
         institution_model = Map.get(institution_name_to_model, matching_institution)
