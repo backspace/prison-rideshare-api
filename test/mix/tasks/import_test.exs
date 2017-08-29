@@ -24,6 +24,7 @@ defmodule Mix.Tasks.ImportTest do
     assert i1version.item_changes["name"] == "Milner Ridge"
     assert i1version.item_id == i1.id
     assert i1version.item_type == "Institution"
+    assert i1version.origin == "import"
 
     [req1, reqCombinedWith2, req2, req3, req4, req5, req6, req7, req8, req9] = Ecto.Query.order_by(Ride, :inserted_at)
     |> Repo.all
