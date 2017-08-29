@@ -10,7 +10,7 @@ defmodule Mix.Tasks.ImportTest do
   test "something" do
     Mix.Tasks.Import.run ["test/support/import/requests.csv", "test/support/import/reports.csv", "test/support/import/reimbursements.csv"]
 
-    [i1version, i2version] = Repo.all(Version)
+    [i1version, _i2v] = Repo.all(Version)
 
     [i1, i2] = Repo.all(Institution)
 
@@ -19,6 +19,11 @@ defmodule Mix.Tasks.ImportTest do
 
     assert i2.name == "stony mountain"
     assert i2.rate == ~M[35]
+
+    assert i1version.event == "insert"
+    assert i1version.item_changes["name"] == "Milner Ridge"
+    assert i1version.item_id == i1.id
+    assert i1version.item_type == "Institution"
 
     [req1, reqCombinedWith2, req2, req3, req4, req5, req6, req7, req8, req9] = Ecto.Query.order_by(Ride, :inserted_at)
     |> Repo.all
