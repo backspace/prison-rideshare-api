@@ -12,6 +12,8 @@
 
 PrisonRideshare.Repo.delete_all PrisonRideshare.User
 
+version_information = [origin: "seeds"]
+
 user = PrisonRideshare.User.changeset(%PrisonRideshare.User{}, %{
   name: "Test User",
   email: "testuser@example.com",
@@ -19,7 +21,7 @@ user = PrisonRideshare.User.changeset(%PrisonRideshare.User{}, %{
   password_confirmation: "secretsecret",
   confirmed_at: Ecto.DateTime.utc
 })
-|> PrisonRideshare.Repo.insert!
+|> PaperTrail.insert!(version_information)
 
 PrisonRideshare.User.admin_changeset(user, %{admin: true})
-|> PrisonRideshare.Repo.update!
+|> PaperTrail.update!(version_information)
