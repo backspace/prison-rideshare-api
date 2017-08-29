@@ -87,7 +87,7 @@ defmodule PrisonRideshare.PersonControllerTest do
       }
     }
 
-    assert json_response(conn, 200)["data"]["id"]
+    assert json_response(conn, 200)["data"]["id"] == person.id
     assert Repo.get_by(Person, @valid_attrs)
 
     [version] = Repo.all PaperTrail.Version

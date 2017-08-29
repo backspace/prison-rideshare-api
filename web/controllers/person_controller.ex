@@ -37,7 +37,7 @@ defmodule PrisonRideshare.PersonController do
     changeset = Person.changeset(person, Params.to_attributes(data))
 
     case PaperTrail.update(changeset, version_information(conn)) do
-      {:ok, person} ->
+      {:ok, %{model: person}} ->
         render(conn, "show.json-api", data: person)
       {:error, changeset} ->
         conn
