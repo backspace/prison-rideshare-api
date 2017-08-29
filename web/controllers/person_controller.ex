@@ -14,8 +14,8 @@ defmodule PrisonRideshare.PersonController do
   def create(conn, %{"data" => data = %{"type" => "people", "attributes" => _person_params}}) do
     changeset = Person.changeset(%Person{}, Params.to_attributes(data))
 
-    case Repo.insert(changeset) do
-      {:ok, person} ->
+    case PaperTrail.insert(changeset, version_information(conn)) do
+      {:ok, %{model: person}} ->
         conn
         |> put_status(:created)
         |> put_resp_header("location", person_path(conn, :show, person))
@@ -36,7 +36,7 @@ defmodule PrisonRideshare.PersonController do
     person = Repo.get!(Person, id)
     changeset = Person.changeset(person, Params.to_attributes(data))
 
-    case Repo.update(changeset) do
+    case PaperTrail.update(changeset, version_information(conn)) do
       {:ok, person} ->
         render(conn, "show.json-api", data: person)
       {:error, changeset} ->
@@ -51,7 +51,7 @@ defmodule PrisonRideshare.PersonController do
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Repo.delete!(person)
+    PaperTrail.delete!(person, version_information(conn))
 
     send_resp(conn, :no_content, "")
   end
