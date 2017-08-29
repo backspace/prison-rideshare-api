@@ -35,7 +35,7 @@ defmodule PrisonRideshare.DebtController do
           ride_id: ride.id,
           food_expenses: food_expenses_without_reimbursements
         })
-        Repo.insert!(changeset)
+        PaperTrail.insert!(changeset, version_information(conn))
       end
 
       if ride.car_owner_id == person.id && ride.car_expenses.amount > 0 do
@@ -46,7 +46,7 @@ defmodule PrisonRideshare.DebtController do
           ride_id: ride.id,
           car_expenses: car_expenses_without_reimbursements
         })
-        Repo.insert!(changeset)
+        PaperTrail.insert!(changeset, version_information(conn))
       end
     end)
 
