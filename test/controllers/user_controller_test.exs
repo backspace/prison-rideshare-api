@@ -70,8 +70,9 @@ defmodule PrisonRideshare.UserControllerTest do
       }
     }
 
-    assert json_response(conn, 201)["data"]["id"]
-    assert Repo.get_by(User, @valid_attrs)
+    user = Repo.get_by(User, @valid_attrs)
+    assert json_response(conn, 201)["data"]["id"] == user.id
+    assert json_response(conn, 201)["data"]["attributes"]["admin"] == false
   end
 
   # FIXME will this ever happen?

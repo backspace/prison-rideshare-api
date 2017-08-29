@@ -50,8 +50,9 @@ defmodule PrisonRideshare.PersonControllerTest do
       }
     }
 
-    assert json_response(conn, 201)["data"]["id"]
-    assert Repo.get_by(Person, @valid_attrs)
+    person = Repo.get_by(Person, @valid_attrs)
+    assert json_response(conn, 201)["data"]["id"] == person.id
+    assert json_response(conn, 201)["data"]["attributes"]["name"] == "some content"
 
     [user] = Repo.all PrisonRideshare.User
 
@@ -87,8 +88,9 @@ defmodule PrisonRideshare.PersonControllerTest do
       }
     }
 
+    person = Repo.get_by(Person, @valid_attrs)
     assert json_response(conn, 200)["data"]["id"] == person.id
-    assert Repo.get_by(Person, @valid_attrs)
+    assert json_response(conn, 200)["data"]["attributes"]["name"] == "some content"
 
     [version] = Repo.all PaperTrail.Version
     assert version.event == "update"
@@ -113,7 +115,7 @@ defmodule PrisonRideshare.PersonControllerTest do
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    person = Repo.insert! %Person{name: "deletedname"}
+    person = Repo.insert! %Person{}
     conn = delete conn, person_path(conn, :delete, person)
     assert response(conn, 204)
     refute Repo.get(Person, person.id)
