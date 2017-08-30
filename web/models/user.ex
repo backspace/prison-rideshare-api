@@ -36,5 +36,7 @@ defmodule PrisonRideshare.User do
   defp hash_password(%{valid?: true} = changeset) do
       hashedpw = Comeonin.Bcrypt.hashpwsalt(Ecto.Changeset.get_field(changeset, :password))
       Ecto.Changeset.put_change(changeset, :password_hash, hashedpw)
+      |> Ecto.Changeset.put_change(:password, nil)
+      |> Ecto.Changeset.put_change(:password_confirmation, nil)
   end
 end

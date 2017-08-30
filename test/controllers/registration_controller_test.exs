@@ -25,6 +25,11 @@ defmodule PrisonRideshare.RegistrationControllerTest do
       }}
     user = Repo.get_by(User, %{email: @valid_attrs[:email]})
     assert json_response(conn, 201)["data"]["id"] == user.id
+
+    [version] = Repo.all PaperTrail.Version
+    assert version.event == "insert"
+    refute version.item_changes["password"]
+    refute version.item_changes["password_confirmation"]
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
