@@ -11,6 +11,7 @@ defmodule PrisonRideshare.PersonControllerTest do
     conn = build_conn()
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
+      |> put_req_header("user-agent", "HELLO")
       |> auth_as_admin
 
     {:ok, conn: conn}
@@ -53,6 +54,15 @@ defmodule PrisonRideshare.PersonControllerTest do
     person = Repo.get_by(Person, @valid_attrs)
     assert json_response(conn, 201)["data"]["id"] == person.id
     assert json_response(conn, 201)["data"]["attributes"]["name"] == "some content"
+
+    [user] = Repo.all PrisonRideshare.User
+
+    [version] = Repo.all PaperTrail.Version
+    assert version.event == "insert"
+    assert version.item_changes["name"] == "some content"
+    assert version.meta["ip"] == "127.0.0.1"
+    assert version.meta["user-agent"] == "HELLO"
+    assert version.originator_id == user.id
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -69,7 +79,7 @@ defmodule PrisonRideshare.PersonControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
-    person = Repo.insert! %Person{}
+    person = Repo.insert! %Person{name: "oldname"}
     conn = put conn, person_path(conn, :update, person), %{
       "meta" => %{},
       "data" => %{
@@ -83,6 +93,11 @@ defmodule PrisonRideshare.PersonControllerTest do
     person = Repo.get_by(Person, @valid_attrs)
     assert json_response(conn, 200)["data"]["id"] == person.id
     assert json_response(conn, 200)["data"]["attributes"]["name"] == "some content"
+
+    [version] = Repo.all PaperTrail.Version
+    assert version.event == "update"
+    assert version.item_changes["name"] == "some content"
+    assert version.meta["ip"] == "127.0.0.1"
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
@@ -98,13 +113,19 @@ defmodule PrisonRideshare.PersonControllerTest do
     }
 
     assert json_response(conn, 422)["errors"] != %{}
+    assert Repo.all(PaperTrail.Version) == []
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    person = Repo.insert! %Person{}
+    person = Repo.insert! %Person{name: "deletedname"}
     conn = delete conn, person_path(conn, :delete, person)
     assert response(conn, 204)
     refute Repo.get(Person, person.id)
+
+    [version] = Repo.all PaperTrail.Version
+    assert version.event == "delete"
+    assert version.item_changes["name"] == "deletedname"
+    assert version.meta["ip"] == "127.0.0.1"
   end
 
 end

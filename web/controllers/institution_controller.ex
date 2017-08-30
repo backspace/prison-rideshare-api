@@ -14,8 +14,8 @@ defmodule PrisonRideshare.InstitutionController do
   def create(conn, %{"data" => data = %{"type" => "institutions", "attributes" => _institution_params}}) do
     changeset = Institution.changeset(%Institution{}, Params.to_attributes(data))
 
-    case Repo.insert(changeset) do
-      {:ok, institution} ->
+    case PaperTrail.insert(changeset, version_information(conn)) do
+      {:ok, %{model: institution}} ->
         conn
         |> put_status(:created)
         |> put_resp_header("location", institution_path(conn, :show, institution))
@@ -36,8 +36,8 @@ defmodule PrisonRideshare.InstitutionController do
     institution = Repo.get!(Institution, id)
     changeset = Institution.changeset(institution, Params.to_attributes(data))
 
-    case Repo.update(changeset) do
-      {:ok, institution} ->
+    case PaperTrail.update(changeset, version_information(conn)) do
+      {:ok, %{model: institution}} ->
         render(conn, "show.json-api", data: institution)
       {:error, changeset} ->
         conn
@@ -51,7 +51,7 @@ defmodule PrisonRideshare.InstitutionController do
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Repo.delete!(institution)
+    PaperTrail.delete!(institution, version_information(conn))
 
     send_resp(conn, :no_content, "")
   end

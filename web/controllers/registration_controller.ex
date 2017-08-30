@@ -12,8 +12,8 @@ defmodule PrisonRideshare.RegistrationController do
       password_confirmation: password_confirmation,
       password: password}
 
-    case Repo.insert changeset do
-      {:ok, user} ->
+    case PaperTrail.insert(changeset, version_information(conn)) do
+      {:ok, %{model: user}} ->
         conn
         |> put_status(:created)
         |> render(PrisonRideshare.UserView, "show.json-api", data: user)

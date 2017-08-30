@@ -28,8 +28,8 @@ defmodule PrisonRideshare.RideController do
   def create(conn, %{"data" => data = %{"type" => "rides", "attributes" => _ride_params}}) do
     changeset = Ride.changeset(%Ride{}, Params.to_attributes(data))
 
-    case Repo.insert(changeset) do
-      {:ok, ride} ->
+    case PaperTrail.insert(changeset, version_information(conn)) do
+      {:ok, %{model: ride}} ->
         conn
         |> put_status(:created)
         |> put_resp_header("location", ride_path(conn, :show, ride))
@@ -58,8 +58,8 @@ defmodule PrisonRideshare.RideController do
       _ -> {Ride.report_changeset(ride, fixed_params), put_view(conn, PrisonRideshare.UnauthRideView)}
     end
 
-    case Repo.update(changeset) do
-      {:ok, ride} ->
+    case PaperTrail.update(changeset, version_information(conn)) do
+      {:ok, %{model: ride}} ->
         ride = preload(ride)
         render(conn, "show.json-api", data: ride)
       {:error, changeset} ->
@@ -74,7 +74,7 @@ defmodule PrisonRideshare.RideController do
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Repo.delete!(ride)
+    PaperTrail.delete!(ride, version_information(conn))
 
     send_resp(conn, :no_content, "")
   end

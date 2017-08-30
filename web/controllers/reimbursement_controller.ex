@@ -15,8 +15,8 @@ defmodule PrisonRideshare.ReimbursementController do
   def create(conn, %{"data" => data = %{"type" => "reimbursements", "attributes" => _reimbursement_params}}) do
     changeset = Reimbursement.changeset(%Reimbursement{}, Params.to_attributes(data))
 
-    case Repo.insert(changeset) do
-      {:ok, reimbursement} ->
+    case PaperTrail.insert(changeset, version_information(conn)) do
+      {:ok, %{model: reimbursement}} ->
         conn
         |> put_status(:created)
         |> put_resp_header("location", reimbursement_path(conn, :show, reimbursement))
@@ -39,8 +39,8 @@ defmodule PrisonRideshare.ReimbursementController do
     |> Repo.preload([:person, :ride])
     changeset = Reimbursement.changeset(reimbursement, Params.to_attributes(data))
 
-    case Repo.update(changeset) do
-      {:ok, reimbursement} ->
+    case PaperTrail.update(changeset, version_information(conn)) do
+      {:ok, %{model: reimbursement}} ->
         render(conn, "show.json-api", data: reimbursement)
       {:error, changeset} ->
         conn
@@ -54,7 +54,7 @@ defmodule PrisonRideshare.ReimbursementController do
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Repo.delete!(reimbursement)
+    PaperTrail.delete!(reimbursement, version_information(conn))
 
     send_resp(conn, :no_content, "")
   end
