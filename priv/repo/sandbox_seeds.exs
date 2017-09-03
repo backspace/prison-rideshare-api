@@ -54,6 +54,7 @@ User.admin_changeset(user, %{admin: true})
 
 headingley = PaperTrail.insert! Institution.changeset(%Institution{name: "Headingley", rate: ~M[35]}), Lol.version_information
 milner_ridge = PaperTrail.insert! Institution.changeset(%Institution{name: "Milner Ridge", rate: ~M[25]}), Lol.version_information
+stony_mountain = PaperTrail.insert! Institution.changeset(%Institution{name: "Stony Mountain", rate: ~M[25]}), Lol.version_information
 
 cnuth = Lol.createPerson("Cnuth")
 sara = Lol.createPerson("Sara Ahmed")
@@ -137,6 +138,22 @@ yesterdayRide = Lol.createRide(%{
   institution: headingley,
   driver: chelsea,
   car_owner: chelsea
+})
+
+olderRide = Lol.createRide(%{
+  relative_start: [days: -3, hours: 16],
+  relative_end: [hours: 2],
+  institution: stony_mountain,
+  driver: cnuth,
+  car_owner: cnuth
+})
+
+evenOlderRide = Lol.createRide(%{
+  relative_start: [days: -11, hours: 17],
+  relative_end: [hours: 2, minutes: 30],
+  institution: stony_mountain,
+  driver: cnuth,
+  car_owner: cnuth
 })
 
 reimbursedRide = Lol.createRide(%{
