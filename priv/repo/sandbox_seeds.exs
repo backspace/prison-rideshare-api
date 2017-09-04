@@ -52,8 +52,8 @@ user = User.changeset(%User{}, %{
 User.admin_changeset(user, %{admin: true})
 |> PaperTrail.update!(Lol.version_information)
 
-headingley = PaperTrail.insert! Institution.changeset(%Institution{name: "Headingley", rate: ~M[35]}), Lol.version_information
-milner_ridge = PaperTrail.insert! Institution.changeset(%Institution{name: "Milner Ridge", rate: ~M[25]}), Lol.version_information
+headingley = PaperTrail.insert! Institution.changeset(%Institution{name: "Headingley", rate: ~M[25]}), Lol.version_information
+milner_ridge = PaperTrail.insert! Institution.changeset(%Institution{name: "Milner Ridge", rate: ~M[20]}), Lol.version_information
 stony_mountain = PaperTrail.insert! Institution.changeset(%Institution{name: "Stony Mountain", rate: ~M[25]}), Lol.version_information
 
 cnuth = Lol.createPerson("Cnuth")
@@ -94,7 +94,7 @@ lastWeekRide = Lol.createRide(%{
   institution: headingley,
   distance: 25,
   food_expenses: ~M[1200],
-  car_expenses: ~M[875],
+  car_expenses: ~M[625],
   request_notes: "Some request notes",
   report_notes: "It happened! These are my notes.",
   driver: chelsea,
@@ -107,7 +107,7 @@ lastMonthRide = Lol.createRide(%{
   institution: milner_ridge,
   distance: 150,
   food_expenses: ~M[1414],
-  car_expenses: ~M[3750],
+  car_expenses: ~M[3000],
   driver: sara,
   car_owner: sara
 })
@@ -162,7 +162,7 @@ reimbursedRide = Lol.createRide(%{
   institution: headingley,
   distance: 22,
   food_expenses: ~M[999],
-  car_expenses: ~M[770],
+  car_expenses: ~M[550],
   driver: sara,
   car_owner: sara
 })
@@ -176,7 +176,7 @@ PaperTrail.insert! %Reimbursement{
 PaperTrail.insert! %Reimbursement{
   ride: reimbursedRide,
   person: sara,
-  car_expenses: ~M[770]
+  car_expenses: ~M[550]
 }, Lol.version_information
 
 processedRide = Lol.createRide(%{
@@ -185,7 +185,7 @@ processedRide = Lol.createRide(%{
   institution: headingley,
   distance: 25,
   food_expenses: ~M[500],
-  car_expenses: ~M[700],
+  car_expenses: ~M[625],
   driver: sara,
   car_owner: sara
 })
@@ -201,7 +201,7 @@ PaperTrail.insert! %Reimbursement{
 PaperTrail.insert! %Reimbursement{
   ride: processedRide,
   person: sara,
-  car_expenses: ~M[700],
+  car_expenses: ~M[625],
   processed: true,
   donation: true
 }, Lol.version_information

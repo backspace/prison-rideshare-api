@@ -8,13 +8,16 @@ defmodule Mix.Tasks.Import do
 
   @shortdoc "Imports CSVs"
 
+  @closer_institution_rate 25
+  @farther_institution_rate 20
+
   def run([requests, reports, reimbursements | _]) do
     Mix.Task.run "app.start"
 
     institution_rate_overrides = %{
-      "headingley" => 35,
-      "stony mountain" => 35,
-      "rockwood" => 35
+      "headingley" => @closer_institution_rate,
+      "stony mountain" => @closer_institution_rate,
+      "rockwood" => @closer_institution_rate
     }
 
     institution_spelling_overrides = %{
@@ -47,7 +50,7 @@ defmodule Mix.Tasks.Import do
         matching_institution = Map.get(institution_spelling_overrides, matching_institution, matching_institution)
 
         institution_name_to_model = Map.put_new_lazy(institution_name_to_model, matching_institution, fn ->
-          rate = Map.get(institution_rate_overrides, matching_institution, 25)
+          rate = Map.get(institution_rate_overrides, matching_institution, @farther_institution_rate)
 
           Institution.changeset(%Institution{}, %{name: institution, rate: rate})
           |> PaperTrail.insert!(origin: "import")

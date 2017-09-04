@@ -16,10 +16,10 @@ defmodule Mix.Tasks.ImportTest do
     [i1, i2] = Repo.all(Institution)
 
     assert i1.name == "Milner Ridge"
-    assert i1.rate == ~M[25]
+    assert i1.rate == ~M[20]
 
     assert i2.name == "stony mountain"
-    assert i2.rate == ~M[35]
+    assert i2.rate == ~M[25]
 
     assert i1version.event == "insert"
     assert i1version.item_changes["name"] == "Milner Ridge"
@@ -51,7 +51,7 @@ defmodule Mix.Tasks.ImportTest do
     assert req1version.item_type == "Ride"
 
     assert req1.distance == 75
-    assert req1.rate == ~M[25]
+    assert req1.rate == ~M[27]
     assert req1.food_expenses == ~M[1200]
     assert req1.car_expenses == ~M[2625]
     assert req1.report_notes == "These R the Notes"
