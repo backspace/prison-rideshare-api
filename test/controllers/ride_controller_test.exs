@@ -1,7 +1,7 @@
-defmodule PrisonRideshare.RideControllerTest do
-  use PrisonRideshare.ConnCase
+defmodule PrisonRideshareWeb.RideControllerTest do
+  use PrisonRideshareWeb.ConnCase
 
-  alias PrisonRideshare.{Institution, Person, Reimbursement, Ride}
+  alias PrisonRideshareWeb.{Institution, Person, Reimbursement, Ride}
   alias PrisonRideshare.Repo
 
   @valid_attrs %{address: "some content", car_expenses: 42, contact: "some content", distance: 120, end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}, food_expenses: 42, name: "some content", passengers: 42, rate: 42, report_notes: "some content", request_notes: "some content", start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}}
@@ -17,11 +17,11 @@ defmodule PrisonRideshare.RideControllerTest do
   end
 
   defp relationships do
-    combined_with_ride = Repo.insert!(%PrisonRideshare.Ride{request_notes: "Combined"})
-    institution = Repo.insert!(%PrisonRideshare.Institution{})
-    driver = Repo.insert!(%PrisonRideshare.Person{name: "Driver Name"})
-    car_owner = Repo.insert!(%PrisonRideshare.Person{name: "Car Owner"})
-    reimbursement = Repo.insert!(%PrisonRideshare.Reimbursement{food_expenses: 2010, car_expenses: 2017})
+    combined_with_ride = Repo.insert!(%Ride{request_notes: "Combined"})
+    institution = Repo.insert!(%Institution{})
+    driver = Repo.insert!(%Person{name: "Driver Name"})
+    car_owner = Repo.insert!(%Person{name: "Car Owner"})
+    reimbursement = Repo.insert!(%Reimbursement{food_expenses: 2010, car_expenses: 2017})
 
     %{
       "combined-with" => %{
@@ -205,7 +205,7 @@ defmodule PrisonRideshare.RideControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
-    other_driver = Repo.insert!(%PrisonRideshare.Person{name: "Other Driver"})
+    other_driver = Repo.insert!(%Person{name: "Other Driver"})
 
     ride = Repo.insert! %Ride{driver: other_driver}
     conn = put conn, ride_path(conn, :update, ride), %{

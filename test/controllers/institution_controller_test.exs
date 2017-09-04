@@ -1,7 +1,7 @@
-defmodule PrisonRideshare.InstitutionControllerTest do
-  use PrisonRideshare.ConnCase
+defmodule PrisonRideshareWeb.InstitutionControllerTest do
+  use PrisonRideshareWeb.ConnCase
 
-  alias PrisonRideshare.Institution
+  alias PrisonRideshareWeb.Institution
   alias PrisonRideshare.Repo
 
   @valid_attrs %{name: "some content", rate: 42}

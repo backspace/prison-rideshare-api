@@ -6,7 +6,7 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
-config :prison_rideshare, PrisonRideshare.Endpoint,
+config :prison_rideshare, PrisonRideshareWeb.Endpoint,
   http: [port: 4000],
   code_reloader: true,
   check_origin: false,
@@ -14,13 +14,13 @@ config :prison_rideshare, PrisonRideshare.Endpoint,
 
 
 # Watch static and templates for browser reloading.
-config :prison_rideshare, PrisonRideshare.Endpoint,
+config :prison_rideshare, PrisonRideshareWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
-      ~r{web/views/.*(ex)$},
-      ~r{web/templates/.*(eex)$}
+      ~r{lib/prison_rideshare_web/views/.*(ex)$},
+      ~r{lib/prison_rideshare_web/templates/.*(eex)$}
     ]
   ]
 

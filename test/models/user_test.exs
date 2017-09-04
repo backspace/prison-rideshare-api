@@ -1,7 +1,7 @@
-defmodule PrisonRideshare.UserTest do
+defmodule PrisonRideshareWeb.UserTest do
   use PrisonRideshare.ModelCase
 
-  alias PrisonRideshare.User
+  alias PrisonRideshareWeb.User
 
   @valid_attrs %{email: "jorts@jants.ca", password: "a password", password_confirmation: "a password"}
   @invalid_attrs %{}

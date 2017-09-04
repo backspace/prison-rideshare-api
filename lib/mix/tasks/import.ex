@@ -3,7 +3,8 @@ import Money.Sigils
 defmodule Mix.Tasks.Import do
   use Mix.Task
 
-  alias PrisonRideshare.{Institution, Person, Reimbursement, Repo, Ride}
+  alias PrisonRideshare.Repo
+  alias PrisonRideshareWeb.{Institution, Person, Reimbursement, Ride}
 
   @shortdoc "Imports CSVs"
 

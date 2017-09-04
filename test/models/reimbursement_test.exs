@@ -1,7 +1,7 @@
-defmodule PrisonRideshare.ReimbursementTest do
+defmodule PrisonRideshareWeb.ReimbursementTest do
   use PrisonRideshare.ModelCase
 
-  alias PrisonRideshare.Reimbursement
+  alias PrisonRideshareWeb.Reimbursement
 
   @valid_attrs %{car_expenses: 42}
 

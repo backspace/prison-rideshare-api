@@ -1,7 +1,7 @@
 defmodule PrisonRideshare.UnauthRideControllerTest do
-  use PrisonRideshare.ConnCase
+  use PrisonRideshareWeb.ConnCase
 
-  alias PrisonRideshare.{Institution, Person, Ride}
+  alias PrisonRideshareWeb.{Institution, Person, Ride}
   alias PrisonRideshare.Repo
 
   import Money.Sigils

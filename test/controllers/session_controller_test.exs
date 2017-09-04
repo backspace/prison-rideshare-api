@@ -1,7 +1,7 @@
-defmodule PrisonRideshare.SessionControllerTest do
-  use PrisonRideshare.ConnCase
+defmodule PrisonRideshareWeb.SessionControllerTest do
+  use PrisonRideshareWeb.ConnCase
 
-  alias PrisonRideshare.User
+  alias PrisonRideshareWeb.User
 
   setup do
     user = User.changeset %User{}, %{

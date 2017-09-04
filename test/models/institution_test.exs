@@ -1,7 +1,7 @@
-defmodule PrisonRideshare.InstitutionTest do
+defmodule PrisonRideshareWeb.InstitutionTest do
   use PrisonRideshare.ModelCase
 
-  alias PrisonRideshare.Institution
+  alias PrisonRideshareWeb.Institution
 
   @valid_attrs %{name: "some content", rate: 42}
   @invalid_attrs %{}

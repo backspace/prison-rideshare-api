@@ -1,6 +1,6 @@
 use Mix.Config
 
-config :prison_rideshare, PrisonRideshare.Endpoint,
+config :prison_rideshare, PrisonRideshareWeb.Endpoint,
   http: [port: {:system, "PORT"}],
   url: [host: "prison-rideshare.herokuapp.com", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],

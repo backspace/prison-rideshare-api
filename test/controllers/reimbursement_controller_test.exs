@@ -1,7 +1,7 @@
-defmodule PrisonRideshare.ReimbursementControllerTest do
-  use PrisonRideshare.ConnCase
+defmodule PrisonRideshareWeb.ReimbursementControllerTest do
+  use PrisonRideshareWeb.ConnCase
 
-  alias PrisonRideshare.Reimbursement
+  alias PrisonRideshareWeb.Reimbursement
   alias PrisonRideshare.Repo
 
   @valid_attrs %{car_expenses: 42, processed: true}
@@ -16,7 +16,7 @@ defmodule PrisonRideshare.ReimbursementControllerTest do
   end
 
   defp relationships do
-    person = Repo.insert!(%PrisonRideshare.Person{})
+    person = Repo.insert!(%PrisonRideshareWeb.Person{})
 
     %{
       "person" => %{

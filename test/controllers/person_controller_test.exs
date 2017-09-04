@@ -1,7 +1,7 @@
-defmodule PrisonRideshare.PersonControllerTest do
-  use PrisonRideshare.ConnCase
+defmodule PrisonRideshareWeb.PersonControllerTest do
+  use PrisonRideshareWeb.ConnCase
 
-  alias PrisonRideshare.Person
+  alias PrisonRideshareWeb.Person
   alias PrisonRideshare.Repo
 
   @valid_attrs %{name: "some content"}
@@ -55,7 +55,7 @@ defmodule PrisonRideshare.PersonControllerTest do
     assert json_response(conn, 201)["data"]["id"] == person.id
     assert json_response(conn, 201)["data"]["attributes"]["name"] == "some content"
 
-    [user] = Repo.all PrisonRideshare.User
+    [user] = Repo.all PrisonRideshareWeb.User
 
     [version] = Repo.all PaperTrail.Version
     assert version.event == "insert"

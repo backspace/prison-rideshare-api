@@ -1,4 +1,4 @@
-defmodule PrisonRideshare.ConnCase do
+defmodule PrisonRideshareWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -25,13 +25,13 @@ defmodule PrisonRideshare.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import PrisonRideshare.Router.Helpers
+      import PrisonRideshareWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint PrisonRideshare.Endpoint
+      @endpoint PrisonRideshareWeb.Endpoint
 
       defp auth_as_admin(conn) do
-        user = Repo.insert! %PrisonRideshare.User{email: "test@example.com", admin: true, id: Ecto.UUID.generate}
+        user = Repo.insert! %PrisonRideshareWeb.User{email: "test@example.com", admin: true, id: Ecto.UUID.generate}
         { :ok, jwt, _ } = Guardian.encode_and_sign(user, :token)
 
         conn

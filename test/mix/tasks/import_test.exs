@@ -1,8 +1,9 @@
 defmodule Mix.Tasks.ImportTest do
   use ExUnit.Case
-  use PrisonRideshare.ConnCase
+  use PrisonRideshareWeb.ConnCase
 
-  alias PrisonRideshare.{Institution, Person, Reimbursement, Repo, Ride}
+  alias PrisonRideshare.Repo
+  alias PrisonRideshareWeb.{Institution, Person, Reimbursement, Ride}
   alias PaperTrail.Version
 
   import Money.Sigils

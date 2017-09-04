@@ -1,7 +1,7 @@
-defmodule PrisonRideshare.UserControllerTest do
-  use PrisonRideshare.ConnCase
+defmodule PrisonRideshareWeb.UserControllerTest do
+  use PrisonRideshareWeb.ConnCase
 
-  alias PrisonRideshare.User
+  alias PrisonRideshareWeb.User
   alias PrisonRideshare.Repo
 
   @valid_attrs %{admin: false}

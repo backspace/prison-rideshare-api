@@ -1,7 +1,7 @@
-defmodule PrisonRideshare.RegistrationControllerTest do
-  use PrisonRideshare.ConnCase
+defmodule PrisonRideshareWeb.RegistrationControllerTest do
+  use PrisonRideshareWeb.ConnCase
 
-  alias PrisonRideshare.User
+  alias PrisonRideshareWeb.User
 
   @valid_attrs %{
     email: "mike@example.com",

@@ -1,7 +1,7 @@
-defmodule PrisonRideshare.PersonTest do
+defmodule PrisonRideshareWeb.PersonTest do
   use PrisonRideshare.ModelCase
 
-  alias PrisonRideshare.Person
+  alias PrisonRideshareWeb.Person
 
   @valid_attrs %{name: "some content"}
   @invalid_attrs %{}

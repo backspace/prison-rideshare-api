@@ -10,11 +10,11 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-PrisonRideshare.Repo.delete_all PrisonRideshare.User
+PrisonRideshare.Repo.delete_all PrisonRideshareWeb.User
 
 version_information = [origin: "seeds"]
 
-user = PrisonRideshare.User.changeset(%PrisonRideshare.User{}, %{
+user = PrisonRideshareWeb.User.changeset(%PrisonRideshareWeb.User{}, %{
   name: "Test User",
   email: "testuser@example.com",
   password: "secretsecret",
@@ -23,5 +23,5 @@ user = PrisonRideshare.User.changeset(%PrisonRideshare.User{}, %{
 })
 |> PaperTrail.insert!(version_information)
 
-PrisonRideshare.User.admin_changeset(user, %{admin: true})
+PrisonRideshareWeb.User.admin_changeset(user, %{admin: true})
 |> PaperTrail.update!(version_information)

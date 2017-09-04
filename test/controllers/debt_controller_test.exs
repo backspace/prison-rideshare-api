@@ -1,9 +1,9 @@
 import Money.Sigils
 
-defmodule PrisonRideshare.DebtControllerTest do
-  use PrisonRideshare.ConnCase
+defmodule PrisonRideshareWeb.DebtControllerTest do
+  use PrisonRideshareWeb.ConnCase
 
-  alias PrisonRideshare.{Person, Reimbursement, Ride}
+  alias PrisonRideshareWeb.{Person, Reimbursement, Ride}
   alias PrisonRideshare.Repo
 
   setup do

@@ -1,7 +1,7 @@
-defmodule PrisonRideshare.RideTest do
+defmodule PrisonRideshareWeb.RideTest do
   use PrisonRideshare.ModelCase
 
-  alias PrisonRideshare.{Institution, Ride}
+  alias PrisonRideshareWeb.{Institution, Ride}
 
   import Money.Sigils
 

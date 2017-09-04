@@ -10,10 +10,10 @@ config :prison_rideshare,
   ecto_repos: [PrisonRideshare.Repo]
 
 # Configures the endpoint
-config :prison_rideshare, PrisonRideshare.Endpoint,
+config :prison_rideshare, PrisonRideshareWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "Cs7GQrRAb0eRHwFHrArQ14GQFFHTitFITDF8igX3AHoewb8zo2z0/KCteAdK1EIe",
-  render_errors: [view: PrisonRideshare.ErrorView, accepts: ~w(json-api)],
+  render_errors: [view: PrisonRideshareWeb.ErrorView, accepts: ~w(json-api)],
   pubsub: [name: PrisonRideshare.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
