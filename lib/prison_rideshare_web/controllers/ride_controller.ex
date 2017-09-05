@@ -25,6 +25,14 @@ defmodule PrisonRideshareWeb.RideController do
     |> render("index.json-api", data: rides)
   end
 
+  def search(conn, %{"name" => name}) do
+    rides = Repo.all(from r in Ride, where: ilike(r.name, ^"%#{name}%"))
+    |> preload
+
+    conn
+    |> render("index.json-api", data: rides)
+  end
+
   def create(conn, %{"data" => data = %{"type" => "rides", "attributes" => _ride_params}}) do
     changeset = Ride.changeset(%Ride{}, Params.to_attributes(data))
 

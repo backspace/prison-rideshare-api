@@ -33,6 +33,7 @@ defmodule PrisonRideshareWeb.Router do
     post "/register", RegistrationController, :create
     post "/token", SessionController, :create, as: :login
 
+    get "/rides/search", RideController, :search
     resources "/rides", RideController, except: [:new, :edit]
   end
 

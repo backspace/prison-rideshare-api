@@ -298,4 +298,16 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     refute Repo.get(Ride, ride.id)
   end
 
+  test "returns rides that match the visitor search", %{conn: conn} do
+    francine_ride = Repo.insert! %Ride{name: "Francine"}
+    Repo.insert! %Ride{name: "Pascal"}
+    frank_ride = Repo.insert! %Ride{name: "frank"}
+
+    conn = get conn, ride_path(conn, :search, name: "fran")
+
+    [ride1, ride2] = json_response(conn, 200)["data"]
+
+    assert ride1["id"] == francine_ride.id
+    assert ride2["id"] == frank_ride.id
+  end
 end
