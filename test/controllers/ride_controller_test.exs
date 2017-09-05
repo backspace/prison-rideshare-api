@@ -145,6 +145,19 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     }]
   end
 
+  test "returns rides that match the visitor search", %{conn: conn} do
+    francine_ride = Repo.insert! %Ride{name: "Francine"}
+    Repo.insert! %Ride{name: "Pascal"}
+    frank_ride = Repo.insert! %Ride{name: "frank"}
+
+    conn = get conn, ride_path(conn, :index, "filter[name]": "fran")
+
+    [ride1, ride2] = json_response(conn, 200)["data"]
+
+    assert ride1["id"] == francine_ride.id
+    assert ride2["id"] == frank_ride.id
+  end
+
   test "shows chosen resource", %{conn: conn} do
     ride = Repo.insert! %Ride{rate: 35}
     conn = get conn, ride_path(conn, :show, ride)
@@ -296,18 +309,5 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     conn = delete conn, ride_path(conn, :delete, ride)
     assert response(conn, 204)
     refute Repo.get(Ride, ride.id)
-  end
-
-  test "returns rides that match the visitor search", %{conn: conn} do
-    francine_ride = Repo.insert! %Ride{name: "Francine"}
-    Repo.insert! %Ride{name: "Pascal"}
-    frank_ride = Repo.insert! %Ride{name: "frank"}
-
-    conn = get conn, ride_path(conn, :search, name: "fran")
-
-    [ride1, ride2] = json_response(conn, 200)["data"]
-
-    assert ride1["id"] == francine_ride.id
-    assert ride2["id"] == frank_ride.id
   end
 end
