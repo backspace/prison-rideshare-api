@@ -139,4 +139,10 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       # %{"detail" => "Food expenses can't be blank", "source" => %{"pointer" => "/data/attributes/food-expenses"}, "title" => "can't be blank"}
     ]
   end
+
+  test "does not return search results", %{conn: conn} do
+    conn = get conn, ride_path(conn, :search, %{name: "hello"})
+
+    assert response(conn, 302)
+  end
 end
