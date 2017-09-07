@@ -11,7 +11,7 @@ defmodule PrisonRideshareWeb.RideController do
 
   def index(%{private: %{guardian_default_resource: %{admin: true}}} = conn, params) do
     rides = case params do
-      %{"filter" => %{"name" => name}} -> Repo.all(from r in Ride, where: ilike(r.name, ^"%#{name}%"))
+      %{"filter" => %{"name" => name}} -> Repo.all(from r in Ride, where: ilike(r.name, ^"#{name}%"))
       _ -> Repo.all(Ride)
     end
 

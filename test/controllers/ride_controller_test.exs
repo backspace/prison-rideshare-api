@@ -149,6 +149,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     francine_ride = Repo.insert! %Ride{name: "Francine"}
     Repo.insert! %Ride{name: "Pascal"}
     frank_ride = Repo.insert! %Ride{name: "frank"}
+    Repo.insert! %Ride{name: "Safran"}
 
     conn = get conn, ride_path(conn, :index, "filter[name]": "fran")
 
