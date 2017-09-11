@@ -1,5 +1,5 @@
 alias PrisonRideshare.Repo
-alias PrisonRideshare.{Institution, Person, Reimbursement, Ride, User}
+alias PrisonRideshareWeb.{Institution, Person, Reimbursement, Ride, User}
 
 import Money.Sigils
 
