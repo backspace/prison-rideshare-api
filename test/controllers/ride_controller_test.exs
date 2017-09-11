@@ -145,18 +145,20 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     }]
   end
 
-  test "returns rides that match the visitor search", %{conn: conn} do
-    francine_ride = Repo.insert! %Ride{name: "Francine"}
+  test "returns descending-by-start rides that match the visitor search", %{conn: conn} do
+    francine_ride = Repo.insert! %Ride{name: "Francine", start: Ecto.DateTime.from_erl({{2015, 1, 15}, {18, 0, 0}})}
     Repo.insert! %Ride{name: "Pascal"}
-    frank_ride = Repo.insert! %Ride{name: "frank"}
+    frank_ride = Repo.insert! %Ride{name: "frank", start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}})}
     Repo.insert! %Ride{name: "Safran"}
+    francesca_ride = Repo.insert! %Ride{name: "francesca", start: Ecto.DateTime.from_erl({{2016, 1, 15}, {18, 0, 0}})}
 
     conn = get conn, ride_path(conn, :index, "filter[name]": "fran")
 
-    [ride1, ride2] = json_response(conn, 200)["data"]
+    [ride1, ride2, ride3] = json_response(conn, 200)["data"]
 
-    assert ride1["id"] == francine_ride.id
-    assert ride2["id"] == frank_ride.id
+    assert ride1["id"] == frank_ride.id
+    assert ride2["id"] == francesca_ride.id
+    assert ride3["id"] == francine_ride.id
   end
 
   test "shows chosen resource", %{conn: conn} do
