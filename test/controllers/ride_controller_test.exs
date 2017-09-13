@@ -91,8 +91,8 @@ defmodule PrisonRideshareWeb.RideControllerTest do
       "id" => ride.id,
       "type" => "ride",
       "attributes" => %{
-        "start" => "2017-01-15T18:00:00",
-        "end" => "2017-01-15T20:00:00",
+        "start" => "2017-01-15T18:00:00Z",
+        "end" => "2017-01-15T20:00:00Z",
         "rate" => ride.rate,
         "passengers" => ride.passengers,
         "name" => ride.name,

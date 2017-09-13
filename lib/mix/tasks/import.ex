@@ -2,6 +2,7 @@ import Money.Sigils
 
 defmodule Mix.Tasks.Import do
   use Mix.Task
+  use Timex
 
   alias PrisonRideshare.Repo
   alias PrisonRideshareWeb.{Institution, Person, Reimbursement, Ride}
@@ -235,8 +236,8 @@ defmodule Mix.Tasks.Import do
   defp parse_date_and_time(date, time, _) do
     full_string = "#{date} #{time}"
     case Timex.parse(full_string, "{M}/{D}/{YYYY} {h12}:{m}:{s} {AM}") do
-      {:ok, parsed} -> parsed
-      {:error, _} -> Timex.parse!(full_string, "{M}/{D}/{YYYY} {h12}:{m} {AM}")
+      {:ok, parsed} -> convert_to_utc(parsed)
+      {:error, _} -> convert_to_utc(Timex.parse!(full_string, "{M}/{D}/{YYYY} {h12}:{m} {AM}"))
     end
   end
 
@@ -244,6 +245,10 @@ defmodule Mix.Tasks.Import do
     case Timex.parse(date, "{M}/{D}/{YYYY} {h24}:{m}:{s}") do
       {:ok, parsed} -> parsed
     end
+  end
+
+  defp convert_to_utc(parsed) do
+    Timezone.convert(Timezone.resolve("America/Winnipeg", NaiveDateTime.to_erl(parsed), :utc), "UTC")
   end
 
   defp maybe_add_person(person_name_to_model, _, "") do
@@ -342,7 +347,8 @@ defmodule Mix.Tasks.Import do
 
   # FIXME these are taken from ReportView which is now dead
   def format_request_without_institution(request) do
-    Timex.format!(Ecto.DateTime.to_erl(request.start), "{h12}:{m} {AM} on {WDshort}, {Mshort} {D}")
+    start = Timezone.convert(Ecto.DateTime.to_erl(request.start), "America/Winnipeg")
+    Timex.format!(start, "{h12}:{m} {AM} on {WDshort}, {Mshort} {D}")
   end
 
   def format_request(request) do
