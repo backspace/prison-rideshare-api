@@ -9,9 +9,13 @@ defmodule PrisonRideshareWeb.RideController do
   plug :scrub_params, "data" when action in [:create, :update]
   plug PrisonRideshareWeb.Plugs.Admin when not action in [:index, :update]
 
-  def index(%{private: %{guardian_default_resource: %{admin: true}}} = conn, _params) do
-    rides = Repo.all(Ride)
-    |> preload
+  def index(%{private: %{guardian_default_resource: %{admin: true}}} = conn, params) do
+    rides = case params do
+      %{"filter" => %{"name" => name}} -> Repo.all(from r in Ride, where: ilike(r.name, ^"#{name}%"), order_by: [desc: r.start])
+      _ -> Repo.all(Ride)
+    end
+
+    rides = preload(rides)
 
     conn
     |> render("index.json-api", data: rides)
