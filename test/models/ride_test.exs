@@ -30,6 +30,24 @@ defmodule PrisonRideshareWeb.RideTest do
     assert Ecto.Changeset.get_field(changeset, :car_expenses) == ~M[400]
   end
 
+  test "changeset without a distance does not calculate car expenses" do
+    changeset = Ride.changeset(
+      %Ride{institution: %Institution{rate: ~M[40]}},
+      %{
+        start: @valid_attrs.start,
+        end: @valid_attrs.end,
+        name: @valid_attrs.name,
+        passengers: 1,
+        address: "an address",
+        contact: "contact",
+        report_notes: "hello"}
+      )
+
+    assert changeset.valid?
+    assert Ecto.Changeset.get_field(changeset, :report_notes) == "hello"
+    assert Ecto.Changeset.get_field(changeset, :car_expenses) == 0
+  end
+
   test "report changeset with invalid attributes" do
     changeset = Ride.report_changeset(%Ride{}, @invalid_attrs)
     refute changeset.valid?
