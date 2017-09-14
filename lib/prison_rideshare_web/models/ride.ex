@@ -40,6 +40,13 @@ defmodule PrisonRideshareWeb.Ride do
     struct
     |> cast(params, [:start, :end, :name, :address, :contact, :passengers, :request_notes, :enabled, :cancellation_reason, :combined_with_ride_id, :institution_id, :driver_id, :car_owner_id, :distance, :rate, :food_expenses, :car_expenses, :report_notes, :donation])
     |> validate_required([:start, :end, :name, :address, :contact, :passengers])
+    |> calculate_car_expenses(struct)
+  end
+
+  def import_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:start, :end, :name, :address, :contact, :passengers, :request_notes, :enabled, :cancellation_reason, :combined_with_ride_id, :institution_id, :driver_id, :car_owner_id, :distance, :rate, :food_expenses, :car_expenses, :report_notes, :donation])
+    |> validate_required([:start, :end, :name, :address, :contact, :passengers])
   end
 
   def report_changeset(struct, params \\ %{}) do
@@ -53,7 +60,10 @@ defmodule PrisonRideshareWeb.Ride do
   defp calculate_car_expenses(%{valid?: true} = changeset, struct) do
     distance = Ecto.Changeset.get_field(changeset, :distance)
     institution = Ecto.Changeset.get_field(changeset, :institution)
-    Ecto.Changeset.put_change(changeset, :rate, institution.rate)
-    |> Ecto.Changeset.put_change(:car_expenses, Money.multiply(institution.rate, distance))
+
+    case institution do
+      nil -> changeset
+      _ -> Ecto.Changeset.put_change(changeset, :rate, institution.rate) |> Ecto.Changeset.put_change(:car_expenses, Money.multiply(institution.rate, distance))
+    end
   end
 end

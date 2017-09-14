@@ -4,7 +4,9 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   alias PrisonRideshareWeb.{Institution, Person, Reimbursement, Ride}
   alias PrisonRideshare.Repo
 
-  @valid_attrs %{address: "some content", car_expenses: 42, contact: "some content", distance: 120, end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}, food_expenses: 42, name: "some content", passengers: 42, rate: 42, report_notes: "some content", request_notes: "some content", start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}}
+  import Money.Sigils
+
+  @valid_attrs %{address: "some content", contact: "some content", distance: 120, end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}, food_expenses: 42, name: "some content", passengers: 42, rate: 42, report_notes: "some content", request_notes: "some content", start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}}
   @invalid_attrs %{}
 
   setup do
@@ -221,9 +223,10 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
+    ride_institution = Repo.insert! %Institution{name: "Stony Mountain", rate: 22}
     other_driver = Repo.insert!(%Person{name: "Other Driver"})
 
-    ride = Repo.insert! %Ride{driver: other_driver}
+    ride = Repo.insert! %Ride{driver: other_driver, institution: ride_institution}
     conn = put conn, ride_path(conn, :update, ride), %{
       "meta" => %{},
       "data" => %{
@@ -248,6 +251,8 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     assert saved.driver_id == driver.id
     assert saved.car_owner_id == car_owner.id
     assert saved.combined_with_ride_id == combined_with_ride.id
+
+    assert saved.car_expenses == ~M[2640]
 
     data = json_response(conn, 200)["data"]
 
@@ -290,6 +295,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
       }
     }
 
+    assert data["attributes"]["car-expenses"] == 2640
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

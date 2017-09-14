@@ -94,7 +94,7 @@ defmodule Mix.Tasks.Import do
         request_attrs = maybe_put_id(request_attrs, :driver_id, driver_model)
         request_attrs = maybe_put_id(request_attrs, :car_owner_id, car_owner_model)
 
-        request_model = Ride.changeset(%Ride{}, request_attrs)
+        request_model = Ride.import_changeset(%Ride{}, request_attrs)
         |> PaperTrail.insert!(origin: "import")
 
         request_row_number_to_model = Map.put(request_row_number_to_model, i + 1, request_model)
@@ -134,7 +134,7 @@ defmodule Mix.Tasks.Import do
         if ride_string != "" do
           request = find_request_from_ride_string_and_names(uncombined_requests, ride_string, driver, car_owner)
 
-          Ride.changeset(request, %{
+          Ride.import_changeset(request, %{
             distance: distance,
             rate: round(String.to_float(rate) * 100),
             food_expenses: (if food == "", do: 0, else: food),
@@ -317,7 +317,7 @@ defmodule Mix.Tasks.Import do
         request.start == combined.start
       end)
 
-      Ride.changeset(combined, %{combined_with_ride_id: match.id})
+      Ride.import_changeset(combined, %{combined_with_ride_id: match.id})
       |> PaperTrail.update(origin: "import")
     end)
   end
