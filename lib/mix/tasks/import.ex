@@ -257,7 +257,7 @@ defmodule Mix.Tasks.Import do
 
   defp maybe_add_person(person_name_to_model, matching_name, name) do
     new_map = Map.put_new_lazy(person_name_to_model, matching_name, fn ->
-      Person.changeset(%Person{}, %{name: capitalised_name(name)})
+      Person.import_changeset(%Person{}, %{name: capitalised_name(name)})
       |> PaperTrail.insert!(origin: "import")
     end)
 

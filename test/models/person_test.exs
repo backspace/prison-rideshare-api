@@ -3,16 +3,23 @@ defmodule PrisonRideshareWeb.PersonTest do
 
   alias PrisonRideshareWeb.Person
 
-  @valid_attrs %{name: "some content"}
-  @invalid_attrs %{}
-
-  test "changeset with valid attributes" do
-    changeset = Person.changeset(%Person{}, @valid_attrs)
+  test "changeset with name/email and landline is valid" do
+    changeset = Person.changeset(%Person{}, %{name: "chelsea", email: "chelsea@example.com", landline: "5145551313"})
     assert changeset.valid?
   end
 
+  test "changeset with name/email and mobile is valid" do
+    changeset = Person.changeset(%Person{}, %{name: "manning", email: "manning@example.com", mobile: "5145551313"})
+    assert changeset.valid?
+  end
+
+  test "changeset with name/email but no phone is invalid" do
+    changeset = Person.changeset(%Person{}, %{name: "chelsea manning", email: "chelsea.manning@example.com"})
+    refute changeset.valid?
+  end
+
   test "changeset with invalid attributes" do
-    changeset = Person.changeset(%Person{}, @invalid_attrs)
+    changeset = Person.changeset(%Person{}, %{name: "no"})
     refute changeset.valid?
   end
 

@@ -32,7 +32,11 @@ defmodule Lol do
   end
 
   def createPerson(name) do
-    PaperTrail.insert! Person.changeset(%Person{name: name}), Lol.version_information
+    PaperTrail.insert! Person.changeset(%Person{
+      name: name,
+      email: "#{name}@example.com",
+      mobile: Faker.Phone.EnUs.phone
+    }), Lol.version_information
   end
 
   def version_information do

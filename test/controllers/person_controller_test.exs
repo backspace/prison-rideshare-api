@@ -4,8 +4,8 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
   alias PrisonRideshareWeb.Person
   alias PrisonRideshare.Repo
 
-  @valid_attrs %{name: "some content"}
-  @invalid_attrs %{}
+  @valid_attrs %{name: "some content", email: "hello@example.com", mobile: "5145551313"}
+  @invalid_attrs %{name: "aname", email: "jorty@example.com"}
 
   setup do
     conn = build_conn()
@@ -27,12 +27,18 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    person = Repo.insert! %Person{}
+    person = Repo.insert! %Person{name: "a", email: "b", mobile: "c", landline: "d", notes: "e"}
     conn = get conn, person_path(conn, :show, person)
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{person.id}"
     assert data["type"] == "person"
-    assert data["attributes"]["name"] == person.name
+
+    attributes = data["attributes"]
+    assert attributes["name"] == person.name
+    assert attributes["email"] == person.email
+    assert attributes["mobile"] == person.mobile
+    assert attributes["landline"] == person.landline
+    assert attributes["notes"] == person.notes
   end
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
@@ -53,7 +59,11 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
 
     person = Repo.get_by(Person, @valid_attrs)
     assert json_response(conn, 201)["data"]["id"] == person.id
-    assert json_response(conn, 201)["data"]["attributes"]["name"] == "some content"
+
+    attributes = json_response(conn, 201)["data"]["attributes"]
+    assert attributes["name"] == "some content"
+    assert attributes["email"] == @valid_attrs[:email]
+    assert attributes["mobile"] == @valid_attrs[:mobile]
 
     [user] = Repo.all PrisonRideshareWeb.User
 
@@ -91,8 +101,11 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     }
 
     person = Repo.get_by(Person, @valid_attrs)
-    assert json_response(conn, 200)["data"]["id"] == person.id
-    assert json_response(conn, 200)["data"]["attributes"]["name"] == "some content"
+
+    attributes = json_response(conn, 200)["data"]["attributes"]
+    assert attributes["name"] == person.name
+    assert attributes["email"] == person.email
+    assert attributes["mobile"] == person.mobile
 
     [version] = Repo.all PaperTrail.Version
     assert version.event == "update"
@@ -112,7 +125,12 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
       }
     }
 
-    assert json_response(conn, 422)["errors"] != %{}
+    # FIXME the lack of control over title vs detail results in this unfortunate wording
+    assert json_response(conn, 422)["errors"] == [
+      %{"detail" => "Landline or mobile must be present", "source" => %{"pointer" => "/data/attributes/landline"}, "title" => "or mobile must be present"},
+      %{"detail" => "Mobile or landline must be present", "source" => %{"pointer" => "/data/attributes/mobile"}, "title" => "or landline must be present"}
+    ]
+
     assert Repo.all(PaperTrail.Version) == []
   end
 
