@@ -85,9 +85,9 @@ defmodule Mix.Tasks.ImportTest do
     refute req5.enabled
     assert req5.cancellation_reason == "visitor"
     assert req6.cancellation_reason == "no car"
-    assert req7.cancellation_reason == "no driver"
+    assert req7.cancellation_reason == "driver not found"
 
-    assert req8.cancellation_reason == "no driver"
+    assert req8.cancellation_reason == "driver not found"
     assert req9.cancellation_reason == "visitor"
 
     [p1, p2, p3] = Repo.all(Person)
