@@ -34,7 +34,7 @@ defmodule Lol do
   def createPerson(name) do
     PaperTrail.insert! Person.changeset(%Person{
       name: name,
-      email: "#{name}@example.com",
+      email: "#{String.replace(String.downcase(name), " ", ".")}@example.com",
       mobile: Faker.Phone.EnUs.phone
     }), Lol.version_information
   end
