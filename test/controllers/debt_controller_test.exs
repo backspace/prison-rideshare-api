@@ -124,6 +124,14 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
       car_expenses: 1000
     }
 
+    donation_ride = Repo.insert! %Ride{
+      driver: cnuth,
+      car_owner: cnuth,
+      food_expenses: 0,
+      car_expenses: 999,
+      donation: true
+    }
+
     food_ride = Repo.insert! %Ride{
       driver: cnuth,
       car_owner: cnuth,
@@ -146,18 +154,24 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
 
     conn = delete conn, debt_path(conn, :delete, cnuth)
 
-    [_existingreimbursement, food_reimbursement_one, car_reimbursement, food_reimbursement_two] = Repo.all(Reimbursement)
+    [_existingreimbursement, donation_reimbursement, food_reimbursement_one, car_reimbursement, food_reimbursement_two] = Repo.all(Reimbursement)
     |> Repo.preload([:ride, :person])
+
+    assert donation_reimbursement.ride_id == donation_ride.id
+    assert donation_reimbursement.car_expenses == ~M[999]
+    assert donation_reimbursement.donation
 
     assert food_reimbursement_one.ride_id == ride.id
     assert food_reimbursement_one.person == cnuth
     assert food_reimbursement_one.food_expenses == ~M[95]
     assert food_reimbursement_one.car_expenses == ~M[0]
+    refute food_reimbursement_one.donation
 
     assert car_reimbursement.ride_id == ride.id
     assert car_reimbursement.person == cnuth
     assert car_reimbursement.food_expenses == ~M[0]
     assert car_reimbursement.car_expenses == ~M[1000]
+    refute car_reimbursement.donation
 
     assert food_reimbursement_two.ride_id == food_ride.id
     assert food_reimbursement_two.person == cnuth

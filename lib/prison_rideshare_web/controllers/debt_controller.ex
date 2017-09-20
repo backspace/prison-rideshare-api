@@ -44,7 +44,8 @@ defmodule PrisonRideshareWeb.DebtController do
         changeset = Reimbursement.changeset(%Reimbursement{}, %{
           person_id: person.id,
           ride_id: ride.id,
-          car_expenses: car_expenses_without_reimbursements
+          car_expenses: car_expenses_without_reimbursements,
+          donation: ride.donation
         })
         PaperTrail.insert!(changeset, version_information(conn))
       end
