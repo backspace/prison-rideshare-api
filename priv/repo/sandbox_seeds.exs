@@ -59,10 +59,12 @@ User.admin_changeset(user, %{admin: true})
 headingley = PaperTrail.insert! Institution.changeset(%Institution{name: "Headingley", rate: ~M[25]}), Lol.version_information
 milner_ridge = PaperTrail.insert! Institution.changeset(%Institution{name: "Milner Ridge", rate: ~M[20]}), Lol.version_information
 stony_mountain = PaperTrail.insert! Institution.changeset(%Institution{name: "Stony Mountain", rate: ~M[25]}), Lol.version_information
+john_henderson = PaperTrail.insert! Institution.changeset(%Institution{name: "John Henderson Junior High", rate: ~M[40]}), Lol.version_information
 
 cnuth = Lol.createPerson("Cnuth")
 sara = Lol.createPerson("Sara Ahmed")
 chelsea = Lol.createPerson("Chelsea Manning")
+brian = Lol.createPerson("Brian Pallister")
 
 tomorrowRide = Lol.createRide(%{
   relative_start: [days: 1, hours: 13, minutes: 30],
@@ -114,6 +116,18 @@ lastMonthRide = Lol.createRide(%{
   car_expenses: ~M[3000],
   driver: sara,
   car_owner: sara
+})
+
+brianRide = Lol.createRide(%{
+  relative_start: [days: -9, hours: 5],
+  relative_end: [minutes: 45],
+  institution: john_henderson,
+  distance: 12556,
+  food_expenses: ~M[1900000],
+  car_expenses: ~M[502240],
+  donation: true,
+  driver: brian,
+  car_owner: brian
 })
 
 PaperTrail.insert! %Reimbursement{
@@ -209,3 +223,16 @@ PaperTrail.insert! %Reimbursement{
   processed: true,
   donation: true
 }, Lol.version_information
+
+PaperTrail.insert! %Reimbursement{
+  ride: brianRide,
+  person: brian,
+  food_expenses: ~M[1900000]
+}
+
+PaperTrail.insert! %Reimbursement{
+  ride: brianRide,
+  person: brian,
+  car_expenses: ~M[502240],
+  donation: true
+}
