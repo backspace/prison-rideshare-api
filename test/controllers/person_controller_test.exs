@@ -5,7 +5,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
   alias PrisonRideshare.Repo
 
   @valid_attrs %{name: "some content", email: "hello@example.com", mobile: "5145551313"}
-  @invalid_attrs %{name: "aname", email: "jorty@example.com"}
+  @invalid_attrs %{name: "aname"}
 
   setup do
     conn = build_conn()
@@ -75,7 +75,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     assert version.originator_id == user.id
   end
 
-  test "does not create resource and renders errors when data is invalid", %{conn: conn} do
+  test "does not create resource or version and renders errors when data is invalid", %{conn: conn} do
     conn = post conn, person_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
@@ -85,7 +85,11 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
       }
     }
 
-    assert json_response(conn, 422)["errors"] != %{}
+    assert json_response(conn, 422)["errors"] == [
+      %{"detail" => "Email can't be blank", "source" => %{"pointer" => "/data/attributes/email"}, "title" => "can't be blank"}
+    ]
+
+    assert Repo.all(PaperTrail.Version) == []
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
@@ -111,27 +115,6 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     assert version.event == "update"
     assert version.item_changes["name"] == "some content"
     assert version.meta["ip"] == "127.0.0.1"
-  end
-
-  test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    person = Repo.insert! %Person{}
-    conn = put conn, person_path(conn, :update, person), %{
-      "meta" => %{},
-      "data" => %{
-        "type" => "people",
-        "id" => person.id,
-        "attributes" => @invalid_attrs,
-        "relationships" => relationships()
-      }
-    }
-
-    # FIXME the lack of control over title vs detail results in this unfortunate wording
-    assert json_response(conn, 422)["errors"] == [
-      %{"detail" => "Landline or mobile must be present", "source" => %{"pointer" => "/data/attributes/landline"}, "title" => "or mobile must be present"},
-      %{"detail" => "Mobile or landline must be present", "source" => %{"pointer" => "/data/attributes/mobile"}, "title" => "or landline must be present"}
-    ]
-
-    assert Repo.all(PaperTrail.Version) == []
   end
 
   test "deletes chosen resource", %{conn: conn} do

@@ -13,9 +13,9 @@ defmodule PrisonRideshareWeb.PersonTest do
     assert changeset.valid?
   end
 
-  test "changeset with name/email but no phone is invalid" do
+  test "changeset with name/email and no phone is valid" do
     changeset = Person.changeset(%Person{}, %{name: "chelsea manning", email: "chelsea.manning@example.com"})
-    refute changeset.valid?
+    assert changeset.valid?
   end
 
   test "changeset with invalid attributes" do

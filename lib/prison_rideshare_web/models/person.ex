@@ -23,7 +23,6 @@ defmodule PrisonRideshareWeb.Person do
     struct
     |> cast(params, [:name, :email, :mobile, :landline, :notes])
     |> validate_required([:name, :email])
-    |> validate_required_inclusion([:mobile, :landline])
   end
 
   def import_changeset(struct, params \\ %{}) do
@@ -41,22 +40,5 @@ defmodule PrisonRideshareWeb.Person do
     |> Enum.reject(fn(part) -> part == "" end)
     |> Enum.map(fn(word) -> String.first(word) |> String.upcase end)
     |> Enum.join
-  end
-
-  # Adapted from https://stackoverflow.com/a/42212602/760389
-  def validate_required_inclusion(changeset, fields) do
-    if Enum.any?(fields, &present?(changeset, &1)) do
-      changeset
-    else
-      Enum.reduce(fields, changeset, fn(field, changeset) ->
-        other_field = hd(fields -- [field])
-        add_error(changeset, field, "or #{other_field} must be present")
-      end)
-    end
-  end
-
-  def present?(changeset, field) do
-    value = get_field(changeset, field)
-    value && value != ""
   end
 end
