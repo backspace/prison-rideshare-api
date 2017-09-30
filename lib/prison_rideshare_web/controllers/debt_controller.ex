@@ -6,7 +6,10 @@ defmodule PrisonRideshareWeb.DebtController do
   plug :scrub_params, "data" when action in [:create, :update]
 
   def index(conn, _params) do
-    people = Repo.all(Person) |> Repo.preload([drivings: ride_preloads(), car_uses: ride_preloads()])
+    people =
+      Ecto.Query.order_by(Person, :name)
+      |> Repo.all
+      |> Repo.preload([drivings: ride_preloads(), car_uses: ride_preloads()])
 
     debts = Enum.map(people, fn person ->
       rides_and_expenses = collect_rides_with_expenses(person)

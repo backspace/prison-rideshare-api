@@ -15,9 +15,9 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
     {:ok, conn: conn}
   end
 
-  test "lists people with outstanding debts and ignores settled debts", %{conn: conn} do
-    cnuth = Repo.insert! %Person{name: "Cnuth"}
+  test "lists name-sorted people with outstanding debts and ignores settled debts", %{conn: conn} do
     sara = Repo.insert! %Person{name: "Sara Ahmed"}
+    cnuth = Repo.insert! %Person{name: "Cnuth"}
     chelsea = Repo.insert! %Person{name: "Chelsea Manning"}
 
     unreimbursed_ride = Repo.insert! %Ride{
