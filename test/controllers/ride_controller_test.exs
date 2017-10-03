@@ -6,7 +6,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
 
   import Money.Sigils
 
-  @valid_attrs %{address: "some content", contact: "some content", distance: 120, end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}, food_expenses: 42, name: "some content", passengers: 42, rate: 42, report_notes: "some content", request_notes: "some content", start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}}
+  @valid_attrs %{address: "some content", contact: "some content", distance: 120, end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}, food_expenses: 42, name: "some content", passengers: 42, rate: 42, report_notes: "some content", request_notes: "some content", start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}, first_time: true}
   @invalid_attrs %{}
 
   setup do
@@ -75,6 +75,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
       name: "Janis",
       contact: "jorts@jants.ca",
       address: "114 Spence St.",
+      first_time: true,
       cancellation_reason: "",
       car_expenses: 44,
       distance: 55,
@@ -100,6 +101,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         "name" => ride.name,
         "contact" => ride.contact,
         "address" => ride.address,
+        "first-time" => true,
         "cancellation-reason" => ride.cancellation_reason,
         "car-expenses" => ride.car_expenses,
         "distance" => ride.distance,
@@ -164,7 +166,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    ride = Repo.insert! %Ride{rate: 35}
+    ride = Repo.insert! %Ride{rate: 35, first_time: true}
     conn = get conn, ride_path(conn, :show, ride)
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{ride.id}"
@@ -175,6 +177,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     assert data["attributes"]["name"] == ride.name
     assert data["attributes"]["address"] == ride.address
     assert data["attributes"]["contact"] == ride.contact
+    assert data["attributes"]["first-time"]
     assert data["attributes"]["passengers"] == ride.passengers
     assert data["attributes"]["request_notes"] == ride.request_notes
     assert data["attributes"]["distance"] == ride.distance
