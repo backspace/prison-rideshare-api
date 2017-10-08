@@ -14,6 +14,7 @@ defmodule PrisonRideshare.Application do
       supervisor(PrisonRideshareWeb.Endpoint, []),
       # Start your own worker by calling: PrisonRideshare.Worker.start_link(arg1, arg2, arg3)
       # worker(PrisonRideshare.Worker, [arg1, arg2, arg3]),
+      supervisor(PrisonRideshareWeb.Presence, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
