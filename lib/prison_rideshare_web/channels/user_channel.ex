@@ -5,7 +5,7 @@ defmodule PrisonRideshareWeb.UserChannel do
 
   alias PrisonRideshareWeb.Presence
 
-  def join("user:" <> _something, _, socket) do
+  def join("user:presence", _, socket) do
     send(self, :after_join)
     {:ok, socket}
   end
