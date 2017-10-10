@@ -1,6 +1,5 @@
 defmodule PrisonRideshareWeb.UserChannel do
   use PrisonRideshareWeb, :channel
-  # use Guardian.Channel
 
   require Logger
 
