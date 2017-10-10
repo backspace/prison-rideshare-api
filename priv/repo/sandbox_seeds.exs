@@ -28,6 +28,11 @@ defmodule Lol do
       false -> merged
     end
 
+    merged = case Map.has_key?(merged, :first_time) do
+      true -> Map.merge(merged, %{first_time: params.first_time})
+      false -> merged
+    end
+
     PaperTrail.insert! Ride.changeset(%Ride{}, merged), Lol.version_information
   end
 
@@ -78,7 +83,8 @@ tomorrowRide = Lol.createRide(%{
 nextWeekRide = Lol.createRide(%{
   relative_start: [days: 7, hours: 15],
   relative_end: [hours: 3],
-  institution: milner_ridge
+  institution: milner_ridge,
+  first_time: true
 })
 
 similarRide = Lol.createRide(%{
