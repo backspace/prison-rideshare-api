@@ -5,18 +5,9 @@ defmodule PrisonRideshareWeb.UserChannel do
 
   alias PrisonRideshareWeb.Presence
 
-  def join("user:" <> _something, payload, socket) do
-    if authorized?(payload) do
-      send(self, :after_join)
-      {:ok, socket}
-    else
-      {:error, %{reason: "unauthorized"}}
-    end
-  end
-
-  # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
+  def join("user:" <> _something, _, socket) do
+    send(self, :after_join)
+    {:ok, socket}
   end
 
   def handle_info(:after_join, socket) do
