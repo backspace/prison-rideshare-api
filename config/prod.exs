@@ -1,9 +1,8 @@
 use Mix.Config
 
-# FIXME the host needs to be configurable, obvs
 config :prison_rideshare, PrisonRideshareWeb.Endpoint,
   http: [port: {:system, "PORT"}],
-  check_origin: ["https://prison-rideshare-sandbox.herokuapp.com"],
+  check_origin: ["https://" <> System.get_env("ORIGIN_HOST")],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   secret_key_base: System.get_env("SECRET_KEY_BASE")
 
