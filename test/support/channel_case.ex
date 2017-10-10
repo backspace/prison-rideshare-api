@@ -21,6 +21,7 @@ defmodule PrisonRideshareWeb.ChannelCase do
       use Phoenix.ChannelTest
 
       alias PrisonRideshare.Repo
+      alias PrisonRideshareWeb.User
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
