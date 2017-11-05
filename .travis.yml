@@ -43,4 +43,4 @@ after_success:
   - git remote add deploy dokku@corepoint.chromatin.ca:prison-rideshare-api-sandbox
   - git config --global push.default simple
   - git push deploy dokku-sandbox:primary
-  - ssh -t dokku@corepoint.chromatin.ca "mix ecto.drop -r && mix ecto.migrate && mix run priv/repo/sandbox_seeds.exs"
+  - ssh -t dokku@corepoint.chromatin.ca "dokku run prison-rideshare-api-sandbox 'mix ecto.drop -r && mix ecto.migrate && mix run priv/repo/sandbox_seeds.exs'"
