@@ -45,7 +45,7 @@ after_success:
   - git config --global push.default simple
   - export DOKKU_HOST=corepoint.chromatin.ca
   #- git push deploy dokku-sandbox:primary
-  - git clone https://github.com/dokku/dokku.git .dokku
-  - alias dokku='.dokku/contrib/dokku_client.sh'
+  - git clone https://github.com/dokku/dokku.git ~/.dokku
+  - alias dokku='$HOME/.dokku/contrib/dokku_client.sh'
   - dokku run prison-rideshare-api-sandbox mix reset_sandbox
   #- ssh -t dokku@corepoint.chromatin.ca -- dokku run prison-rideshare-api-sandbox mix reset_sandbox
