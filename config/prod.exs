@@ -3,6 +3,7 @@ use Mix.Config
 config :prison_rideshare, PrisonRideshareWeb.Endpoint,
   http: [port: {:system, "PORT"}],
   check_origin: ["https://" <> System.get_env("ORIGIN_HOST")],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]],
   secret_key_base: System.get_env("SECRET_KEY_BASE")
 
 # Do not print debug messages in production
