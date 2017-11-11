@@ -7,6 +7,6 @@ ssh-keyscan corepoint.chromatin.ca >> ~/.ssh/known_hosts
 
 git remote add deploy dokku@corepoint.chromatin.ca:prison-rideshare-api-sandbox
 git config --global push.default simple
-git push deploy dokku-sandbox:primary
+git push deploy primary
 
 ssh -t dokku@corepoint.chromatin.ca -- run prison-rideshare-api-sandbox mix reset_sandbox
