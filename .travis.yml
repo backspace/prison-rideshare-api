@@ -18,8 +18,7 @@ before_install:
   # FIXME Creates an expected file excluded by .gitignore
   - "echo 'use Mix.Config\n\nconfig :prison_rideshare, nothing: 0' > config/dev.secret.exs"
 
-#script: mix coveralls.travis
-script: echo "hey"
+script: mix coveralls.travis
 
 deploy:
   provider: script
