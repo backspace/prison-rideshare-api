@@ -24,4 +24,5 @@ deploy:
   provider: script
   script: .travis/deploy-sandbox.sh
   on:
-    branch: dokku-sandbox
+    repo: backspace/prison-rideshare-api
+    branch: primary
