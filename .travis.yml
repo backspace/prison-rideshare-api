@@ -21,15 +21,8 @@ before_install:
 script: mix coveralls.travis
 
 deploy:
-  provider: heroku
-  api_key:
-    secure: v4xSHkW7oroJoD7WV3AP52+QwElTd/rZ3hDKSOTyK0+9zbM3m7RokXOM+Cla8OMNQclQ8ikYcAHOQpBbRWuoo4cNHMaxbLCe6mGvd3ixb1ADvEmoJZXcJYrOZx7Yo6zFra3kL1BZXsUKRefeevxg9fjjXq2kw0B9ib1n5bNgrYYmXBkDAYUs67wwD9ljySvOP/N2b8jfIEdl7a0cV7WEOPXHxmqoQ8YWiciszi6S+GGclcQGGSYdXJ//d8xxuP29oXlfK0HdnTjhfaDbTER4ARel4Ic0ndfMa0VKsslDdyACbH6knYrr0W8oonznbYbOu4KM90xRx8hv7co9qWUFvVdlvQTAx1TVB/kWIkLLBYgFtOZD6Ok95t5kY77jeB+f2xGD2QWB1QBkW8smA+doToBzIWrP5vxWVRK8oiWWvDRHSTC5rjeqZNx/IYaSI4d68Xu5BohIXfgOIPeaDo1zn+XV51HM5GJPPPljJ6o2V47NMmMq4pl0URfW16gbmXo3RLTm4hJ53h7t0Ds/RvHYc8xHRM0rPqQXno4GoON1sikr/jM7n4LPY8tONSxnkyYFulGImv4miLAmO7waGvPIey2c47LhmSNE5pLcr0hH4DIDX6fsGnXI0VK8P88BgPu9FU8Uabr+PFTnfpDN23Qux/FbKUoK5whBy5Wa3BYRnpE=
-  app: prison-rideshare-api-sandbox
+  provider: script
+  script: .travis/deploy-sandbox.sh
   on:
     repo: backspace/prison-rideshare-api
     branch: primary
-
-# FIXME this is less than ideal if non-sandbox deployments happen but heroku pg:reset won’t run in the Heroku shell!
-after_deploy:
-  - "heroku pg:reset DATABASE -a prison-rideshare-api-sandbox --confirm prison-rideshare-api-sandbox"
-  - "heroku run -a prison-rideshare-api-sandbox 'MIX_ENV=prod mix ecto.migrate && mix run priv/repo/sandbox_seeds.exs'"
