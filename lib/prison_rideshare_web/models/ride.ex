@@ -8,6 +8,7 @@ defmodule PrisonRideshareWeb.Ride do
     field :address, :string
     field :contact, :string
     field :first_time, :boolean, default: false
+    field :medium, :string
     field :passengers, :integer, default: 1
     field :request_notes, :string
     field :enabled, :boolean, default: true
@@ -39,7 +40,7 @@ defmodule PrisonRideshareWeb.Ride do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:start, :end, :name, :address, :contact, :first_time, :passengers, :request_notes, :enabled, :cancellation_reason, :combined_with_ride_id, :institution_id, :driver_id, :car_owner_id, :distance, :rate, :food_expenses, :car_expenses, :report_notes, :donation])
+    |> cast(params, [:start, :end, :name, :address, :contact, :first_time, :medium, :passengers, :request_notes, :enabled, :cancellation_reason, :combined_with_ride_id, :institution_id, :driver_id, :car_owner_id, :distance, :rate, :food_expenses, :car_expenses, :report_notes, :donation])
     |> validate_required([:start, :end, :name, :address, :contact, :passengers])
     |> calculate_car_expenses(struct)
   end
