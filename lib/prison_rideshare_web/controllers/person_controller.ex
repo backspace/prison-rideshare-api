@@ -39,8 +39,9 @@ defmodule PrisonRideshareWeb.PersonController do
     events = Enum.map(person.drivings, fn(ride) ->
       %ICalendar.Event{
         summary: "Visit to #{ride.institution.name}",
-        dtstart: Ecto.DateTime.to_erl(ride.start),
-        dtend: Ecto.DateTime.to_erl(ride.end),
+        # FIXME really?
+        dtstart: Timex.Timezone.convert(Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.start), :utc), "UTC"),
+        dtend: Timex.Timezone.convert(Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.end), :utc), "UTC"),
         location: ride.address
       }
     end)
