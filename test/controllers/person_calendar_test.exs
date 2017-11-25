@@ -25,10 +25,14 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       address: "421 Osborne"
     }
 
-    # Repo.insert! %Ride{
-    #   enabled: false
-    # }
-    #
+    Repo.insert! %Ride{
+      start: Ecto.DateTime.from_erl({{2017, 1, 16}, {18, 0, 0}}),
+      end: Ecto.DateTime.from_erl({{2017, 1, 16}, {20, 0, 0}}),
+      enabled: false,
+      institution: institution,
+      driver: driver
+    }
+
     # Repo.insert! %Ride{
     #   distance: 77
     # }
@@ -48,6 +52,11 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     DTSTART;TZID=Etc/UTC:20170115T180000
     LOCATION:421 Osborne
     SUMMARY:Visit to Stony Mountain
+    END:VEVENT
+    BEGIN:VEVENT
+    DTEND;TZID=Etc/UTC:20170116T200000
+    DTSTART;TZID=Etc/UTC:20170116T180000
+    SUMMARY:CANCELLED Visit to Stony Mountain
     END:VEVENT
     END:VCALENDAR
     """

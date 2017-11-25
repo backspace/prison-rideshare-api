@@ -36,9 +36,9 @@ defmodule PrisonRideshareWeb.PersonController do
     person = Repo.get!(Person, id)
     |> Repo.preload([drivings: [:institution]], force: true)
 
-    events = Enum.map(person.drivings, fn(ride) ->
+    events = Enum.map(Enum.sort_by(person.drivings, fn(ride) -> ride.start end), fn(ride) ->
       %ICalendar.Event{
-        summary: "Visit to #{ride.institution.name}",
+        summary: "#{unless ride.enabled do "CANCELLED " end}Visit to #{ride.institution.name}",
         # FIXME really?
         dtstart: Timex.Timezone.convert(Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.start), :utc), "UTC"),
         dtend: Timex.Timezone.convert(Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.end), :utc), "UTC"),
