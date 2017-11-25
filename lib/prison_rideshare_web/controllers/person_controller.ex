@@ -40,6 +40,13 @@ defmodule PrisonRideshareWeb.PersonController do
     events = Enum.map(Enum.sort_by(person.drivings, fn(ride) -> ride.start end), fn(ride) ->
       %ICalendar.Event{
         summary: "#{unless ride.enabled do "CANCELLED " end}Visit to #{ride.institution.name}",
+        description: Enum.join(Enum.map([ride] ++ ride.children, fn(ride) ->
+          """
+          #{ride.name}
+          #{ride.address}
+          #{ride.contact}
+          """
+        end), "\n\n"),
         # FIXME really?
         dtstart: Timex.Timezone.convert(Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.start), :utc), "UTC"),
         dtend: Timex.Timezone.convert(Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.end), :utc), "UTC"),

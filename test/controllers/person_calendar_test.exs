@@ -20,7 +20,9 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
       institution: institution,
       driver: driver,
-      address: "421 Osborne"
+      name: "Tom",
+      address: "421 Osborne",
+      contact: "2877433"
     }
 
     Repo.insert! %Ride{
@@ -45,7 +47,9 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
 
     Repo.insert! %Ride{
       combined_with: ride,
-      address: "414 Osborne"
+      name: "Tina",
+      address: "414 Osborne",
+      contact: "287878"
     }
 
     conn = get conn, person_path(conn, :calendar, driver.id)
@@ -55,18 +59,21 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     CALSCALE:GREGORIAN
     VERSION:2.0
     BEGIN:VEVENT
+    DESCRIPTION:Tom\\n421 Osborne\\n2877433\\n\\n\\nTina\\n414 Osborne\\n287878\\n
     DTEND;TZID=Etc/UTC:20170115T200000
     DTSTART;TZID=Etc/UTC:20170115T180000
     LOCATION:421 Osborne\\, 414 Osborne
     SUMMARY:Visit to Stony Mountain
     END:VEVENT
     BEGIN:VEVENT
+    DESCRIPTION:\\n\\n\\n
     DTEND;TZID=Etc/UTC:20170116T200000
     DTSTART;TZID=Etc/UTC:20170116T180000
     LOCATION:
     SUMMARY:CANCELLED Visit to Stony Mountain
     END:VEVENT
     BEGIN:VEVENT
+    DESCRIPTION:\\n421 Osborne\\n\\n
     DTEND;TZID=Etc/UTC:20170117T200000
     DTSTART;TZID=Etc/UTC:20170117T180000
     LOCATION:421 Osborne
