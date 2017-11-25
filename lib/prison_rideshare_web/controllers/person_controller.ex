@@ -32,6 +32,26 @@ defmodule PrisonRideshareWeb.PersonController do
     render(conn, "show.json-api", data: person)
   end
 
+  def calendar(conn, %{"id" => id}) do
+    person = Repo.get!(Person, id)
+    |> Repo.preload([drivings: [:institution]], force: true)
+
+    events = Enum.map(person.drivings, fn(ride) ->
+      %ICalendar.Event{
+        summary: "Visit to #{ride.institution.name}",
+        dtstart: Ecto.DateTime.to_erl(ride.start),
+        dtend: Ecto.DateTime.to_erl(ride.end),
+        location: ride.address
+      }
+    end)
+
+    ics = %ICalendar{ events: events } |> ICalendar.to_ics
+
+    conn
+    |> put_resp_content_type("text/calendar")
+    |> text(ics)
+  end
+
   def update(conn, %{"id" => id, "data" => data = %{"type" => "people", "attributes" => _person_params}}) do
     person = Repo.get!(Person, id)
     changeset = Person.changeset(person, Params.to_attributes(data))

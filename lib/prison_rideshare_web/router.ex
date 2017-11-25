@@ -34,6 +34,8 @@ defmodule PrisonRideshareWeb.Router do
     post "/token", SessionController, :create, as: :login
 
     resources "/rides", RideController, except: [:new, :edit]
+
+    get "/people/:id/calendar", PersonController, :calendar
   end
 
   scope "/", PrisonRideshareWeb do
