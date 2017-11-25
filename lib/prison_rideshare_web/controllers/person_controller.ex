@@ -3,6 +3,7 @@ defmodule PrisonRideshareWeb.PersonController do
 
   alias PrisonRideshareWeb.Person
   alias JaSerializer.Params
+  require Logger
 
   plug :scrub_params, "data" when action in [:create, :update]
 
@@ -34,7 +35,7 @@ defmodule PrisonRideshareWeb.PersonController do
 
   def calendar(conn, %{"id" => id}) do
     person = Repo.get!(Person, id)
-    |> Repo.preload([drivings: [:institution]], force: true)
+    |> Repo.preload([drivings: [:institution, :children]], force: true)
 
     events = Enum.map(Enum.sort_by(person.drivings, fn(ride) -> ride.start end), fn(ride) ->
       %ICalendar.Event{
@@ -42,7 +43,7 @@ defmodule PrisonRideshareWeb.PersonController do
         # FIXME really?
         dtstart: Timex.Timezone.convert(Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.start), :utc), "UTC"),
         dtend: Timex.Timezone.convert(Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.end), :utc), "UTC"),
-        location: ride.address
+        location: Enum.join([ride.address] ++ Enum.map(ride.children, fn(child) -> child.address end), ", ")
       }
     end)
 
