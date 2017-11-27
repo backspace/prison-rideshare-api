@@ -4,7 +4,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
   alias PrisonRideshareWeb.{Institution, Person, Ride}
   alias PrisonRideshare.Repo
 
-  test "lists calendar events for a driver’s rides", %{conn: conn} do
+  test "lists calendar events for a driver's rides", %{conn: conn} do
     institution = Repo.insert! %Institution{name: "Stony Mountain"}
     driver = Repo.insert! %Person{name: "Chelsea Manning"}
 
