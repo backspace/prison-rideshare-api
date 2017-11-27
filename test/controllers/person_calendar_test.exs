@@ -44,6 +44,12 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       contact: "287878"
     }
 
+    Repo.insert! %Ride{
+      name: "Tom",
+      address: "421 Osborne",
+      contact: "2877433"
+    }
+
     conn = get conn, person_path(conn, :calendar, driver.id)
     assert response_content_type(conn, :calendar)
     assert response(conn, 200) == """
