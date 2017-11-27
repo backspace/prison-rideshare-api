@@ -19,6 +19,13 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     }
 
     Repo.insert! %Ride{
+      combined_with: ride,
+      name: "Tina",
+      address: "414 Osborne",
+      contact: "287878"
+    }
+
+    Repo.insert! %Ride{
       start: Ecto.DateTime.from_erl({{2017, 1, 16}, {18, 0, 0}}),
       end: Ecto.DateTime.from_erl({{2017, 1, 16}, {20, 0, 0}}),
       enabled: false,
@@ -36,13 +43,6 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       institution: institution,
       driver: driver,
       address: "421 Osborne"
-    }
-
-    Repo.insert! %Ride{
-      combined_with: ride,
-      name: "Tina",
-      address: "414 Osborne",
-      contact: "287878"
     }
 
     Repo.insert! %Ride{
