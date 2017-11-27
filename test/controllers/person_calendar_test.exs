@@ -4,14 +4,6 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
   alias PrisonRideshareWeb.{Institution, Person, Ride}
   alias PrisonRideshare.Repo
 
-  # setup do
-  #   conn = build_conn()
-  #     |> put_req_header("accept", "application/vnd.api+json")
-  #     |> put_req_header("content-type", "application/vnd.api+json")
-  #
-  #   {:ok, conn: conn}
-  # end
-
   test "lists all publicly-available enabled-and-not-complete-and-not-combined ride data on index", %{conn: conn} do
     institution = Repo.insert! %Institution{name: "Stony Mountain"}
     driver = Repo.insert! %Person{name: "Chelsea Manning"}
