@@ -50,6 +50,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       contact: "2877433"
     }
 
+    # FIXME should add to description when child ride doesn’t match parent times
+
     conn = get conn, person_path(conn, :calendar, driver.id)
     assert response_content_type(conn, :calendar)
     assert response(conn, 200) == """
