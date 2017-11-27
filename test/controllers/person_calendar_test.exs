@@ -7,6 +7,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
   test "lists calendar events for a driver’s rides", %{conn: conn} do
     institution = Repo.insert! %Institution{name: "Stony Mountain"}
     driver = Repo.insert! %Person{name: "Chelsea Manning"}
+
     ride = Repo.insert! %Ride{
       start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
       end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
