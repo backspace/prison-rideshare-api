@@ -77,27 +77,31 @@ tomorrowRide = Lol.createRide(%{
   institution: headingley,
   driver: cnuth,
   car_owner: sara,
-  request_notes: "This ride is in the future!"
+  request_notes: "This ride is in the future!",
+  medium: "txt"
 })
 
 nextWeekRide = Lol.createRide(%{
   relative_start: [days: 7, hours: 15],
   relative_end: [hours: 3],
   institution: milner_ridge,
-  first_time: true
+  first_time: true,
+  medium: "phone"
 })
 
 similarRide = Lol.createRide(%{
   relative_start: [days: 7, hours: 15, minutes: 15],
   relative_end: [hours: 3, minutes: 30],
-  institution: milner_ridge
+  institution: milner_ridge,
+  medium: "phone"
 })
 
 Lol.createRide(%{
   relative_start: [days: 7, hours: 15],
   relative_end: [hours: 3, minutes: 15],
   institution: milner_ridge,
-  combined_with_ride_id: nextWeekRide.id
+  combined_with_ride_id: nextWeekRide.id,
+  medium: "txt"
 })
 
 lastWeekRide = Lol.createRide(%{
@@ -110,7 +114,8 @@ lastWeekRide = Lol.createRide(%{
   request_notes: "Some request notes",
   report_notes: "It happened! These are my notes.",
   driver: chelsea,
-  car_owner: chelsea
+  car_owner: chelsea,
+  medium: "txt"
 })
 
 lastMonthRide = Lol.createRide(%{
@@ -121,7 +126,8 @@ lastMonthRide = Lol.createRide(%{
   food_expenses: ~M[1414],
   car_expenses: ~M[3000],
   driver: sara,
-  car_owner: sara
+  car_owner: sara,
+  medium: "email"
 })
 
 brianRide = Lol.createRide(%{
@@ -133,7 +139,8 @@ brianRide = Lol.createRide(%{
   car_expenses: ~M[502240],
   donation: true,
   driver: brian,
-  car_owner: brian
+  car_owner: brian,
+  medium: "phone"
 })
 
 PaperTrail.insert! %Reimbursement{
@@ -169,7 +176,8 @@ olderRide = Lol.createRide(%{
   relative_end: [hours: 2],
   institution: stony_mountain,
   driver: cnuth,
-  car_owner: cnuth
+  car_owner: cnuth,
+  medium: "phone"
 })
 
 evenOlderRide = Lol.createRide(%{
@@ -177,7 +185,8 @@ evenOlderRide = Lol.createRide(%{
   relative_end: [hours: 2, minutes: 30],
   institution: stony_mountain,
   driver: cnuth,
-  car_owner: cnuth
+  car_owner: cnuth,
+  medium: "txt"
 })
 
 reimbursedRide = Lol.createRide(%{
@@ -188,7 +197,8 @@ reimbursedRide = Lol.createRide(%{
   food_expenses: ~M[999],
   car_expenses: ~M[550],
   driver: sara,
-  car_owner: sara
+  car_owner: sara,
+  medium: "txt"
 })
 
 PaperTrail.insert! %Reimbursement{
@@ -211,7 +221,8 @@ processedRide = Lol.createRide(%{
   food_expenses: ~M[500],
   car_expenses: ~M[625],
   driver: sara,
-  car_owner: sara
+  car_owner: sara,
+  medium: "txt"
 })
 
 PaperTrail.insert! %Reimbursement{
