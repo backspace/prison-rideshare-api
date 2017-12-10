@@ -1,5 +1,6 @@
 defmodule PrisonRideshareWeb.RideControllerTest do
   use PrisonRideshareWeb.ConnCase
+  use Bamboo.Test
 
   alias PrisonRideshareWeb.{Institution, Person, Reimbursement, Ride}
   alias PrisonRideshare.Repo
@@ -229,7 +230,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     assert json_response(conn, 422)["errors"] != %{}
   end
 
-  test "updates and renders chosen resource when data is valid", %{conn: conn} do
+  test "updates and renders chosen resource when data is valid, sending an email", %{conn: conn} do
     ride_institution = Repo.insert! %Institution{name: "Stony Mountain", rate: 22}
     other_driver = Repo.insert!(%Person{name: "Other Driver"})
 
@@ -252,6 +253,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     combined_with_ride = Repo.get_by(Ride, request_notes: "Combined")
 
     saved = Repo.get!(Ride, ride.id)
+    |> Repo.preload([:driver, :institution])
 
     assert saved
 
@@ -303,6 +305,25 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     }
 
     assert data["attributes"]["car-expenses"] == 2640
+    assert_delivered_email PrisonRideshare.Email.report(saved)
+  end
+
+  test "updates and renders chosen resource when data is valid", %{conn: conn} do
+    ride_institution = Repo.insert! %Institution{name: "Stony Mountain", rate: 22}
+    other_driver = Repo.insert!(%Person{name: "Other Driver"})
+
+    ride = Repo.insert! %Ride{driver: other_driver, institution: ride_institution}
+    conn = put conn, ride_path(conn, :update, ride), %{
+      "meta" => %{},
+      "data" => %{
+        "type" => "rides",
+        "id" => ride.id,
+        "attributes" => Map.delete(@valid_attrs, :distance),
+        "relationships" => relationships()
+      }
+    }
+
+    assert_no_emails_delivered()
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

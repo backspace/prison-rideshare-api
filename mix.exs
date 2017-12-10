@@ -24,7 +24,8 @@ defmodule PrisonRideshare.Mixfile do
 
   defp applications(:test), do: applications(:all) ++ [:blacksmith]
   defp applications(_all),  do:
-    [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
+    [:bamboo, :bamboo_smtp,
+     :phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
      :phoenix_ecto, :postgrex,
 
      :comeonin, :timex, :sentry, :logger]
@@ -53,6 +54,8 @@ defmodule PrisonRideshare.Mixfile do
      {:ja_serializer, "~> 0.12.0"},
      {:money, "~> 1.2.1"},
      {:timex, "~> 3.1.13"},
+     {:bamboo, "~> 0.8"},
+     {:bamboo_smtp, "~> 1.4.0"},
 
      {:paper_trail, "~> 0.7.7"},
 
