@@ -1,5 +1,6 @@
 defmodule PrisonRideshare.UnauthRideControllerTest do
   use PrisonRideshareWeb.ConnCase
+  use Bamboo.Test
 
   alias PrisonRideshareWeb.{Institution, Person, Ride}
   alias PrisonRideshare.Repo
@@ -56,13 +57,15 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     }]
   end
 
-  test "updates and renders chosen resource when data is valid, ignoring auth-requiring attributes and calculating car expenses", %{conn: conn} do
+  test "updates and renders chosen resource when data is valid, ignoring auth-requiring attributes, calculating car expenses, and sending an email", %{conn: conn} do
     ride_institution = Repo.insert! %Institution{name: "Stony Mountain", rate: 44}
+    driver = Repo.insert! %Person{name: "Chelsea Manning"}
 
     ride = Repo.insert! %Ride{
       start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
       end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
       institution: ride_institution,
+      driver: driver,
       request_notes: "The original request notes"
     }
 
@@ -97,7 +100,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       "attributes" => %{
         "start" => "2017-01-15T18:00:00Z",
         "end" => "2017-01-15T20:00:00Z",
-        "initials" => "??"
+        "initials" => "CM"
       },
       "relationships" => %{
         "institution" => %{
@@ -110,6 +113,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     }
 
     ride = Repo.get!(Ride, ride.id)
+    |> Repo.preload([:institution, :driver])
 
     assert ride.institution_id == ride_institution.id
     assert ride.distance == 77
@@ -118,6 +122,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     assert ride.report_notes == "Some report notes"
     assert ride.request_notes == "The original request notes"
     assert ride.donation
+
+    assert_delivered_email PrisonRideshare.Email.report(ride)
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
@@ -138,5 +144,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       # TODO 🤔 skipped because it has a default value…?
       # %{"detail" => "Food expenses can't be blank", "source" => %{"pointer" => "/data/attributes/food-expenses"}, "title" => "can't be blank"}
     ]
+
+    assert_no_emails_delivered()
   end
 end

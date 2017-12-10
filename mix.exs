@@ -53,6 +53,8 @@ defmodule PrisonRideshare.Mixfile do
      {:ja_serializer, "~> 0.12.0"},
      {:money, "~> 1.2.1"},
      {:timex, "~> 3.1.13"},
+     {:bamboo, "~> 0.8"},
+     {:bamboo_smtp, "~> 1.4.0"},
      {:icalendar, "~> 0.5.0"},
 
      {:paper_trail, "~> 0.7.7"},

@@ -90,6 +90,12 @@ defmodule PrisonRideshareWeb.RideController do
     case PaperTrail.update(changeset, version_information(conn)) do
       {:ok, %{model: ride}} ->
         ride = preload(ride)
+
+        if Ecto.Changeset.get_change(changeset, :distance) do
+          PrisonRideshare.Email.report(ride) |>
+          PrisonRideshare.Mailer.deliver_later
+        end
+
         render(conn, "show.json-api", data: ride)
       {:error, changeset} ->
         conn

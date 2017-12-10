@@ -1,0 +1,35 @@
+<style>
+  th {
+    text-align: left;
+  }
+</style>
+<table>
+  <tr>
+    <th>Driver</th>
+    <td><%= @ride.driver.name %></td>
+  </tr>
+  <tr>
+    <th>Institution</th>
+    <td><%= @ride.institution.name %></td>
+  </tr>
+  <tr>
+    <th>Start of visit</th>
+    <td><%= @start %></td>
+  </tr>
+  <tr>
+    <th>Distance</th>
+    <td><%= @ride.distance %></td>
+  </tr>
+  <tr>
+    <th>Donation?</th>
+    <td><%= @ride.donation %></td>
+  </tr>
+  <tr>
+    <th>Food expenses</th>
+    <td><%= @ride.food_expenses %></td>
+  </tr>
+  <tr>
+    <th>Notes</th>
+    <td><%= @ride.report_notes %></td>
+  </tr>
+</table>
