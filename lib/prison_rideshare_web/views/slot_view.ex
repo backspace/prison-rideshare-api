@@ -4,6 +4,11 @@ defmodule PrisonRideshareWeb.SlotView do
 
   attributes [:start, :end]
 
+  has_many :commitments,
+    type: "commitment",
+    include: true,
+    serializer: PrisonRideshareWeb.CommitmentView
+
   def start(%{start: nil}, _conn), do: nil
   def start(%{start: start}, _conn), do: "#{NaiveDateTime.to_iso8601(start)}Z"
 

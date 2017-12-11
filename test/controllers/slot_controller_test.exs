@@ -2,7 +2,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
   use PrisonRideshareWeb.ConnCase
   use Bamboo.Test
 
-  alias PrisonRideshareWeb.Slot
+  alias PrisonRideshareWeb.{Commitment, Person, Slot}
   alias PrisonRideshare.Repo
 
   setup do
@@ -13,7 +13,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     {:ok, conn: conn}
   end
 
-  test "lists all slots", %{conn: conn} do
+  test "lists all slots and their commitments", %{conn: conn} do
     later = Repo.insert! %Slot{
       start: Ecto.DateTime.from_erl({{2017, 12, 10}, {13, 0, 0}}),
       end: Ecto.DateTime.from_erl({{2017, 12, 10}, {17, 0, 0}})
@@ -24,6 +24,15 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
       end: Ecto.DateTime.from_erl({{2017, 12, 8}, {17, 0, 0}})
     }
 
+    person = Repo.insert! %Person{
+      name: "Person"
+    }
+
+    commitment = Repo.insert! %Commitment{
+      slot_id: earlier.id,
+      person_id: person.id
+    }
+
     conn = get conn, slot_path(conn, :index)
     assert json_response(conn, 200)["data"] == [%{
       "id" => later.id,
@@ -31,6 +40,9 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
       "attributes" => %{
         "start" => "2017-12-10T13:00:00.000000Z",
         "end" => "2017-12-10T17:00:00.000000Z"
+      },
+      "relationships" => %{
+          "commitments" => %{"data" => []}
       }},
       %{
         "id" => earlier.id,
@@ -38,6 +50,14 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
         "attributes" => %{
           "start" => "2017-12-08T13:00:00.000000Z",
           "end" => "2017-12-08T17:00:00.000000Z"
+        },
+        "relationships" => %{
+          "commitments" => %{
+            "data" => [%{
+              "type" => "commitment",
+              "id" => commitment.id
+            }]
+          }
         }
     }]
   end

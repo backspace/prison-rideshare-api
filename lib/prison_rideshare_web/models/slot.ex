@@ -5,6 +5,8 @@ defmodule PrisonRideshareWeb.Slot do
     field :start, :naive_datetime
     field :end, :naive_datetime
 
+    has_many :commitments, PrisonRideshareWeb.Commitment
+
     timestamps(type: :utc_datetime)
   end
 end
