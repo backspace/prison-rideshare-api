@@ -1,7 +1,7 @@
 defmodule PrisonRideshareWeb.Slot do
   use PrisonRideshareWeb, :model
 
-  schema "rides" do
+  schema "slots" do
     field :start, :naive_datetime
     field :end, :naive_datetime
 
