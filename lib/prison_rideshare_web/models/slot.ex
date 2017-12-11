@@ -4,6 +4,7 @@ defmodule PrisonRideshareWeb.Slot do
   schema "slots" do
     field :start, :naive_datetime
     field :end, :naive_datetime
+    field :count, :integer
 
     has_many :commitments, PrisonRideshareWeb.Commitment
 
