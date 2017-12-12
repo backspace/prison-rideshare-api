@@ -76,6 +76,42 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     assert commitment.slot_id == later.id
   end
 
+  test "creating a commitment on a slot that’s full fails", %{conn: conn} do
+    [_, earlier, person, _] = create_data()
+
+    earlier = Ecto.Changeset.change(earlier, count: 1)
+    |> Repo.update!
+
+    conn = post conn, commitment_path(conn, :create), %{
+      "data" => %{
+        "type" => "commitments",
+        "attributes" => %{},
+        "relationships" => %{
+          "person" => %{
+            "data" => %{
+              "type" => "person",
+              "id" => person.id
+            }
+          },
+          "slot" => %{
+            "data" => %{
+              "type" => "slot",
+              "id" => earlier.id
+            }
+          }
+        }
+      }
+    }
+
+    assert json_response(conn, 422)["errors"] == [
+      %{
+        "detail" => "Slot has its maximum number of commitments",
+        "source" => %{"pointer" => "/data/relationships/slot"},
+        "title" => "is full"
+      }
+    ]
+  end
+
   test "can delete a commitment", %{conn: conn} do
     [_, earlier, _, commitment] = create_data()
 
