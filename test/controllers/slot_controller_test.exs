@@ -76,7 +76,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     assert commitment.slot_id == later.id
   end
 
-  test "creating a commitment on a slot that’s full fails", %{conn: conn} do
+  test "creating a commitment on a slot that's full fails", %{conn: conn} do
     [_, earlier, person, _] = create_data()
 
     earlier = Ecto.Changeset.change(earlier, count: 1)
