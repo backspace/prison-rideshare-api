@@ -35,7 +35,7 @@ defmodule PrisonRideshareWeb.Router do
 
     resources "/rides", RideController, except: [:new, :edit]
     resources "/slots", SlotController, only: [:index]
-    resources "/commitments", CommitmentController, only: [:delete]
+    resources "/commitments", CommitmentController, only: [:show, :create, :delete]
   end
 
   scope "/", PrisonRideshareWeb do

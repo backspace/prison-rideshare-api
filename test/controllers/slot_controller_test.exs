@@ -45,6 +45,37 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     }]
   end
 
+  test "can create a commitment", %{conn: conn} do
+    [later, _, person, _] = create_data()
+
+    conn = post conn, commitment_path(conn, :create), %{
+      "data" => %{
+        "type" => "commitments",
+        "attributes" => %{},
+        "relationships" => %{
+          "person" => %{
+            "data" => %{
+              "type" => "person",
+              "id" => person.id
+            }
+          },
+          "slot" => %{
+            "data" => %{
+              "type" => "slot",
+              "id" => later.id
+            }
+          }
+        }
+      }
+    }
+
+    [_, commitment] = Repo.all(Commitment)
+
+    assert json_response(conn, 201)["data"]["id"] == commitment.id
+    assert commitment.person_id == person.id
+    assert commitment.slot_id == later.id
+  end
+
   test "can delete a commitment", %{conn: conn} do
     [_, earlier, _, commitment] = create_data()
 

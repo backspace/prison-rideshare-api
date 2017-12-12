@@ -5,7 +5,7 @@ defmodule PrisonRideshareWeb.SlotController do
 
   def index(conn, _) do
     slots = Repo.all(Slot)
-    |> Repo.preload(:commitments)
+    |> Repo.preload([[commitments: [:person, :slot]]])
 
     render(conn, "index.json-api", data: slots)
   end

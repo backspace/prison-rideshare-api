@@ -7,4 +7,9 @@ defmodule PrisonRideshareWeb.Commitment do
 
     timestamps(type: :utc_datetime)
   end
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:person_id, :slot_id])
+  end
 end
