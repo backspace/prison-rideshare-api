@@ -6,7 +6,7 @@ defmodule PrisonRideshareWeb.CommitmentController do
 
   plug :scrub_params, "data" when action in [:create]
 
-  def create(conn, %{"data" => data = %{"type" => "commitments", "attributes" => _reimbursement_params}}) do
+  def create(conn, %{"data" => data = %{"type" => "commitments", "attributes" => _}}) do
     changeset = Commitment.changeset(%Commitment{}, Params.to_attributes(data))
 
     case PaperTrail.insert(changeset, version_information(conn)) do
