@@ -15,7 +15,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     {:ok, conn: conn}
   end
 
-  test "lists all publicly-available enabled-and-not-complete-and-not-combined ride data on index", %{conn: conn} do
+  test "lists all publicly-available driver-assigned enabled-and-not-complete-and-not-combined ride data on index", %{conn: conn} do
     institution = Repo.insert! %Institution{name: "Stony Mountain"}
     driver = Repo.insert! %Person{name: "Chelsea Manning"}
     ride = Repo.insert! %Ride{
@@ -35,6 +35,13 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
 
     Repo.insert! %Ride{
       combined_with: ride
+    }
+
+    Repo.insert! %Ride{
+      start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
+      end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+      institution: institution,
+      car_owner: driver
     }
 
     conn = get conn, ride_path(conn, :index)
