@@ -22,7 +22,7 @@ defmodule PrisonRideshareWeb.RideController do
   end
 
   def index(conn, _) do
-    rides = Repo.all from r in Ride, where: r.enabled and is_nil(r.distance) and is_nil(r.combined_with_ride_id), preload: [:institution, :driver]
+    rides = Repo.all from r in Ride, where: r.enabled and is_nil(r.distance) and is_nil(r.combined_with_ride_id) and not(is_nil(r.driver_id)), preload: [:institution, :driver]
 
     conn
     |> put_view(PrisonRideshareWeb.UnauthRideView)
