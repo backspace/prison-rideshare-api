@@ -10,6 +10,10 @@ defmodule PrisonRideshareWeb.Router do
     plug JaSerializer.Deserializer
   end
 
+  pipeline :calendar do
+    plug :accepts, ["ics", "ifb"]
+  end
+
   pipeline :authenticated_api do
     plug :accepts, ["json", "json-api"]
     plug Guardian.Plug.VerifyHeader, realm: "Bearer"
@@ -28,16 +32,19 @@ defmodule PrisonRideshareWeb.Router do
   end
 
   scope "/", PrisonRideshareWeb do
+    pipe_through :calendar
+
+    get "/rides/calendar", RideController, :calendar
+    get "/people/:id/calendar", PersonController, :calendar
+  end
+
+  scope "/", PrisonRideshareWeb do
     pipe_through :api
 
     post "/register", RegistrationController, :create
     post "/token", SessionController, :create, as: :login
 
-    get "/rides/calendar", RideController, :calendar
-
     resources "/rides", RideController, except: [:new, :edit]
-
-    get "/people/:id/calendar", PersonController, :calendar
   end
 
   scope "/", PrisonRideshareWeb do

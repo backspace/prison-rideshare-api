@@ -4,6 +4,14 @@ defmodule PrisonRideshare.RideCalendarTest do
   alias PrisonRideshareWeb.{Institution, Person, Ride}
   alias PrisonRideshare.Repo
 
+  setup do
+    conn = build_conn()
+      |> put_req_header("accept", "text/calendar")
+      |> put_req_header("content-type", "text/calendar")
+
+    {:ok, conn: conn}
+  end
+
   test "lists unfilled and not-cancelled ride events", %{conn: conn} do
     institution = Repo.insert! %Institution{name: "Stony Mountain"}
     driver = Repo.insert! %Person{name: "Chelsea Manning"}
