@@ -114,6 +114,38 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     }
   end
 
+  test "creating a commitment for a different person fails", %{conn: conn} do
+    [_, earlier, person, _] = create_data()
+
+    conn = conn
+    |> auth_as_person()
+    |> post(commitment_path(conn, :create), %{
+      "data" => %{
+        "type" => "commitments",
+        "attributes" => %{},
+        "relationships" => %{
+          "person" => %{
+            "data" => %{
+              "type" => "person",
+              "id" => person.id
+            }
+          },
+          "slot" => %{
+            "data" => %{
+              "type" => "slot",
+              "id" => earlier.id
+            }
+          }
+        }
+      }
+    })
+
+    assert json_response(conn, 401) == %{
+      "jsonapi" => %{"version" => "1.0"},
+      "errors" => [%{"title" => "Unauthorized", "code" => 401}]
+    }
+  end
+
   test "creating a commitment on a slot that's full fails", %{conn: conn} do
     [_, earlier, person, _] = create_data()
 
