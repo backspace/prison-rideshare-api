@@ -9,6 +9,12 @@ defmodule PrisonRideshareWeb.Router do
     plug JaSerializer.Deserializer
   end
 
+  pipeline :person_api do
+    plug :accepts, ["json", "json-api"]
+    plug PrisonRideshare.PersonGuardian.AuthPipeline
+    plug JaSerializer.Deserializer
+  end
+
   pipeline :authenticated_api do
     plug :accepts, ["json", "json-api"]
     plug PrisonRideshare.Guardian.EnsuredAuthPipeline
@@ -22,7 +28,7 @@ defmodule PrisonRideshareWeb.Router do
     plug JaSerializer.Deserializer
   end
 
-  pipeline :person_api do
+  pipeline :person_authenticated_api do
     plug :accepts, ["json", "json-api"]
     plug PrisonRideshare.PersonGuardian.EnsuredAuthPipeline
     plug JaSerializer.Deserializer
@@ -45,6 +51,12 @@ defmodule PrisonRideshareWeb.Router do
   end
 
   scope "/", PrisonRideshareWeb do
+    pipe_through :person_api
+
+    post "/people/token", PersonSessionController, :create, as: :person_login
+  end
+
+  scope "/", PrisonRideshareWeb do
     pipe_through :admin_api
 
     resources "/debts", DebtController, only: [:index, :delete]
@@ -55,7 +67,7 @@ defmodule PrisonRideshareWeb.Router do
   end
 
   scope "/", PrisonRideshareWeb do
-    pipe_through :person_api
+    pipe_through :person_authenticated_api
 
     resources "/commitments", CommitmentController, only: [:show, :create, :delete]
   end

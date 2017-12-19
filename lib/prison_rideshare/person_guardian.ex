@@ -1,5 +1,6 @@
 defmodule PrisonRideshare.PersonGuardian do
   use Guardian, otp_app: :prison_rideshare
+  use SansPassword
 
   alias PrisonRideshare.Repo
   alias PrisonRideshareWeb.Person
