@@ -32,7 +32,7 @@ defmodule PrisonRideshareWeb.ConnCase do
 
       defp auth_as_admin(conn) do
         user = Repo.insert! %PrisonRideshareWeb.User{email: "test@example.com", admin: true, id: Ecto.UUID.generate}
-        { :ok, jwt, _ } = Guardian.encode_and_sign(user, :token)
+        { :ok, jwt, _ } = PrisonRideshare.Guardian.encode_and_sign(user)
 
         conn
         |> put_req_header("authorization", "Bearer #{jwt}")
