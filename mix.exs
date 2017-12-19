@@ -50,7 +50,7 @@ defmodule PrisonRideshare.Mixfile do
      {:comeonin, "~> 3.0"},
      {:cors_plug, "~> 1.2.1"},
      {:csv, "~> 1.4.2"},
-     {:guardian, "~> 0.14"},
+     {:guardian, "~> 1.0"},
      {:ja_serializer, "~> 0.12.0"},
      {:money, "~> 1.2.1"},
      {:timex, "~> 3.1.13"},

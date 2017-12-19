@@ -32,7 +32,7 @@ config :logger, :console,
 
 config :money, default_currency: :CAD, symbol: false
 
-config :guardian, Guardian,
+config :prison_rideshare, PrisonRideshare.Guardian,
   allowed_algos: ["HS512"],
   verify_module: Guardian.JWT,
   issuer: "PrisonRideshare",

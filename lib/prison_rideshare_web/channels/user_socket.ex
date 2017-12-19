@@ -1,6 +1,18 @@
 defmodule PrisonRideshareWeb.UserSocket do
   use Phoenix.Socket
-  use Guardian.Phoenix.Socket
+
+  def connect(%{"guardian_token" => token}, socket) do
+    case Guardian.Phoenix.Socket.authenticate(socket, PrisonRideshare.Guardian, token) do
+      {:ok, authed_socket} ->
+        {:ok, authed_socket}
+      {:error, _} -> :error
+    end
+  end
+
+  # This function will be called when there was no authentication information
+  def connect(_params, _socket) do
+    :error
+  end
 
   ## Channels
   channel "user:*", PrisonRideshareWeb.UserChannel
