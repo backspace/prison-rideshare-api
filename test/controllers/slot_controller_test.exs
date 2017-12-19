@@ -48,7 +48,9 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
   test "can create a commitment", %{conn: conn} do
     [later, _, person, _] = create_data()
 
-    conn = post conn, commitment_path(conn, :create), %{
+    conn = conn
+    |> auth_as_person(person)
+    |> post(commitment_path(conn, :create), %{
       "data" => %{
         "type" => "commitments",
         "attributes" => %{},
@@ -67,20 +69,23 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
           }
         }
       }
-    }
+    })
 
     [_, commitment] = Repo.all(Commitment)
 
     assert json_response(conn, 201)["data"]["id"] == commitment.id
     assert commitment.person_id == person.id
     assert commitment.slot_id == later.id
+
+    [version] = Repo.all PaperTrail.Version
+    assert version.event == "insert"
+    assert version.item_changes["slot_id"] == later.id
+    assert version.item_changes["person_id"] == person.id
+    assert version.meta["person"] == person.id
   end
 
-  test "creating a commitment on a slot that's full fails", %{conn: conn} do
+  test "creating a commitment without a person token fails", %{conn: conn} do
     [_, earlier, person, _] = create_data()
-
-    earlier = Ecto.Changeset.change(earlier, count: 1)
-    |> Repo.update!
 
     conn = post conn, commitment_path(conn, :create), %{
       "data" => %{
@@ -103,6 +108,41 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
       }
     }
 
+    assert json_response(conn, 401) == %{
+      "jsonapi" => %{"version" => "1.0"},
+      "errors" => [%{"title" => "Unauthorized", "code" => 401}]
+    }
+  end
+
+  test "creating a commitment on a slot that's full fails", %{conn: conn} do
+    [_, earlier, person, _] = create_data()
+
+    earlier = Ecto.Changeset.change(earlier, count: 1)
+    |> Repo.update!
+
+    conn = conn
+    |> auth_as_person(person)
+    |> post(commitment_path(conn, :create), %{
+      "data" => %{
+        "type" => "commitments",
+        "attributes" => %{},
+        "relationships" => %{
+          "person" => %{
+            "data" => %{
+              "type" => "person",
+              "id" => person.id
+            }
+          },
+          "slot" => %{
+            "data" => %{
+              "type" => "slot",
+              "id" => earlier.id
+            }
+          }
+        }
+      }
+    })
+
     assert json_response(conn, 422)["errors"] == [
       %{
         "detail" => "Slot has its maximum number of commitments",
@@ -113,9 +153,12 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
   end
 
   test "can delete a commitment", %{conn: conn} do
-    [_, earlier, _, commitment] = create_data()
+    [_, earlier, person, commitment] = create_data()
 
-    conn = delete conn, commitment_path(conn, :delete, commitment)
+    conn = conn
+    |> auth_as_person(person)
+    |> delete(commitment_path(conn, :delete, commitment))
+
     assert response(conn, 204)
 
     new_earlier = Repo.get!(Slot, earlier.id)

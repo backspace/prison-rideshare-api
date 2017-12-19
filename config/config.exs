@@ -40,6 +40,14 @@ config :prison_rideshare, PrisonRideshare.Guardian,
   secret_key: System.get_env("GUARDIAN_SECRET") || "ru/JyaWA1jnKDh8U0KABWzBnDsLR6tHIKOS8C9BOWmd+izwz82zym8AyHWRpRIRy",
   serializer: PrisonRideshare.GuardianSerializer
 
+config :prison_rideshare, PrisonRideshare.PersonGuardian,
+  allowed_algos: ["HS512"],
+  verify_module: Guardian.JWT,
+  issuer: "PrisonRideshare",
+  ttl: { 365, :days },
+  verify_issuer: true,
+  secret_key: System.get_env("PERSON_GUARDIAN_SECRET") || "kFmeWKr9xPTlCPZdZetQhkKnl1DNc7JgZmAXf5X0SllM71ctO8WDGAiKS5anAOgv"
+
 config :sentry, dsn: System.get_env("SENTRY_DSN"),
   enable_source_code_context: true,
   root_source_code_path: File.cwd!,
