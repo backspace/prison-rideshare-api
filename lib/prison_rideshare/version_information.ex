@@ -4,7 +4,7 @@ defmodule PrisonRideshare.VersionInformation do
 
     user = case resource do
       %PrisonRideshareWeb.User{} -> resource
-      %PrisonRideshareWeb.Person{} -> nil
+      _ -> nil
     end
 
     # This is taken from https://github.com/tuvistavie/elixir-browser/blob/0c6708498336cbe5cb4b5a6b8c997af84b44d426/lib/browser.ex#L16
