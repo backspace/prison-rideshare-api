@@ -48,7 +48,16 @@ defmodule PrisonRideshareWeb.CommitmentController do
 
   def delete(conn, %{"id" => id}) do
     commitment = Repo.get!(Commitment, id)
-    PaperTrail.delete!(commitment, version_information(conn))
-    send_resp(conn, :no_content, "")
+    person = PrisonRideshare.PersonGuardian.Plug.current_resource(conn)
+
+    cond do
+      person.id == commitment.person_id ->
+        PaperTrail.delete!(commitment, version_information(conn))
+        send_resp(conn, :no_content, "")
+      true ->
+        conn
+        |> put_status(:unauthorized)
+        |> render(PrisonRideshareWeb.ErrorView, "401.json")
+    end    
   end
 end

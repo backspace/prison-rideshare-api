@@ -199,6 +199,19 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     assert length(new_earlier.commitments) == 0
   end
 
+  test "cannot delete a commitment for someone else", %{conn: conn} do
+    [_, _, _, commitment] = create_data()
+
+    conn = conn
+    |> auth_as_person()
+    |> delete(commitment_path(conn, :delete, commitment))
+
+    assert json_response(conn, 401) == %{
+      "jsonapi" => %{"version" => "1.0"},
+      "errors" => [%{"title" => "Unauthorized", "code" => 401}]
+    }
+  end
+
   defp create_data do
     later = Repo.insert! %Slot{
       start: Ecto.DateTime.from_erl({{2017, 12, 10}, {13, 0, 0}}),
