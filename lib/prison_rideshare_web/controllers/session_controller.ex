@@ -23,7 +23,7 @@ defmodule PrisonRideshareWeb.SessionController do
           # Successful login
           Logger.info "User " <> username <> " just logged in"
           # Encode a JWT
-          { :ok, jwt, _} = Guardian.encode_and_sign(user, :token)
+          { :ok, jwt, _} = PrisonRideshare.Guardian.encode_and_sign(user)
           conn
           |> json(%{access_token: jwt}) # Return token to the client
 

@@ -5,7 +5,7 @@ defmodule PrisonRideshareWeb.UserChannelTest do
 
   setup do
     user = Repo.insert! %User{email: "test@example.com", admin: true, id: Ecto.UUID.generate}
-    { :ok, _, guardian_default_claims } = Guardian.encode_and_sign(user, :token)
+    { :ok, _, guardian_default_claims } = PrisonRideshare.Guardian.encode_and_sign(user)
 
     {:ok, _, socket} =
       socket("user_id", %{guardian_default_claims: guardian_default_claims})
@@ -16,7 +16,7 @@ defmodule PrisonRideshareWeb.UserChannelTest do
 
   test "announces joins and leaves", %{socket: socket} do
     other_user = Repo.insert! %User{email: "other@example.com", id: Ecto.UUID.generate}
-    { :ok, _, guardian_default_claims } = Guardian.encode_and_sign(other_user, :token)
+    { :ok, _, guardian_default_claims } = PrisonRideshare.Guardian.encode_and_sign(other_user)
 
     {:ok, _, socket} =
       socket("user_id", %{guardian_default_claims: guardian_default_claims})
