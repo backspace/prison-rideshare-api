@@ -6,7 +6,7 @@ defmodule PrisonRideshareWeb.CommitmentController do
 
   plug :scrub_params, "data" when action in [:create]
 
-  def create(conn, %{"data" => data = %{"type" => "commitments", "attributes" => _}}) do
+  def create(conn, %{"data" => data = %{"type" => "commitments"}}) do
     person = PrisonRideshare.PersonGuardian.Plug.current_resource(conn)
 
     cond do

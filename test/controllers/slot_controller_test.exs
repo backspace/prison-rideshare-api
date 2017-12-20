@@ -122,7 +122,6 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     |> post(commitment_path(conn, :create), %{
       "data" => %{
         "type" => "commitments",
-        "attributes" => %{},
         "relationships" => %{
           "person" => %{
             "data" => %{
