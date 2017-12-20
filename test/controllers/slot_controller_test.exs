@@ -214,7 +214,8 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
   defp create_data do
     later = Repo.insert! %Slot{
       start: Ecto.DateTime.from_erl({{2017, 12, 10}, {13, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 12, 10}, {17, 0, 0}})
+      end: Ecto.DateTime.from_erl({{2017, 12, 10}, {17, 0, 0}}),
+      count: 4
     }
 
     earlier = Repo.insert! %Slot{

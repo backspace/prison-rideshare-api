@@ -14,7 +14,7 @@ defmodule PrisonRideshareWeb.CommitmentController do
         slot = Repo.get!(Slot, data["relationships"]["slot"]["data"]["id"])
         |> Repo.preload(:commitments)
 
-        if slot.count == 0 || (slot.count + 1) < length(slot.commitments) do
+        if slot.count == 0 || length(slot.commitments) + 1 < slot.count do
           changeset = Commitment.changeset(%Commitment{}, Params.to_attributes(data))
 
           case PaperTrail.insert(changeset, version_information(conn)) do
