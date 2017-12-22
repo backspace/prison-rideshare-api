@@ -7,6 +7,12 @@ defmodule PrisonRideshareWeb.PersonSessionController do
     end
   end
 
+  def show(conn, %{"token" => access_token}) do
+    {:ok, %{"sub" => "Person:" <> id}} = PrisonRideshare.PersonGuardian.decode_and_verify(access_token, %{"typ" => "access"})
+    person = Repo.get!(Person, id)
+    render(conn, PrisonRideshareWeb.PersonView, "show.json-api", data: person)
+  end
+
   # def create(_conn, %{"grant_type" => _}) do
   #   ## Handle unknown grant type
   #   throw "Unsupported grant_type"
