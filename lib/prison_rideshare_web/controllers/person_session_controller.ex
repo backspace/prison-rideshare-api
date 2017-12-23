@@ -4,6 +4,10 @@ defmodule PrisonRideshareWeb.PersonSessionController do
   def create(conn, %{"grant_type" => "magic", "token" => magic_token}) do
     case PrisonRideshare.PersonGuardian.exchange_magic(magic_token) do
       {:ok, access_token, _claims} -> conn |> json(%{access_token: access_token}) # Return token to the client
+      {:error, %CaseClauseError{term: {:error, {:badarg, _}}}} ->
+        conn
+        |> put_status(401)
+        |> render(PrisonRideshareWeb.ErrorView, "401.json")
     end
   end
 

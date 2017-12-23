@@ -30,6 +30,18 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
     assert json_response(conn, 200)["access_token"]
   end
 
+  test "returns a 401 when the token is wrong", %{conn: conn} do
+    conn = post conn, person_login_path(conn, :create), %{
+      grant_type: "magic",
+      token: "jorts"
+    }
+
+    assert json_response(conn, 401) == %{
+      "jsonapi" => %{"version" => "1.0"},
+      "errors" => [%{"title" => "Unauthorized", "code" => 401}]
+    }
+  end
+
   test "returns the person an access token belongs to", %{conn: conn} do
     [person] = Repo.all(Person)
     {:ok, magic_token, _claims} = PrisonRideshare.PersonGuardian.encode_magic(person)
