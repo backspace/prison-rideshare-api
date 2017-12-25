@@ -2,7 +2,7 @@ defmodule PrisonRideshareWeb.SlotView do
   use PrisonRideshareWeb, :view
   use JaSerializer.PhoenixView
 
-  attributes [:start, :end]
+  attributes [:start, :end, :count]
 
   has_many :commitments,
     type: "commitment",

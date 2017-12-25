@@ -22,7 +22,8 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
       "type" => "slot",
       "attributes" => %{
         "start" => "2017-12-10T13:00:00.000000Z",
-        "end" => "2017-12-10T17:00:00.000000Z"
+        "end" => "2017-12-10T17:00:00.000000Z",
+        "count" => 4
       },
       "relationships" => %{
           "commitments" => %{"data" => []}
@@ -32,7 +33,8 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
         "type" => "slot",
         "attributes" => %{
           "start" => "2017-12-08T13:00:00.000000Z",
-          "end" => "2017-12-08T17:00:00.000000Z"
+          "end" => "2017-12-08T17:00:00.000000Z",
+          "count" => 0
         },
         "relationships" => %{
           "commitments" => %{
