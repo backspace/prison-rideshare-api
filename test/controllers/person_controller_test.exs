@@ -1,5 +1,6 @@
 defmodule PrisonRideshareWeb.PersonControllerTest do
   use PrisonRideshareWeb.ConnCase
+  use Bamboo.Test
 
   alias PrisonRideshareWeb.Person
   alias PrisonRideshare.Repo
@@ -90,6 +91,16 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     ]
 
     assert Repo.all(PaperTrail.Version) == []
+  end
+
+  test "sends a calendar email to a person", %{conn: conn} do
+    person = Repo.insert! %Person{name: "Chelsea Manning", email: "chelsea@example.com"}
+
+    conn = put conn, person_calendar_email_path(conn, :email_calendar_link, person, "2017-12")
+
+    assert response(conn, 204)
+    # FIXME this fails because the magic token is unique
+    # assert_delivered_with([person, "2017-12"])
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do

@@ -28,6 +28,11 @@ defmodule PrisonRideshareWeb.Router do
     plug JaSerializer.Deserializer
   end
 
+  pipeline :admin_non_json_api do
+    plug PrisonRideshare.Guardian.EnsuredAuthPipeline
+    plug PrisonRideshareWeb.Plugs.Admin
+  end
+
   pipeline :person_authenticated_api do
     plug :accepts, ["json", "json-api"]
     plug PrisonRideshare.PersonGuardian.EnsuredAuthPipeline
@@ -65,6 +70,12 @@ defmodule PrisonRideshareWeb.Router do
     resources "/people", PersonController, except: [:new, :edit]
     resources "/reimbursements", ReimbursementController, except: [:new, :edit]
     resources "/users", UserController, expect: [:new, :edit]
+  end
+
+  scope "/", PrisonRideshareWeb do
+    pipe_through :admin_non_json_api
+
+    put "/people/:id/calendar-email/:month", PersonController, :email_calendar_link, as: :person_calendar_email
   end
 
   scope "/", PrisonRideshareWeb do

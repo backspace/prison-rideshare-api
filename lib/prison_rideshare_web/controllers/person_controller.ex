@@ -27,6 +27,13 @@ defmodule PrisonRideshareWeb.PersonController do
     end
   end
 
+  def email_calendar_link(conn, %{"id" => id, "month" => month}) do
+    person = Repo.get!(Person, id)
+    PrisonRideshare.Email.calendar_link(person, month) |>
+    PrisonRideshare.Mailer.deliver_later
+    send_resp(conn, :no_content, "")
+  end
+
   def show(conn, %{"id" => id}) do
     person = Repo.get!(Person, id)
     render(conn, "show.json-api", data: person)
