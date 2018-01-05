@@ -15,14 +15,26 @@ defmodule PrisonRideshareWeb.CommitmentController do
         |> Repo.preload(:commitments)
 
         if slot.count == 0 || length(slot.commitments) + 1 < slot.count do
-          changeset = Commitment.changeset(%Commitment{}, Params.to_attributes(data))
+          if Enum.any?(slot.commitments, fn(commitment) -> commitment.person_id == person.id end) do
+            conn
+            |> put_status(:unprocessable_entity)
+            |> render(:errors, data:
+              [%{
+                :detail => "Person is already committed to this slot",
+                :source => %{"pointer" => "/data/relationships/slot"},
+                :title => "is already committed-to"
+              }]
+            )
+          else
+            changeset = Commitment.changeset(%Commitment{}, Params.to_attributes(data))
 
-          case PaperTrail.insert(changeset, version_information(conn)) do
-            {:ok, %{model: commitment}} ->
-              conn
-              |> put_status(:created)
-              |> put_resp_header("location", commitment_path(conn, :show, commitment))
-              |> render("show.json-api", data: commitment |> Repo.preload([:person, :slot]))
+            case PaperTrail.insert(changeset, version_information(conn)) do
+              {:ok, %{model: commitment}} ->
+                conn
+                |> put_status(:created)
+                |> put_resp_header("location", commitment_path(conn, :show, commitment))
+                |> render("show.json-api", data: commitment |> Repo.preload([:person, :slot]))
+            end
           end
         else
           conn
@@ -54,6 +66,6 @@ defmodule PrisonRideshareWeb.CommitmentController do
         conn
         |> put_status(:unauthorized)
         |> render(PrisonRideshareWeb.ErrorView, "401.json")
-    end    
+    end
   end
 end

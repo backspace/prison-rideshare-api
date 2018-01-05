@@ -185,6 +185,43 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     ]
   end
 
+  test "creating a commitment on a slot that you already committed to fails", %{conn: conn} do
+    [_, earlier, person, _] = create_data()
+
+    conn = conn
+    |> auth_as_person(person)
+    |> post(commitment_path(conn, :create), %{
+      "data" => %{
+        "type" => "commitments",
+        "attributes" => %{},
+        "relationships" => %{
+          "person" => %{
+            "data" => %{
+              "type" => "person",
+              "id" => person.id
+            }
+          },
+          "slot" => %{
+            "data" => %{
+              "type" => "slot",
+              "id" => earlier.id
+            }
+          }
+        }
+      }
+    })
+
+    assert json_response(conn, 422)["errors"] == [
+      %{
+        "detail" => "Person is already committed to this slot",
+        "source" => %{"pointer" => "/data/relationships/slot"},
+        "title" => "is already committed-to"
+      }
+    ]
+
+    assert length(Repo.all(Commitment)) == 1
+  end
+
   test "can delete a commitment", %{conn: conn} do
     [_, earlier, person, commitment] = create_data()
 
