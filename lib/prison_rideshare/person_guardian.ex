@@ -10,4 +10,7 @@ defmodule PrisonRideshare.PersonGuardian do
 
   def resource_from_claims(%{"sub" => "Person:" <> id}), do: { :ok, Repo.get(Person, id) }
   def resource_from_claims(_), do: { :error, "Unknown resource type" }
+
+  # This silences a warning; the delivery happens in Email
+  def deliver_magic_link(_, _, _), do: {}
 end
