@@ -14,4 +14,18 @@ defmodule PrisonRideshare.Email do
     |> assign(:start, start)
     |> render(:report)
   end
+
+  def calendar_link(person, month) do
+    {:ok, magic_token, _claims} = PrisonRideshare.PersonGuardian.encode_magic(person)
+
+    new_email(
+      to: person.email,
+      from: {"Bar None Bot", "bot@barnonewpg.org"},
+      subject: "Rideshare calendar for #{month}"
+    )
+    |> assign(:person, person)
+    |> assign(:month, month)
+    |> assign(:link, "#{Application.get_env(:prison_rideshare, :ui_root)}/calendar/#{month}?token=#{magic_token}")
+    |> render("calendar_link.html")
+  end
 end

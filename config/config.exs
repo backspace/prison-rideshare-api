@@ -17,6 +17,9 @@ config :prison_rideshare, PrisonRideshareWeb.Endpoint,
   pubsub: [name: PrisonRideshare.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :prison_rideshare,
+  ui_root: System.get_env("UI_ROOT") || "https://rideshare.barnonewpg.org"
+
 config :phoenix, :format_encoders,
   "json-api": Poison
 
@@ -39,6 +42,18 @@ config :prison_rideshare, PrisonRideshare.Guardian,
   verify_issuer: true,
   secret_key: System.get_env("GUARDIAN_SECRET") || "ru/JyaWA1jnKDh8U0KABWzBnDsLR6tHIKOS8C9BOWmd+izwz82zym8AyHWRpRIRy",
   serializer: PrisonRideshare.GuardianSerializer
+
+config :prison_rideshare, PrisonRideshare.PersonGuardian,
+  allowed_algos: ["HS512"],
+  verify_module: Guardian.JWT,
+  issuer: "PrisonRideshare",
+  ttl: { 365, :days },
+  verify_issuer: true,
+  secret_key: System.get_env("PERSON_GUARDIAN_SECRET") || "kFmeWKr9xPTlCPZdZetQhkKnl1DNc7JgZmAXf5X0SllM71ctO8WDGAiKS5anAOgv",
+  token_ttl: %{
+    "magic" => { 31, :days },
+    "access" => { 31, :days }
+  }
 
 config :sentry, dsn: System.get_env("SENTRY_DSN"),
   enable_source_code_context: true,
