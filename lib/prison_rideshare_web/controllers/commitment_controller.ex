@@ -23,10 +23,6 @@ defmodule PrisonRideshareWeb.CommitmentController do
               |> put_status(:created)
               |> put_resp_header("location", commitment_path(conn, :show, commitment))
               |> render("show.json-api", data: commitment |> Repo.preload([:person, :slot]))
-            # {:error, changeset} ->
-            #   conn
-            #   |> put_status(:unprocessable_entity)
-            #   |> render(:errors, data: changeset)
           end
         else
           conn
