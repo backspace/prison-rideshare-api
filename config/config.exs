@@ -47,10 +47,9 @@ config :prison_rideshare, PrisonRideshare.PersonGuardian,
   ttl: { 365, :days },
   verify_issuer: true,
   secret_key: System.get_env("PERSON_GUARDIAN_SECRET") || "kFmeWKr9xPTlCPZdZetQhkKnl1DNc7JgZmAXf5X0SllM71ctO8WDGAiKS5anAOgv",
-  # FIXME what are sensible values?
   token_ttl: %{
-    "magic" => {30, :minutes},
-    "access" => {1, :days}
+    "magic" => { 31, :days },
+    "access" => { 31, :days }
   }
 
 config :sentry, dsn: System.get_env("SENTRY_DSN"),
