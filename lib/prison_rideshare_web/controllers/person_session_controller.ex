@@ -1,6 +1,8 @@
 defmodule PrisonRideshareWeb.PersonSessionController do
   use PrisonRideshareWeb, :controller
 
+  alias PrisonRideshareWeb.Person
+
   def create(conn, %{"grant_type" => "magic", "token" => magic_token}) do
     case PrisonRideshare.PersonGuardian.exchange_magic(magic_token) do
       {:ok, access_token, _claims} -> conn |> json(%{access_token: access_token}) # Return token to the client
