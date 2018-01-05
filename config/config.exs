@@ -17,6 +17,9 @@ config :prison_rideshare, PrisonRideshareWeb.Endpoint,
   pubsub: [name: PrisonRideshare.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :prison_rideshare,
+  ui_root: System.get_env("UI_ROOT") || "https://rideshare.barnonewpg.org"
+
 config :phoenix, :format_encoders,
   "json-api": Poison
 

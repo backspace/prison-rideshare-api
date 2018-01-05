@@ -25,8 +25,7 @@ defmodule PrisonRideshare.Email do
     )
     |> assign(:person, person)
     |> assign(:month, month)
-    # FIXME
-    |> assign(:link, "https://rideshare.barnonewpg.org/calendar/#{month}?token=#{magic_token}")
+    |> assign(:link, "#{Application.get_env(:prison_rideshare, :ui_root)}/calendar/#{month}?token=#{magic_token}")
     |> render("calendar_link.html")
   end
 end
