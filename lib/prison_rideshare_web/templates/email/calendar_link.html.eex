@@ -1,0 +1,1 @@
+<p>Hello, <%= @person.name %>! Please let us know <a href='<%= @link %>'>here</a> which time periods you can drive people in <%= @month %>. Thanks! 💞</p>

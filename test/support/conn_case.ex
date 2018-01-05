@@ -37,6 +37,18 @@ defmodule PrisonRideshareWeb.ConnCase do
         conn
         |> put_req_header("authorization", "Bearer #{jwt}")
       end
+
+      defp auth_as_person(conn, person \\ nil) do
+        person = case person do
+          nil -> Repo.insert! %PrisonRideshareWeb.Person{email: "person@example.com", id: Ecto.UUID.generate}
+          _ -> person
+        end
+
+        { :ok, jwt, _ } = PrisonRideshare.PersonGuardian.encode_and_sign(person)
+
+        conn
+        |> put_req_header("authorization", "Person Bearer #{jwt}")
+      end
     end
   end
 

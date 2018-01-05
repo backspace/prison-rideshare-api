@@ -51,6 +51,7 @@ defmodule PrisonRideshare.Mixfile do
      {:cors_plug, "~> 1.2.1"},
      {:csv, "~> 1.4.2"},
      {:guardian, "~> 1.0"},
+     {:sans_password, "~> 1.0.0-beta"},
      {:ja_serializer, "~> 0.12.0"},
      {:money, "~> 1.2.1"},
      {:timex, "~> 3.1.13"},
