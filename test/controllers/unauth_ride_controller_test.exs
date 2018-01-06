@@ -25,6 +25,14 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       driver: driver
     }
 
+    donatable_ride = Repo.insert! %Ride{
+      start: Ecto.DateTime.from_erl({{2017, 2, 15}, {18, 0, 0}}),
+      end: Ecto.DateTime.from_erl({{2017, 2, 15}, {20, 0, 0}}),
+      institution: institution,
+      driver: driver,
+      car_owner: driver
+    }
+
     Repo.insert! %Ride{
       enabled: false
     }
@@ -46,12 +54,30 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
 
     conn = get conn, ride_path(conn, :index)
     assert json_response(conn, 200)["data"] == [%{
+      "id" => donatable_ride.id,
+      "type" => "ride",
+      "attributes" => %{
+        "start" => "2017-02-15T18:00:00Z",
+        "end" => "2017-02-15T20:00:00Z",
+        "initials" => "CM",
+        "donatable" => true
+      },
+      "relationships" => %{
+        "institution" => %{
+          "data" => %{
+            "type" => "institution",
+            "id" => institution.id
+          }
+        }
+      }
+    }, %{
       "id" => ride.id,
       "type" => "ride",
       "attributes" => %{
         "start" => "2017-01-15T18:00:00Z",
         "end" => "2017-01-15T20:00:00Z",
-        "initials" => "CM"
+        "initials" => "CM",
+        "donatable" => false
       },
       "relationships" => %{
         "institution" => %{
@@ -107,7 +133,9 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       "attributes" => %{
         "start" => "2017-01-15T18:00:00Z",
         "end" => "2017-01-15T20:00:00Z",
-        "initials" => "CM"
+        "initials" => "CM",
+        # FIXME this shouldn’t have been updated as a donation then
+        "donatable" => false
       },
       "relationships" => %{
         "institution" => %{
