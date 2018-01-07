@@ -176,7 +176,7 @@ olderRide = Lol.createRide(%{
   relative_end: [hours: 2],
   institution: stony_mountain,
   driver: cnuth,
-  car_owner: cnuth,
+  car_owner: brian,
   medium: "phone"
 })
 
