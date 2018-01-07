@@ -2,7 +2,7 @@ defmodule PrisonRideshareWeb.RideView do
   use PrisonRideshareWeb, :view
   use JaSerializer.PhoenixView
 
-  attributes [:start, :end, :initials, :name, :address, :contact, :first_time, :medium, :passengers, :request_notes, :enabled, :cancellation_reason, :distance, :rate, :food_expenses, :car_expenses, :report_notes, :donation, :inserted_at, :updated_at]
+  attributes [:start, :end, :initials, :name, :address, :contact, :first_time, :medium, :passengers, :request_notes, :enabled, :cancellation_reason, :distance, :rate, :food_expenses, :car_expenses, :report_notes, :donation, :donatable, :inserted_at, :updated_at]
 
   has_one :combined_with,
     field: :combined_with_ride_id,
@@ -31,6 +31,10 @@ defmodule PrisonRideshareWeb.RideView do
 
   def initials(ride, _conn) do
     PrisonRideshareWeb.Person.initials(ride.driver)
+  end
+
+  def donatable(ride, _) do
+    ride.driver_id == ride.car_owner_id
   end
 
   def start(%{start: nil}, _conn), do: nil

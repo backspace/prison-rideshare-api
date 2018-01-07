@@ -112,6 +112,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         "food-expenses" => ride.food_expenses,
         "request-notes" => ride.request_notes,
         "report-notes" => ride.report_notes,
+        "donatable" => false,
         "donation" => true,
         "initials" => "DN",
         "inserted-at" => DateTime.to_iso8601(ride.inserted_at),

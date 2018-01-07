@@ -2,7 +2,7 @@ defmodule PrisonRideshareWeb.UnauthRideView do
   use PrisonRideshareWeb, :view
   use JaSerializer.PhoenixView
 
-  attributes [:start, :end, :initials]
+  attributes [:start, :end, :initials, :donatable]
 
   def type(_, _), do: "ride"
 
@@ -12,6 +12,10 @@ defmodule PrisonRideshareWeb.UnauthRideView do
 
   def initials(ride, _conn) do
     PrisonRideshareWeb.Person.initials(ride.driver)
+  end
+
+  def donatable(ride, _) do
+    ride.driver_id == ride.car_owner_id
   end
 
   # FIXME these are duplicated in RideView ugh
