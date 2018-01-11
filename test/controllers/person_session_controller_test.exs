@@ -6,7 +6,8 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
   setup do
     person = Person.changeset %Person{}, %{
       name: "A person",
-      email: "hello@example.com"
+      email: "hello@example.com",
+      notes: "These should be secret"
     }
 
     Repo.insert! person
@@ -58,6 +59,6 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
     assert attributes["email"] == person.email
     assert attributes["mobile"] == person.mobile
     assert attributes["landline"] == person.landline
-    assert attributes["notes"] == person.notes
+    refute attributes["notes"]
   end
 end
