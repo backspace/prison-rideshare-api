@@ -21,8 +21,8 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
       "id" => later.id,
       "type" => "slot",
       "attributes" => %{
-        "start" => "2017-12-10T13:00:00.000000Z",
-        "end" => "2017-12-10T17:00:00.000000Z",
+        "start" => "2117-12-10T13:00:00.000000Z",
+        "end" => "2117-12-10T17:00:00.000000Z",
         "count" => 4
       },
       "relationships" => %{
@@ -32,8 +32,8 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
         "id" => earlier.id,
         "type" => "slot",
         "attributes" => %{
-          "start" => "2017-12-08T13:00:00.000000Z",
-          "end" => "2017-12-08T17:00:00.000000Z",
+          "start" => "2117-12-08T13:00:00.000000Z",
+          "end" => "2117-12-08T17:00:00.000000Z",
           "count" => 0
         },
         "relationships" => %{
@@ -222,6 +222,43 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     assert length(Repo.all(Commitment)) == 1
   end
 
+  test "creating a commitment on a past slot fails", %{conn: conn} do
+    [later, _, person, _] = create_data(2017)
+
+    conn = conn
+    |> auth_as_person(person)
+    |> post(commitment_path(conn, :create), %{
+      "data" => %{
+        "type" => "commitments",
+        "attributes" => %{},
+        "relationships" => %{
+          "person" => %{
+            "data" => %{
+              "type" => "person",
+              "id" => person.id
+            }
+          },
+          "slot" => %{
+            "data" => %{
+              "type" => "slot",
+              "id" => later.id
+            }
+          }
+        }
+      }
+    })
+
+    assert json_response(conn, 422)["errors"] == [
+      %{
+        "detail" => "Cannot commit to a past slot",
+        "source" => %{"pointer" => "/data/relationships/slot"},
+        "title" => "is in the past"
+      }
+    ]
+
+    assert length(Repo.all(Commitment)) == 1
+  end
+
   test "can delete a commitment", %{conn: conn} do
     [_, earlier, person, commitment] = create_data()
 
@@ -250,16 +287,34 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     }
   end
 
-  defp create_data do
+  test "cannot delete a commitment in the past", %{conn: conn} do
+    [_, _, person, commitment] = create_data(2017)
+
+    conn = conn
+    |> auth_as_person(person)
+    |> delete(commitment_path(conn, :delete, commitment))
+
+    assert json_response(conn, 422)["errors"] == [
+      %{
+        "detail" => "Cannot delete a past commitment",
+        "source" => %{"pointer" => "/data/relationships/slot"},
+        "title" => "is in the past"
+      }
+    ]
+
+    assert length(Repo.all(Commitment)) == 1
+  end
+
+  defp create_data(year \\ 2117) do
     later = Repo.insert! %Slot{
-      start: Ecto.DateTime.from_erl({{2017, 12, 10}, {13, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 12, 10}, {17, 0, 0}}),
+      start: Ecto.DateTime.from_erl({{year, 12, 10}, {13, 0, 0}}),
+      end: Ecto.DateTime.from_erl({{year, 12, 10}, {17, 0, 0}}),
       count: 4
     }
 
     earlier = Repo.insert! %Slot{
-      start: Ecto.DateTime.from_erl({{2017, 12, 8}, {13, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 12, 8}, {17, 0, 0}})
+      start: Ecto.DateTime.from_erl({{year, 12, 8}, {13, 0, 0}}),
+      end: Ecto.DateTime.from_erl({{year, 12, 8}, {17, 0, 0}})
     }
 
     person = Repo.insert! %Person{

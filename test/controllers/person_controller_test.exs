@@ -5,7 +5,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
   alias PrisonRideshareWeb.Person
   alias PrisonRideshare.Repo
 
-  @valid_attrs %{name: "some content", email: "hello@example.com", mobile: "5145551313", medium: "mobile"}
+  @valid_attrs %{name: "some content", email: "hello@example.com", mobile: "5145551313", medium: "mobile", active: false}
   @invalid_attrs %{name: "aname"}
 
   setup do
@@ -28,7 +28,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    person = Repo.insert! %Person{name: "a", email: "b", mobile: "c", landline: "d", notes: "e", medium: "mobile"}
+    person = Repo.insert! %Person{name: "a", email: "b", mobile: "c", landline: "d", notes: "e", medium: "mobile", active: false}
     conn = get conn, person_path(conn, :show, person)
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{person.id}"
@@ -41,6 +41,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     assert attributes["landline"] == person.landline
     assert attributes["notes"] == person.notes
     assert attributes["medium"] == person.medium
+    refute attributes["active"]
   end
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
@@ -123,6 +124,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     assert attributes["email"] == person.email
     assert attributes["mobile"] == person.mobile
     assert attributes["medium"] == person.medium
+    refute attributes["active"]
 
     [version] = Repo.all PaperTrail.Version
     assert version.event == "update"

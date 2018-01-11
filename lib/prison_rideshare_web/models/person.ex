@@ -8,6 +8,7 @@ defmodule PrisonRideshareWeb.Person do
     field :landline, :string
     field :notes, :string
     field :medium, :string
+    field :active, :boolean, default: true
 
     has_many :car_uses, PrisonRideshareWeb.Ride, foreign_key: :car_owner_id
     has_many :drivings, PrisonRideshareWeb.Ride, foreign_key: :driver_id
@@ -22,7 +23,7 @@ defmodule PrisonRideshareWeb.Person do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :email, :mobile, :landline, :notes, :medium])
+    |> cast(params, [:name, :email, :mobile, :landline, :notes, :medium, :active])
     |> validate_required([:name, :email])
   end
 
