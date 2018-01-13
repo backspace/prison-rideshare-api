@@ -67,7 +67,7 @@ config :paper_trail, repo: PrisonRideshare.Repo,
 
 config :prison_rideshare, PrisonRideshare.Mailer,
   adapter: Bamboo.MailgunAdapter,
-  api_key: {:system, "MAILGUN_KEY"},
+  api_key: System.get_env("MAILGUN_KEY"),
   domain: "mg.barnonewpg.org"
 
 # Import environment specific config. This must remain at the bottom
