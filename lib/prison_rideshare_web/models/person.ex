@@ -27,6 +27,12 @@ defmodule PrisonRideshareWeb.Person do
     |> validate_required([:name, :email])
   end
 
+  def self_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:name, :mobile, :landline, :medium, :active])
+    |> validate_required([:name])
+  end
+
   def import_changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:name])

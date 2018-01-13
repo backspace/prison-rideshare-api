@@ -70,7 +70,9 @@ defmodule PrisonRideshareWeb.Router do
     pipe_through :person_api
 
     post "/people/token", PersonSessionController, :create, as: :person_login
+
     get "/people/me", PersonSessionController, :show, as: :person_identify
+    patch "/people/me", PersonSessionController, :update, as: :person_patch
   end
 
   scope "/", PrisonRideshareWeb do
