@@ -7,7 +7,8 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
     person = Person.changeset %Person{}, %{
       name: "A person",
       email: "hello@example.com",
-      notes: "These should be secret"
+      notes: "These should be secret",
+      mobile: "5551313"
     }
 
     Repo.insert! person
@@ -60,5 +61,72 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
     assert attributes["mobile"] == person.mobile
     assert attributes["landline"] == person.landline
     refute attributes["notes"]
+  end
+
+  test "updates a subset and renders the person with their token", %{conn: conn} do
+    [person] = Repo.all(Person)
+    {:ok, magic_token, _claims} = PrisonRideshare.PersonGuardian.encode_magic(person)
+    {:ok, access_token, _claims} = PrisonRideshare.PersonGuardian.exchange_magic(magic_token)
+
+    conn = conn
+    |> put_req_header("authorization", "Person Bearer #{access_token}")
+    |> patch(person_patch_path(conn, :update), %{
+      "data" => %{
+        "type" => "people",
+        "id" => person.id,
+        "attributes" => %{
+          "name" => "A new name",
+          "email" => "newemail@example.com",
+          "notes" => "New notes?",
+          "mobile" => "2045551313"
+        }
+      }
+    })
+
+    person = Repo.get!(Person, person.id)
+
+    attributes = json_response(conn, 200)["data"]["attributes"]
+    assert attributes["name"] == person.name
+    # TODO allow email updates
+    assert attributes["email"] == "hello@example.com"
+    assert attributes["mobile"] == person.mobile
+    assert attributes["medium"] == person.medium
+    refute attributes["notes"]
+
+    assert person.name == "A new name"
+    assert person.notes == "These should be secret"
+
+    [version] = Repo.all PaperTrail.Version
+    assert version.event == "update"
+    # assert version.item_changes["name"] == "some content"
+    # assert version.meta["ip"] == "127.0.0.1"
+  end
+
+  test "does not update and renders errors when data is invalid", %{conn: conn} do
+    [person] = Repo.all(Person)
+    {:ok, magic_token, _claims} = PrisonRideshare.PersonGuardian.encode_magic(person)
+    {:ok, access_token, _claims} = PrisonRideshare.PersonGuardian.exchange_magic(magic_token)
+
+    conn = conn
+    |> put_req_header("authorization", "Person Bearer #{access_token}")
+    |> patch(person_patch_path(conn, :update), %{
+      "data" => %{
+        "type" => "people",
+        "id" => person.id,
+        "attributes" => %{
+          "name" => "",
+          "email" => "newemail@example.com",
+          "notes" => "New notes?",
+          "mobile" => "2045551313"
+        }
+      }
+    })
+
+    assert json_response(conn, 422)["errors"] == [
+      %{"detail" => "Name can't be blank", "source" => %{"pointer" => "/data/attributes/name"}, "title" => "can't be blank"}
+    ]
+
+    person = Repo.get!(Person, person.id)
+    assert person.name == "A person"
   end
 end
