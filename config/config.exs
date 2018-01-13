@@ -65,14 +65,9 @@ config :paper_trail, repo: PrisonRideshare.Repo,
   item_type: :binary_id, originator_type: :binary_id
 
 config :prison_rideshare, PrisonRideshare.Mailer,
-  adapter: Bamboo.SMTPAdapter,
-  server: {:system, "SMTP_SERVER"},
-  hostname: "barnonewpg.org",
-  port: 587,
-  username: {:system, "SMTP_USERNAME"},
-  password: {:system, "SMTP_PASSWORD"},
-  tls: :always,
-  retries: 5
+  adapter: Bamboo.MailgunAdapter,
+  api_key: System.get_env("MAILGUN_KEY"),
+  domain: "mg.barnonewpg.org"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
