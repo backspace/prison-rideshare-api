@@ -17,14 +17,15 @@ defmodule PrisonRideshare.Email do
 
   def calendar_link(person, month) do
     {:ok, magic_token, _claims} = PrisonRideshare.PersonGuardian.encode_magic(person)
+    full_month = Timex.parse!(month, "{YYYY}-{0M}") |> Timex.format!("{Mfull} {YYYY}")
 
     new_email(
       to: person.email,
       from: {"Bar None Bot", "bot@barnonewpg.org"},
-      subject: "Rideshare calendar for #{month}"
+      subject: "Rideshare calendar for #{full_month}"
     )
     |> assign(:person, person)
-    |> assign(:month, month)
+    |> assign(:month, full_month)
     |> assign(:link, "#{Application.get_env(:prison_rideshare, :ui_root)}/calendar/#{month}?token=#{magic_token}")
     |> render(:calendar_link)
   end
