@@ -98,7 +98,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
   test "sends a calendar email to a person", %{conn: conn} do
     person = Repo.insert! %Person{name: "Chelsea Manning", email: "chelsea@example.com"}
 
-    conn = put conn, person_calendar_email_path(conn, :email_calendar_link, person, "2017-12")
+    conn = post conn, person_calendar_email_path(conn, :email_calendar_link, person, "2017-12")
 
     assert response(conn, 204)
     # FIXME this fails because the magic token is unique

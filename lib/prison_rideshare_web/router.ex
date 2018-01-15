@@ -88,7 +88,7 @@ defmodule PrisonRideshareWeb.Router do
   scope "/", PrisonRideshareWeb do
     pipe_through :admin_non_json_api
 
-    put "/people/:id/calendar-email/:month", PersonController, :email_calendar_link, as: :person_calendar_email
+    post "/people/:id/calendar-email/:month", PersonController, :email_calendar_link, as: :person_calendar_email
   end
 
   scope "/", PrisonRideshareWeb do
