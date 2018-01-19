@@ -2,8 +2,8 @@ defmodule PrisonRideshareWeb.Institution do
   use PrisonRideshareWeb, :model
 
   schema "institutions" do
-    field :name, :string
-    field :rate, Money.Ecto.Type
+    field(:name, :string)
+    field(:rate, Money.Ecto.Type)
 
     timestamps(type: :utc_datetime)
   end

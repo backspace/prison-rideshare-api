@@ -3,7 +3,7 @@ defmodule PrisonRideshare.Repo.Migrations.AddPersonMedium do
 
   def change do
     alter table(:people) do
-      add :medium, :string
+      add(:medium, :string)
     end
   end
 end

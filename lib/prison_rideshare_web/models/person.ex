@@ -2,18 +2,18 @@ defmodule PrisonRideshareWeb.Person do
   use PrisonRideshareWeb, :model
 
   schema "people" do
-    field :name, :string
-    field :email, :string
-    field :mobile, :string
-    field :landline, :string
-    field :notes, :string
-    field :medium, :string
-    field :active, :boolean, default: true
+    field(:name, :string)
+    field(:email, :string)
+    field(:mobile, :string)
+    field(:landline, :string)
+    field(:notes, :string)
+    field(:medium, :string)
+    field(:active, :boolean, default: true)
 
-    has_many :car_uses, PrisonRideshareWeb.Ride, foreign_key: :car_owner_id
-    has_many :drivings, PrisonRideshareWeb.Ride, foreign_key: :driver_id
+    has_many(:car_uses, PrisonRideshareWeb.Ride, foreign_key: :car_owner_id)
+    has_many(:drivings, PrisonRideshareWeb.Ride, foreign_key: :driver_id)
 
-    has_many :reimbursements, PrisonRideshareWeb.Reimbursement
+    has_many(:reimbursements, PrisonRideshareWeb.Reimbursement)
 
     timestamps(type: :utc_datetime)
   end
@@ -45,8 +45,8 @@ defmodule PrisonRideshareWeb.Person do
 
   def initials(%{name: name}) do
     String.split(name, ~r/ |-/)
-    |> Enum.reject(fn(part) -> part == "" end)
-    |> Enum.map(fn(word) -> String.first(word) |> String.upcase end)
-    |> Enum.join
+    |> Enum.reject(fn part -> part == "" end)
+    |> Enum.map(fn word -> String.first(word) |> String.upcase() end)
+    |> Enum.join()
   end
 end

@@ -5,7 +5,17 @@ defmodule PrisonRideshareWeb.RideTest do
 
   import Money.Sigils
 
-  @valid_attrs %{name: "some content", address: "some content", contact: "some content", end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}, notes: "some content", passengers: 42, start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0}, first_time: true, medium: "phone"}
+  @valid_attrs %{
+    name: "some content",
+    address: "some content",
+    contact: "some content",
+    end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0},
+    notes: "some content",
+    passengers: 42,
+    start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0},
+    first_time: true,
+    medium: "phone"
+  }
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
@@ -25,23 +35,24 @@ defmodule PrisonRideshareWeb.RideTest do
   }
 
   test "report changeset with valid attributes calculates the car expenses" do
-    changeset = Ride.report_changeset(%Ride{institution: %Institution{rate: ~M[40]}}, @valid_report_attrs)
+    changeset =
+      Ride.report_changeset(%Ride{institution: %Institution{rate: ~M[40]}}, @valid_report_attrs)
+
     assert changeset.valid?
     assert Ecto.Changeset.get_field(changeset, :car_expenses) == ~M[400]
   end
 
   test "changeset without a distance does not calculate car expenses" do
-    changeset = Ride.changeset(
-      %Ride{institution: %Institution{rate: ~M[40]}},
-      %{
+    changeset =
+      Ride.changeset(%Ride{institution: %Institution{rate: ~M[40]}}, %{
         start: @valid_attrs.start,
         end: @valid_attrs.end,
         name: @valid_attrs.name,
         passengers: 1,
         address: "an address",
         contact: "contact",
-        report_notes: "hello"}
-      )
+        report_notes: "hello"
+      })
 
     assert changeset.valid?
     assert Ecto.Changeset.get_field(changeset, :report_notes) == "hello"

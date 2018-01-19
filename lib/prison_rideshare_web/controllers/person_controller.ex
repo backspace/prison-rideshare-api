@@ -4,7 +4,7 @@ defmodule PrisonRideshareWeb.PersonController do
   alias PrisonRideshareWeb.Person
   alias JaSerializer.Params
 
-  plug :scrub_params, "data" when action in [:create, :update]
+  plug(:scrub_params, "data" when action in [:create, :update])
 
   def index(conn, _params) do
     people = Repo.all(Person)
@@ -20,6 +20,7 @@ defmodule PrisonRideshareWeb.PersonController do
         |> put_status(:created)
         |> put_resp_header("location", person_path(conn, :show, person))
         |> render("show.json-api", data: person)
+
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -29,8 +30,10 @@ defmodule PrisonRideshareWeb.PersonController do
 
   def email_calendar_link(conn, %{"id" => id, "month" => month}) do
     person = Repo.get!(Person, id)
-    PrisonRideshare.Email.calendar_link(person, month) |>
-    PrisonRideshare.Mailer.deliver_later
+
+    PrisonRideshare.Email.calendar_link(person, month)
+    |> PrisonRideshare.Mailer.deliver_later()
+
     send_resp(conn, :no_content, "")
   end
 
@@ -39,13 +42,17 @@ defmodule PrisonRideshareWeb.PersonController do
     render(conn, "show.json-api", data: person)
   end
 
-  def update(conn, %{"id" => id, "data" => data = %{"type" => "people", "attributes" => _person_params}}) do
+  def update(conn, %{
+        "id" => id,
+        "data" => data = %{"type" => "people", "attributes" => _person_params}
+      }) do
     person = Repo.get!(Person, id)
     changeset = Person.changeset(person, Params.to_attributes(data))
 
     case PaperTrail.update(changeset, version_information(conn)) do
       {:ok, %{model: person}} ->
         render(conn, "show.json-api", data: person)
+
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -62,5 +69,4 @@ defmodule PrisonRideshareWeb.PersonController do
 
     send_resp(conn, :no_content, "")
   end
-
 end

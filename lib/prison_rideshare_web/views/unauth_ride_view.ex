@@ -2,13 +2,15 @@ defmodule PrisonRideshareWeb.UnauthRideView do
   use PrisonRideshareWeb, :view
   use JaSerializer.PhoenixView
 
-  attributes [:start, :end, :initials, :donatable]
+  attributes([:start, :end, :initials, :donatable])
 
   def type(_, _), do: "ride"
 
-  has_one :institution,
+  has_one(
+    :institution,
     include: true,
     serializer: PrisonRideshareWeb.InstitutionView
+  )
 
   def initials(ride, _conn) do
     PrisonRideshareWeb.Person.initials(ride.driver)
@@ -22,6 +24,6 @@ defmodule PrisonRideshareWeb.UnauthRideView do
   def start(%{start: nil}, _conn), do: nil
   def start(%{start: start}, _conn), do: "#{Ecto.DateTime.to_iso8601(start)}Z"
 
-  def unquote(:"end")(%{end: nil}, _conn), do: nil
-  def unquote(:"end")(%{end: end_time}, _conn), do: "#{Ecto.DateTime.to_iso8601(end_time)}Z"
+  def unquote(:end)(%{end: nil}, _conn), do: nil
+  def unquote(:end)(%{end: end_time}, _conn), do: "#{Ecto.DateTime.to_iso8601(end_time)}Z"
 end

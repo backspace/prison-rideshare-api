@@ -3,20 +3,20 @@ defmodule PrisonRideshare.Repo.Migrations.CreateReimbursement do
 
   def change do
     create table(:reimbursements, primary_key: false) do
-      add :id, :binary_id, primary_key: true
+      add(:id, :binary_id, primary_key: true)
 
-      add :food_expenses, :integer
-      add :car_expenses, :integer
+      add(:food_expenses, :integer)
+      add(:car_expenses, :integer)
 
-      add :person_id, references(:people, on_delete: :nothing, type: :binary_id)
-      add :ride_id, references(:rides, type: :binary_id)
+      add(:person_id, references(:people, on_delete: :nothing, type: :binary_id))
+      add(:ride_id, references(:rides, type: :binary_id))
 
-      add :donation, :boolean, default: false
-      add :processed, :boolean, default: false
+      add(:donation, :boolean, default: false)
+      add(:processed, :boolean, default: false)
 
       timestamps()
     end
-    create index(:reimbursements, [:person_id])
 
+    create(index(:reimbursements, [:person_id]))
   end
 end
