@@ -15,6 +15,8 @@ defmodule PrisonRideshareWeb.Person do
 
     has_many(:reimbursements, PrisonRideshareWeb.Reimbursement)
 
+    has_many(:commitments, PrisonRideshareWeb.Commitment)
+
     timestamps(type: :utc_datetime)
   end
 

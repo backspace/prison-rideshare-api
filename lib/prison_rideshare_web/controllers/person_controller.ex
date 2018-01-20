@@ -46,7 +46,7 @@ defmodule PrisonRideshareWeb.PersonController do
   def calendar(conn, %{"id" => id}) do
     person =
       Repo.get!(Person, id)
-      |> Repo.preload([drivings: [:institution, :children]], force: true)
+      |> Repo.preload([drivings: [:institution, :children], commitments: [:slot]], force: true)
 
     events =
       Enum.map(Enum.sort_by(person.drivings, fn ride -> ride.start end), fn ride ->
@@ -85,7 +85,27 @@ defmodule PrisonRideshareWeb.PersonController do
               ", "
             )
         }
-      end)
+      end) ++
+        Enum.map(
+          Enum.sort_by(person.commitments, fn commitment -> commitment.slot.start end),
+          fn commitment ->
+            slot = commitment.slot
+
+            %ICalendar.Event{
+              summary: "Prison rideshare slot commitment",
+              dtstart:
+                Timex.Timezone.convert(
+                  Timex.Timezone.resolve("UTC", NaiveDateTime.to_erl(slot.start), :utc),
+                  "UTC"
+                ),
+              dtend:
+                Timex.Timezone.convert(
+                  Timex.Timezone.resolve("UTC", NaiveDateTime.to_erl(slot.end), :utc),
+                  "UTC"
+                )
+            }
+          end
+        )
 
     ics = %ICalendar{events: events} |> ICalendar.to_ics()
 

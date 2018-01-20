@@ -1,7 +1,7 @@
 defmodule PrisonRideshare.PersonCalendarTest do
   use PrisonRideshareWeb.ConnCase
 
-  alias PrisonRideshareWeb.{Institution, Person, Ride}
+  alias PrisonRideshareWeb.{Institution, Person, Ride, Commitment, Slot}
   alias PrisonRideshare.Repo
 
   setup do
@@ -61,6 +61,17 @@ defmodule PrisonRideshare.PersonCalendarTest do
       contact: "2877433"
     })
 
+    committed_slot =
+      Repo.insert!(%Slot{
+        start: Ecto.DateTime.from_erl({{2017, 12, 8}, {13, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2017, 12, 8}, {17, 0, 0}})
+      })
+
+    Repo.insert!(%Commitment{
+      slot_id: committed_slot.id,
+      person_id: driver.id
+    })
+
     # FIXME should add to description when child ride doesn’t match parent times
 
     conn = get(conn, person_path(conn, :calendar, driver.id))
@@ -90,6 +101,11 @@ defmodule PrisonRideshare.PersonCalendarTest do
            DTSTART;TZID=Etc/UTC:20170117T180000
            LOCATION:421 Osborne
            SUMMARY:Visit to Stony Mountain
+           END:VEVENT
+           BEGIN:VEVENT
+           DTEND;TZID=Etc/UTC:20171208T170000
+           DTSTART;TZID=Etc/UTC:20171208T130000
+           SUMMARY:Prison rideshare slot commitment
            END:VEVENT
            END:VCALENDAR
            """
