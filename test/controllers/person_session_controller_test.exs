@@ -9,6 +9,7 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
         name: "A person",
         email: "hello@example.com",
         notes: "These should be secret",
+        self_notes: "These are not secret",
         mobile: "5551313"
       })
 
@@ -65,6 +66,7 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
     assert attributes["mobile"] == person.mobile
     assert attributes["landline"] == person.landline
     refute attributes["notes"]
+    assert attributes["self-notes"] == person.self_notes
   end
 
   test "updates a subset and renders the person with their token", %{conn: conn} do
@@ -83,7 +85,8 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
             "name" => "A new name",
             "email" => "newemail@example.com",
             "notes" => "New notes?",
-            "mobile" => "2045551313"
+            "mobile" => "2045551313",
+            "self-notes" => "New self notes."
           }
         }
       })
@@ -97,9 +100,11 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
     assert attributes["mobile"] == person.mobile
     assert attributes["medium"] == person.medium
     refute attributes["notes"]
+    assert attributes["self-notes"] == "New self notes."
 
     assert person.name == "A new name"
     assert person.notes == "These should be secret"
+    assert person.self_notes == "New self notes."
 
     [version] = Repo.all(PaperTrail.Version)
     assert version.event == "update"

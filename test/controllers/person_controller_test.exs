@@ -10,7 +10,8 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     email: "hello@example.com",
     mobile: "5145551313",
     medium: "mobile",
-    active: false
+    active: false,
+    self_notes: "Some self notes"
   }
   @invalid_attrs %{name: "aname"}
 
@@ -43,7 +44,8 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
         landline: "d",
         notes: "e",
         medium: "mobile",
-        active: false
+        active: false,
+        self_notes: "notes"
       })
 
     conn = get(conn, person_path(conn, :show, person))
@@ -59,6 +61,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     assert attributes["notes"] == person.notes
     assert attributes["medium"] == person.medium
     refute attributes["active"]
+    assert attributes["self-notes"] == person.self_notes
   end
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
