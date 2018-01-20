@@ -1,4 +1,4 @@
-defmodule PrisonRideshare.Repo.Migrations.AddPersonCalendarToken do
+defmodule PrisonRideshare.Repo.Migrations.AddPersonSelfNotes do
   use Ecto.Migration
 
   def change do
