@@ -1,3 +1,3 @@
 defmodule PrisonRideshare.EmailView do
-  use PrisonRideshareWeb, :view 
+  use PrisonRideshareWeb, :view
 end

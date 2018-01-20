@@ -12,7 +12,6 @@ config :prison_rideshare, PrisonRideshareWeb.Endpoint,
   check_origin: false,
   watchers: []
 
-
 # Watch static and templates for browser reloading.
 config :prison_rideshare, PrisonRideshareWeb.Endpoint,
   live_reload: [

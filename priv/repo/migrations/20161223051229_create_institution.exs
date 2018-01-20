@@ -3,12 +3,11 @@ defmodule PrisonRideshare.Repo.Migrations.CreateInstitution do
 
   def change do
     create table(:institutions, primary_key: false) do
-      add :id, :binary_id, primary_key: true
-      add :name, :string
-      add :rate, :integer
+      add(:id, :binary_id, primary_key: true)
+      add(:name, :string)
+      add(:rate, :integer)
 
       timestamps()
     end
-
   end
 end

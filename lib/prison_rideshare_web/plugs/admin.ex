@@ -16,14 +16,14 @@ defmodule PrisonRideshareWeb.Plugs.Admin do
 
   def call(conn, _) do
     conn
-      |> flash_and_redirect
+    |> flash_and_redirect
   end
 
   defp flash_and_redirect(conn) do
     # FIXME obvsy, is this private guardian_default_resource thing even okay?
+    # |> put_flash(:error, "You do not have the proper authorisation to do that")
     conn
-      # |> put_flash(:error, "You do not have the proper authorisation to do that")
-      |> redirect(to: "/")
-      |> halt
+    |> redirect(to: "/")
+    |> halt
   end
 end

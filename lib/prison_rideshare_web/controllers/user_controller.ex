@@ -4,7 +4,7 @@ defmodule PrisonRideshareWeb.UserController do
   alias PrisonRideshareWeb.User
   alias JaSerializer.Params
 
-  plug :scrub_params, "data" when action in [:create, :update]
+  plug(:scrub_params, "data" when action in [:create, :update])
 
   def index(conn, _params) do
     users = Repo.all(User)
@@ -20,6 +20,7 @@ defmodule PrisonRideshareWeb.UserController do
         |> put_status(:created)
         |> put_resp_header("location", user_path(conn, :show, user))
         |> render("show.json-api", data: user)
+
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -33,20 +34,25 @@ defmodule PrisonRideshareWeb.UserController do
   end
 
   def current(conn, _) do
-    user = conn
-    |> Guardian.Plug.current_resource
+    user =
+      conn
+      |> Guardian.Plug.current_resource()
 
     conn
     |> render("show.json-api", data: user)
   end
 
-  def update(conn, %{"id" => id, "data" => data = %{"type" => "users", "attributes" => _user_params}}) do
+  def update(conn, %{
+        "id" => id,
+        "data" => data = %{"type" => "users", "attributes" => _user_params}
+      }) do
     user = Repo.get!(User, id)
     changeset = User.admin_changeset(user, Params.to_attributes(data))
 
     case PaperTrail.update(changeset, version_information(conn)) do
       {:ok, %{model: user}} ->
         render(conn, "show.json-api", data: user)
+
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -63,5 +69,4 @@ defmodule PrisonRideshareWeb.UserController do
 
     send_resp(conn, :no_content, "")
   end
-
 end

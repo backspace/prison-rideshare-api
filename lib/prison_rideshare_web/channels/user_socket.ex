@@ -5,7 +5,9 @@ defmodule PrisonRideshareWeb.UserSocket do
     case Guardian.Phoenix.Socket.authenticate(socket, PrisonRideshare.Guardian, token) do
       {:ok, authed_socket} ->
         {:ok, authed_socket}
-      {:error, _} -> :error
+
+      {:error, _} ->
+        :error
     end
   end
 
@@ -15,10 +17,10 @@ defmodule PrisonRideshareWeb.UserSocket do
   end
 
   ## Channels
-  channel "user:*", PrisonRideshareWeb.UserChannel
+  channel("user:*", PrisonRideshareWeb.UserChannel)
 
   ## Transports
-  transport :websocket, Phoenix.Transports.WebSocket
+  transport(:websocket, Phoenix.Transports.WebSocket)
   # transport :longpoll, Phoenix.Transports.LongPoll
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

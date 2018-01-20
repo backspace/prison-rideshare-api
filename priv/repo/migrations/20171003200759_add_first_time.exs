@@ -3,7 +3,7 @@ defmodule PrisonRideshare.Repo.Migrations.AddFirstTime do
 
   def change do
     alter table(:rides) do
-      add :first_time, :boolean, default: false
+      add(:first_time, :boolean, default: false)
     end
   end
 end

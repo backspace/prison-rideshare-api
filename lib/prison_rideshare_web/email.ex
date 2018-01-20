@@ -2,8 +2,9 @@ defmodule PrisonRideshare.Email do
   use Bamboo.Phoenix, view: PrisonRideshare.EmailView
 
   def report(ride) do
-    start = Timex.Timezone.convert(Ecto.DateTime.to_erl(ride.start), "America/Winnipeg")
-    |> Timex.format!("{h12}:{m} {AM} on {WDshort}, {Mshort} {D} {YYYY}")
+    start =
+      Timex.Timezone.convert(Ecto.DateTime.to_erl(ride.start), "America/Winnipeg")
+      |> Timex.format!("{h12}:{m} {AM} on {WDshort}, {Mshort} {D} {YYYY}")
 
     new_email(
       to: ["barnone.coordinator+report@gmail.com", "barnone.wpg+report@gmail.com"],
@@ -26,7 +27,10 @@ defmodule PrisonRideshare.Email do
     )
     |> assign(:person, person)
     |> assign(:month, full_month)
-    |> assign(:link, "#{Application.get_env(:prison_rideshare, :ui_root)}/calendar/#{month}?token=#{magic_token}")
+    |> assign(
+      :link,
+      "#{Application.get_env(:prison_rideshare, :ui_root)}/calendar/#{month}?token=#{magic_token}"
+    )
     |> render(:calendar_link)
   end
 end

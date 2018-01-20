@@ -46,8 +46,9 @@ defmodule PrisonRideshareWeb do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/prison_rideshare_web/templates",
-                        namespace: PrisonRideshareWeb
+      use Phoenix.View,
+        root: "lib/prison_rideshare_web/templates",
+        namespace: PrisonRideshareWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]

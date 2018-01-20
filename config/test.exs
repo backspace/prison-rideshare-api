@@ -18,8 +18,7 @@ config :prison_rideshare, PrisonRideshare.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
-config :prison_rideshare, PrisonRideshare.Mailer,
-  adapter: Bamboo.TestAdapter
+config :prison_rideshare, PrisonRideshare.Mailer, adapter: Bamboo.TestAdapter
 
 defmodule Blacksmith.Config do
   def save(map) do

@@ -5,7 +5,7 @@ defmodule PrisonRideshareWeb.PersonController do
   alias JaSerializer.Params
   require Logger
 
-  plug :scrub_params, "data" when action in [:create, :update]
+  plug(:scrub_params, "data" when action in [:create, :update])
 
   def index(conn, _params) do
     people = Repo.all(Person)
@@ -21,6 +21,7 @@ defmodule PrisonRideshareWeb.PersonController do
         |> put_status(:created)
         |> put_resp_header("location", person_path(conn, :show, person))
         |> render("show.json-api", data: person)
+
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -30,8 +31,10 @@ defmodule PrisonRideshareWeb.PersonController do
 
   def email_calendar_link(conn, %{"id" => id, "month" => month}) do
     person = Repo.get!(Person, id)
-    PrisonRideshare.Email.calendar_link(person, month) |>
-    PrisonRideshare.Mailer.deliver_later
+
+    PrisonRideshare.Email.calendar_link(person, month)
+    |> PrisonRideshare.Mailer.deliver_later()
+
     send_resp(conn, :no_content, "")
   end
 
@@ -41,40 +44,67 @@ defmodule PrisonRideshareWeb.PersonController do
   end
 
   def calendar(conn, %{"id" => id}) do
-    person = Repo.get!(Person, id)
-    |> Repo.preload([drivings: [:institution, :children]], force: true)
+    person =
+      Repo.get!(Person, id)
+      |> Repo.preload([drivings: [:institution, :children]], force: true)
 
-    events = Enum.map(Enum.sort_by(person.drivings, fn(ride) -> ride.start end), fn(ride) ->
-      %ICalendar.Event{
-        summary: "#{unless ride.enabled do "CANCELLED " end}Visit to #{ride.institution.name}",
-        description: Enum.join(Enum.map([ride] ++ ride.children, fn(ride) ->
-          """
-          #{ride.name}
-          #{ride.address}
-          #{ride.contact}
-          """
-        end), "\n\n"),
-        # FIXME really?
-        dtstart: Timex.Timezone.convert(Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.start), :utc), "UTC"),
-        dtend: Timex.Timezone.convert(Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.end), :utc), "UTC"),
-        location: Enum.join([ride.address] ++ Enum.map(ride.children, fn(child) -> child.address end), ", ")
-      }
-    end)
+    events =
+      Enum.map(Enum.sort_by(person.drivings, fn ride -> ride.start end), fn ride ->
+        %ICalendar.Event{
+          summary:
+            "#{
+              unless ride.enabled do
+                "CANCELLED "
+              end
+            }Visit to #{ride.institution.name}",
+          description:
+            Enum.join(
+              Enum.map([ride] ++ ride.children, fn ride ->
+                """
+                #{ride.name}
+                #{ride.address}
+                #{ride.contact}
+                """
+              end),
+              "\n\n"
+            ),
+          # FIXME really?
+          dtstart:
+            Timex.Timezone.convert(
+              Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.start), :utc),
+              "UTC"
+            ),
+          dtend:
+            Timex.Timezone.convert(
+              Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.end), :utc),
+              "UTC"
+            ),
+          location:
+            Enum.join(
+              [ride.address] ++ Enum.map(ride.children, fn child -> child.address end),
+              ", "
+            )
+        }
+      end)
 
-    ics = %ICalendar{ events: events } |> ICalendar.to_ics
+    ics = %ICalendar{events: events} |> ICalendar.to_ics()
 
     conn
     |> put_resp_content_type("text/calendar")
     |> text(ics)
   end
 
-  def update(conn, %{"id" => id, "data" => data = %{"type" => "people", "attributes" => _person_params}}) do
+  def update(conn, %{
+        "id" => id,
+        "data" => data = %{"type" => "people", "attributes" => _person_params}
+      }) do
     person = Repo.get!(Person, id)
     changeset = Person.changeset(person, Params.to_attributes(data))
 
     case PaperTrail.update(changeset, version_information(conn)) do
       {:ok, %{model: person}} ->
         render(conn, "show.json-api", data: person)
+
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -91,5 +121,4 @@ defmodule PrisonRideshareWeb.PersonController do
 
     send_resp(conn, :no_content, "")
   end
-
 end

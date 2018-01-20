@@ -2,13 +2,13 @@ defmodule PrisonRideshareWeb.User do
   use PrisonRideshareWeb, :model
 
   schema "users" do
-    field :email, :string
-    field :password_hash, :string
+    field(:email, :string)
+    field(:password_hash, :string)
 
-    field :admin, :boolean
+    field(:admin, :boolean)
 
-    field :password, :string, virtual: true
-    field :password_confirmation, :string, virtual: true
+    field(:password, :string, virtual: true)
+    field(:password_confirmation, :string, virtual: true)
 
     timestamps(type: :utc_datetime)
   end
@@ -33,10 +33,12 @@ defmodule PrisonRideshareWeb.User do
   end
 
   defp hash_password(%{valid?: false} = changeset), do: changeset
+
   defp hash_password(%{valid?: true} = changeset) do
-      hashedpw = Comeonin.Bcrypt.hashpwsalt(Ecto.Changeset.get_field(changeset, :password))
-      Ecto.Changeset.put_change(changeset, :password_hash, hashedpw)
-      |> Ecto.Changeset.put_change(:password, nil)
-      |> Ecto.Changeset.put_change(:password_confirmation, nil)
+    hashedpw = Comeonin.Bcrypt.hashpwsalt(Ecto.Changeset.get_field(changeset, :password))
+
+    Ecto.Changeset.put_change(changeset, :password_hash, hashedpw)
+    |> Ecto.Changeset.put_change(:password, nil)
+    |> Ecto.Changeset.put_change(:password_confirmation, nil)
   end
 end
