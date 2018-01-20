@@ -1,4 +1,4 @@
-defmodule PrisonRideshare.UnauthRideControllerTest do
+defmodule PrisonRideshare.PersonCalendarTest do
   use PrisonRideshareWeb.ConnCase
 
   alias PrisonRideshareWeb.{Institution, Person, Ride}
