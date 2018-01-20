@@ -13,7 +13,7 @@ defmodule PrisonRideshare.PersonCalendarTest do
     {:ok, conn: conn}
   end
 
-  test "lists calendar events for a driver's rides", %{conn: conn} do
+  test "lists calendar events for a driver's rides when the token is included", %{conn: conn} do
     institution = Repo.insert!(%Institution{name: "Stony Mountain"})
     driver = Repo.insert!(%Person{name: "Chelsea Manning"})
 
@@ -74,7 +74,7 @@ defmodule PrisonRideshare.PersonCalendarTest do
 
     # FIXME should add to description when child ride doesn’t match parent times
 
-    conn = get(conn, person_path(conn, :calendar, driver.id))
+    conn = get(conn, person_path(conn, :calendar, driver.id, secret: driver.calendar_secret))
     assert response_content_type(conn, :calendar)
 
     assert response(conn, 200) == """
@@ -109,5 +109,15 @@ defmodule PrisonRideshare.PersonCalendarTest do
            END:VEVENT
            END:VCALENDAR
            """
+  end
+
+  test "returns a 401 when the secret is wrong", %{conn: conn} do
+    driver = Repo.insert!(%Person{name: "Chelsea Manning"})
+    conn = get(conn, person_path(conn, :calendar, driver.id))
+
+    assert json_response(conn, 401) == %{
+             "jsonapi" => %{"version" => "1.0"},
+             "errors" => [%{"title" => "Unauthorized", "code" => 401}]
+           }
   end
 end

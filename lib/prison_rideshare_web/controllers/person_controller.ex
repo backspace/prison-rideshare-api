@@ -43,75 +43,85 @@ defmodule PrisonRideshareWeb.PersonController do
     render(conn, "show.json-api", data: person)
   end
 
-  def calendar(conn, %{"id" => id}) do
+  def calendar(conn, %{"id" => id} = params) do
+    secret = params["secret"]
+
     person =
       Repo.get!(Person, id)
       |> Repo.preload([drivings: [:institution, :children], commitments: [:slot]], force: true)
 
-    events =
-      Enum.map(Enum.sort_by(person.drivings, fn ride -> ride.start end), fn ride ->
-        %ICalendar.Event{
-          summary:
-            "#{
-              unless ride.enabled do
-                "CANCELLED "
-              end
-            }Visit to #{ride.institution.name}",
-          description:
-            Enum.join(
-              Enum.map([ride] ++ ride.children, fn ride ->
-                """
-                #{ride.name}
-                #{ride.address}
-                #{ride.contact}
-                """
-              end),
-              "\n\n"
-            ),
-          # FIXME really?
-          dtstart:
-            Timex.Timezone.convert(
-              Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.start), :utc),
-              "UTC"
-            ),
-          dtend:
-            Timex.Timezone.convert(
-              Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.end), :utc),
-              "UTC"
-            ),
-          location:
-            Enum.join(
-              [ride.address] ++ Enum.map(ride.children, fn child -> child.address end),
-              ", "
-            )
-        }
-      end) ++
-        Enum.map(
-          Enum.sort_by(person.commitments, fn commitment -> commitment.slot.start end),
-          fn commitment ->
-            slot = commitment.slot
-
+    cond do
+      secret == person.calendar_secret ->
+        events =
+          Enum.map(Enum.sort_by(person.drivings, fn ride -> ride.start end), fn ride ->
             %ICalendar.Event{
-              summary: "Prison rideshare slot commitment",
+              summary:
+                "#{
+                  unless ride.enabled do
+                    "CANCELLED "
+                  end
+                }Visit to #{ride.institution.name}",
+              description:
+                Enum.join(
+                  Enum.map([ride] ++ ride.children, fn ride ->
+                    """
+                    #{ride.name}
+                    #{ride.address}
+                    #{ride.contact}
+                    """
+                  end),
+                  "\n\n"
+                ),
+              # FIXME really?
               dtstart:
                 Timex.Timezone.convert(
-                  Timex.Timezone.resolve("UTC", NaiveDateTime.to_erl(slot.start), :utc),
+                  Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.start), :utc),
                   "UTC"
                 ),
               dtend:
                 Timex.Timezone.convert(
-                  Timex.Timezone.resolve("UTC", NaiveDateTime.to_erl(slot.end), :utc),
+                  Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.end), :utc),
                   "UTC"
+                ),
+              location:
+                Enum.join(
+                  [ride.address] ++ Enum.map(ride.children, fn child -> child.address end),
+                  ", "
                 )
             }
-          end
-        )
+          end) ++
+            Enum.map(
+              Enum.sort_by(person.commitments, fn commitment -> commitment.slot.start end),
+              fn commitment ->
+                slot = commitment.slot
 
-    ics = %ICalendar{events: events} |> ICalendar.to_ics()
+                %ICalendar.Event{
+                  summary: "Prison rideshare slot commitment",
+                  dtstart:
+                    Timex.Timezone.convert(
+                      Timex.Timezone.resolve("UTC", NaiveDateTime.to_erl(slot.start), :utc),
+                      "UTC"
+                    ),
+                  dtend:
+                    Timex.Timezone.convert(
+                      Timex.Timezone.resolve("UTC", NaiveDateTime.to_erl(slot.end), :utc),
+                      "UTC"
+                    )
+                }
+              end
+            )
 
-    conn
-    |> put_resp_content_type("text/calendar")
-    |> text(ics)
+        ics = %ICalendar{events: events} |> ICalendar.to_ics()
+
+        conn
+        |> put_resp_content_type("text/calendar")
+        |> text(ics)
+
+      true ->
+        conn
+        |> put_status(401)
+        |> render(PrisonRideshareWeb.ErrorView, "401.json")
+    end
   end
 
   def update(conn, %{
