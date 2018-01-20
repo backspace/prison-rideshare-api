@@ -7,6 +7,7 @@ defmodule PrisonRideshareWeb.Person do
     field(:mobile, :string)
     field(:landline, :string)
     field(:notes, :string)
+    field(:self_notes, :string)
     field(:medium, :string)
     field(:active, :boolean, default: true)
 
@@ -14,6 +15,8 @@ defmodule PrisonRideshareWeb.Person do
     has_many(:drivings, PrisonRideshareWeb.Ride, foreign_key: :driver_id)
 
     has_many(:reimbursements, PrisonRideshareWeb.Reimbursement)
+
+    has_many(:commitments, PrisonRideshareWeb.Commitment)
 
     timestamps(type: :utc_datetime)
   end
@@ -23,13 +26,13 @@ defmodule PrisonRideshareWeb.Person do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :email, :mobile, :landline, :notes, :medium, :active])
+    |> cast(params, [:name, :email, :mobile, :landline, :notes, :self_notes, :medium, :active])
     |> validate_required([:name, :email])
   end
 
   def self_changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :mobile, :landline, :medium, :active])
+    |> cast(params, [:name, :mobile, :landline, :medium, :active, :self_notes])
     |> validate_required([:name])
   end
 

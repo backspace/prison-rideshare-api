@@ -8,6 +8,7 @@ defmodule PrisonRideshareWeb.PersonView do
     :mobile,
     :landline,
     :notes,
+    :self_notes,
     :medium,
     :active,
     :inserted_at,
