@@ -3,7 +3,6 @@ defmodule PrisonRideshareWeb.PersonController do
 
   alias PrisonRideshareWeb.Person
   alias JaSerializer.Params
-  require Logger
 
   plug(:scrub_params, "data" when action in [:create, :update])
 
