@@ -67,6 +67,7 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
     assert attributes["landline"] == person.landline
     refute attributes["notes"]
     assert attributes["self-notes"] == person.self_notes
+    assert attributes["calendar-secret"] == person.calendar_secret
   end
 
   test "updates a subset and renders the person with their token", %{conn: conn} do

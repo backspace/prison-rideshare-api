@@ -20,7 +20,8 @@ config :prison_rideshare, ui_root: System.get_env("UI_ROOT") || "https://ridesha
 config :phoenix, :format_encoders, "json-api": Poison
 
 config :mime, :types, %{
-  "application/vnd.api+json" => ["json-api"]
+  "application/vnd.api+json" => ["json-api"],
+  "text/calendar" => ["ics", "ifb"]
 }
 
 # Configures Elixir's Logger

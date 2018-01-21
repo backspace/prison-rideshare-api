@@ -9,6 +9,10 @@ defmodule PrisonRideshareWeb.Router do
     plug(JaSerializer.Deserializer)
   end
 
+  pipeline :calendar do
+    plug(:accepts, ["ics", "ifb"])
+  end
+
   pipeline :person_api do
     plug(:accepts, ["json", "json-api"])
     plug(PrisonRideshare.PersonGuardian.AuthPipeline)
@@ -37,6 +41,13 @@ defmodule PrisonRideshareWeb.Router do
     plug(:accepts, ["json", "json-api"])
     plug(PrisonRideshare.PersonGuardian.EnsuredAuthPipeline)
     plug(JaSerializer.Deserializer)
+  end
+
+  scope "/", PrisonRideshareWeb do
+    pipe_through(:calendar)
+
+    get("/rides/calendar", RideController, :calendar)
+    get("/people/:id/calendar", PersonController, :calendar)
   end
 
   scope "/", PrisonRideshareWeb do

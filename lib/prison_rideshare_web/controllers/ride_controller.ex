@@ -7,7 +7,7 @@ defmodule PrisonRideshareWeb.RideController do
   import Ecto.Query
 
   plug(:scrub_params, "data" when action in [:create, :update])
-  plug(PrisonRideshareWeb.Plugs.Admin when action not in [:index, :update])
+  plug(PrisonRideshareWeb.Plugs.Admin when action not in [:index, :update, :calendar])
 
   def index(%{private: %{guardian_default_resource: %{admin: true}}} = conn, params) do
     rides =
@@ -40,6 +40,60 @@ defmodule PrisonRideshareWeb.RideController do
     conn
     |> put_view(PrisonRideshareWeb.UnauthRideView)
     |> render("index.json-api", data: rides)
+  end
+
+  def calendar(conn, _) do
+    rides =
+      Repo.all(
+        from(
+          r in Ride,
+          where:
+            r.enabled and is_nil(r.distance) and is_nil(r.combined_with_ride_id) and
+              is_nil(r.driver_id),
+          preload: [:institution, :driver, :children]
+        )
+      )
+
+    events =
+      Enum.map(Enum.sort_by(rides, fn ride -> ride.start end), fn ride ->
+        request_count = 1 + length(ride.children)
+
+        passenger_count =
+          Enum.map([ride] ++ ride.children, fn ride -> ride.passengers end)
+          |> Enum.sum()
+
+        summary =
+          "#{ride.institution.name}: #{request_count} request#{
+            if request_count > 1 do
+              "s"
+            end
+          }#{
+            if passenger_count > 1 do
+              ", #{passenger_count} passengers"
+            end
+          }"
+
+        %ICalendar.Event{
+          summary: summary,
+          description: "Please email barnone.coordinator@gmail.com to get assigned to this ride.",
+          dtstart:
+            Timex.Timezone.convert(
+              Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.start), :utc),
+              "UTC"
+            ),
+          dtend:
+            Timex.Timezone.convert(
+              Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.end), :utc),
+              "UTC"
+            )
+        }
+      end)
+
+    ics = %ICalendar{events: events} |> ICalendar.to_ics()
+
+    conn
+    |> put_resp_content_type("text/calendar")
+    |> text(ics)
   end
 
   def create(conn, %{"data" => data = %{"type" => "rides", "attributes" => _ride_params}}) do
