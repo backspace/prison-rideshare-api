@@ -29,7 +29,29 @@ defmodule PrisonRideshare.PersonCalendarTest do
       })
 
     Repo.insert!(%Ride{
+      start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
+      end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
       combined_with: ride,
+      name: "Tina",
+      address: "414 Osborne",
+      contact: "287878"
+    })
+
+    different_parent_ride =
+      Repo.insert!(%Ride{
+        start: Ecto.DateTime.from_erl({{2017, 1, 16}, {11, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2017, 1, 16}, {13, 0, 0}}),
+        institution: institution,
+        driver: driver,
+        name: "Tom",
+        address: "421 Osborne",
+        contact: "2877433"
+      })
+
+    Repo.insert!(%Ride{
+      start: Ecto.DateTime.from_erl({{2017, 1, 16}, {11, 15, 0}}),
+      end: Ecto.DateTime.from_erl({{2017, 1, 16}, {13, 15, 0}}),
+      combined_with: different_parent_ride,
       name: "Tina",
       address: "414 Osborne",
       contact: "287878"
@@ -72,8 +94,6 @@ defmodule PrisonRideshare.PersonCalendarTest do
       person_id: driver.id
     })
 
-    # FIXME should add to description when child ride doesn’t match parent times
-
     conn = get(conn, person_path(conn, :calendar, driver.id, secret: driver.calendar_secret))
     assert response_content_type(conn, :calendar)
 
@@ -85,6 +105,13 @@ defmodule PrisonRideshare.PersonCalendarTest do
            DESCRIPTION:Tom\\n421 Osborne\\n2877433\\n\\n\\nTina\\n414 Osborne\\n287878\\n
            DTEND;TZID=Etc/UTC:20170115T200000
            DTSTART;TZID=Etc/UTC:20170115T180000
+           LOCATION:421 Osborne\\, 414 Osborne
+           SUMMARY:Visit to Stony Mountain
+           END:VEVENT
+           BEGIN:VEVENT
+           DESCRIPTION:Tom\\n421 Osborne\\n2877433\\n\\n\\nTina\\n414 Osborne\\n287878\\n
+           DTEND;TZID=Etc/UTC:20170116T131500
+           DTSTART;TZID=Etc/UTC:20170116T110000
            LOCATION:421 Osborne\\, 414 Osborne
            SUMMARY:Visit to Stony Mountain
            END:VEVENT

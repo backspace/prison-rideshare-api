@@ -53,6 +53,16 @@ defmodule PrisonRideshareWeb.PersonController do
       secret == person.calendar_secret ->
         events =
           Enum.map(Enum.sort_by(person.drivings, fn ride -> ride.start end), fn ride ->
+            rides = [ride] ++ ride.children
+
+            earliest_start =
+              Enum.map(rides, fn ride -> ride.start end)
+              |> Enum.min()
+
+            latest_end =
+              Enum.map(rides, fn ride -> ride.end end)
+              |> Enum.max()
+
             %ICalendar.Event{
               summary:
                 "#{
@@ -74,12 +84,12 @@ defmodule PrisonRideshareWeb.PersonController do
               # FIXME really?
               dtstart:
                 Timex.Timezone.convert(
-                  Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.start), :utc),
+                  Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(earliest_start), :utc),
                   "UTC"
                 ),
               dtend:
                 Timex.Timezone.convert(
-                  Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.end), :utc),
+                  Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(latest_end), :utc),
                   "UTC"
                 ),
               location:
