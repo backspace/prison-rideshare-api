@@ -52,8 +52,8 @@ config :prison_rideshare, PrisonRideshare.PersonGuardian,
     System.get_env("PERSON_GUARDIAN_SECRET") ||
       "kFmeWKr9xPTlCPZdZetQhkKnl1DNc7JgZmAXf5X0SllM71ctO8WDGAiKS5anAOgv",
   token_ttl: %{
-    "magic" => {31, :days},
-    "access" => {31, :days}
+    "magic" => {60, :days},
+    "access" => {45, :days}
   }
 
 config :sentry,
