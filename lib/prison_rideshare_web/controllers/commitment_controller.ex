@@ -19,7 +19,7 @@ defmodule PrisonRideshareWeb.CommitmentController do
         |> put_status(:unauthorized)
         |> render(PrisonRideshareWeb.ErrorView, "401.json")
 
-      slot.count != 0 && length(slot.commitments) + 1 >= slot.count ->
+      slot.count != 0 && length(slot.commitments) + 1 > slot.count ->
         conn
         |> put_status(:unprocessable_entity)
         |> render(

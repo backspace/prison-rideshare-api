@@ -57,6 +57,10 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
   test "can create a commitment", %{conn: conn} do
     [later, _, person, _] = create_data()
 
+    later =
+      Ecto.Changeset.change(later, count: 1)
+      |> Repo.update!()
+
     conn =
       conn
       |> auth_as_person(person)
