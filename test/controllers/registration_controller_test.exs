@@ -9,8 +9,6 @@ defmodule PrisonRideshareWeb.RegistrationControllerTest do
     "password-confirmation": "fqhi12hrrfasf"
   }
 
-  @invalid_attrs %{}
-
   setup do
     conn =
       build_conn()
@@ -36,10 +34,26 @@ defmodule PrisonRideshareWeb.RegistrationControllerTest do
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    assert_error_sent(400, fn ->
+    conn =
       post(conn, registration_path(conn, :create), %{
-        data: %{type: "user", attributes: @invalid_attrs}
+        data: %{
+          type: "users",
+          attributes: %{
+            email: "hey@example.com",
+            password: "abcdefghi",
+            "password-confirmation": "abcdefghijkl"
+          }
+        }
       })
-    end)
+
+    assert json_response(conn, 422)["errors"] == [
+             %{
+               "detail" => "Password confirmation does not match confirmation",
+               "source" => %{"pointer" => "/data/attributes/password-confirmation"},
+               "title" => "does not match confirmation"
+             }
+           ]
+
+    assert length(Repo.all(User)) == 0
   end
 end

@@ -29,7 +29,7 @@ defmodule PrisonRideshareWeb.RegistrationController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(PrisonRideshareWeb.ChangesetView, "show.json-api", data: changeset)
+        |> render(PrisonRideshareWeb.ChangesetView, :errors, data: changeset)
     end
   end
 
