@@ -1,6 +1,6 @@
 Hello <%= @person.name %>,
 
-Here is your unique calendar link for <%= @full_month %>: <%= @link %>
+Here is your unique calendar link for <%= @month %>: <%= @link %>
 
 If you’re not sure what this is about, read on below.
 

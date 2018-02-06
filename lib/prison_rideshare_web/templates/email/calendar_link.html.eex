@@ -1,6 +1,6 @@
 <p>Hello <%= @person.name %>,</p>
 
-<p><a href='<%= @link %>'>Here</a> is your unique calendar link for <%= @full_month %>. If you’re not sure what this is about, read on below.</p>
+<p><a href='<%= @link %>'>Here</a> is your unique calendar link for <%= @month %>. If you’re not sure what this is about, read on below.</p>
 
 <p>As you may have noticed ride requests are increasing and it’s been busy. We’re looking at ways to switch things up. If you’re like us, your week/month can fill up fast and it can be hard to find time for last-minute ride requests. We’re wondering what it might look like to block off spots in your calendar in advance: to choose one, a few, or many days you’ll be available during the month and reserve them on your calendar. If a ride gets scheduled for that time, we’ll contact you to book a ride in that slot. This may also help us let riders know when drivers are available so they can book rides around your schedules. We’re hoping this will be a more efficient and effective way of booking rides.</p>
 
