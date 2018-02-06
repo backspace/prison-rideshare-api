@@ -45,7 +45,7 @@ day_type_slots = %{
 }
 
 first_day =
-  "2018-02-01"
+  "2018-03-01"
   |> Timex.parse!("{YYYY}-{0M}-{0D}")
 
 days_in_month =
