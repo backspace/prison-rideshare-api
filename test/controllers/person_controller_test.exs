@@ -133,6 +133,12 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     # assert_delivered_with([person, "2017-12"])
   end
 
+  test "returns a calendar link", %{conn: conn} do
+    person = Repo.insert!(%Person{name: "Jortle", email: "jortle@example.com"})
+    conn = get(conn, person_calendar_link_path(conn, :calendar_link, person, "2018-02"))
+    assert String.contains?(response(conn, 200), "2018-02")
+  end
+
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
     person = Repo.insert!(%Person{name: "oldname"})
 

@@ -28,6 +28,17 @@ defmodule PrisonRideshareWeb.PersonController do
     end
   end
 
+  def calendar_link(conn, %{"id" => id, "month" => month}) do
+    person = Repo.get!(Person, id)
+
+    # FIXME this is copied from the email
+    {:ok, magic_token, _claims} = PrisonRideshare.PersonGuardian.encode_magic(person)
+
+    link = "#{Application.get_env(:prison_rideshare, :ui_root)}/calendar/#{month}?token=#{magic_token}"
+
+    text(conn, link)
+  end
+
   def email_calendar_link(conn, %{"id" => id, "month" => month}) do
     person = Repo.get!(Person, id)
 

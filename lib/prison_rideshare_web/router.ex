@@ -94,6 +94,13 @@ defmodule PrisonRideshareWeb.Router do
       :email_calendar_link,
       as: :person_calendar_email
     )
+
+    get(
+      "/people/:id/calendar-link/:month",
+      PersonController,
+      :calendar_link,
+      as: :person_calendar_link
+    )
   end
 
   scope "/", PrisonRideshareWeb do
