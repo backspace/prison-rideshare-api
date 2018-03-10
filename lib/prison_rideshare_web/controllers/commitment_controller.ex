@@ -6,6 +6,18 @@ defmodule PrisonRideshareWeb.CommitmentController do
 
   plug(:scrub_params, "data" when action in [:create])
 
+  def create(%{private: %{guardian_default_resource: %{admin: true}}} = conn, %{"data" => data = %{"type" => "commitments"}}) do
+    changeset = Commitment.changeset(%Commitment{}, Params.to_attributes(data))
+
+    case PaperTrail.insert(changeset, version_information(conn)) do
+      {:ok, %{model: commitment}} ->
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", commitment_path(conn, :show, commitment))
+        |> render("show.json-api", data: commitment |> Repo.preload([:person, :slot]))
+    end
+  end
+
   def create(conn, %{"data" => data = %{"type" => "commitments"}}) do
     person = PrisonRideshare.PersonGuardian.Plug.current_resource(conn)
 
@@ -14,6 +26,11 @@ defmodule PrisonRideshareWeb.CommitmentController do
       |> Repo.preload(:commitments)
 
     cond do
+      !person ->
+        conn
+        |> put_status(:unauthorized)
+        |> render(PrisonRideshareWeb.ErrorView, "401.json")
+        
       person.id != data["relationships"]["person"]["data"]["id"] ->
         conn
         |> put_status(:unauthorized)
@@ -72,6 +89,15 @@ defmodule PrisonRideshareWeb.CommitmentController do
             |> render("show.json-api", data: commitment |> Repo.preload([:person, :slot]))
         end
     end
+  end
+
+  def delete(%{private: %{guardian_default_resource: %{admin: true}}} = conn, %{"id" => id}) do
+    commitment =
+      Repo.get!(Commitment, id)
+      |> Repo.preload(:slot)
+
+    PaperTrail.delete!(commitment, version_information(conn))
+    send_resp(conn, :no_content, "")
   end
 
   def delete(conn, %{"id" => id}) do

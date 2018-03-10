@@ -16,6 +16,7 @@ defmodule PrisonRideshareWeb.Router do
   pipeline :person_api do
     plug(:accepts, ["json", "json-api"])
     plug(PrisonRideshare.PersonGuardian.AuthPipeline)
+    plug(PrisonRideshare.Guardian.AuthPipeline)
     plug(JaSerializer.Deserializer)
   end
 
@@ -104,7 +105,7 @@ defmodule PrisonRideshareWeb.Router do
   end
 
   scope "/", PrisonRideshareWeb do
-    pipe_through(:person_authenticated_api)
+    pipe_through(:person_api)
 
     resources("/commitments", CommitmentController, only: [:show, :create, :delete])
   end

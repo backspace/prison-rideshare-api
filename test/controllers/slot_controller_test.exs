@@ -277,6 +277,44 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     assert length(Repo.all(Commitment)) == 1
   end
 
+  test "can create a commitment for another person when an admin", %{conn: conn} do
+    [later, _, person, _] = create_data()
+
+    later =
+      Ecto.Changeset.change(later, count: 1)
+      |> Repo.update!()
+
+    conn =
+      conn
+      |> auth_as_admin()
+      |> post(commitment_path(conn, :create), %{
+        "data" => %{
+          "type" => "commitments",
+          "attributes" => %{},
+          "relationships" => %{
+            "person" => %{
+              "data" => %{
+                "type" => "person",
+                "id" => person.id
+              }
+            },
+            "slot" => %{
+              "data" => %{
+                "type" => "slot",
+                "id" => later.id
+              }
+            }
+          }
+        }
+      })
+
+    [_, commitment] = Repo.all(Commitment)
+
+    assert json_response(conn, 201)["data"]["id"] == commitment.id
+    assert commitment.person_id == person.id
+    assert commitment.slot_id == later.id
+  end
+
   test "can delete a commitment", %{conn: conn} do
     [_, earlier, person, commitment] = create_data()
 
@@ -306,6 +344,23 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
              "jsonapi" => %{"version" => "1.0"},
              "errors" => [%{"title" => "Unauthorized", "code" => 401}]
            }
+  end
+
+  test "can delete a commitment for someone else when an admin", %{conn: conn} do
+    [_, earlier, _, commitment] = create_data()
+
+    conn =
+      conn
+      |> auth_as_admin()
+      |> delete(commitment_path(conn, :delete, commitment))
+
+    assert response(conn, 204)
+
+    new_earlier =
+      Repo.get!(Slot, earlier.id)
+      |> Repo.preload(:commitments)
+
+    assert length(new_earlier.commitments) == 0
   end
 
   test "cannot delete a commitment in the past", %{conn: conn} do
