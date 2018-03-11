@@ -1,5 +1,5 @@
 alias PrisonRideshare.Repo
-alias PrisonRideshareWeb.{Institution, Person, Reimbursement, Ride, User}
+alias PrisonRideshareWeb.{Commitment, Institution, Person, Reimbursement, Ride, Slot, User}
 
 import Money.Sigils
 
@@ -52,6 +52,18 @@ defmodule Lol do
       }),
       Lol.version_information()
     )
+  end
+
+  def createSlot(params) do
+    today = Timex.beginning_of_day(Timex.local())
+
+    Repo.insert!(%Slot{
+      start: Ecto.DateTime.cast!(Timex.shift(today, params.relative_start)),
+      end: Ecto.DateTime.cast!(
+        Timex.shift(Timex.shift(today, params.relative_start), params.relative_end)
+      ),
+      count: params.count
+    })
   end
 
   def version_information do
@@ -312,4 +324,40 @@ PaperTrail.insert!(%Reimbursement{
   person: brian,
   car_expenses: ~M[502240],
   donation: true
+})
+
+[a_slot |
+  [_ |
+    [_ |
+      [_ |
+        [b_slot | 
+          [c_slot | 
+            [_ | 
+              [_ | 
+                [_ |
+                  [_ |
+                    [_ | 
+                      [_ | 
+                        [_ | 
+                          [_ | 
+                            [d_slot | _]]]]]]]]]]]]]]] = Repo.all(Slot)
+
+PaperTrail.insert!(%Commitment{
+  person: brian,
+  slot: a_slot
+})
+
+PaperTrail.insert!(%Commitment{
+  person: cnuth,
+  slot: b_slot
+})
+
+PaperTrail.insert!(%Commitment{
+  person: brian,
+  slot: c_slot
+})
+
+PaperTrail.insert!(%Commitment{
+  person: brian,
+  slot: d_slot
 })
