@@ -45,7 +45,7 @@ day_type_slots = %{
 }
 
 first_day =
-  List.first(System.argv) || Timex.format!(DateTime.utc_now, "{YYYY}-{0M}-01")
+  (List.first(System.argv) || Timex.format!(DateTime.utc_now, "{YYYY}-{0M}-01"))
   |> Timex.parse!("{YYYY}-{0M}-{0D}")
 
 days_in_month =
