@@ -74,6 +74,7 @@ defmodule PrisonRideshare.Mixfile do
       {:paper_trail, "~> 0.7.7"},
       {:blacksmith, "~> 0.1"},
       {:excoveralls, "~> 0.6", only: :test},
+      {:mock, "~> 0.3.0", only: :test},
       {:sentry, "~> 5.0.1"}
     ]
   end

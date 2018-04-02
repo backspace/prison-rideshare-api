@@ -2,6 +2,8 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
   use PrisonRideshareWeb.ConnCase
   use Bamboo.Test
 
+  import Mock
+
   alias PrisonRideshareWeb.Person
   alias PrisonRideshare.Repo
 
@@ -124,13 +126,14 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
   end
 
   test "sends a calendar email to a person", %{conn: conn} do
-    person = Repo.insert!(%Person{name: "Chelsea Manning", email: "chelsea@example.com"})
+    with_mock PrisonRideshare.PersonGuardian, [encode_magic: fn(person) -> {:ok, "token for #{person.name}", "claims"} end] do
+      person = Repo.insert!(%Person{name: "Chelsea Manning", email: "chelsea@example.com"})
 
-    conn = post(conn, person_calendar_email_path(conn, :email_calendar_link, person, "2017-12"))
+      conn = post(conn, person_calendar_email_path(conn, :email_calendar_link, person, "2017-12"))
 
-    assert response(conn, 204)
-    # FIXME this fails because the magic token is unique
-    # assert_delivered_with([person, "2017-12"])
+      assert response(conn, 204)
+      assert_delivered_email(PrisonRideshare.Email.calendar_link(person, "2017-12"))
+    end
   end
 
   test "returns a calendar link", %{conn: conn} do
