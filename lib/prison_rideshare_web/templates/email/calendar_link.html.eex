@@ -2,16 +2,10 @@
 
 <p><a href='<%= @link %>'>Here</a> is your unique calendar link for <%= @month %>. If you’re not sure what this is about, read on below.</p>
 
-<p>To use the calendar choose one, a few, or many days you’ll be available during the month and reserve them on your calendar. If a ride gets scheduled for that time, we’ll contact you to book a ride in that slot. This may also help us let riders know when drivers are available so they can book rides around your schedules. We’re hoping this will be a more efficient and effective way of booking rides.</p>
+<p>Click any slot that you can commit in advance to driving visitors for. We’ll contact you if anyone books a visit for that time.</p>
 
-<p>By clicking a time slot, you agree to be available to the best of your ability if a ride comes up. This system will work best if you only pick spots you can actually commit to driving for. Obviously urgent things come up, but aside from that, the ideal is that you see that shift you’ve signed up for as a volunteer commitment and refrain from making other plans. We strive to give you at least 24 hours of notice for upcoming rides, hopefully more.</p>
+<p>We rely on you being available if you commit, with the understanding that urgent circumstances could always come up. If you find you can no longer drive for a slot you’ve committed to, you can click it again to delete your commitment.</p>
 
-<p>When requests come up for that time we'll contact and book you in. If your availability changes, please go back to the calendar and update your availability so the coordinator is aware. Click on the slot again and once it’s blank, you are no longer committed.</p>
+<p>Use the “Edit communication details” button to update your name or phone numbers. Please email us if you need to change your email address, as that can’t be edited this way yet.</p>
 
-<p>There’s also a form to let coordinators know your preferred form of contact and change your name and phone number(s). If you need to change your email address, please let us know, as it currently can’t be automated.</p>
-
-<p>If you have any questions or ideas please don't hesitate to get in touch. We really appreciate the work you’ve been doing.</p>
-
-<p>This system is new for us and we strongly value and welcome your feedback. It’s very useful for us to know how the system is working for you so we can make the appropriate and needed changes. Please send all your feedback to <a href='mailto:barnone.wpg@gmail.com'>barnone.wpg@gmail.com</a>.</p>
-
-<p>Thanks so much for participating in this project with us! We really appreciate all you do! 💞</p>
+<p>Thanks for continuing to bring people to see their loved ones in prison, we appreciate it! 😍</p>
