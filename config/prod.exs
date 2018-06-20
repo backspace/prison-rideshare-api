@@ -14,3 +14,5 @@ config :prison_rideshare, PrisonRideshare.Repo,
   url: System.get_env("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   ssl: true
+
+config :prison_rideshare, gas_price_endpoint: System.get_env("GAS_PRICE_ENDPOINT")
