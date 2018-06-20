@@ -9,6 +9,7 @@ defmodule Mix.Tasks.ArchiveGasPrice do
   alias PrisonRideshare.ExtractGasPrice
 
   def run(_) do
+    Mix.Task.run("app.start")
     HTTPoison.start()
 
     response = HTTPoison.get!(Application.get_env(:prison_rideshare, :gas_price_endpoint))
