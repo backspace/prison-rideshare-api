@@ -6,13 +6,8 @@ defmodule PrisonRideshare.ExtractGasPrice do
       object["pageFunctionResult"]
       |> String.to_float()
 
-    fetched_at =
-      object["requestedAt"]
-      |> Timex.parse!("{ISO:Extended}")
-
     %{
-      price: price,
-      fetched_at: fetched_at
+      price: price
     }
   end
 end

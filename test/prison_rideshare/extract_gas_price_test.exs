@@ -53,8 +53,7 @@ defmodule PrisonRideshare.ExtractGasPriceTest do
     parsed = Poison.decode!(example)
 
     assert ExtractGasPrice.extract_gas_price(parsed) == %{
-             price: 124.917,
-             fetched_at: Timex.parse!("2018-06-13T08:00:01.383Z", "{ISO:Extended}")
+             price: 124.917
            }
   end
 end
