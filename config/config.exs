@@ -17,6 +17,8 @@ config :prison_rideshare, PrisonRideshareWeb.Endpoint,
 
 config :prison_rideshare, ui_root: System.get_env("UI_ROOT") || "https://rideshare.barnonewpg.org"
 
+config :prison_rideshare, gas_price_endpoint: System.get_env("GAS_PRICE_ENDPOINT")
+
 config :phoenix, :format_encoders, "json-api": Poison
 
 config :mime, :types, %{
