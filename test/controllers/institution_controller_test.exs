@@ -4,7 +4,7 @@ defmodule PrisonRideshareWeb.InstitutionControllerTest do
   alias PrisonRideshareWeb.Institution
   alias PrisonRideshare.Repo
 
-  @valid_attrs %{name: "some content", rate: 42}
+  @valid_attrs %{name: "some content", rate: 42, far: true}
   @invalid_attrs %{}
 
   setup do
@@ -27,13 +27,14 @@ defmodule PrisonRideshareWeb.InstitutionControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    institution = Repo.insert!(%Institution{rate: 33})
+    institution = Repo.insert!(%Institution{rate: 33, far: true})
     conn = get(conn, institution_path(conn, :show, institution))
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{institution.id}"
     assert data["type"] == "institution"
     assert data["attributes"]["name"] == institution.name
     assert data["attributes"]["rate"] == institution.rate
+    assert data["attributes"]["far"]
   end
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do

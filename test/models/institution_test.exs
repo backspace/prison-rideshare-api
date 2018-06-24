@@ -3,7 +3,7 @@ defmodule PrisonRideshareWeb.InstitutionTest do
 
   alias PrisonRideshareWeb.Institution
 
-  @valid_attrs %{name: "some content", rate: 42}
+  @valid_attrs %{name: "some content", rate: 42, far: true}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
