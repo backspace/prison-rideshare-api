@@ -46,6 +46,15 @@ defmodule PrisonRideshare.RideCalendarTest do
       contact: "287878"
     })
 
+    Repo.insert!(%Ride{
+      start: Ecto.DateTime.from_erl({{2017, 1, 16}, {18, 0, 0}}),
+      end: Ecto.DateTime.from_erl({{2017, 1, 16}, {20, 0, 0}}),
+      name: "Tom",
+      passengers: 1,
+      address: "421 Osborne",
+      contact: "2877433"
+    })
+
     # This ride should not be visible since it was cancelled.
     Repo.insert!(%Ride{
       start: Ecto.DateTime.from_erl({{2017, 1, 16}, {18, 0, 0}}),
@@ -81,6 +90,12 @@ defmodule PrisonRideshare.RideCalendarTest do
            DTEND;TZID=Etc/UTC:20170115T200000
            DTSTART;TZID=Etc/UTC:20170115T180000
            SUMMARY:Stony Mountain: 2 requests, 3 passengers
+           END:VEVENT
+           BEGIN:VEVENT
+           DESCRIPTION:Please email barnone.coordinator@gmail.com to get assigned to this ride.
+           DTEND;TZID=Etc/UTC:20170116T200000
+           DTSTART;TZID=Etc/UTC:20170116T180000
+           SUMMARY:Unknown institution: 1 request
            END:VEVENT
            END:VCALENDAR
            """
