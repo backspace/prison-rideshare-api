@@ -70,7 +70,7 @@ defmodule Mix.Tasks.StoreRatesTest do
         name: "name"
       })
 
-    _already_set_ride =
+    _already_set_gas_price_ride =
       Repo.insert!(%Ride{
         start: Ecto.DateTime.from_erl({{2018, 6, 28}, {11, 0, 0}}),
         gas_price: other_price,
@@ -80,9 +80,20 @@ defmodule Mix.Tasks.StoreRatesTest do
         name: "name"
       })
 
+    _already_set_rate_ride =
+      Repo.insert!(%Ride{
+        start: Ecto.DateTime.from_erl({{2018, 6, 23}, {11, 1, 0}}),
+        institution: close_institution,
+        rate: ~M[100],
+        end: Ecto.DateTime.from_erl({{2018, 6, 23}, {12, 1, 0}}),
+        address: "address",
+        contact: "contact",
+        name: "name"
+      })
+
     Mix.Tasks.StoreRates.run([])
 
-    [yesterday, today, tomorrow, already_set] =
+    [yesterday, already_set_rate, today, tomorrow, already_set_gas_price] =
       Ride
       |> order_by(:start)
       |> preload(:gas_price)
@@ -96,7 +107,8 @@ defmodule Mix.Tasks.StoreRatesTest do
 
     refute tomorrow.gas_price
 
-    assert already_set.gas_price.id == other_price.id
+    assert already_set_gas_price.gas_price.id == other_price.id
+    refute already_set_rate.gas_price
 
     [yesterday_version, _today_version] = Repo.all(PaperTrail.Version)
     assert yesterday_version.event == "update"
