@@ -40,6 +40,16 @@ defmodule Mix.Tasks.StoreRatesTest do
         far: true
       })
 
+    _old_ride =
+      Repo.insert!(%Ride{
+        start: Ecto.DateTime.from_erl({{2018, 5, 23}, {11, 0, 0}}),
+        institution: close_institution,
+        end: Ecto.DateTime.from_erl({{2018, 5, 23}, {12, 0, 0}}),
+        address: "address",
+        contact: "contact",
+        name: "name"
+      })
+
     _yesterday_ride =
       Repo.insert!(%Ride{
         start: Ecto.DateTime.from_erl({{2018, 6, 23}, {11, 0, 0}}),
@@ -102,11 +112,21 @@ defmodule Mix.Tasks.StoreRatesTest do
 
     Mix.Tasks.StoreRates.run([])
 
-    [yesterday, already_set_rate, no_institution_ride, today, tomorrow, already_set_gas_price] =
+    [
+      old,
+      yesterday,
+      already_set_rate,
+      no_institution_ride,
+      today,
+      tomorrow,
+      already_set_gas_price
+    ] =
       Ride
       |> order_by(:start)
       |> preload(:gas_price)
       |> Repo.all()
+
+    refute old.gas_price
 
     assert yesterday.gas_price.id == yesterday_price.id
     assert yesterday.rate == ~M[23]

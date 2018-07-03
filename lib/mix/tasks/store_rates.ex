@@ -30,9 +30,12 @@ defmodule Mix.Tasks.StoreRates do
       window_before_ride_start =
         Timex.subtract(Ecto.DateTime.to_erl(ride.start), Duration.from_days(1))
 
+      window_after_ride_start = Timex.add(Ecto.DateTime.to_erl(ride.start), Duration.from_days(1))
+
       closest_gas_price =
         Enum.find(gas_prices, fn gas_price ->
-          Timex.after?(gas_price.inserted_at, window_before_ride_start)
+          Timex.after?(gas_price.inserted_at, window_before_ride_start) &&
+            Timex.before?(gas_price.inserted_at, window_after_ride_start)
         end)
 
       if closest_gas_price do
