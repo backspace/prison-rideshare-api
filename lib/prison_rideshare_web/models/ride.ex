@@ -15,7 +15,10 @@ defmodule PrisonRideshareWeb.Ride do
     field(:cancellation_reason, :string)
 
     field(:distance, :integer)
+
     field(:rate, Money.Ecto.Type)
+    belongs_to(:gas_price, PrisonRideshareWeb.GasPrice)
+
     field(:food_expenses, Money.Ecto.Type, default: 0)
     field(:car_expenses, Money.Ecto.Type, default: 0)
     field(:report_notes, :string)
@@ -58,6 +61,7 @@ defmodule PrisonRideshareWeb.Ride do
       :car_owner_id,
       :distance,
       :rate,
+      :gas_price_id,
       :food_expenses,
       :car_expenses,
       :report_notes,

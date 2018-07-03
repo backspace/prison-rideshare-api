@@ -1,0 +1,106 @@
+defmodule Mix.Tasks.StoreRatesTest do
+  use ExUnit.Case
+  use PrisonRideshareWeb.ConnCase
+
+  alias PrisonRideshare.Repo
+
+  alias PrisonRideshareWeb.{GasPrice, Institution, Ride}
+
+  import Money.Sigils
+  import Ecto.Query
+
+  test "running the rate calculator" do
+    yesterday_price =
+      Repo.insert!(%GasPrice{
+        price: 90,
+        inserted_at: NaiveDateTime.from_erl!({{2018, 6, 23}, {8, 0, 0}})
+      })
+
+    today_price =
+      Repo.insert!(%GasPrice{
+        price: 100,
+        inserted_at: NaiveDateTime.from_erl!({{2018, 6, 24}, {16, 37, 0}})
+      })
+
+    other_price =
+      Repo.insert!(%GasPrice{
+        price: 5,
+        inserted_at: NaiveDateTime.from_erl!({{2017, 1, 1}, {0, 0, 0}})
+      })
+
+    close_institution =
+      Repo.insert!(%Institution{
+        name: "Close",
+        far: false
+      })
+
+    far_institution =
+      Repo.insert!(%Institution{
+        name: "Far",
+        far: true
+      })
+
+    _yesterday_ride =
+      Repo.insert!(%Ride{
+        start: Ecto.DateTime.from_erl({{2018, 6, 23}, {11, 0, 0}}),
+        institution: close_institution,
+        end: Ecto.DateTime.from_erl({{2018, 6, 23}, {12, 0, 0}}),
+        address: "address",
+        contact: "contact",
+        name: "name"
+      })
+
+    _today_ride =
+      Repo.insert!(%Ride{
+        start: Ecto.DateTime.from_erl({{2018, 6, 24}, {11, 0, 0}}),
+        institution: far_institution,
+        end: Ecto.DateTime.from_erl({{2018, 6, 24}, {12, 0, 0}}),
+        address: "address",
+        contact: "contact",
+        name: "name"
+      })
+
+    _tomorrow_ride =
+      Repo.insert!(%Ride{
+        start: Ecto.DateTime.from_erl({{2018, 6, 25}, {17, 0, 0}}),
+        institution: far_institution,
+        end: Ecto.DateTime.from_erl({{2018, 6, 25}, {18, 0, 0}}),
+        address: "address",
+        contact: "contact",
+        name: "name"
+      })
+
+    _already_set_ride =
+      Repo.insert!(%Ride{
+        start: Ecto.DateTime.from_erl({{2018, 6, 28}, {11, 0, 0}}),
+        gas_price: other_price,
+        end: Ecto.DateTime.from_erl({{2018, 6, 28}, {12, 0, 0}}),
+        address: "address",
+        contact: "contact",
+        name: "name"
+      })
+
+    Mix.Tasks.StoreRates.run([])
+
+    [yesterday, today, tomorrow, already_set] =
+      Ride
+      |> order_by(:start)
+      |> preload(:gas_price)
+      |> Repo.all()
+
+    assert yesterday.gas_price.id == yesterday_price.id
+    assert yesterday.rate == ~M[23]
+
+    assert today.gas_price.id == today_price.id
+    assert today.rate == ~M[20]
+
+    refute tomorrow.gas_price
+
+    assert already_set.gas_price.id == other_price.id
+
+    [yesterday_version, _today_version] = Repo.all(PaperTrail.Version)
+    assert yesterday_version.event == "update"
+    assert yesterday_version.origin == "StoreRates"
+    assert yesterday_version.item_id == yesterday.id
+  end
+end
