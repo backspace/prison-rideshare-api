@@ -17,7 +17,9 @@ defmodule Mix.Tasks.StoreRates do
       Repo.all(
         from(
           r in Ride,
-          where: r.enabled and is_nil(r.gas_price_id) and is_nil(r.rate),
+          where:
+            r.enabled and is_nil(r.gas_price_id) and is_nil(r.rate) and
+              not is_nil(r.institution_id),
           preload: [:institution]
         )
       )
