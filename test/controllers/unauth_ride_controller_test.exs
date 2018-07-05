@@ -69,7 +69,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
                  "end" => "2017-02-15T20:00:00Z",
                  "initials" => "CM",
                  "donatable" => true,
-                 "rate" => 0
+                 "rate" => nil
                },
                "relationships" => %{
                  "institution" => %{

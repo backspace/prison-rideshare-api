@@ -27,5 +27,5 @@ defmodule PrisonRideshareWeb.UnauthRideView do
   def unquote(:end)(%{end: nil}, _conn), do: nil
   def unquote(:end)(%{end: end_time}, _conn), do: "#{Ecto.DateTime.to_iso8601(end_time)}Z"
 
-  money_amount(:rate)
+  money_amount(:rate, false)
 end
