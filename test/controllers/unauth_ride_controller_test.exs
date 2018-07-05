@@ -26,6 +26,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
         start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
         institution: institution,
+        rate: ~M[33],
         driver: driver
       })
 
@@ -67,7 +68,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
                  "start" => "2017-02-15T18:00:00Z",
                  "end" => "2017-02-15T20:00:00Z",
                  "initials" => "CM",
-                 "donatable" => true
+                 "donatable" => true,
+                 "rate" => 0
                },
                "relationships" => %{
                  "institution" => %{
@@ -85,7 +87,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
                  "start" => "2017-01-15T18:00:00Z",
                  "end" => "2017-01-15T20:00:00Z",
                  "initials" => "CM",
-                 "donatable" => false
+                 "donatable" => false,
+                 "rate" => 33
                },
                "relationships" => %{
                  "institution" => %{
@@ -147,7 +150,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
                "end" => "2017-01-15T20:00:00Z",
                "initials" => "CM",
                # FIXME this shouldn’t have been updated as a donation then
-               "donatable" => false
+               "donatable" => false,
+               "rate" => 44
              },
              "relationships" => %{
                "institution" => %{
