@@ -15,7 +15,6 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     food_expenses: 42,
     name: "some content",
     passengers: 42,
-    rate: 42,
     report_notes: "some content",
     request_notes: "some content",
     start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0},
@@ -272,10 +271,9 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid, sending an email", %{conn: conn} do
-    ride_institution = Repo.insert!(%Institution{name: "Stony Mountain", rate: 22})
     other_driver = Repo.insert!(%Person{name: "Other Driver"})
 
-    ride = Repo.insert!(%Ride{driver: other_driver, institution: ride_institution})
+    ride = Repo.insert!(%Ride{driver: other_driver, rate: ~M[22]})
 
     conn =
       put(conn, ride_path(conn, :update, ride), %{

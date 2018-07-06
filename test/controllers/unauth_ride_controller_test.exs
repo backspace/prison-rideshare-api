@@ -104,7 +104,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
 
   test "updates and renders chosen resource when data is valid, ignoring auth-requiring attributes, calculating car expenses, and sending an email",
        %{conn: conn} do
-    ride_institution = Repo.insert!(%Institution{name: "Stony Mountain", rate: 44})
+    ride_institution = Repo.insert!(%Institution{name: "Stony Mountain"})
     driver = Repo.insert!(%Person{name: "Chelsea Manning"})
 
     ride =
@@ -112,6 +112,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
         start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
         institution: ride_institution,
+        rate: ~M[44],
         driver: driver,
         request_notes: "The original request notes"
       })
