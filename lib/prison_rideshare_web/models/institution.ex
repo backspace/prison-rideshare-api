@@ -3,7 +3,6 @@ defmodule PrisonRideshareWeb.Institution do
 
   schema "institutions" do
     field(:name, :string)
-    field(:rate, Money.Ecto.Type)
     field(:far, :boolean)
 
     timestamps(type: :utc_datetime)
@@ -14,7 +13,7 @@ defmodule PrisonRideshareWeb.Institution do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :rate, :far])
-    |> validate_required([:name, :rate, :far])
+    |> cast(params, [:name, :far])
+    |> validate_required([:name, :far])
   end
 end
