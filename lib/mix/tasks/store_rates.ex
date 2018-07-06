@@ -5,6 +5,7 @@ defmodule Mix.Tasks.StoreRates do
 
   alias PrisonRideshare.Repo
   alias PrisonRideshareWeb.{GasPrice, Ride}
+  alias PrisonRideshare.CalculateRatesFromGasPrice
 
   alias Timex.Duration
 
@@ -39,22 +40,15 @@ defmodule Mix.Tasks.StoreRates do
         end)
 
       if closest_gas_price do
-        close_premium = if ride.institution.far, do: 0, else: 5
-
-        rate_money =
-          Money.multiply(closest_gas_price.price, 17.5)
-          |> Money.add(2.4)
-
         rate =
-          (rate_money.amount / 100)
-          |> round
-
-        total = rate + close_premium
+          if ride.institution.far,
+            do: CalculateRatesFromGasPrice.far_rate(closest_gas_price),
+            else: CalculateRatesFromGasPrice.close_rate(closest_gas_price)
 
         changeset =
           Ride.changeset(ride, %{
             gas_price_id: closest_gas_price.id,
-            rate: total
+            rate: rate
           })
 
         PaperTrail.update!(changeset, origin: "StoreRates")
