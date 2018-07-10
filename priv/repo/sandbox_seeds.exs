@@ -86,25 +86,25 @@ User.admin_changeset(user, %{admin: true})
 
 headingley =
   PaperTrail.insert!(
-    Institution.changeset(%Institution{name: "Headingley", rate: ~M[25]}),
+    Institution.changeset(%Institution{name: "Headingley", far: false}),
     Lol.version_information()
   )
 
 milner_ridge =
   PaperTrail.insert!(
-    Institution.changeset(%Institution{name: "Milner Ridge", rate: ~M[20]}),
+    Institution.changeset(%Institution{name: "Milner Ridge", far: true}),
     Lol.version_information()
   )
 
 stony_mountain =
   PaperTrail.insert!(
-    Institution.changeset(%Institution{name: "Stony Mountain", rate: ~M[25]}),
+    Institution.changeset(%Institution{name: "Stony Mountain", far: false}),
     Lol.version_information()
   )
 
 john_henderson =
   PaperTrail.insert!(
-    Institution.changeset(%Institution{name: "John Henderson Junior High", rate: ~M[40]}),
+    Institution.changeset(%Institution{name: "John Henderson Junior High", far: false}),
     Lol.version_information()
   )
 
