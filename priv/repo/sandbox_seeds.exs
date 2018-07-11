@@ -1,5 +1,15 @@
 alias PrisonRideshare.Repo
-alias PrisonRideshareWeb.{Commitment, Institution, Person, Reimbursement, Ride, Slot, User}
+
+alias PrisonRideshareWeb.{
+  Commitment,
+  GasPrice,
+  Institution,
+  Person,
+  Reimbursement,
+  Ride,
+  Slot,
+  User
+}
 
 import Money.Sigils
 
@@ -327,6 +337,17 @@ PaperTrail.insert!(%Reimbursement{
   car_expenses: ~M[502240],
   donation: true
 })
+
+today = Timex.beginning_of_day(Timex.local())
+
+Enum.reduce(-60..0, ~M[110], fn days_ago, price ->
+  PaperTrail.insert!(%GasPrice{
+    inserted_at: Ecto.DateTime.cast!(Timex.add(today, Timex.Duration.from_days(days_ago))),
+    price: price
+  })
+
+  Money.add(price, Enum.random([-3, -2, -1, 0, 1, 2, 3, 4]))
+end)
 
 [a_slot |
   [_ |
