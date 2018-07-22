@@ -2,7 +2,7 @@ defmodule PrisonRideshareWeb.UnauthRideView do
   use PrisonRideshareWeb, :view
   use JaSerializer.PhoenixView
 
-  attributes([:start, :end, :initials, :donatable])
+  attributes([:start, :end, :initials, :donatable, :rate])
 
   def type(_, _), do: "ride"
 
@@ -26,4 +26,6 @@ defmodule PrisonRideshareWeb.UnauthRideView do
 
   def unquote(:end)(%{end: nil}, _conn), do: nil
   def unquote(:end)(%{end: end_time}, _conn), do: "#{Ecto.DateTime.to_iso8601(end_time)}Z"
+
+  money_amount(:rate, false)
 end

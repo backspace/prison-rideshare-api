@@ -15,7 +15,10 @@ defmodule PrisonRideshareWeb.Ride do
     field(:cancellation_reason, :string)
 
     field(:distance, :integer)
+
     field(:rate, Money.Ecto.Type)
+    belongs_to(:gas_price, PrisonRideshareWeb.GasPrice)
+
     field(:food_expenses, Money.Ecto.Type, default: 0)
     field(:car_expenses, Money.Ecto.Type, default: 0)
     field(:report_notes, :string)
@@ -58,6 +61,7 @@ defmodule PrisonRideshareWeb.Ride do
       :car_owner_id,
       :distance,
       :rate,
+      :gas_price_id,
       :food_expenses,
       :car_expenses,
       :report_notes,
@@ -104,16 +108,15 @@ defmodule PrisonRideshareWeb.Ride do
 
   defp calculate_car_expenses(%{valid?: true} = changeset, _) do
     distance = Ecto.Changeset.get_field(changeset, :distance)
-    institution = Ecto.Changeset.get_field(changeset, :institution)
+    rate = Ecto.Changeset.get_field(changeset, :rate)
 
-    calculate_car_expenses(changeset, distance, institution)
+    calculate_car_expenses(changeset, distance, rate)
   end
 
   defp calculate_car_expenses(changeset, nil, _), do: changeset
   defp calculate_car_expenses(changeset, _, nil), do: changeset
 
-  defp calculate_car_expenses(changeset, distance, institution) do
-    Ecto.Changeset.put_change(changeset, :rate, institution.rate)
-    |> Ecto.Changeset.put_change(:car_expenses, Money.multiply(institution.rate, distance))
+  defp calculate_car_expenses(changeset, distance, rate) do
+    Ecto.Changeset.put_change(changeset, :car_expenses, Money.multiply(rate, distance))
   end
 end
