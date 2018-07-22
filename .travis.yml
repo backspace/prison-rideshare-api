@@ -25,4 +25,5 @@ deploy:
   script: .travis/deploy-sandbox.sh
   on:
     repo: backspace/prison-rideshare-api
-    branch: primary
+    # FIXME ya
+    branch: variable-rate
