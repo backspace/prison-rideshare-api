@@ -9,5 +9,6 @@ defmodule Mix.Tasks.ResetSandbox do
 
     Mix.Task.run("run", ["priv/repo/slots.exs"])
     Mix.Task.rerun("run", ["priv/repo/sandbox_seeds.exs"])
+    Mix.Task.run("store_rates")
   end
 end
