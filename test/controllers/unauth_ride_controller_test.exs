@@ -133,7 +133,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
             "food_expenses" => 1000,
             "report_notes" => "Some report notes",
             "request_notes" => "Trying it!",
-            "donation" => true
+            "donation" => true,
+            "overridable" => true
           },
           "relationships" => %{
             "institution" => %{
@@ -179,6 +180,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     assert ride.report_notes == "Some report notes"
     assert ride.request_notes == "The original request notes"
     assert ride.donation
+    refute ride.overridable
 
     assert_delivered_email(PrisonRideshare.Email.report(ride))
   end

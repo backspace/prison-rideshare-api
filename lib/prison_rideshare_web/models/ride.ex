@@ -67,7 +67,8 @@ defmodule PrisonRideshareWeb.Ride do
       :food_expenses,
       :car_expenses,
       :report_notes,
-      :donation
+      :donation,
+      :overridable
     ])
     |> validate_required([:start, :end, :name, :address, :contact, :passengers])
     |> calculate_car_expenses(struct)

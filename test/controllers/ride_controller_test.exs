@@ -19,7 +19,8 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     request_notes: "some content",
     start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0},
     first_time: true,
-    medium: "email"
+    medium: "email",
+    overridable: true
   }
   @invalid_attrs %{}
 
@@ -256,6 +257,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     assert json_response(conn, 201)["data"]["id"] == ride.id
     assert json_response(conn, 201)["data"]["attributes"]["address"] == "some content"
     assert json_response(conn, 201)["data"]["attributes"]["medium"] == "email"
+    assert json_response(conn, 201)["data"]["attributes"]["overridable"]
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -306,6 +308,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     assert saved.combined_with_ride_id == combined_with_ride.id
 
     assert saved.car_expenses == ~M[2640]
+    assert saved.overridable
 
     data = json_response(conn, 200)["data"]
 
