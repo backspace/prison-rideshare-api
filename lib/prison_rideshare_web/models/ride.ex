@@ -24,6 +24,8 @@ defmodule PrisonRideshareWeb.Ride do
     field(:report_notes, :string)
     field(:donation, :boolean, default: false)
 
+    field(:overridable, :boolean, default: false)
+
     # FIXME now that both ends of this seem necessary, the naming is awkward.
     belongs_to(:combined_with, PrisonRideshareWeb.Ride, foreign_key: :combined_with_ride_id)
     has_many(:children, PrisonRideshareWeb.Ride, foreign_key: :combined_with_ride_id)
@@ -65,7 +67,8 @@ defmodule PrisonRideshareWeb.Ride do
       :food_expenses,
       :car_expenses,
       :report_notes,
-      :donation
+      :donation,
+      :overridable
     ])
     |> validate_required([:start, :end, :name, :address, :contact, :passengers])
     |> calculate_car_expenses(struct)
@@ -97,7 +100,15 @@ defmodule PrisonRideshareWeb.Ride do
     |> validate_required([:start, :end, :name, :address, :contact, :passengers])
   end
 
-  def report_changeset(struct, params \\ %{}) do
+  def report_changeset(struct, params \\ %{})
+
+  def report_changeset(%{overridable: true} = struct, params) do
+    struct
+    |> cast(params, [:distance, :car_expenses, :food_expenses, :report_notes, :donation])
+    |> validate_required([:distance, :food_expenses])
+  end
+
+  def report_changeset(struct, params) do
     struct
     |> cast(params, [:distance, :food_expenses, :report_notes, :donation])
     |> validate_required([:distance, :food_expenses])
@@ -105,6 +116,8 @@ defmodule PrisonRideshareWeb.Ride do
   end
 
   defp calculate_car_expenses(%{valid?: false} = changeset, _), do: changeset
+
+  defp calculate_car_expenses(%{valid?: true} = changeset, %{overridable: true}), do: changeset
 
   defp calculate_car_expenses(%{valid?: true} = changeset, _) do
     distance = Ecto.Changeset.get_field(changeset, :distance)

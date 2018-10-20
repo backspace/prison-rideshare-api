@@ -41,6 +41,20 @@ defmodule PrisonRideshareWeb.RideTest do
     assert Ecto.Changeset.get_field(changeset, :car_expenses) == ~M[400]
   end
 
+  test "report changeset ignores submitted car expenses when not overridable" do
+    changeset = Ride.report_changeset(%Ride{rate: ~M[40]}, %{distance: 10, car_expenses: 100})
+
+    assert changeset.valid?
+    assert Ecto.Changeset.get_field(changeset, :car_expenses) == ~M[400]
+  end
+
+  test "report changeset allows car expenses to override calculated value when overridable" do
+    changeset = Ride.report_changeset(%Ride{rate: ~M[40], overridable: true}, %{distance: 10, car_expenses: 100})
+
+    assert changeset.valid?
+    assert Ecto.Changeset.get_field(changeset, :car_expenses) == ~M[100]
+  end
+
   test "changeset without a distance does not calculate car expenses" do
     changeset =
       Ride.changeset(%Ride{rate: ~M[40]}, %{
@@ -56,6 +70,24 @@ defmodule PrisonRideshareWeb.RideTest do
     assert changeset.valid?
     assert Ecto.Changeset.get_field(changeset, :report_notes) == "hello"
     assert Ecto.Changeset.get_field(changeset, :car_expenses) == 0
+  end
+
+  test "changeset with overridable does not calculate car expenses" do
+    changeset = 
+      Ride.changeset(%Ride{rate: ~M[40], overridable: true}, %{
+        start: @valid_attrs.start,
+        end: @valid_attrs.end,
+        name: @valid_attrs.name,
+        passengers: 1,
+        address: "an address",
+        contact: "contact",
+        report_notes: "hello",
+        distance: 11,
+        car_expenses: ~M[1001]
+      })
+
+      assert changeset.valid?
+      assert Ecto.Changeset.get_field(changeset, :car_expenses) == ~M[1001]
   end
 
   test "report changeset with invalid attributes" do

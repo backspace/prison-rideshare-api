@@ -22,6 +22,7 @@ defmodule PrisonRideshareWeb.RideView do
     :report_notes,
     :donation,
     :donatable,
+    :overridable,
     :inserted_at,
     :updated_at
   ])
