@@ -36,7 +36,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
         end: Ecto.DateTime.from_erl({{2017, 2, 15}, {20, 0, 0}}),
         institution: institution,
         driver: driver,
-        car_owner: driver
+        car_owner: driver,
+        overridable: true
       })
 
     Repo.insert!(%Ride{
@@ -69,6 +70,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
                  "end" => "2017-02-15T20:00:00Z",
                  "initials" => "CM",
                  "donatable" => true,
+                 "overridable" => true,
                  "rate" => nil
                },
                "relationships" => %{
@@ -88,6 +90,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
                  "end" => "2017-01-15T20:00:00Z",
                  "initials" => "CM",
                  "donatable" => false,
+                 "overridable" => false,
                  "rate" => 33
                },
                "relationships" => %{
@@ -152,6 +155,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
                "initials" => "CM",
                # FIXME this shouldn’t have been updated as a donation then
                "donatable" => false,
+               "overridable" => false,
                "rate" => 44
              },
              "relationships" => %{

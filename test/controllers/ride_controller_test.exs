@@ -102,6 +102,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         request_notes: "request!",
         report_notes: "report!",
         donation: true,
+        overridable: true,
         driver: driver,
         car_owner: car_owner,
         reimbursements: [reimbursement]
@@ -132,6 +133,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
                  "report-notes" => ride.report_notes,
                  "donatable" => false,
                  "donation" => true,
+                 "overridable" => true,
                  "initials" => "DN",
                  "inserted-at" => DateTime.to_iso8601(ride.inserted_at),
                  "updated-at" => DateTime.to_iso8601(ride.updated_at)

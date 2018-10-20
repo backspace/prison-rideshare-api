@@ -2,7 +2,7 @@ defmodule PrisonRideshareWeb.UnauthRideView do
   use PrisonRideshareWeb, :view
   use JaSerializer.PhoenixView
 
-  attributes([:start, :end, :initials, :donatable, :rate])
+  attributes([:start, :end, :initials, :donatable, :overridable, :rate])
 
   def type(_, _), do: "ride"
 

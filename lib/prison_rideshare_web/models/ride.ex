@@ -24,6 +24,8 @@ defmodule PrisonRideshareWeb.Ride do
     field(:report_notes, :string)
     field(:donation, :boolean, default: false)
 
+    field(:overridable, :boolean, default: false)
+
     # FIXME now that both ends of this seem necessary, the naming is awkward.
     belongs_to(:combined_with, PrisonRideshareWeb.Ride, foreign_key: :combined_with_ride_id)
     has_many(:children, PrisonRideshareWeb.Ride, foreign_key: :combined_with_ride_id)
