@@ -117,8 +117,7 @@ defmodule PrisonRideshareWeb.Ride do
 
   defp calculate_car_expenses(%{valid?: false} = changeset, _), do: changeset
 
-  # FIXME does this ever happen? What if overridable BUT no car_expenses submitted?
-  defp calculate_car_expenses(%{valid?: true, overridable: true} = changeset, _), do: changeset
+  defp calculate_car_expenses(%{valid?: true} = changeset, %{overridable: true}), do: changeset
 
   defp calculate_car_expenses(%{valid?: true} = changeset, _) do
     distance = Ecto.Changeset.get_field(changeset, :distance)
