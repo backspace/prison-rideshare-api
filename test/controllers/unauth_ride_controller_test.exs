@@ -185,6 +185,63 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     assert_delivered_email(PrisonRideshare.Email.report(ride))
   end
 
+  test "updates car expenses when overridable",
+       %{conn: conn} do
+    ride_institution = Repo.insert!(%Institution{name: "Stony Mountain"})
+    driver = Repo.insert!(%Person{name: "Chelsea Manning"})
+
+    ride =
+      Repo.insert!(%Ride{
+        start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+        institution: ride_institution,
+        rate: ~M[44],
+        driver: driver,
+        overridable: true
+      })
+
+    conn =
+      put(conn, ride_path(conn, :update, ride), %{
+        "meta" => %{},
+        "data" => %{
+          "type" => "rides",
+          "id" => ride.id,
+          "attributes" => %{
+            "distance" => 77,
+            "car_expenses" => 100
+          }
+        }
+      })
+
+    assert json_response(conn, 200)["data"] == %{
+             "id" => ride.id,
+             "type" => "ride",
+             "attributes" => %{
+               "start" => "2017-01-15T18:00:00Z",
+               "end" => "2017-01-15T20:00:00Z",
+               "initials" => "CM",
+               "donatable" => false,
+               "overridable" => true,
+               "rate" => 44
+             },
+             "relationships" => %{
+               "institution" => %{
+                 "data" => %{
+                   "type" => "institution",
+                   "id" => ride_institution.id
+                 }
+               }
+             }
+           }
+
+    ride =
+      Repo.get!(Ride, ride.id)
+      |> Repo.preload([:institution, :driver])
+
+    assert ride.distance == 77
+    assert ride.car_expenses == ~M[100]
+  end
+
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
     ride = Repo.insert!(%Ride{})
 

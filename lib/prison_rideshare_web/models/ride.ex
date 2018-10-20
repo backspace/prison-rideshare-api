@@ -100,7 +100,15 @@ defmodule PrisonRideshareWeb.Ride do
     |> validate_required([:start, :end, :name, :address, :contact, :passengers])
   end
 
-  def report_changeset(struct, params \\ %{}) do
+  def report_changeset(struct, params \\ %{})
+
+  def report_changeset(%{overridable: true} = struct, params) do
+    struct
+    |> cast(params, [:distance, :car_expenses, :food_expenses, :report_notes, :donation])
+    |> validate_required([:distance, :food_expenses])
+  end
+
+  def report_changeset(struct, params) do
     struct
     |> cast(params, [:distance, :food_expenses, :report_notes, :donation])
     |> validate_required([:distance, :food_expenses])
@@ -108,6 +116,8 @@ defmodule PrisonRideshareWeb.Ride do
   end
 
   defp calculate_car_expenses(%{valid?: false} = changeset, _), do: changeset
+
+  defp calculate_car_expenses(%{valid?: true, overridable: true} = changeset, _), do: changeset
 
   defp calculate_car_expenses(%{valid?: true} = changeset, _) do
     distance = Ecto.Changeset.get_field(changeset, :distance)
