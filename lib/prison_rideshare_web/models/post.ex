@@ -7,4 +7,10 @@ defmodule PrisonRideshareWeb.Post do
 
     timestamps(type: :utc_datetime)
   end
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:content, :poster_id])
+    |> validate_required([:content, :poster_id])
+  end
 end

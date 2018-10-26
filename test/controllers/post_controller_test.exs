@@ -48,4 +48,32 @@ defmodule PrisonRideshareWeb.PostControllerTest do
              }
            ]
   end
+
+  test "creates and renders resource when data is valid", %{conn: conn} do
+    conn =
+      post(conn, post_path(conn, :create), %{
+        "meta" => %{},
+        "data" => %{
+          "type" => "people",
+          "attributes" => %{
+            "content" => "hello"
+          },
+        }
+      })
+
+    user = Repo.one(User)
+    [post] = Repo.all(Post)
+
+    assert json_response(conn, 201)["data"]["id"] == post.id
+
+    attributes = json_response(conn, 201)["data"]["attributes"]
+    assert attributes["content"] == "hello"
+
+    assert json_response(conn, 201)["data"]["relationships"]["poster"]["data"]["id"] == user.id
+
+    [version] = Repo.all(PaperTrail.Version)
+    assert version.event == "insert"
+    assert version.item_changes["content"] == "hello"
+    assert version.originator_id == user.id
+  end
 end
