@@ -53,7 +53,9 @@ defmodule PrisonRideshareWeb.PostController do
       end
     
     if post.poster_id == user_id do
-      changeset = Post.changeset(post, Params.to_attributes(data))
+      data_without_relationships = Map.delete(data, "relationships")
+
+      changeset = Post.changeset(post, Params.to_attributes(data_without_relationships))
 
       case PaperTrail.update(changeset, version_information(conn)) do
         {:ok, %{model: post}} ->

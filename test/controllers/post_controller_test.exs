@@ -102,12 +102,17 @@ defmodule PrisonRideshareWeb.PostControllerTest do
     assert Repo.all(PaperTrail.Version) == []
   end
 
-  test "updates and renders chosen resource when data is valid and user is poster", %{conn: conn} do
+  test "updates and renders chosen resource when data is valid and user is poster, ignoring attempt to change poster",
+       %{conn: conn} do
     [user] = Repo.all(User)
-    post = Repo.insert!(%Post{
-      content: "old content",
-      poster: user,
-    })
+
+    post =
+      Repo.insert!(%Post{
+        content: "old content",
+        poster: user
+      })
+
+    other_user = Repo.insert!(%User{admin: true})
 
     conn =
       put(conn, post_path(conn, :update, post), %{
@@ -118,6 +123,14 @@ defmodule PrisonRideshareWeb.PostControllerTest do
           "attributes" => %{
             "content" => "new content"
           },
+          "relationships" => %{
+            "poster" => %{
+              "data" => %{
+                "type" => "user",
+                "id" => other_user.id
+              }
+            }
+          }
         }
       })
 
@@ -125,6 +138,8 @@ defmodule PrisonRideshareWeb.PostControllerTest do
 
     attributes = json_response(conn, 200)["data"]["attributes"]
     assert attributes["content"] == "new content"
+
+    assert post.poster_id == user.id
 
     [version] = Repo.all(PaperTrail.Version)
     assert version.event == "update"
