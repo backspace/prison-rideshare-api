@@ -170,6 +170,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
 
     attributes = json_response(conn, 403)
     refute attributes["content"] == "new content"
+    refute post.content == "new content"
 
     assert Repo.all(PaperTrail.Version) == []
   end
