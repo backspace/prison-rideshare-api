@@ -77,4 +77,19 @@ defmodule PrisonRideshareWeb.PostController do
       |> render(PrisonRideshareWeb.ErrorView, "403.json")
     end
   end
+
+  def delete(conn, %{"id" => id}) do
+    post = Repo.get!(Post, id)
+
+    resource = Guardian.Plug.current_resource(conn)
+
+    if resource.id == post.poster_id do
+      PaperTrail.delete!(post, version_information(conn))
+      send_resp(conn, :no_content, "")
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> render(PrisonRideshareWeb.ErrorView, "401.json")
+    end
+  end
 end

@@ -175,4 +175,46 @@ defmodule PrisonRideshareWeb.PostControllerTest do
 
     assert Repo.all(PaperTrail.Version) == []
   end
+
+  test "can delete a post", %{conn: conn} do
+    [user] = Repo.all(User)
+
+    post =
+      Repo.insert!(%Post{
+        content: "old content",
+        poster: user
+      })
+
+    conn =
+      conn
+      |> delete(post_path(conn, :delete, post))
+
+    assert response(conn, 204)
+    assert Repo.all(Post) == []
+
+    [version] = Repo.all(PaperTrail.Version)
+    assert version.event == "delete"
+    assert version.item_changes["content"] == "old content"
+  end
+
+  test "cannot delete a commitment for someone else", %{conn: conn} do
+    other_user = Repo.insert!(%User{})
+
+    post =
+      Repo.insert!(%Post{
+        content: "old content",
+        poster: other_user
+      })
+
+    conn =
+      conn
+      |> delete(post_path(conn, :delete, post))
+
+    assert json_response(conn, 401) == %{
+             "jsonapi" => %{"version" => "1.0"},
+             "errors" => [%{"title" => "Unauthorized", "code" => 401}]
+           }
+    
+    assert length(Repo.all(Post)) == 1
+  end
 end
