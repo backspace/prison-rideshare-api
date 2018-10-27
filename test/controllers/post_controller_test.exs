@@ -214,7 +214,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
              "jsonapi" => %{"version" => "1.0"},
              "errors" => [%{"title" => "Unauthorized", "code" => 401}]
            }
-    
+
     assert length(Repo.all(Post)) == 1
   end
 end
