@@ -13,14 +13,16 @@ defmodule PrisonRideshareWeb.PostController do
 
   def create(conn, %{"data" => data = %{"type" => "posts", "attributes" => _params}}) do
     resource = Guardian.Plug.current_resource(conn)
+
     user =
       case resource do
         %PrisonRideshareWeb.User{} -> resource
         _ -> nil
       end
 
-    params = Params.to_attributes(data)
-    |> Map.put("poster_id", user.id)
+    params =
+      Params.to_attributes(data)
+      |> Map.put("poster_id", user.id)
 
     changeset = Post.changeset(%Post{poster: user}, params)
 
@@ -51,7 +53,7 @@ defmodule PrisonRideshareWeb.PostController do
         %PrisonRideshareWeb.User{} -> resource.id
         _ -> nil
       end
-    
+
     if post.poster_id == user_id do
       data_without_relationships = Map.delete(data, "relationships")
 

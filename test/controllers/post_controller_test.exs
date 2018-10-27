@@ -57,7 +57,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
           "type" => "posts",
           "attributes" => %{
             "content" => "hello"
-          },
+          }
         }
       })
 
@@ -85,8 +85,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
         "meta" => %{},
         "data" => %{
           "type" => "posts",
-          "attributes" => %{
-          },
+          "attributes" => %{}
         }
       })
 
@@ -149,10 +148,12 @@ defmodule PrisonRideshareWeb.PostControllerTest do
 
   test "rejects update when user is not poster", %{conn: conn} do
     other_user = Repo.insert!(%User{})
-    post = Repo.insert!(%Post{
-      content: "old content",
-      poster: other_user,
-    })
+
+    post =
+      Repo.insert!(%Post{
+        content: "old content",
+        poster: other_user
+      })
 
     conn =
       put(conn, post_path(conn, :update, post), %{
@@ -162,7 +163,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
           "id" => post.id,
           "attributes" => %{
             "content" => "new content"
-          },
+          }
         }
       })
 
