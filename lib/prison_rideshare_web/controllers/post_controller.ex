@@ -8,6 +8,8 @@ defmodule PrisonRideshareWeb.PostController do
 
   def index(conn, _params) do
     posts = Repo.all(Post)
+    |> Repo.preload(:poster)
+
     render(conn, "index.json-api", data: posts)
   end
 
@@ -45,6 +47,7 @@ defmodule PrisonRideshareWeb.PostController do
         "data" => data = %{"type" => "posts", "attributes" => _params}
       }) do
     post = Repo.get!(Post, id)
+    |> Repo.preload(:poster)
 
     resource = Guardian.Plug.current_resource(conn)
 

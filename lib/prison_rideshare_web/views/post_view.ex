@@ -10,7 +10,8 @@ defmodule PrisonRideshareWeb.PostView do
 
   has_one(
     :poster,
-    field: :poster_id,
-    type: "user"
+    type: "user",
+    include: true,
+    serializer: PrisonRideshareWeb.UserView
   )
 end
