@@ -37,4 +37,22 @@ defmodule PrisonRideshareWeb.PostController do
         |> render(:errors, data: changeset)
     end
   end
+
+  def update(conn, %{
+    "id" => id,
+    "data" => data = %{"type" => "posts", "attributes" => _params}
+  }) do
+    post = Repo.get!(Post, id)
+    changeset = Post.changeset(post, Params.to_attributes(data))
+
+    case PaperTrail.update(changeset, version_information(conn)) do
+      {:ok, %{model: post}} ->
+        render(conn, "show.json-api", data: post)
+
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(:errors, data: changeset)
+    end
+  end
 end
