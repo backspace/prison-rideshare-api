@@ -76,4 +76,29 @@ defmodule PrisonRideshareWeb.PostControllerTest do
     assert version.item_changes["content"] == "hello"
     assert version.originator_id == user.id
   end
+
+  test "does not create resource or version and renders errors when data is invalid", %{
+    conn: conn
+  } do
+    conn =
+      post(conn, post_path(conn, :create), %{
+        "meta" => %{},
+        "data" => %{
+          "type" => "posts",
+          "attributes" => %{
+          },
+        }
+      })
+
+    assert json_response(conn, 422)["errors"] == [
+             %{
+               "detail" => "Content can't be blank",
+               "source" => %{"pointer" => "/data/attributes/content"},
+               "title" => "can't be blank"
+             }
+           ]
+
+    assert Repo.all(Post) == []
+    assert Repo.all(PaperTrail.Version) == []
+  end
 end
