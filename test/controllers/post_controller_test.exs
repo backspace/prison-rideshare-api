@@ -54,7 +54,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
       post(conn, post_path(conn, :create), %{
         "meta" => %{},
         "data" => %{
-          "type" => "people",
+          "type" => "posts",
           "attributes" => %{
             "content" => "hello"
           },

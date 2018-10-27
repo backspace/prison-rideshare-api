@@ -11,7 +11,7 @@ defmodule PrisonRideshareWeb.PostController do
     render(conn, "index.json-api", data: posts)
   end
 
-  def create(conn, %{"data" => data = %{"type" => "people", "attributes" => _params}}) do
+  def create(conn, %{"data" => data = %{"type" => "posts", "attributes" => _params}}) do
     resource = Guardian.Plug.current_resource(conn)
     user =
       case resource do
