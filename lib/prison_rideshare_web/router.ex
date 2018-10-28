@@ -83,6 +83,7 @@ defmodule PrisonRideshareWeb.Router do
     resources("/debts", DebtController, only: [:index, :delete])
     resources("/institutions", InstitutionController, except: [:new, :edit])
     resources("/people", PersonController, except: [:new, :edit])
+    resources("/posts", PostController, except: [:new, :edit])
     resources("/reimbursements", ReimbursementController, except: [:new, :edit])
     resources("/users", UserController, expect: [:new, :edit])
   end
