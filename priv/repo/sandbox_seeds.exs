@@ -5,6 +5,7 @@ alias PrisonRideshareWeb.{
   GasPrice,
   Institution,
   Person,
+  Post,
   Reimbursement,
   Ride,
   Slot,
@@ -93,6 +94,16 @@ user =
 
 User.admin_changeset(user, %{admin: true})
 |> PaperTrail.update!(Lol.version_information())
+
+other_user =
+  User.changeset(%User{}, %{
+    name: "Other",
+    email: "other@example.com",
+    password: "password",
+    password_confirmation: "password",
+    confirmed_at: Ecto.DateTime.utc()
+  })
+  |> PaperTrail.insert!(Lol.version_information())
 
 headingley =
   PaperTrail.insert!(
@@ -383,4 +394,18 @@ PaperTrail.insert!(%Commitment{
 PaperTrail.insert!(%Commitment{
   person: brian,
   slot: d_slot
+})
+
+today = Timex.beginning_of_day(Timex.local())
+
+PaperTrail.insert!(%Post{
+  poster: user,
+  inserted_at: Ecto.DateTime.cast!(Timex.shift(today, [days: -9, hours: 9, minutes: 22])),
+  content: "{\"version\":\"0.3.1\",\"atoms\":[],\"cards\":[],\"markups\":[[\"strong\"]],\"sections\":[[1,\"p\",[[0,[],0,\"Here is a blog post with some \"],[0,[0],1,\"bold text\"],[0,[],0,\".\"]]]]}"
+})
+
+PaperTrail.insert!(%Post{
+  poster: other_user,
+  inserted_at: Ecto.DateTime.cast!(Timex.shift(today, [days: -2, hours: 1, minutes: 33])),
+  content: "{\"version\":\"0.3.1\",\"atoms\":[],\"cards\":[],\"markups\":[],\"sections\":[[1,\"h1\",[[0,[],0,\"A heading\"]]],[1,\"p\",[[0,[],0,\"This is another blog post by a different user.\"]]]]}"
 })
