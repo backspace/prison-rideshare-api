@@ -264,6 +264,22 @@ defmodule PrisonRideshareWeb.PostControllerTest do
     refute json_response(conn, 200)["data"]["attributes"]["unread"]
   end
 
+  test "does not double-store a post reading", %{conn: conn} do
+    [user] = Repo.all(User)
+
+    post =
+      Repo.insert!(%Post{
+        readings: [user.id]
+      })
+
+    conn =
+      post(conn, post_path(conn, :read_post, post))
+
+    post = Repo.one(Post)
+
+    assert [user.id] == post.readings
+  end
+
   test "marks a post as unread", %{conn: conn} do
     [user] = Repo.all(User)
 

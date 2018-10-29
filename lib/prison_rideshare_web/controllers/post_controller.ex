@@ -100,7 +100,7 @@ defmodule PrisonRideshareWeb.PostController do
     |> Repo.preload(:poster)
 
     resource = Guardian.Plug.current_resource(conn)
-    changeset = Post.readings_changeset(post, %{readings: (post.readings || []) ++ [resource.id]})
+    changeset = Post.readings_changeset(post, %{readings: Enum.uniq((post.readings || []) ++ [resource.id])})
     post = PaperTrail.update!(changeset, version_information(conn))
 
     render(conn, "show.json-api", data: post)
