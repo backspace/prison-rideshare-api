@@ -248,4 +248,36 @@ defmodule PrisonRideshareWeb.PostControllerTest do
 
     assert length(Repo.all(Post)) == 1
   end
+
+  test "marks a post as read", %{conn: conn} do
+    [user] = Repo.all(User)
+
+    post =
+      Repo.insert!(%Post{})
+
+    conn =
+      post(conn, post_path(conn, :read_post, post))
+
+    post = Repo.one(Post)
+
+    assert user.id in post.readings
+    refute json_response(conn, 200)["data"]["attributes"]["unread"]
+  end
+
+  test "marks a post as unread", %{conn: conn} do
+    [user] = Repo.all(User)
+
+    post =
+      Repo.insert!(%Post{
+        readings: [user.id]
+      })
+
+    conn =
+      delete(conn, post_path(conn, :unread_post, post))
+
+    post = Repo.one(Post)
+
+    refute user.id in post.readings
+    assert json_response(conn, 200)["data"]["attributes"]["unread"]
+  end
 end

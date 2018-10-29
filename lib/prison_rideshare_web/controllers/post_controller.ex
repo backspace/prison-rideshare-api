@@ -94,4 +94,26 @@ defmodule PrisonRideshareWeb.PostController do
       |> render(PrisonRideshareWeb.ErrorView, "401.json")
     end
   end
+
+  def read_post(conn, %{"id" => id}) do
+    post = Repo.get!(Post, id)
+    |> Repo.preload(:poster)
+
+    resource = Guardian.Plug.current_resource(conn)
+    changeset = Post.readings_changeset(post, %{readings: (post.readings || []) ++ [resource.id]})
+    post = PaperTrail.update!(changeset, version_information(conn))
+
+    render(conn, "show.json-api", data: post)
+  end
+
+  def unread_post(conn, %{"id" => id}) do
+    post = Repo.get!(Post, id)
+    |> Repo.preload(:poster)
+
+    resource = Guardian.Plug.current_resource(conn)
+    changeset = Post.readings_changeset(post, %{readings: List.delete(post.readings || [], resource.id)})
+    post = PaperTrail.update!(changeset, version_information(conn))
+
+    render(conn, "show.json-api", data: post)
+  end
 end

@@ -14,4 +14,9 @@ defmodule PrisonRideshareWeb.Post do
     |> cast(params, [:content, :poster_id])
     |> validate_required([:content, :poster_id])
   end
+
+  def readings_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:readings])
+  end
 end
