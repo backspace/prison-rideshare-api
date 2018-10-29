@@ -28,7 +28,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
         inserted_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 0}}),
         poster: user
       })
-    
+
     unread_post =
       Repo.insert!(%Post{
         content: "hello unread",
@@ -60,24 +60,24 @@ defmodule PrisonRideshareWeb.PostControllerTest do
                }
              },
              %{
-              "id" => unread_post.id,
-              "type" => "post",
-              "attributes" => %{
-                "content" => "hello unread",
-                "unread" => true,
-                "updated-at" => "2018-07-06T09:29:00.000000Z",
-                "inserted-at" => "2018-07-06T09:29:00.000000Z"
-              },
-              "relationships" => %{
-                "poster" => %{
-                  "data" => %{
-                    "type" => "user",
-                    "id" => user.id
-                  }
-                }
-              }
-            }
-          ]
+               "id" => unread_post.id,
+               "type" => "post",
+               "attributes" => %{
+                 "content" => "hello unread",
+                 "unread" => true,
+                 "updated-at" => "2018-07-06T09:29:00.000000Z",
+                 "inserted-at" => "2018-07-06T09:29:00.000000Z"
+               },
+               "relationships" => %{
+                 "poster" => %{
+                   "data" => %{
+                     "type" => "user",
+                     "id" => user.id
+                   }
+                 }
+               }
+             }
+           ]
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
@@ -252,11 +252,9 @@ defmodule PrisonRideshareWeb.PostControllerTest do
   test "marks a post as read", %{conn: conn} do
     [user] = Repo.all(User)
 
-    post =
-      Repo.insert!(%Post{})
+    post = Repo.insert!(%Post{})
 
-    conn =
-      post(conn, post_path(conn, :read_post, post))
+    conn = post(conn, post_path(conn, :read_post, post))
 
     post = Repo.one(Post)
 
@@ -272,8 +270,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
         readings: [user.id]
       })
 
-    conn =
-      post(conn, post_path(conn, :read_post, post))
+    conn = post(conn, post_path(conn, :read_post, post))
 
     post = Repo.one(Post)
 
@@ -288,8 +285,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
         readings: [user.id]
       })
 
-    conn =
-      delete(conn, post_path(conn, :unread_post, post))
+    conn = delete(conn, post_path(conn, :unread_post, post))
 
     post = Repo.one(Post)
 
