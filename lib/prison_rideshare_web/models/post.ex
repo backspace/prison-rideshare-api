@@ -3,6 +3,7 @@ defmodule PrisonRideshareWeb.Post do
 
   schema "posts" do
     field(:content, :string)
+    field(:readings, {:array, :binary_id}, default: [])
     belongs_to(:poster, PrisonRideshareWeb.User, foreign_key: :poster_id)
 
     timestamps(type: :utc_datetime)

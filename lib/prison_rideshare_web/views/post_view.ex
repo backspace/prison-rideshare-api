@@ -4,6 +4,7 @@ defmodule PrisonRideshareWeb.PostView do
 
   attributes([
     :content,
+    :unread,
     :inserted_at,
     :updated_at
   ])
@@ -14,4 +15,16 @@ defmodule PrisonRideshareWeb.PostView do
     include: true,
     serializer: PrisonRideshareWeb.UserView
   )
+
+  def unread(post, conn) do
+    resource = Guardian.Plug.current_resource(conn)
+
+    user =
+      case resource do
+        %PrisonRideshareWeb.User{} -> resource
+        _ -> %{}
+      end
+
+    user.id not in post.readings
+  end
 end

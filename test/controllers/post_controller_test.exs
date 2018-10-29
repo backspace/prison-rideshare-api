@@ -15,12 +15,24 @@ defmodule PrisonRideshareWeb.PostControllerTest do
     {:ok, conn: conn}
   end
 
-  test "lists all posts", %{conn: conn} do
+  test "lists all posts with unread status", %{conn: conn} do
+    logged_in_user = Repo.one(User)
+
     user = Repo.insert!(%User{admin: true})
 
     post =
       Repo.insert!(%Post{
-        content: "hello",
+        content: "hello read",
+        readings: [logged_in_user.id],
+        updated_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 1}}),
+        inserted_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 0}}),
+        poster: user
+      })
+    
+    unread_post =
+      Repo.insert!(%Post{
+        content: "hello unread",
+        readings: [user.id],
         updated_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 0}}),
         inserted_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 0}}),
         poster: user
@@ -33,8 +45,9 @@ defmodule PrisonRideshareWeb.PostControllerTest do
                "id" => post.id,
                "type" => "post",
                "attributes" => %{
-                 "content" => "hello",
-                 "updated-at" => "2018-07-06T09:29:00.000000Z",
+                 "content" => "hello read",
+                 "unread" => false,
+                 "updated-at" => "2018-07-06T09:29:01.000000Z",
                  "inserted-at" => "2018-07-06T09:29:00.000000Z"
                },
                "relationships" => %{
@@ -45,8 +58,26 @@ defmodule PrisonRideshareWeb.PostControllerTest do
                    }
                  }
                }
-             }
-           ]
+             },
+             %{
+              "id" => unread_post.id,
+              "type" => "post",
+              "attributes" => %{
+                "content" => "hello unread",
+                "unread" => true,
+                "updated-at" => "2018-07-06T09:29:00.000000Z",
+                "inserted-at" => "2018-07-06T09:29:00.000000Z"
+              },
+              "relationships" => %{
+                "poster" => %{
+                  "data" => %{
+                    "type" => "user",
+                    "id" => user.id
+                  }
+                }
+              }
+            }
+          ]
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
