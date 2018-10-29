@@ -25,6 +25,6 @@ defmodule PrisonRideshareWeb.PostView do
         _ -> %{}
       end
 
-    user.id not in post.readings
+    user.id not in (post.readings || [])
   end
 end
