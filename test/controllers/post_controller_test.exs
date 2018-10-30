@@ -249,6 +249,19 @@ defmodule PrisonRideshareWeb.PostControllerTest do
     assert length(Repo.all(Post)) == 1
   end
 
+  test "marks all posts as read", %{conn: conn} do
+    Repo.insert!(%Post{})
+    Repo.insert!(%Post{})
+
+    conn = post(conn, post_path(conn, :read_all_posts))
+
+    [post_0, post_1] = Repo.all(Post)
+    [user] = Repo.all(User)
+
+    assert user.id in post_0.readings
+    assert user.id in post_1.readings
+  end
+
   test "marks a post as read", %{conn: conn} do
     [user] = Repo.all(User)
 

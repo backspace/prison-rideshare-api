@@ -87,6 +87,7 @@ defmodule PrisonRideshareWeb.Router do
     resources("/users", UserController, expect: [:new, :edit])
 
     resources("/posts", PostController, except: [:new, :edit])
+    post("/posts/readings", PostController, :read_all_posts)
     post("/posts/:id/readings", PostController, :read_post)
     delete("/posts/:id/readings", PostController, :unread_post)
   end
