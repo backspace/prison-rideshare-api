@@ -19,7 +19,7 @@ defmodule Mix.Tasks.StoreRates do
         from(
           r in Ride,
           where:
-            r.enabled and is_nil(r.gas_price_id) and is_nil(r.rate) and
+            r.enabled and is_nil(r.gas_price_id) and (is_nil(r.rate) or r.rate == 0) and
               not is_nil(r.institution_id),
           preload: [:institution]
         )
