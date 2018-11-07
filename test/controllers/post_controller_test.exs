@@ -15,12 +15,24 @@ defmodule PrisonRideshareWeb.PostControllerTest do
     {:ok, conn: conn}
   end
 
-  test "lists all posts", %{conn: conn} do
+  test "lists all posts with unread status", %{conn: conn} do
+    logged_in_user = Repo.one(User)
+
     user = Repo.insert!(%User{admin: true})
 
     post =
       Repo.insert!(%Post{
-        content: "hello",
+        content: "hello read",
+        readings: [logged_in_user.id],
+        updated_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 1}}),
+        inserted_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 0}}),
+        poster: user
+      })
+
+    unread_post =
+      Repo.insert!(%Post{
+        content: "hello unread",
+        readings: [user.id],
         updated_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 0}}),
         inserted_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 0}}),
         poster: user
@@ -33,7 +45,26 @@ defmodule PrisonRideshareWeb.PostControllerTest do
                "id" => post.id,
                "type" => "post",
                "attributes" => %{
-                 "content" => "hello",
+                 "content" => "hello read",
+                 "unread" => false,
+                 "updated-at" => "2018-07-06T09:29:01.000000Z",
+                 "inserted-at" => "2018-07-06T09:29:00.000000Z"
+               },
+               "relationships" => %{
+                 "poster" => %{
+                   "data" => %{
+                     "type" => "user",
+                     "id" => user.id
+                   }
+                 }
+               }
+             },
+             %{
+               "id" => unread_post.id,
+               "type" => "post",
+               "attributes" => %{
+                 "content" => "hello unread",
+                 "unread" => true,
                  "updated-at" => "2018-07-06T09:29:00.000000Z",
                  "inserted-at" => "2018-07-06T09:29:00.000000Z"
                },
@@ -216,5 +247,62 @@ defmodule PrisonRideshareWeb.PostControllerTest do
            }
 
     assert length(Repo.all(Post)) == 1
+  end
+
+  test "marks all posts as read", %{conn: conn} do
+    Repo.insert!(%Post{})
+    Repo.insert!(%Post{})
+
+    conn = post(conn, post_path(conn, :read_all_posts))
+
+    [post_0, post_1] = Repo.all(Post)
+    [user] = Repo.all(User)
+
+    assert user.id in post_0.readings
+    assert user.id in post_1.readings
+  end
+
+  test "marks a post as read", %{conn: conn} do
+    [user] = Repo.all(User)
+
+    post = Repo.insert!(%Post{})
+
+    conn = post(conn, post_path(conn, :read_post, post))
+
+    post = Repo.one(Post)
+
+    assert user.id in post.readings
+    refute json_response(conn, 200)["data"]["attributes"]["unread"]
+  end
+
+  test "does not double-store a post reading", %{conn: conn} do
+    [user] = Repo.all(User)
+
+    post =
+      Repo.insert!(%Post{
+        readings: [user.id]
+      })
+
+    conn = post(conn, post_path(conn, :read_post, post))
+
+    post = Repo.one(Post)
+
+    assert [user.id] == post.readings
+  end
+
+  test "marks a post as unread", %{conn: conn} do
+    [user] = Repo.all(User)
+
+    post =
+      Repo.insert!(%Post{
+        readings: [user.id]
+      })
+
+    conn = delete(conn, post_path(conn, :unread_post, post))
+
+    post = Repo.one(Post)
+
+    refute user.id in post.readings
+    assert json_response(conn, 200)["data"]["attributes"]["unread"]
   end
 end

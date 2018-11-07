@@ -94,4 +94,47 @@ defmodule PrisonRideshareWeb.PostController do
       |> render(PrisonRideshareWeb.ErrorView, "401.json")
     end
   end
+
+  def read_all_posts(conn, _) do
+    resource = Guardian.Plug.current_resource(conn)
+
+    posts = Repo.all(Post)
+    |> Repo.preload(:poster)
+    |> Enum.map(fn post ->
+      Post.readings_changeset(post, %{readings: Enum.uniq((post.readings || []) ++ [resource.id])})
+      |> PaperTrail.update!(version_information(conn))
+    end)
+
+    render(conn, "index.json-api", data: posts)
+  end
+
+  def read_post(conn, %{"id" => id}) do
+    post =
+      Repo.get!(Post, id)
+      |> Repo.preload(:poster)
+
+    resource = Guardian.Plug.current_resource(conn)
+
+    changeset =
+      Post.readings_changeset(post, %{readings: Enum.uniq((post.readings || []) ++ [resource.id])})
+
+    post = PaperTrail.update!(changeset, version_information(conn))
+
+    render(conn, "show.json-api", data: post)
+  end
+
+  def unread_post(conn, %{"id" => id}) do
+    post =
+      Repo.get!(Post, id)
+      |> Repo.preload(:poster)
+
+    resource = Guardian.Plug.current_resource(conn)
+
+    changeset =
+      Post.readings_changeset(post, %{readings: List.delete(post.readings || [], resource.id)})
+
+    post = PaperTrail.update!(changeset, version_information(conn))
+
+    render(conn, "show.json-api", data: post)
+  end
 end
