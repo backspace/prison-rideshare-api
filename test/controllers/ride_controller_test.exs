@@ -289,6 +289,14 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         enabled: false
       })
 
+    _assigned_ride =
+      Repo.insert!(%Ride{
+        name: "R",
+        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}}),
+        driver: person       
+      })
+
     conn = get(conn, ride_path(conn, :overlaps))
 
     [overlapping_start_ride_response, contained_ride_response] = json_response(conn, 200)["data"]

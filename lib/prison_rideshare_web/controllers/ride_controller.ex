@@ -56,7 +56,7 @@ defmodule PrisonRideshareWeb.RideController do
         r in Ride,
         where:
           r.enabled and is_nil(r.combined_with_ride_id) and 
-          r.start >= ^now
+          r.start >= ^now and is_nil(r.driver_id)
       )
     )
     |> preload
