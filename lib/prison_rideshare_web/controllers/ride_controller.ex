@@ -53,7 +53,7 @@ defmodule PrisonRideshareWeb.RideController do
     |> preload
     |> Enum.filter(fn ride ->
         ride_interval = Timex.Interval.new(from: ride.start, until: ride.end)
-        Enum.any?(slot_intervals, fn slot_interval -> Timex.Interval.overlaps?(slot_interval, ride_interval) end)
+        ride_interval != {:error, :invalid_until} && Enum.any?(slot_intervals, fn slot_interval -> Timex.Interval.overlaps?(slot_interval, ride_interval) end)
     end)
   
     conn

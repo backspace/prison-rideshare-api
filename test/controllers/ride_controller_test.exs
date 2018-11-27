@@ -246,6 +246,13 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         start: Ecto.DateTime.from_erl({{2100, 1, 1}, {12, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2100, 1, 1}, {13, 0, 0}})
       })
+    
+    _invalid_interval_ride =
+      Repo.insert!(%Ride{
+        name: "R",
+        start: Ecto.DateTime.from_erl({{2100, 1, 1}, {14, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2100, 1, 1}, {13, 0, 0}})
+      })
 
     conn = get(conn, ride_path(conn, :overlaps))
 
