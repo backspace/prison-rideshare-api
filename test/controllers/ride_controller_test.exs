@@ -273,9 +273,25 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         end: Ecto.DateTime.from_erl({{2100, 1, 1}, {13, 0, 0}})
       })
 
+    _combined_ride =
+      Repo.insert!(%Ride{
+        name: "R",
+        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}}),
+        combined_with: contained_ride
+      })
+
+    _disabled_ride =
+      Repo.insert!(%Ride{
+        name: "R",
+        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}}),
+        enabled: false
+      })
+
     conn = get(conn, ride_path(conn, :overlaps))
 
-    [contained_ride_response, overlapping_start_ride_response] = json_response(conn, 200)["data"]
+    [overlapping_start_ride_response, contained_ride_response] = json_response(conn, 200)["data"]
 
     assert contained_ride_response["id"] == contained_ride.id
     assert overlapping_start_ride_response["id"] == overlapping_start_ride.id

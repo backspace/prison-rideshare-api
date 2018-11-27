@@ -54,7 +54,9 @@ defmodule PrisonRideshareWeb.RideController do
     rides = Repo.all(
       from(
         r in Ride,
-        where: r.start >= ^now
+        where:
+          r.enabled and is_nil(r.combined_with_ride_id) and 
+          r.start >= ^now
       )
     )
     |> preload
