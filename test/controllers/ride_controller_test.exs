@@ -2,7 +2,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   use PrisonRideshareWeb.ConnCase
   use Bamboo.Test
 
-  alias PrisonRideshareWeb.{Institution, Person, Reimbursement, Ride}
+  alias PrisonRideshareWeb.{Commitment, Institution, Person, Reimbursement, Ride, Slot}
   alias PrisonRideshare.Repo
 
   import Money.Sigils
@@ -207,6 +207,52 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     assert ride1["id"] == frank_ride.id
     assert ride2["id"] == francesca_ride.id
     assert ride3["id"] == francine_ride.id
+  end
+
+  test "returns rides with corresponding commitments", %{conn: conn} do
+    contained_ride =
+      Repo.insert!(%Ride{
+        name: "R",
+        start: Ecto.DateTime.from_erl({{2018, 11, 24}, {19, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2018, 11, 24}, {20, 0, 0}})
+      })
+
+    overlapping_start_ride =
+      Repo.insert!(%Ride{
+        name: "R",
+        start: Ecto.DateTime.from_erl({{2018, 11, 24}, {17, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2018, 11, 24}, {19, 0, 0}})
+      })
+    
+    slot =
+      Repo.insert!(%Slot{
+        start: Ecto.DateTime.from_erl({{2018, 11, 24}, {18, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2018, 11, 24}, {21, 0, 0}}),
+        count: 400
+      })
+
+    person = Repo.insert!(%Person{name: "C"})
+
+    commitment =
+      Repo.insert!(%Commitment{
+        slot_id: slot.id,
+        person_id: person.id
+      })
+
+    
+    _after_ride =
+      Repo.insert!(%Ride{
+        name: "R",
+        start: Ecto.DateTime.from_erl({{2100, 1, 1}, {12, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2100, 1, 1}, {13, 0, 0}})
+      })
+
+    conn = get(conn, ride_path(conn, :overlaps))
+
+    [contained_ride_response, overlapping_start_ride_response] = json_response(conn, 200)["data"]
+
+    assert contained_ride_response["id"] == contained_ride.id
+    assert overlapping_start_ride_response["id"] == overlapping_start_ride.id
   end
 
   test "shows chosen resource", %{conn: conn} do

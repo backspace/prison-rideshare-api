@@ -67,7 +67,7 @@ defmodule PrisonRideshare.Mixfile do
       {:sans_password, "~> 1.0.0-beta"},
       {:ja_serializer, "~> 0.12.0"},
       {:money, "~> 1.2.1"},
-      {:timex, "~> 3.1.13"},
+      {:timex, "~> 3.4.1"},
       {:bamboo, "~> 0.8"},
       {:bamboo_smtp, "~> 1.4.0"},
       {:icalendar, "~> 0.5.0"},

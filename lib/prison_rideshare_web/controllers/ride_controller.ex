@@ -1,7 +1,7 @@
 defmodule PrisonRideshareWeb.RideController do
   use PrisonRideshareWeb, :controller
 
-  alias PrisonRideshareWeb.Ride
+  alias PrisonRideshareWeb.{Commitment, Ride}
   alias JaSerializer.Params
 
   import Ecto.Query
@@ -39,6 +39,24 @@ defmodule PrisonRideshareWeb.RideController do
 
     conn
     |> put_view(PrisonRideshareWeb.UnauthRideView)
+    |> render("index.json-api", data: rides)
+  end
+
+  def overlaps(conn, _) do
+    slot_intervals = Repo.all(Commitment)
+    |> Repo.preload(:slot)
+    |> Enum.map(fn commitment -> commitment.slot end)
+    |> Enum.uniq()
+    |> Enum.map(fn slot -> Timex.Interval.new(from: slot.start, until: slot.end) end)
+
+    rides = Repo.all(Ride)
+    |> preload
+    |> Enum.filter(fn ride ->
+        ride_interval = Timex.Interval.new(from: ride.start, until: ride.end)
+        Enum.any?(slot_intervals, fn slot_interval -> Timex.Interval.overlaps?(slot_interval, ride_interval) end)
+    end)
+  
+    conn
     |> render("index.json-api", data: rides)
   end
 
