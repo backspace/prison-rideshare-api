@@ -213,21 +213,21 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     contained_ride =
       Repo.insert!(%Ride{
         name: "R",
-        start: Ecto.DateTime.from_erl({{2018, 11, 24}, {19, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2018, 11, 24}, {20, 0, 0}})
+        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}})
       })
 
     overlapping_start_ride =
       Repo.insert!(%Ride{
         name: "R",
-        start: Ecto.DateTime.from_erl({{2018, 11, 24}, {17, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2018, 11, 24}, {19, 0, 0}})
+        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {17, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}})
       })
     
     slot =
       Repo.insert!(%Slot{
-        start: Ecto.DateTime.from_erl({{2018, 11, 24}, {18, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2018, 11, 24}, {21, 0, 0}}),
+        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {18, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {21, 0, 0}}),
         count: 400
       })
 
@@ -238,7 +238,26 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         slot_id: slot.id,
         person_id: person.id
       })
+    
+    _past_ride =
+      Repo.insert!(%Ride{
+        name: "R",
+        start: Ecto.DateTime.from_erl({{1918, 11, 24}, {19, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{1918, 11, 24}, {20, 0, 0}})
+      })
+    
+    past_slot =
+      Repo.insert!(%Slot{
+        start: Ecto.DateTime.from_erl({{1918, 11, 24}, {18, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{1918, 11, 24}, {21, 0, 0}}),
+        count: 400
+      })
 
+    past_commitment =
+      Repo.insert!(%Commitment{
+        slot_id: past_slot.id,
+        person_id: person.id
+      })
     
     _after_ride =
       Repo.insert!(%Ride{

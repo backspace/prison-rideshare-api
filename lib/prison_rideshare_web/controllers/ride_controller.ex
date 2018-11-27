@@ -49,7 +49,14 @@ defmodule PrisonRideshareWeb.RideController do
     |> Enum.uniq()
     |> Enum.map(fn slot -> Timex.Interval.new(from: slot.start, until: slot.end) end)
 
-    rides = Repo.all(Ride)
+    now = NaiveDateTime.utc_now()
+
+    rides = Repo.all(
+      from(
+        r in Ride,
+        where: r.start >= ^now
+      )
+    )
     |> preload
     |> Enum.filter(fn ride ->
         ride_interval = Timex.Interval.new(from: ride.start, until: ride.end)
