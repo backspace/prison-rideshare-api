@@ -44,10 +44,10 @@ defmodule PrisonRideshareWeb.RideController do
 
   def overlaps(conn, _) do
     slot_intervals = Repo.all(Commitment)
-    |> Repo.preload(:slot)
+    |> Repo.preload([:person, slot: [commitments: [:person]]])
     |> Enum.map(fn commitment -> commitment.slot end)
     |> Enum.uniq()
-    |> Enum.map(fn slot -> Timex.Interval.new(from: slot.start, until: slot.end) end)
+    |> Enum.map(fn slot -> %{slot: slot, interval: Timex.Interval.new(from: slot.start, until: slot.end)} end)
 
     now = NaiveDateTime.utc_now()
 
@@ -60,12 +60,34 @@ defmodule PrisonRideshareWeb.RideController do
       )
     )
     |> preload
-    |> Enum.filter(fn ride ->
+    |> Enum.reduce([], fn ride, rides ->
         ride_interval = Timex.Interval.new(from: ride.start, until: ride.end)
-        ride_interval != {:error, :invalid_until} && Enum.any?(slot_intervals, fn slot_interval -> Timex.Interval.overlaps?(slot_interval, ride_interval) end)
+
+        if ride_interval != {:error, :invalid_until} do
+          commitments = Enum.reduce(slot_intervals, [], fn slot_interval, commitments ->
+            commitments = commitments ++ case Timex.Interval.overlaps?(slot_interval[:interval], ride_interval) do
+              true -> Enum.map(slot_interval[:slot].commitments, fn commitment -> Map.put(commitment, :slot, slot_interval[:slot]) end)
+              _ -> []
+            end
+
+            commitments
+          end)
+
+          ride = Map.put(ride, :commitments, commitments)
+
+          rides = rides ++ case Enum.empty?(commitments) do
+            true -> []
+            false -> [ride]
+          end
+
+          rides
+        else
+          rides
+        end
     end)
   
     conn
+    |> put_view(PrisonRideshareWeb.OverlapRideView)
     |> render("index.json-api", data: rides)
   end
 

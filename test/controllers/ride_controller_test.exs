@@ -299,9 +299,11 @@ defmodule PrisonRideshareWeb.RideControllerTest do
 
     conn = get(conn, ride_path(conn, :overlaps))
 
-    [overlapping_start_ride_response, contained_ride_response] = json_response(conn, 200)["data"]
+    response = json_response(conn, 200)
+    [overlapping_start_ride_response, contained_ride_response] = response["data"]
 
     assert contained_ride_response["id"] == contained_ride.id
+    assert hd(contained_ride_response["relationships"]["commitments"]["data"])["id"] == commitment.id
     assert overlapping_start_ride_response["id"] == overlapping_start_ride.id
   end
 
