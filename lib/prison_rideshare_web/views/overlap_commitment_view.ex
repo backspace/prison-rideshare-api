@@ -1,0 +1,21 @@
+defmodule PrisonRideshareWeb.OverlapCommitmentView do
+  use PrisonRideshareWeb, :view
+  use JaSerializer.PhoenixView
+
+  def type(_, _), do: "commitment"
+
+  has_one(
+    :person,
+    type: "people",
+    serializer: PrisonRideshareWeb.PersonView,
+    include: true
+  )
+
+  has_one(
+    :slot,
+    type: "slots",
+    serializer: PrisonRideshareWeb.SlotView,
+    # FIXME should be true!
+    include: false
+  )
+end

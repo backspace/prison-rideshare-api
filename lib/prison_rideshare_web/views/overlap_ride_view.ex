@@ -8,6 +8,6 @@ defmodule PrisonRideshareWeb.OverlapRideView do
     :commitments,
     type: "commitment",
     include: true,
-    serializer: PrisonRideshareWeb.CommitmentView
+    serializer: PrisonRideshareWeb.OverlapCommitmentView
   )
 end
