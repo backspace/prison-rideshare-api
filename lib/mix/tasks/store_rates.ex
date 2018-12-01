@@ -29,9 +29,9 @@ defmodule Mix.Tasks.StoreRates do
 
     Enum.each(rides, fn ride ->
       window_before_ride_start =
-        Timex.subtract(Ecto.DateTime.to_erl(ride.start), Duration.from_days(1))
+        Timex.subtract(ride.start, Duration.from_days(1))
 
-      window_after_ride_start = Timex.add(Ecto.DateTime.to_erl(ride.start), Duration.from_days(1))
+      window_after_ride_start = Timex.add(ride.start, Duration.from_days(1))
 
       closest_gas_price =
         Enum.find(gas_prices, fn gas_price ->

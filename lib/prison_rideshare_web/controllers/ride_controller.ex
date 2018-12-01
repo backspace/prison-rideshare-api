@@ -129,15 +129,9 @@ defmodule PrisonRideshareWeb.RideController do
           summary: summary,
           description: "Please email barnone.coordinator@gmail.com to get assigned to this ride.",
           dtstart:
-            Timex.Timezone.convert(
-              Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.start), :utc),
-              "UTC"
-            ),
+            DateTime.from_naive!(NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(ride.start)), "Etc/UTC"),
           dtend:
-            Timex.Timezone.convert(
-              Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(ride.end), :utc),
-              "UTC"
-            )
+            DateTime.from_naive!(NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(ride.end)), "Etc/UTC")
         }
       end)
 

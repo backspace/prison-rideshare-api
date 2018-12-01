@@ -94,15 +94,9 @@ defmodule PrisonRideshareWeb.PersonController do
                 ),
               # FIXME really?
               dtstart:
-                Timex.Timezone.convert(
-                  Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(earliest_start), :utc),
-                  "UTC"
-                ),
+                DateTime.from_naive!(NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(earliest_start)), "Etc/UTC"),
               dtend:
-                Timex.Timezone.convert(
-                  Timex.Timezone.resolve("UTC", Ecto.DateTime.to_erl(latest_end), :utc),
-                  "UTC"
-                ),
+                DateTime.from_naive!(NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(latest_end)), "Etc/UTC"),
               location:
                 Enum.join(
                   [ride.address] ++ Enum.map(ride.children, fn child -> child.address end),
@@ -117,16 +111,8 @@ defmodule PrisonRideshareWeb.PersonController do
 
                 %ICalendar.Event{
                   summary: "Prison rideshare slot commitment",
-                  dtstart:
-                    Timex.Timezone.convert(
-                      Timex.Timezone.resolve("UTC", NaiveDateTime.to_erl(slot.start), :utc),
-                      "UTC"
-                    ),
-                  dtend:
-                    Timex.Timezone.convert(
-                      Timex.Timezone.resolve("UTC", NaiveDateTime.to_erl(slot.end), :utc),
-                      "UTC"
-                    )
+                  dtstart: DateTime.from_naive!(slot.start, "Etc/UTC"),
+                  dtend: DateTime.from_naive!(slot.end, "Etc/UTC")
                 }
               end
             )
