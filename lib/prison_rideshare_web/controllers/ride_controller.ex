@@ -44,7 +44,7 @@ defmodule PrisonRideshareWeb.RideController do
 
   def overlaps(conn, _) do
     slot_intervals = Repo.all(Commitment)
-    |> Repo.preload([:person, slot: [commitments: [:person]]])
+    |> Repo.preload([:person, slot: [commitments: [:person, :slot]]])
     |> Enum.map(fn commitment -> commitment.slot end)
     |> Enum.uniq()
     |> Enum.map(fn slot -> %{slot: slot, interval: Timex.Interval.new(from: slot.start, until: slot.end)} end)

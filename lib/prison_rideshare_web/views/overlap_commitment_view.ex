@@ -15,7 +15,6 @@ defmodule PrisonRideshareWeb.OverlapCommitmentView do
     :slot,
     type: "slots",
     serializer: PrisonRideshareWeb.SlotView,
-    # FIXME should be true!
-    include: false
+    include: true
   )
 end
