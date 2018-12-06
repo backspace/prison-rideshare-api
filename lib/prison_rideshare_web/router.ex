@@ -97,6 +97,8 @@ defmodule PrisonRideshareWeb.Router do
     post("/posts/:id/readings", PostController, :read_post)
     delete("/posts/:id/readings", PostController, :unread_post)
 
+    post("/rides/:id/ignore/:commitment_id", RideController, :ignore_commitment)
+
     get("/rides/matches", RideController, :matches)
   end
 

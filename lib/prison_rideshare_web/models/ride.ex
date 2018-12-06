@@ -77,6 +77,12 @@ defmodule PrisonRideshareWeb.Ride do
     |> calculate_car_expenses(struct)
   end
 
+  def ignore_commitment_changeset(struct, commitment_id) do
+    struct
+    |> cast(%{}, [])
+    |> put_change(:ignored_commitment_ids, struct.ignored_commitment_ids ++ [commitment_id])
+  end
+
   def import_changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [

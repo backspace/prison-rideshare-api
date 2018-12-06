@@ -315,6 +315,25 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     assert overlapping_start_ride_response["id"] == overlapping_start_ride.id
   end
 
+  test "lets a commitment be ignored for a ride", %{conn: conn} do
+    ride = Repo.insert!(%Ride{
+      name: "R",
+      start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
+      end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}})
+    })
+
+    commitment =
+      Repo.insert!(%Commitment{
+      })
+
+    conn =
+      post(conn, ride_path(conn, :ignore_commitment, ride.id, commitment.id), %{})
+    
+    [ride_after] = Repo.all(Ride)
+
+    assert ride_after.ignored_commitment_ids == [commitment.id]
+  end
+
   test "shows chosen resource", %{conn: conn} do
     ride = Repo.insert!(%Ride{rate: 35, first_time: true, medium: "phone"})
     conn = get(conn, ride_path(conn, :show, ride))

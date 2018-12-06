@@ -94,6 +94,17 @@ defmodule PrisonRideshareWeb.RideController do
     |> render("index.json-api", data: rides)
   end
 
+  def ignore_commitment(conn, %{"id" => ride_id, "commitment_id" => commitment_id}) do
+    ride =
+      Repo.get!(Ride, ride_id)
+      |> preload
+    
+    changeset = Ride.ignore_commitment_changeset(ride, commitment_id)
+    PaperTrail.update(changeset, version_information(conn))
+
+    render(conn, "show.json-api", data: ride)
+  end
+
   def calendar(conn, _) do
     rides =
       Repo.all(
