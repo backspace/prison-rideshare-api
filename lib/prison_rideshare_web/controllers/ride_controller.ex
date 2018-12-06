@@ -66,7 +66,10 @@ defmodule PrisonRideshareWeb.RideController do
         if ride_interval != {:error, :invalid_until} do
           commitments = Enum.reduce(slot_intervals, [], fn slot_interval, commitments ->
             commitments = commitments ++ case Timex.Interval.overlaps?(slot_interval[:interval], ride_interval) do
-              true -> Enum.map(slot_interval[:slot].commitments, fn commitment -> Map.put(commitment, :slot, slot_interval[:slot]) end)
+              true -> 
+                slot_interval[:slot].commitments
+                |> Enum.reject(fn commitment -> Enum.member?(commitment.ignored_ride_ids, ride.id) end)
+                |> Enum.map(fn commitment -> Map.put(commitment, :slot, slot_interval[:slot]) end)
               _ -> []
             end
 
