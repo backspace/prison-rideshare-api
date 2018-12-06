@@ -68,7 +68,8 @@ defmodule PrisonRideshareWeb.RideController do
             commitments = commitments ++ case Timex.Interval.overlaps?(slot_interval[:interval], ride_interval) do
               true -> 
                 slot_interval[:slot].commitments
-                |> Enum.reject(fn commitment -> Enum.member?(ride.ignored_commitment_ids, commitment.id) end)
+                # FIXME why is this guard needed?
+                |> Enum.reject(fn commitment -> Enum.member?(ride.ignored_commitment_ids || [], commitment.id) end)
                 |> Enum.map(fn commitment -> Map.put(commitment, :slot, slot_interval[:slot]) end)
               _ -> []
             end
