@@ -38,6 +38,7 @@ defmodule PrisonRideshareWeb.Ride do
     has_many(:reimbursements, PrisonRideshareWeb.Reimbursement)
 
     field(:commitments, {:array, :commitment}, virtual: true)
+    field(:ignored_commitment_ids, {:array, :binary_id}, default: [])
 
     timestamps(type: :utc_datetime)
   end

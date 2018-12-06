@@ -1,9 +1,9 @@
-defmodule PrisonRideshare.Repo.Migrations.AddCommitmentIgnoredRideIds do
+defmodule PrisonRideshare.Repo.Migrations.AddRideIgnoredCommitmentIds do
   use Ecto.Migration
 
   def change do
-    alter table(:commitments) do
-      add(:ignored_ride_ids, {:array, :binary_id})
+    alter table(:rides) do
+      add(:ignored_commitment_ids, {:array, :binary_id})
     end
   end
 end
