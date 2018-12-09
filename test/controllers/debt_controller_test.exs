@@ -203,7 +203,7 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
   defp person_relationship_json(person) do
     %{
       "data" => %{
-        "type" => "person",
+        "type" => "people",
         "id" => person.id
       }
     }

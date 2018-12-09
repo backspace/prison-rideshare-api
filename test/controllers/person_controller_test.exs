@@ -53,7 +53,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     conn = get(conn, person_path(conn, :show, person))
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{person.id}"
-    assert data["type"] == "person"
+    assert data["type"] == "people"
 
     attributes = data["attributes"]
     assert attributes["name"] == person.name

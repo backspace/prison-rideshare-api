@@ -2,6 +2,8 @@ defmodule PrisonRideshareWeb.PersonView do
   use PrisonRideshareWeb, :view
   use JaSerializer.PhoenixView
 
+  def type(_, _), do: "people"
+
   attributes([
     :name,
     :email,

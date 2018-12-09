@@ -2,7 +2,7 @@ defmodule PrisonRideshareWeb.OverlapCommitmentView do
   use PrisonRideshareWeb, :view
   use JaSerializer.PhoenixView
 
-  def type(_, _), do: "commitment"
+  def type(_, _), do: "commitments"
 
   has_one(
     :person,

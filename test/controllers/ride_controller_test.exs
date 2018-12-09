@@ -148,13 +148,13 @@ defmodule PrisonRideshareWeb.RideControllerTest do
                  },
                  "driver" => %{
                    "data" => %{
-                     "type" => "person",
+                     "type" => "people",
                      "id" => driver.id
                    }
                  },
                  "car-owner" => %{
                    "data" => %{
-                     "type" => "person",
+                     "type" => "people",
                      "id" => car_owner.id
                    }
                  },
@@ -446,13 +446,13 @@ defmodule PrisonRideshareWeb.RideControllerTest do
              },
              "driver" => %{
                "data" => %{
-                 "type" => "person",
+                 "type" => "people",
                  "id" => driver.id
                }
              },
              "car-owner" => %{
                "data" => %{
-                 "type" => "person",
+                 "type" => "people",
                  "id" => car_owner.id
                }
              },

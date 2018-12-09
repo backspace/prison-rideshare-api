@@ -2,6 +2,8 @@ defmodule PrisonRideshareWeb.CommitmentView do
   use PrisonRideshareWeb, :view
   use JaSerializer.PhoenixView
 
+  def type(_, _), do: "commitments"
+
   has_one(
     :person,
     type: "people",

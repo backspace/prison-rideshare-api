@@ -2,6 +2,8 @@ defmodule PrisonRideshareWeb.SlotView do
   use PrisonRideshareWeb, :view
   use JaSerializer.PhoenixView
 
+  def type(_, _), do: "slots"
+
   attributes([:start, :end, :count])
 
   has_many(
