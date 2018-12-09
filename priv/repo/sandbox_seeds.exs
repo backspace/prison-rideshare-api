@@ -403,13 +403,23 @@ PaperTrail.insert!(%Commitment{
   slot: d_slot
 })
 
-_overlapRide = 
+overlapRide =
   Lol.createRide(%{
-    start: d_slot.start,
-    end: d_slot.end,
+    relative_start: [days: 6, hours: 13],
+    relative_end: [hours: 2, minutes: 30],
     institution: john_henderson,
-    medium: "email"
+    medium: "phone"
   })
+
+overlapSlot = PaperTrail.insert!(%Slot{
+  start: Timex.shift(overlapRide.start, [hours: -1]),
+  end: Timex.shift(overlapRide.end, [minutes: 30]),
+})
+
+PaperTrail.insert!(%Commitment{
+  person: brian,
+  slot: overlapSlot
+})
 
 today = Timex.beginning_of_day(Timex.local())
 
