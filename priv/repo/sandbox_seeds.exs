@@ -22,23 +22,16 @@ defmodule Lol do
 
     merged =
       Map.merge(params, %{
+        start: Ecto.DateTime.cast!(Timex.shift(today, params.relative_start)),
+        end:
+          Ecto.DateTime.cast!(
+            Timex.shift(Timex.shift(today, params.relative_start), params.relative_end)
+          ),
         address: Faker.Address.street_address(),
         contact: Faker.Phone.EnUs.phone(),
         name: Faker.Name.first_name(),
         institution_id: params.institution.id
       })
-    
-    merged =
-      case Map.has_key?(params, :relative_start) do
-        true -> Map.merge(merged, %{start: Ecto.DateTime.cast!(Timex.shift(today, params.relative_start))})
-        false -> Map.merge(merged, %{start: params.start})
-      end
-    
-    merged =
-      case Map.has_key?(params, :relative_end) do
-        true -> Map.merge(merged, %{end: Ecto.DateTime.cast!(Timex.shift(Timex.shift(today, params.relative_start), params.relative_end))})
-        false -> Map.merge(merged, %{end: params.end})
-      end
 
     merged =
       case Map.has_key?(merged, :driver) do
