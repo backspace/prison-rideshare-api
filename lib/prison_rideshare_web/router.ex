@@ -98,8 +98,6 @@ defmodule PrisonRideshareWeb.Router do
     delete("/posts/:id/readings", PostController, :unread_post)
 
     post("/rides/:id/ignore/:commitment_id", RideController, :ignore_commitment)
-
-    get("/rides/matches", RideController, :matches)
   end
 
   scope "/", PrisonRideshareWeb do
