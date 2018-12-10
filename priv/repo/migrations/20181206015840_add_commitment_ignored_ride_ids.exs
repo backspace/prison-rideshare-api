@@ -3,7 +3,7 @@ defmodule PrisonRideshare.Repo.Migrations.AddRideIgnoredCommitmentIds do
 
   def change do
     alter table(:rides) do
-      add(:ignored_commitment_ids, {:array, :binary_id})
+      add(:ignored_commitment_ids, {:array, :binary_id}, default: [])
     end
   end
 end

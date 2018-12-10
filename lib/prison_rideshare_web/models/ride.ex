@@ -80,8 +80,7 @@ defmodule PrisonRideshareWeb.Ride do
   def ignore_commitment_changeset(struct, commitment_id) do
     struct
     |> cast(%{}, [])
-    # FIXME why is this guard needed?
-    |> put_change(:ignored_commitment_ids, (struct.ignored_commitment_ids || []) ++ [commitment_id])
+    |> put_change(:ignored_commitment_ids, struct.ignored_commitment_ids ++ [commitment_id])
   end
 
   def import_changeset(struct, params \\ %{}) do
