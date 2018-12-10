@@ -45,6 +45,12 @@ defmodule PrisonRideshareWeb.Router do
   end
 
   scope "/", PrisonRideshareWeb do
+    pipe_through(:admin_api)
+
+    get("/rides/overlaps", RideController, :overlaps)
+  end
+
+  scope "/", PrisonRideshareWeb do
     pipe_through(:calendar)
 
     get("/rides/calendar", RideController, :calendar)
@@ -90,6 +96,8 @@ defmodule PrisonRideshareWeb.Router do
     post("/posts/readings", PostController, :read_all_posts)
     post("/posts/:id/readings", PostController, :read_post)
     delete("/posts/:id/readings", PostController, :unread_post)
+
+    post("/rides/:id/ignore/:commitment_id", RideController, :ignore_commitment)
   end
 
   scope "/", PrisonRideshareWeb do

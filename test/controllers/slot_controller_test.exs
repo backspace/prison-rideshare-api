@@ -22,7 +22,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     assert json_response(conn, 200)["data"] == [
              %{
                "id" => later.id,
-               "type" => "slot",
+               "type" => "slots",
                "attributes" => %{
                  "start" => "2117-12-10T13:00:00.000000Z",
                  "end" => "2117-12-10T17:00:00.000000Z",
@@ -34,7 +34,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
              },
              %{
                "id" => earlier.id,
-               "type" => "slot",
+               "type" => "slots",
                "attributes" => %{
                  "start" => "2117-12-08T13:00:00.000000Z",
                  "end" => "2117-12-08T17:00:00.000000Z",
@@ -44,7 +44,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
                  "commitments" => %{
                    "data" => [
                      %{
-                       "type" => "commitment",
+                       "type" => "commitments",
                        "id" => commitment.id
                      }
                    ]

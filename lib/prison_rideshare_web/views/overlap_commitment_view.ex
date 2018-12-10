@@ -1,4 +1,4 @@
-defmodule PrisonRideshareWeb.CommitmentView do
+defmodule PrisonRideshareWeb.OverlapCommitmentView do
   use PrisonRideshareWeb, :view
   use JaSerializer.PhoenixView
 
@@ -8,13 +8,13 @@ defmodule PrisonRideshareWeb.CommitmentView do
     :person,
     type: "people",
     serializer: PrisonRideshareWeb.PersonView,
-    include: false
+    include: true
   )
 
   has_one(
     :slot,
     type: "slots",
     serializer: PrisonRideshareWeb.SlotView,
-    include: false
+    include: true
   )
 end

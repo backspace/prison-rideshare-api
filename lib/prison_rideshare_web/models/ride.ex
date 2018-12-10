@@ -37,6 +37,9 @@ defmodule PrisonRideshareWeb.Ride do
 
     has_many(:reimbursements, PrisonRideshareWeb.Reimbursement)
 
+    field(:commitments, {:array, :commitment}, virtual: true)
+    field(:ignored_commitment_ids, {:array, :binary_id}, default: [])
+
     timestamps(type: :utc_datetime)
   end
 
@@ -72,6 +75,12 @@ defmodule PrisonRideshareWeb.Ride do
     ])
     |> validate_required([:start, :end, :name, :address, :contact, :passengers])
     |> calculate_car_expenses(struct)
+  end
+
+  def ignore_commitment_changeset(struct, commitment_id) do
+    struct
+    |> cast(%{}, [])
+    |> put_change(:ignored_commitment_ids, struct.ignored_commitment_ids ++ [commitment_id])
   end
 
   def import_changeset(struct, params \\ %{}) do

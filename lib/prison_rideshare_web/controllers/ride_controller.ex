@@ -1,7 +1,7 @@
 defmodule PrisonRideshareWeb.RideController do
   use PrisonRideshareWeb, :controller
 
-  alias PrisonRideshareWeb.Ride
+  alias PrisonRideshareWeb.{Commitment, Ride}
   alias JaSerializer.Params
 
   import Ecto.Query
@@ -40,6 +40,69 @@ defmodule PrisonRideshareWeb.RideController do
     conn
     |> put_view(PrisonRideshareWeb.UnauthRideView)
     |> render("index.json-api", data: rides)
+  end
+
+  def overlaps(conn, _) do
+    slot_intervals = Repo.all(Commitment)
+    |> Repo.preload([:person, slot: [commitments: [:person, :slot]]])
+    |> Enum.map(fn commitment -> commitment.slot end)
+    |> Enum.uniq()
+    |> Enum.map(fn slot -> %{slot: slot, interval: Timex.Interval.new(from: slot.start, until: slot.end)} end)
+
+    now = NaiveDateTime.utc_now()
+
+    rides = Repo.all(
+      from(
+        r in Ride,
+        where:
+          r.enabled and is_nil(r.combined_with_ride_id) and 
+          r.start >= ^now and is_nil(r.driver_id)
+      )
+    )
+    |> preload
+    |> Enum.reduce([], fn ride, rides ->
+        ride_interval = Timex.Interval.new(from: ride.start, until: ride.end)
+
+        if ride_interval != {:error, :invalid_until} do
+          commitments = Enum.reduce(slot_intervals, [], fn slot_interval, commitments ->
+            commitments = commitments ++ case Timex.Interval.overlaps?(slot_interval[:interval], ride_interval) do
+              true -> 
+                slot_interval[:slot].commitments
+                |> Enum.reject(fn commitment -> Enum.member?(ride.ignored_commitment_ids, commitment.id) end)
+                |> Enum.map(fn commitment -> Map.put(commitment, :slot, slot_interval[:slot]) end)
+              _ -> []
+            end
+
+            commitments
+          end)
+
+          ride = Map.put(ride, :commitments, commitments)
+
+          rides = rides ++ case Enum.empty?(commitments) do
+            true -> []
+            false -> [ride]
+          end
+
+          rides
+        else
+          rides
+        end
+    end)
+  
+    conn
+    |> put_view(PrisonRideshareWeb.OverlapRideView)
+    |> render("index.json-api", data: rides)
+  end
+
+  def ignore_commitment(conn, %{"id" => ride_id, "commitment_id" => commitment_id}) do
+    ride =
+      Repo.get!(Ride, ride_id)
+      |> preload
+    
+    changeset = Ride.ignore_commitment_changeset(ride, commitment_id)
+    PaperTrail.update(changeset, version_information(conn))
+
+    render(conn, "show.json-api", data: ride)
   end
 
   def calendar(conn, _) do
