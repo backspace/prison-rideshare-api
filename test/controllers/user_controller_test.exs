@@ -1,5 +1,6 @@
 defmodule PrisonRideshareWeb.UserControllerTest do
   use PrisonRideshareWeb.ConnCase
+  use Bamboo.Test
 
   alias PrisonRideshareWeb.User
   alias PrisonRideshare.Repo
@@ -130,5 +131,14 @@ defmodule PrisonRideshareWeb.UserControllerTest do
     conn = delete(conn, user_path(conn, :delete, user))
     assert response(conn, 204)
     refute Repo.get(User, user.id)
+  end
+
+  test "sends a reset email when resetting a password" do
+    user = Repo.insert!(%User{email: "user@example.com"})
+
+    conn = post(conn, user_path(conn, :reset, email: "user@example.com"))
+
+    assert_delivered_email(PrisonRideshare.Email.reset(user))
+    assert response(conn, 204)
   end
 end

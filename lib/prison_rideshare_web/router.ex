@@ -63,6 +63,8 @@ defmodule PrisonRideshareWeb.Router do
     post("/register", RegistrationController, :create)
     post("/token", SessionController, :create, as: :login)
 
+    post("/users/reset", UserController, :reset)
+
     resources("/gas-prices", GasPriceController, only: [:index])
     resources("/rides", RideController, except: [:new, :edit])
     resources("/slots", SlotController, only: [:index])

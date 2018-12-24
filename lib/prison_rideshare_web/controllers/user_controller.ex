@@ -69,4 +69,13 @@ defmodule PrisonRideshareWeb.UserController do
 
     send_resp(conn, :no_content, "")
   end
+
+  def reset(conn, %{"email" => email}) do
+    user = Repo.get_by!(User, email: email)
+
+    PrisonRideshare.Email.reset(user)
+    |> PrisonRideshare.Mailer.deliver_later()
+
+    send_resp(conn, :no_content, "")
+  end
 end
