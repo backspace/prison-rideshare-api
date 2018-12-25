@@ -1,1 +1,1 @@
-reset!
+<a href='<%= @link %>'>reset</a>!

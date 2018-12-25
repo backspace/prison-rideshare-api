@@ -1,1 +1,1 @@
-reset!
+reset! <%= @link %>

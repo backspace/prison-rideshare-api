@@ -72,8 +72,9 @@ defmodule PrisonRideshareWeb.UserController do
 
   def reset(conn, %{"email" => email}) do
     user = Repo.get_by!(User, email: email)
+    token = Phoenix.Token.sign(PrisonRideshareWeb.Endpoint, "reset salt", user.id)
 
-    PrisonRideshare.Email.reset(user)
+    PrisonRideshare.Email.reset(user, token)
     |> PrisonRideshare.Mailer.deliver_later()
 
     send_resp(conn, :no_content, "")
