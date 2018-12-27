@@ -68,6 +68,7 @@ defmodule PrisonRideshareWeb.Router do
     resources("/gas-prices", GasPriceController, only: [:index])
     resources("/rides", RideController, except: [:new, :edit])
     resources("/slots", SlotController, only: [:index])
+    resources("/users", UserController, only: [:update])
   end
 
   scope "/", PrisonRideshareWeb do
@@ -92,7 +93,7 @@ defmodule PrisonRideshareWeb.Router do
     resources("/institutions", InstitutionController, except: [:new, :edit])
     resources("/people", PersonController, except: [:new, :edit])
     resources("/reimbursements", ReimbursementController, except: [:new, :edit])
-    resources("/users", UserController, expect: [:new, :edit])
+    resources("/users", UserController, only: [:index, :show, :create, :delete])
 
     resources("/posts", PostController, except: [:new, :edit])
     post("/posts/readings", PostController, :read_all_posts)

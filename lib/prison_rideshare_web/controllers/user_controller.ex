@@ -46,18 +46,27 @@ defmodule PrisonRideshareWeb.UserController do
         "id" => id,
         "data" => data = %{"type" => "users", "attributes" => _user_params}
       }) do
-    user = Repo.get!(User, id)
-    changeset = User.admin_changeset(user, Params.to_attributes(data))
 
-    case PaperTrail.update(changeset, version_information(conn)) do
-      {:ok, %{model: user}} ->
-        render(conn, "show.json-api", data: user)
+    case conn do
+      %{private: %{guardian_default_resource: %{admin: true}}} ->
+        user = Repo.get!(User, id)
+        changeset = User.admin_changeset(user, Params.to_attributes(data))
 
-      {:error, changeset} ->
+        case PaperTrail.update(changeset, version_information(conn)) do
+          {:ok, %{model: user}} ->
+            render(conn, "show.json-api", data: user)
+    
+          {:error, changeset} ->
+            conn
+            |> put_status(:unprocessable_entity)
+            |> render(:errors, data: changeset)
+        end
+      
+      _ ->
         conn
-        |> put_status(:unprocessable_entity)
-        |> render(:errors, data: changeset)
-    end
+        |> put_status(:unauthorized)
+        |> render(PrisonRideshareWeb.ErrorView, "401.json")
+      end
   end
 
   def delete(conn, %{"id" => id}) do
