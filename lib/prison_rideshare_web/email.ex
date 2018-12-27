@@ -42,7 +42,7 @@ defmodule PrisonRideshare.Email do
     )
     |> assign(
       :link,
-      "#{Application.get_env(:prison_rideshare, :ui_root)}/reset?token=#{token}"
+      "#{Application.get_env(:prison_rideshare, :ui_root)}/reset/#{user.id}?token=#{token}"
     )
     |> render(:reset)
   end
