@@ -2,6 +2,8 @@ defmodule PrisonRideshareWeb.UserControllerTest do
     use PrisonRideshareWeb.ConnCase
     use Bamboo.Test
 
+    import Mock
+
     alias PrisonRideshareWeb.User
     alias PrisonRideshare.Repo
   
@@ -47,5 +49,32 @@ defmodule PrisonRideshareWeb.UserControllerTest do
   
       assert json_response(conn, 401)
     end
-  end
+
+    test "updates a user’s password when the reset token is valid", %{conn: conn} do
+      user = Repo.insert!(%User{email: "user@example.com"})
+      user_id = user.id
+
+      token = "TOKEN!"
+
+      with_mock Phoenix.Token, [verify: fn(PrisonRideshareWeb.Endpoint, "reset salt", token) -> {:ok, user_id} end] do
+        conn =
+          put(conn, user_path(conn, :update, token), %{
+            "data" => %{
+              "type" => "users",
+              "attributes" => %{
+                "password" => "abcdef",
+                "password-confirmation" => "abcdef"
+              }
+            }
+          })
+        
+        user = Repo.get_by(User, %{email: @valid_attrs[:email]})
+        assert json_response(conn, 201)["data"]["id"] == user.id
+    
+        [version] = Repo.all(PaperTrail.Version)
+        assert version.event == "insert"
+        refute version.item_changes["password"]
+        refute version.item_changes["password_confirmation"]
+      end
+      end
   
