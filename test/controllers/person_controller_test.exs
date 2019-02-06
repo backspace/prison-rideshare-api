@@ -13,7 +13,8 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     mobile: "5145551313",
     medium: "mobile",
     active: false,
-    self_notes: "Some self notes"
+    self_notes: "Some self notes",
+    address: "91 Albert St"
   }
   @invalid_attrs %{name: "aname"}
 
@@ -47,7 +48,8 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
         notes: "e",
         medium: "mobile",
         active: false,
-        self_notes: "notes"
+        self_notes: "notes",
+        address: "91 Albert"
       })
 
     conn = get(conn, person_path(conn, :show, person))
@@ -64,6 +66,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     assert attributes["medium"] == person.medium
     refute attributes["active"]
     assert attributes["self-notes"] == person.self_notes
+    assert attributes["address"] == person.address
   end
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
@@ -90,6 +93,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     assert attributes["name"] == "some content"
     assert attributes["email"] == @valid_attrs[:email]
     assert attributes["mobile"] == @valid_attrs[:mobile]
+    assert attributes["address"] == @valid_attrs[:address]
 
     [user] = Repo.all(PrisonRideshareWeb.User)
 
@@ -164,6 +168,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     assert attributes["mobile"] == person.mobile
     assert attributes["medium"] == person.medium
     refute attributes["active"]
+    assert attributes["address"] == person.address
 
     [version] = Repo.all(PaperTrail.Version)
     assert version.event == "update"

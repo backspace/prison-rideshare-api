@@ -87,7 +87,8 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
             "email" => "newemail@example.com",
             "notes" => "New notes?",
             "mobile" => "2045551313",
-            "self-notes" => "New self notes."
+            "self-notes" => "New self notes.",
+            "address" => "a new address"
           }
         }
       })
@@ -102,10 +103,12 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
     assert attributes["medium"] == person.medium
     refute attributes["notes"]
     assert attributes["self-notes"] == "New self notes."
+    assert attributes["address"] == "a new address"
 
     assert person.name == "A new name"
     assert person.notes == "These should be secret"
     assert person.self_notes == "New self notes."
+    assert person.address == "a new address"
 
     [version] = Repo.all(PaperTrail.Version)
     assert version.event == "update"
