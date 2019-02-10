@@ -31,7 +31,8 @@ defmodule PrisonRideshareWeb.RideController do
         from(
           r in Ride,
           where:
-            r.enabled and is_nil(r.distance) and is_nil(r.combined_with_ride_id) and
+            r.enabled and is_nil(r.combined_with_ride_id) and
+              is_nil(r.distance) and not(r.car_expenses > 0) and
               not is_nil(r.driver_id),
           preload: [:institution, :driver]
         )
@@ -111,7 +112,8 @@ defmodule PrisonRideshareWeb.RideController do
         from(
           r in Ride,
           where:
-            r.enabled and is_nil(r.distance) and is_nil(r.combined_with_ride_id) and
+            r.enabled and is_nil(r.combined_with_ride_id) and
+              is_nil(r.distance) and not(r.car_expenses > 0) and
               is_nil(r.driver_id),
           preload: [:institution, :driver, :children]
         )
@@ -205,7 +207,7 @@ defmodule PrisonRideshareWeb.RideController do
       {:ok, %{model: ride}} ->
         ride = preload(ride)
 
-        if Ecto.Changeset.get_change(changeset, :distance) do
+        if (Ecto.Changeset.get_change(changeset, :distance) || Ecto.Changeset.get_change(changeset, :car_expenses)) do
           PrisonRideshare.Email.report(ride)
           |> PrisonRideshare.Mailer.deliver_later()
         end

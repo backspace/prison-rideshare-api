@@ -480,6 +480,46 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     assert_delivered_email(PrisonRideshare.Email.report(saved))
   end
 
+  test "updates and sends an email when only car expenses are changed", %{conn: conn} do
+    other_driver = Repo.insert!(%Person{name: "Other Driver"})
+
+    ride = Repo.insert!(%Ride{
+      driver: other_driver,
+      rate: ~M[22],
+      end: Ecto.DateTime.utc(),
+      name: "some content",
+      address: "an address",
+      contact: "a contact",
+      start: Ecto.DateTime.utc(),
+      overridable: true})
+
+    conn =
+      put(conn, ride_path(conn, :update, ride), %{
+        "meta" => %{},
+        "data" => %{
+          "type" => "rides",
+          "id" => ride.id,
+          "attributes" => %{
+            "car-expenses": 2000
+          },
+          "relationships" => relationships()
+        }
+      })
+
+    saved =
+      Repo.get!(Ride, ride.id)
+      |> Repo.preload([:driver, :institution])
+
+    assert saved
+
+    assert saved.car_expenses == ~M[2000]
+
+    data = json_response(conn, 200)["data"]
+
+    assert data["attributes"]["car-expenses"] == 2000
+    assert_delivered_email(PrisonRideshare.Email.report(saved))
+  end
+
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
     ride_institution = Repo.insert!(%Institution{name: "Stony Mountain"})
     other_driver = Repo.insert!(%Person{name: "Other Driver"})
