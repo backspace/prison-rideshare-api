@@ -3,7 +3,7 @@ defmodule PrisonRideshare.Repo.Migrations.AddPersonMailingAddress do
 
   def change do
     alter table(:people) do
-      add(:address, :string)
+      add(:address, :text)
     end
   end
 end
