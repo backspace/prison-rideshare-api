@@ -26,3 +26,12 @@ user =
 
 PrisonRideshareWeb.User.admin_changeset(user, %{admin: true})
 |> PaperTrail.update!(version_information)
+
+PrisonRideshare.Repo.all(PrisonRideshareWeb.Person)
+|> Enum.each(fn person ->
+  Ecto.Changeset.change(
+    person,
+    calendar_secret: PrisonRideshare.Secret.autogenerate()
+  )
+  |> PrisonRideshare.Repo.update!()
+end)

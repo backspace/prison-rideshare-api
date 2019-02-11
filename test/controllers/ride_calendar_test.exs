@@ -4,6 +4,8 @@ defmodule PrisonRideshare.RideCalendarTest do
   alias PrisonRideshareWeb.{Institution, Person, Ride}
   alias PrisonRideshare.Repo
 
+  import Money.Sigils
+
   setup do
     conn =
       build_conn()
@@ -70,6 +72,24 @@ defmodule PrisonRideshare.RideCalendarTest do
       institution: institution,
       driver: driver,
       address: "421 Osborne"
+    })
+
+    # This ride should not be visible since it has a distance.
+    Repo.insert!(%Ride{
+      start: Ecto.DateTime.from_erl({{2017, 1, 17}, {18, 0, 0}}),
+      end: Ecto.DateTime.from_erl({{2017, 1, 17}, {20, 0, 0}}),
+      institution: institution,
+      address: "421 Osborne",
+      distance: 44
+    })
+
+    # This ride should not be visible since it has car expenses.
+    Repo.insert!(%Ride{
+      start: Ecto.DateTime.from_erl({{2017, 1, 17}, {18, 0, 0}}),
+      end: Ecto.DateTime.from_erl({{2017, 1, 17}, {20, 0, 0}}),
+      institution: institution,
+      address: "421 Osborne",
+      car_expenses: ~M[11]
     })
 
     conn = get(conn, ride_path(conn, :calendar))

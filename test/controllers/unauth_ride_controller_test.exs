@@ -49,6 +49,11 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     })
 
     Repo.insert!(%Ride{
+      driver: driver,
+      car_expenses: ~M[77]
+    })
+
+    Repo.insert!(%Ride{
       combined_with: ride
     })
 

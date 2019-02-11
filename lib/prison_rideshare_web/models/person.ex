@@ -3,9 +3,14 @@ defmodule PrisonRideshareWeb.Person do
 
   schema "people" do
     field(:name, :string)
+
     field(:email, :string)
+
     field(:mobile, :string)
     field(:landline, :string)
+
+    field(:address, :string)
+
     field(:notes, :string)
     field(:self_notes, :string)
     field(:medium, :string)
@@ -28,13 +33,13 @@ defmodule PrisonRideshareWeb.Person do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :email, :mobile, :landline, :notes, :self_notes, :medium, :active])
+    |> cast(params, [:name, :email, :mobile, :landline, :address, :notes, :self_notes, :medium, :active])
     |> validate_required([:name, :email])
   end
 
   def self_changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :mobile, :landline, :medium, :active, :self_notes])
+    |> cast(params, [:name, :mobile, :landline, :address, :medium, :active, :self_notes])
     |> validate_required([:name])
   end
 

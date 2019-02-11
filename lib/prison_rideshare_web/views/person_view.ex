@@ -9,6 +9,7 @@ defmodule PrisonRideshareWeb.PersonView do
     :email,
     :mobile,
     :landline,
+    :address,
     :notes,
     :self_notes,
     :medium,
