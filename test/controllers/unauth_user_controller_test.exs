@@ -79,4 +79,40 @@ defmodule PrisonRideshareWeb.UserControllerTest do
       refute version.item_changes["password_confirmation"]
     end
   end
+
+  test "does not update a user's password if the confirmation doesn't match and the password isn't long enough", %{conn: conn} do
+    user = Repo.insert!(%User{email: "user@example.com"})
+    user_id = user.id
+
+    token = "TOKEN!"
+
+    with_mock Phoenix.Token, [verify: fn(PrisonRideshareWeb.Endpoint, "reset salt", _, _) -> {:ok, user_id} end] do
+      conn =
+        put(conn, user_path(conn, :update, token), %{
+          "data" => %{
+            "type" => "users",
+            "attributes" => %{
+              "password" => "abcdef",
+              "password-confirmation" => "abcde"
+            }
+          }
+        })
+      
+
+      assert json_response(conn, 422)["errors"] == [
+        %{
+          "detail" => "Password confirmation does not match confirmation",
+          "source" => %{"pointer" => "/data/attributes/password-confirmation"},
+          "title" => "does not match confirmation"
+        },
+        %{
+          "detail" => "Password should be at least 8 character(s)",
+          "source" => %{"pointer" => "/data/attributes/password"},
+          "title" => "should be at least 8 character(s)"
+        },
+      ]
+  
+      assert Repo.all(PaperTrail.Version) == []
+    end
+  end
 end

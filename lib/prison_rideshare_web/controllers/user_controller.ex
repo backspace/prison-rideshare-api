@@ -76,6 +76,11 @@ defmodule PrisonRideshareWeb.UserController do
             case PaperTrail.update(changeset, version_information(conn)) do
               {:ok, %{model: user}} ->
                 render(conn, "show.json-api", data: user)
+
+              {:error, changeset} ->
+                conn
+                |> put_status(:unprocessable_entity)
+                |> render(:errors, data: changeset)
             end
 
           {:error, _} ->
