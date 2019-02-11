@@ -1,4 +1,4 @@
-defmodule PrisonRideshareWeb.UserControllerTest do
+defmodule PrisonRideshareWeb.UnauthUserControllerTest do
   use PrisonRideshareWeb.ConnCase
   use Bamboo.Test
 
