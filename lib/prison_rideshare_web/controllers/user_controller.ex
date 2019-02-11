@@ -63,7 +63,6 @@ defmodule PrisonRideshareWeb.UserController do
         end
       
       _ ->
-        query_params = Plug.Conn.fetch_query_params(conn)
         token = id
 
         # FIXME configure max age and salt?
