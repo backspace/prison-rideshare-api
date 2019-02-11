@@ -107,6 +107,9 @@ defmodule PrisonRideshareWeb.UserController do
     PrisonRideshare.Email.reset(user, token)
     |> PrisonRideshare.Mailer.deliver_later()
 
+    PrisonRideshare.Email.reset_report(user)
+    |> PrisonRideshare.Mailer.deliver_later()
+
     send_resp(conn, :no_content, "")
   end
 end

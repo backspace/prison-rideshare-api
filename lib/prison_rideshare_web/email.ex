@@ -46,4 +46,14 @@ defmodule PrisonRideshare.Email do
     )
     |> render(:reset)
   end
+
+  def reset_report(user) do
+    new_email(
+      to: "bot@barnonewpg.org",
+      from: {"Bar None Bot", "bot@barnonewpg.org"},
+      subject: "Password reset request for #{user.email}",
+      html_body: "yes",
+      text_body: "yes"
+    )
+  end
 end

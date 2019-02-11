@@ -160,7 +160,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
     refute Repo.get(User, user.id)
   end
 
-  test "sends a reset email when resetting a password" do
+  test "sends reset and reset report emails when resetting a password" do
     user = Repo.insert!(%User{email: "user@example.com"})
     user_id = user.id
     token = "token for #{user.email}"
@@ -169,6 +169,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
       conn = post(conn, user_path(conn, :reset, email: "user@example.com"))
 
       assert_delivered_email(PrisonRideshare.Email.reset(user, token))
+      assert_delivered_email(PrisonRideshare.Email.reset_report(user))
       assert response(conn, 204)
     end
   end
