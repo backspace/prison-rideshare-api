@@ -162,10 +162,9 @@ defmodule PrisonRideshareWeb.UserControllerTest do
 
   test "sends reset and reset report emails when resetting a password" do
     user = Repo.insert!(%User{email: "user@example.com"})
-    user_id = user.id
     token = "token for #{user.email}"
 
-    with_mock Phoenix.Token, [sign: fn(PrisonRideshareWeb.Endpoint, "reset salt", user_id) -> token end] do
+    with_mock Phoenix.Token, [sign: fn(PrisonRideshareWeb.Endpoint, "reset salt", _) -> token end] do
       conn = post(conn, user_path(conn, :reset, email: "user@example.com"))
 
       assert_delivered_email(PrisonRideshare.Email.reset(user, token))
