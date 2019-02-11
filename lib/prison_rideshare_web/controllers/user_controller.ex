@@ -63,9 +63,26 @@ defmodule PrisonRideshareWeb.UserController do
         end
       
       _ ->
-        conn
-        |> put_status(:unauthorized)
-        |> render(PrisonRideshareWeb.ErrorView, "401.json")
+        query_params = Plug.Conn.fetch_query_params(conn)
+        token = id
+
+        # FIXME configure max age and salt?
+        case Phoenix.Token.verify(PrisonRideshareWeb.Endpoint, "reset salt", token, 86400) do
+          {:ok, true_id} ->
+            user = Repo.get!(User, true_id)
+
+            changeset = User.changeset(user, Params.to_attributes(data))
+
+            case PaperTrail.update(changeset, version_information(conn)) do
+              {:ok, %{model: user}} ->
+                render(conn, "show.json-api", data: user)
+            end
+
+          {:error, _} ->
+            conn
+            |> put_status(:unauthorized)
+            |> render(PrisonRideshareWeb.ErrorView, "401.json")    
+        end
       end
   end
 
