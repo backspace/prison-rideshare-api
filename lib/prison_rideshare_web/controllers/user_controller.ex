@@ -12,7 +12,7 @@ defmodule PrisonRideshareWeb.UserController do
   end
 
   def create(conn, %{"data" => data = %{"type" => "users", "attributes" => _user_params}}) do
-    changeset = User.admin_changeset(%User{}, Params.to_attributes(data))
+    changeset = User.changeset(%User{}, Params.to_attributes(data))
 
     case PaperTrail.insert(changeset, version_information(conn)) do
       {:ok, %{model: user}} ->

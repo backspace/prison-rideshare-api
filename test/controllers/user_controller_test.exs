@@ -68,29 +68,54 @@ defmodule PrisonRideshareWeb.UserControllerTest do
         "meta" => %{},
         "data" => %{
           "type" => "users",
-          "attributes" => @valid_attrs,
+          "attributes" => %{
+            admin: true,
+            email: "another@example.com",
+            password: "a password",
+            "password-confirmation": "a password"
+          },
           "relationships" => relationships()
         }
       })
 
-    user = Repo.get_by(User, @valid_attrs)
+    user = Repo.get_by(User, %{email: "another@example.com"})
+
     assert json_response(conn, 201)["data"]["id"] == user.id
-    assert json_response(conn, 201)["data"]["attributes"]["admin"] == false
+    assert json_response(conn, 201)["data"]["attributes"]["email"] == "another@example.com"
+    refute json_response(conn, 201)["data"]["attributes"]["admin"]
   end
 
-  # FIXME will this ever happen?
-  # test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-  #   conn = post conn, user_path(conn, :create), %{
-  #     "meta" => %{},
-  #     "data" => %{
-  #       "type" => "user",
-  #       "attributes" => @invalid_attrs,
-  #       "relationships" => relationships
-  #     }
-  #   }
-  #
-  #   assert json_response(conn, 422)["errors"] != %{}
-  # end
+  test "does not create resource and renders errors when data is invalid", %{conn: conn} do
+    conn = post(conn, user_path(conn, :create), %{
+      "meta" => %{},
+      "data" => %{
+        "type" => "users",
+        "attributes" => %{
+          "password" => "abc",
+          "password-confirmation" => "def"
+        },
+        "relationships" => relationships()
+      }
+    })
+  
+    assert json_response(conn, 422)["errors"] == [
+      %{
+        "detail" => "Password confirmation does not match confirmation",
+        "source" => %{"pointer" => "/data/attributes/password-confirmation"},
+        "title" => "does not match confirmation"
+      },
+      %{
+        "detail" => "Password should be at least 8 character(s)",
+        "source" => %{"pointer" => "/data/attributes/password"},
+        "title" => "should be at least 8 character(s)"
+      },
+      %{
+        "detail" => "Email can't be blank",
+        "source" => %{"pointer" => "/data/attributes/email"},
+        "title" => "can't be blank"
+      }
+    ]
+  end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
     user = Repo.insert!(%User{})
