@@ -52,7 +52,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
     end
   end
 
-  test "updates a user’s password when the reset token is valid", %{conn: conn} do
+  test "updates a user's password when the reset token is valid", %{conn: conn} do
     user = Repo.insert!(%User{email: "user@example.com"})
     user_id = user.id
 
