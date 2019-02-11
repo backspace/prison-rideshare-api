@@ -70,7 +70,7 @@ defmodule PrisonRideshareWeb.UserController do
           {:ok, true_id} ->
             user = Repo.get!(User, true_id)
 
-            changeset = User.changeset(user, Params.to_attributes(data))
+            changeset = User.password_changeset(user, Params.to_attributes(data))
 
             case PaperTrail.update(changeset, version_information(conn)) do
               {:ok, %{model: user}} ->

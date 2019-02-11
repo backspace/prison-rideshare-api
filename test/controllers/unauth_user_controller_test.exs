@@ -92,6 +92,7 @@ defmodule PrisonRideshareWeb.UnauthUserControllerTest do
           "data" => %{
             "type" => "users",
             "attributes" => %{
+              "email" => "helooooo",
               "password" => "abcdef",
               "password-confirmation" => "abcde"
             }
