@@ -59,7 +59,8 @@ defmodule Lol do
       Person.changeset(%Person{
         name: name,
         email: "#{String.replace(String.downcase(name), " ", ".")}@example.com",
-        mobile: Faker.Phone.EnUs.phone()
+        mobile: Faker.Phone.EnUs.phone(),
+        address: Faker.Address.street_address(),
       }),
       Lol.version_information()
     )
