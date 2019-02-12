@@ -66,7 +66,7 @@ defmodule PrisonRideshareWeb.UserController do
         token = id
 
         # FIXME configure max age and salt?
-        case Phoenix.Token.verify(PrisonRideshareWeb.Endpoint, "reset salt", token, 86400) do
+        case Phoenix.Token.verify(PrisonRideshareWeb.Endpoint, "reset salt", token, max_age: 86400) do
           {:ok, true_id} ->
             user = Repo.get!(User, true_id)
 
