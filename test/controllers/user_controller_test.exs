@@ -172,4 +172,9 @@ defmodule PrisonRideshareWeb.UserControllerTest do
       assert response(conn, 204)
     end
   end
+
+  test "reports success triggering a reset even when the user doesn’t exist" do
+    conn = post(conn, user_path(conn, :reset, email: "user@example.com"))
+    assert response(conn, 204)
+  end
 end

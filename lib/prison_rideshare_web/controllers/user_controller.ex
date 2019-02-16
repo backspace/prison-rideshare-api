@@ -101,14 +101,18 @@ defmodule PrisonRideshareWeb.UserController do
   end
 
   def reset(conn, %{"email" => email}) do
-    user = Repo.get_by!(User, email: email)
-    token = Phoenix.Token.sign(PrisonRideshareWeb.Endpoint, "reset salt", user.id)
+    case Repo.get_by(User, email: email) do
+      nil ->
+        nil
+      user ->
+        token = Phoenix.Token.sign(PrisonRideshareWeb.Endpoint, "reset salt", user.id)
 
-    PrisonRideshare.Email.reset(user, token)
-    |> PrisonRideshare.Mailer.deliver_later()
-
-    PrisonRideshare.Email.reset_report(user)
-    |> PrisonRideshare.Mailer.deliver_later()
+        PrisonRideshare.Email.reset(user, token)
+        |> PrisonRideshare.Mailer.deliver_later()
+    
+        PrisonRideshare.Email.reset_report(user)
+        |> PrisonRideshare.Mailer.deliver_later()
+    end
 
     send_resp(conn, :no_content, "")
   end
