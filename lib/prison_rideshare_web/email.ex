@@ -33,4 +33,27 @@ defmodule PrisonRideshare.Email do
     )
     |> render(:calendar_link)
   end
+
+  def reset(user, token) do
+    new_email(
+      to: user.email,
+      from: {"Bar None Bot", "bot@barnonewpg.org"},
+      subject: "Password reset"
+    )
+    |> assign(
+      :link,
+      "#{Application.get_env(:prison_rideshare, :ui_root)}/reset/#{token}"
+    )
+    |> render(:reset)
+  end
+
+  def reset_report(user) do
+    new_email(
+      to: "bot@barnonewpg.org",
+      from: {"Bar None Bot", "bot@barnonewpg.org"},
+      subject: "Password reset request for #{user.email}",
+      html_body: "yes",
+      text_body: "yes"
+    )
+  end
 end

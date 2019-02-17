@@ -1,0 +1,1 @@
+Visit <a href='<%= @link %>'>here</a> to reset your password. If you didn’t request this, please let us know!
