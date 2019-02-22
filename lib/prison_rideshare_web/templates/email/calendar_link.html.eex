@@ -1,11 +1,11 @@
 <p>Hello <%= @person.name %>,</p>
 
-<p><a href='<%= @link %>'>Here</a> is your unique calendar link for <%= @month %>. If you’re not sure what this is about, read on below.</p>
+<p><a href='<%= @link %>'>Here</a> is your unique calendar link for <%= @month %>.</p>
 
-<p>Click any slot that you can commit in advance to driving visitors for. We’ll contact you if anyone books a visit for that time.</p>
+<p>A new feature this month: “Edit communication details” to let us know your mailing address for our quarterly newsletter.</p>
 
-<p>We rely on you being available if you commit, with the understanding that urgent circumstances could always come up. If you find you can no longer drive for a slot you’ve committed to, you can click it again to delete your commitment.</p>
+<p>If you don’t know how the calendar works, <a href='https://barnoneblog.wordpress.com/rideshare/driver-calendar/'>here</a> is an explanation.</p>
 
-<p>Use the “Edit communication details” button to update your name or phone numbers. If you’re unavailable to give rides, you can let us know there, too. Please email us if you need to change your email address, as that can’t be edited this way yet.</p>
+<p>Does this feature work for you? Do you have suggestions on how it could be better? Let us know.</p>
 
-<p>Thanks for continuing to bring people to see their loved ones in prison, we appreciate it! 😍</p>
+<p>Thanks for volunteering 😍</p>
