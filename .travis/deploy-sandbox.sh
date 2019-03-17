@@ -6,7 +6,7 @@ chmod 700 ~/.ssh
 
 eval "$(ssh-agent -s)" #start the ssh agent
 ssh-add .travis/deploy.key
-ssh-keyscan corepoint.chromatin.ca > ~/.ssh/known_hosts
+ssh-keyscan corepoint.chromatin.ca >> ~/.ssh/known_hosts
 chmod 644 ~/.ssh/known_hosts
 
 git remote add deploy dokku@corepoint.chromatin.ca:prison-rideshare-api-sandbox
