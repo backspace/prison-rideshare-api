@@ -10,6 +10,11 @@ variables:
   POSTGRES_PASSWORD: "postgres"
   MIX_ENV: "test"
 
+cache:
+  paths:
+    - deps/
+    - _build/
+
 before_script:
   - apt-get update && apt-get -y install postgresql-client
   - mix local.hex --force
