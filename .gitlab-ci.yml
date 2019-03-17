@@ -23,7 +23,7 @@ before_script:
 
 mix:
   script:
-  - mix coveralls.post
+  - mix test
 
 deploy:
   script: .travis/deploy-sandbox.sh
