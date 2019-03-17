@@ -1,7 +1,7 @@
 image: elixir:1.6.0
 
 services:
-  - postgres:latest
+  - postgres:9.6
 
 variables:
   POSTGRES_DB: prison_rideshare_test
