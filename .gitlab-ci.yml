@@ -1,4 +1,4 @@
-image: trenpixster/elixir:latest
+image: _/elixir:1.6.0
 
 services:
   - postgres:latest
