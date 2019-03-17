@@ -7,6 +7,7 @@ ssh-keyscan corepoint.chromatin.ca > ~/.ssh/known_hosts
 
 git remote add deploy dokku@corepoint.chromatin.ca:prison-rideshare-api-sandbox
 git config --global push.default simple
-git push deploy primary
+# FIXME change branch
+git push deploy gitlab-ci
 
 ssh -t dokku@corepoint.chromatin.ca -- run prison-rideshare-api-sandbox mix reset_sandbox
