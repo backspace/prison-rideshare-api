@@ -1,6 +1,9 @@
 echo $DEPLOYMENT_KEY > .travis/deploy.key
 chmod 600 .travis/deploy.key # this key should have push access
 
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+
 eval "$(ssh-agent -s)" #start the ssh agent
 ssh-add .travis/deploy.key
 ssh-keyscan corepoint.chromatin.ca > ~/.ssh/known_hosts
