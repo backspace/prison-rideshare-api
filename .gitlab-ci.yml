@@ -26,4 +26,4 @@ mix:
   - mix coveralls.post --branch $CI_COMMIT_REF_NAME --sha $CI_COMMIT_SHORT_SHA --message "$CI_COMMIT_MESSAGE"
 
 deploy:
-  script: .travis/deploy-sandbox.sh
+  script: .ci/deploy-sandbox.sh
