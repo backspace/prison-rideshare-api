@@ -1,8 +1,8 @@
-echo $DEPLOYMENT_KEY > .travis/deploy.key
+echo -n $DEPLOYMENT_KEY > .travis/deploy.key
 wc .travis/deploy.key
 chmod 600 .travis/deploy.key # this key should have push access
 
-echo $SOMETHING > something
+echo -n $SOMETHING > something
 echo "something?"
 wc something
 
