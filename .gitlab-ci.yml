@@ -27,5 +27,5 @@ mix:
 
 deploy:
   script: 
-    - export $DEPLOYMENT_KEY=$DEPLOYMENT_KEY
+    - export DEPLOYMENT_KEY=$DEPLOYMENT_KEY
     - .travis/deploy-sandbox.sh
