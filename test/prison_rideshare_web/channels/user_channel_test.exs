@@ -14,7 +14,7 @@ defmodule PrisonRideshareWeb.UserChannelTest do
     {:ok, socket: socket}
   end
 
-  test "announces joins and leaves", %{socket: socket} do
+  test "announces joins and leaves", %{socket: _} do
     other_user = Repo.insert!(%User{email: "other@example.com", id: Ecto.UUID.generate()})
     {:ok, _, guardian_default_claims} = PrisonRideshare.Guardian.encode_and_sign(other_user)
 

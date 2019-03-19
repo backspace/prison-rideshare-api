@@ -261,7 +261,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         count: 400
       })
 
-    past_commitment =
+    _past_commitment =
       Repo.insert!(%Commitment{
         slot_id: past_slot.id,
         person_id: person.id
@@ -326,8 +326,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
       Repo.insert!(%Commitment{
       })
 
-    conn =
-      post(conn, ride_path(conn, :ignore_commitment, ride.id, commitment.id), %{})
+    post(conn, ride_path(conn, :ignore_commitment, ride.id, commitment.id), %{})
     
     [ride_after] = Repo.all(Ride)
 
@@ -526,16 +525,15 @@ defmodule PrisonRideshareWeb.RideControllerTest do
 
     ride = Repo.insert!(%Ride{driver: other_driver, institution: ride_institution})
 
-    conn =
-      put(conn, ride_path(conn, :update, ride), %{
-        "meta" => %{},
-        "data" => %{
-          "type" => "rides",
-          "id" => ride.id,
-          "attributes" => Map.delete(@valid_attrs, :distance),
-          "relationships" => relationships()
-        }
-      })
+    put(conn, ride_path(conn, :update, ride), %{
+      "meta" => %{},
+      "data" => %{
+        "type" => "rides",
+        "id" => ride.id,
+        "attributes" => Map.delete(@valid_attrs, :distance),
+        "relationships" => relationships()
+      }
+    })
 
     assert_no_emails_delivered()
   end

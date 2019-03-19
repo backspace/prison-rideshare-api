@@ -253,7 +253,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
     Repo.insert!(%Post{})
     Repo.insert!(%Post{})
 
-    conn = post(conn, post_path(conn, :read_all_posts))
+    post(conn, post_path(conn, :read_all_posts))
 
     [post_0, post_1] = Repo.all(Post)
     [user] = Repo.all(User)
@@ -283,7 +283,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
         readings: [user.id]
       })
 
-    conn = post(conn, post_path(conn, :read_post, post))
+    post(conn, post_path(conn, :read_post, post))
 
     post = Repo.one(Post)
 

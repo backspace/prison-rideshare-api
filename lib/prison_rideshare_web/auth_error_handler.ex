@@ -1,7 +1,7 @@
 defmodule PrisonRideshare.Guardian.AuthErrorHandler do
   use PrisonRideshareWeb, :controller
 
-  def auth_error(conn, {failure_type, reason}, _opts) do
+  def auth_error(conn, {failure_type, _}, _opts) do
     status =
       case failure_type do
         :invalid_token -> 401
