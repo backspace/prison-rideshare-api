@@ -12,10 +12,10 @@ config :logger, level: :warn
 # Configure your database
 config :prison_rideshare, PrisonRideshare.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "prison_rideshare_test",
-  hostname: "localhost",
+  username: System.get_env("POSTGRES_USER") || "postgres",
+  password: System.get_env("POSTGRES_PASSWORD") || "postgres",
+  database: System.get_env("POSTGRES_DB") || "prison_rideshare_test",
+  hostname: System.get_env("POSTGRES_HOST") || "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :prison_rideshare, PrisonRideshare.Mailer, adapter: Bamboo.TestAdapter

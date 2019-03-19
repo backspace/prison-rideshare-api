@@ -1,12 +1,15 @@
-openssl aes-256-cbc -K $encrypted_efc605b46718_key -iv $encrypted_efc605b46718_iv -in .travis/deploy.key.enc -out .travis/deploy.key -d
-chmod 600 .travis/deploy.key # this key should have push access
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
 
 eval "$(ssh-agent -s)" #start the ssh agent
-ssh-add .travis/deploy.key
+
+echo "$DEPLOYMENT_KEY" | tr -d '\r' | ssh-add - > /dev/null
+
 ssh-keyscan corepoint.chromatin.ca >> ~/.ssh/known_hosts
+chmod 644 ~/.ssh/known_hosts
 
 git remote add deploy dokku@corepoint.chromatin.ca:prison-rideshare-api-sandbox
 git config --global push.default simple
-git push deploy primary
+git push deploy HEAD:primary
 
 ssh -t dokku@corepoint.chromatin.ca -- run prison-rideshare-api-sandbox mix reset_sandbox
