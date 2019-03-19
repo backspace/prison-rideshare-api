@@ -16,6 +16,6 @@ git show-ref
 git remote add deploy dokku@corepoint.chromatin.ca:prison-rideshare-api-sandbox
 git config --global push.default simple
 # FIXME change branch
-git push deploy gitlab-ci:primary
+git push deploy HEAD:primary
 
 ssh -t dokku@corepoint.chromatin.ca -- run prison-rideshare-api-sandbox mix reset_sandbox
