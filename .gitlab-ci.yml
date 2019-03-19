@@ -33,5 +33,5 @@ mix:
 deploy:
   stage: deploy
   only:
-    - gitlab-ci # FIXME
+    - primary
   script: .ci/deploy-sandbox.sh
