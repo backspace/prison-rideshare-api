@@ -26,8 +26,4 @@ mix:
   - mix test
 
 deploy:
-  script: 
-    - echo $DEPLOYMENT_KEY | wc
-    - export DEPLOYMENT_KEY=$DEPLOYMENT_KEY
-    - export SOMETHING=$DEPLOYMENT_KEY
-    - .travis/deploy-sandbox.sh
+  script: .travis/deploy-sandbox.sh
