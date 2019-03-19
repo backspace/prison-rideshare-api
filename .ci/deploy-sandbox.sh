@@ -9,10 +9,6 @@ ssh-keyscan corepoint.chromatin.ca >> ~/.ssh/known_hosts
 
 chmod 644 ~/.ssh/known_hosts
 
-git branch
-git show-ref
-
-
 git remote add deploy dokku@corepoint.chromatin.ca:prison-rideshare-api-sandbox
 git config --global push.default simple
 # FIXME change branch
