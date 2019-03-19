@@ -15,6 +15,10 @@ cache:
     - deps/
     - _build/
 
+stages:
+  - test
+  - deploy
+
 before_script:
   - apt-get update && apt-get -y install postgresql-client
   - mix local.hex --force
@@ -22,8 +26,10 @@ before_script:
   - mix deps.get --only test
 
 mix:
+  stage: test
   script:
   - mix coveralls.post --branch $CI_COMMIT_REF_NAME --sha $CI_COMMIT_SHORT_SHA --message "$CI_COMMIT_MESSAGE"
 
 deploy:
+  stage: deploy
   script: .ci/deploy-sandbox.sh
