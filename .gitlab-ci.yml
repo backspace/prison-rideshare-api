@@ -26,4 +26,6 @@ mix:
   - mix test
 
 deploy:
-  script: .travis/deploy-sandbox.sh
+  script: 
+    - export $DEPLOYMENT_KEY=$DEPLOYMENT_KEY
+    - .travis/deploy-sandbox.sh
