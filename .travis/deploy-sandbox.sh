@@ -1,4 +1,5 @@
 echo $DEPLOYMENT_KEY > .travis/deploy.key
+wc .travis/deploy.key
 chmod 600 .travis/deploy.key # this key should have push access
 
 mkdir -p ~/.ssh
