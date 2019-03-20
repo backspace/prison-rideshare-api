@@ -2,10 +2,8 @@
 
 <p><a href='<%= @link %>'>Here</a> is your unique calendar link for <%= @month %>.</p>
 
-<p>A new feature this month: “Edit communication details” to let us know your mailing address for our quarterly newsletter.</p>
-
 <p>If you don’t know how the calendar works, <a href='https://barnoneblog.wordpress.com/rideshare/driver-calendar/'>here</a> is an explanation.</p>
 
 <p>Does this feature work for you? Do you have suggestions on how it could be better? Let us know.</p>
 
-<p>Thanks for volunteering 😍</p>
+<p>Thanks for volunteering 🤩</p>

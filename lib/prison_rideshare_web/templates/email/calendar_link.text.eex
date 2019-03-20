@@ -2,10 +2,8 @@ Hello <%= @person.name %>,
 
 Here is your unique calendar link for <%= @month %>: <%= @link %>
 
-A new feature this month: “Edit communication details” to let us know your mailing address for our quarterly newsletter.
-
 If you don’t know how the calendar works, visit https://barnoneblog.wordpress.com/rideshare/driver-calendar/
 
 Does this feature work for you? Do you have suggestions on how it could be better? Let us know.
 
-Thanks for volunteering 😍
+Thanks for volunteering 🤩
