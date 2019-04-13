@@ -54,9 +54,9 @@
   "sentry": {:hex, :sentry, "5.0.1", "05b8e9330b506e17f6171869cbfc169e9db98db5a34ff2ef00686af0361c7055", [:mix], [{:hackney, "~> 1.8.0 or 1.6.5", [hex: :hackney, optional: false]}, {:plug, "~> 1.0", [hex: :plug, optional: true]}, {:poison, "~> 1.5 or ~> 2.0 or ~> 3.0", [hex: :poison, optional: false]}, {:uuid, "~> 1.0", [hex: :uuid, optional: false]}]},
   "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.1", "28a4d65b7f59893bc2c7de786dec1e1555bd742d336043fe644ae956c3497fbe", [:make, :rebar], []},
   "swoosh": {:hex, :swoosh, "0.5.0", "eb2cdfa65fdc7a53be7c38353e0d7cd824aa69af3d4f110ade5416e98f167ec9", [:mix], [{:cowboy, "~> 1.0.0", [hex: :cowboy, optional: true]}, {:gen_smtp, "~> 0.11", [hex: :gen_smtp, optional: true]}, {:hackney, "~> 1.6", [hex: :hackney, optional: false]}, {:plug, "~> 1.1", [hex: :plug, optional: true]}, {:poison, "~> 1.5 or ~> 2.0 or ~> 3.0", [hex: :poison, optional: false]}]},
-  "timex": {:hex, :timex, "3.4.1", "e63fc1a37453035e534c3febfe9b6b9e18583ec7b37fd9c390efdef97397d70b", [:mix], [{:combine, "~> 0.10", [hex: :combine, optional: false]}, {:gettext, "~> 0.10", [hex: :gettext, optional: false]}, {:tzdata, "~> 0.1.8 or ~> 0.5", [hex: :tzdata, optional: false]}]},
+  "timex": {:hex, :timex, "3.5.0", "b0a23167da02d0fe4f1a4e104d1f929a00d348502b52432c05de875d0b9cffa5", [:mix], [{:combine, "~> 0.10", [hex: :combine, optional: false]}, {:gettext, "~> 0.10", [hex: :gettext, optional: false]}, {:tzdata, "~> 0.1.8 or ~> 0.5", [hex: :tzdata, optional: false]}]},
   "timex_ecto": {:hex, :timex_ecto, "3.1.0", "ebd2f0dac3450a0a84f633dcede4ec6501aa7751733fb2c9d4f505c127343686", [:mix], [{:ecto, "~> 2.1.0-rc3", [hex: :ecto, optional: false]}, {:timex, "~> 3.0", [hex: :timex, optional: false]}]},
-  "tzdata": {:hex, :tzdata, "0.5.19", "7962a3997bf06303b7d1772988ede22260f3dae1bf897408ebdac2b4435f4e6a", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, optional: false]}]},
+  "tzdata": {:hex, :tzdata, "0.5.20", "304b9e98a02840fb32a43ec111ffbe517863c8566eb04a061f1c4dbb90b4d84c", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, optional: false]}]},
   "unicode_util_compat": {:hex, :unicode_util_compat, "0.2.0", "dbbccf6781821b1c0701845eaf966c9b6d83d7c3bfc65ca2b78b88b8678bfa35", [:rebar3], []},
   "uuid": {:hex, :uuid, "1.1.8", "e22fc04499de0de3ed1116b770c7737779f226ceefa0badb3592e64d5cfb4eb9", [:mix], []},
 }
