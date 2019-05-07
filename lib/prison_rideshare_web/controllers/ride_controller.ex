@@ -32,7 +32,7 @@ defmodule PrisonRideshareWeb.RideController do
           r in Ride,
           where:
             r.enabled and is_nil(r.combined_with_ride_id) and
-              is_nil(r.distance) and not(r.car_expenses > 0) and
+              not r.complete and
               not is_nil(r.driver_id),
           preload: [:institution, :driver]
         )
