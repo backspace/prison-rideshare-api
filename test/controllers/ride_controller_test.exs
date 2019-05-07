@@ -11,6 +11,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     address: "some content",
     contact: "some content",
     distance: 120,
+    complete: true,
     end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0},
     food_expenses: 42,
     name: "some content",
@@ -129,6 +130,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
                  "car-expenses" => ride.car_expenses,
                  "distance" => ride.distance,
                  "enabled" => ride.enabled,
+                 "complete" => ride.complete,
                  "food-expenses" => ride.food_expenses,
                  "request-notes" => ride.request_notes,
                  "report-notes" => ride.report_notes,
@@ -334,7 +336,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    ride = Repo.insert!(%Ride{rate: 35, first_time: true, medium: "phone"})
+    ride = Repo.insert!(%Ride{rate: 35, first_time: true, medium: "phone", complete: true})
     conn = get(conn, ride_path(conn, :show, ride))
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{ride.id}"
@@ -350,6 +352,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     assert data["attributes"]["passengers"] == ride.passengers
     assert data["attributes"]["request_notes"] == ride.request_notes
     assert data["attributes"]["distance"] == ride.distance
+    assert data["attributes"]["complete"]
     assert data["attributes"]["rate"] == ride.rate
     assert data["attributes"]["food-expenses"] == ride.food_expenses
     assert data["attributes"]["car-expenses"] == ride.car_expenses

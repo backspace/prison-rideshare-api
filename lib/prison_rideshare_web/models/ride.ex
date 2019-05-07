@@ -12,6 +12,7 @@ defmodule PrisonRideshareWeb.Ride do
     field(:passengers, :integer, default: 1)
     field(:request_notes, :string)
     field(:enabled, :boolean, default: true)
+    field(:complete, :boolean, default: false)
     field(:cancellation_reason, :string)
 
     field(:distance, :integer)
@@ -59,6 +60,7 @@ defmodule PrisonRideshareWeb.Ride do
       :passengers,
       :request_notes,
       :enabled,
+      :complete,
       :cancellation_reason,
       :combined_with_ride_id,
       :institution_id,

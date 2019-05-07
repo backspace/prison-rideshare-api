@@ -14,6 +14,7 @@ defmodule PrisonRideshareWeb.RideView do
     :passengers,
     :request_notes,
     :enabled,
+    :complete,
     :cancellation_reason,
     :distance,
     :rate,
