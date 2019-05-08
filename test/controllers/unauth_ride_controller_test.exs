@@ -50,7 +50,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
 
     Repo.insert!(%Ride{
       driver: driver,
-      car_expenses: ~M[77]
+      complete: true
     })
 
     Repo.insert!(%Ride{
@@ -185,6 +185,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     assert ride.report_notes == "Some report notes"
     assert ride.request_notes == "The original request notes"
     assert ride.donation
+    assert ride.complete
     refute ride.overridable
 
     assert_delivered_email(PrisonRideshare.Email.report(ride))
@@ -245,6 +246,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
 
     assert ride.distance == 77
     assert ride.car_expenses == ~M[100]
+    assert ride.complete
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

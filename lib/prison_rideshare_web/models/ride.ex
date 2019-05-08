@@ -12,6 +12,7 @@ defmodule PrisonRideshareWeb.Ride do
     field(:passengers, :integer, default: 1)
     field(:request_notes, :string)
     field(:enabled, :boolean, default: true)
+    field(:complete, :boolean, default: false)
     field(:cancellation_reason, :string)
 
     field(:distance, :integer)
@@ -59,6 +60,7 @@ defmodule PrisonRideshareWeb.Ride do
       :passengers,
       :request_notes,
       :enabled,
+      :complete,
       :cancellation_reason,
       :combined_with_ride_id,
       :institution_id,
@@ -115,6 +117,7 @@ defmodule PrisonRideshareWeb.Ride do
     struct
     |> cast(params, [:distance, :car_expenses, :food_expenses, :report_notes, :donation])
     |> validate_required([:distance, :food_expenses])
+    |> put_change(:complete, true)
   end
 
   def report_changeset(struct, params) do
@@ -122,6 +125,7 @@ defmodule PrisonRideshareWeb.Ride do
     |> cast(params, [:distance, :food_expenses, :report_notes, :donation])
     |> validate_required([:distance, :food_expenses])
     |> calculate_car_expenses(struct)
+    |> put_change(:complete, true)
   end
 
   defp calculate_car_expenses(%{valid?: false} = changeset, _), do: changeset
