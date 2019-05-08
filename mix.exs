@@ -28,7 +28,6 @@ defmodule PrisonRideshare.Mixfile do
   defp applications(_all),
     do: [
       :bamboo,
-      :bamboo_smtp,
       :phoenix,
       :phoenix_pubsub,
       :phoenix_html,
@@ -69,7 +68,6 @@ defmodule PrisonRideshare.Mixfile do
       {:money, "~> 1.2.1"},
       {:timex, "~> 3.5.0"},
       {:bamboo, "~> 0.8"},
-      {:bamboo_smtp, "~> 1.4.0"},
       {:icalendar, "~> 0.5.0"},
       {:poison, "~> 3.1"},
       {:httpoison, "~> 1.0"},
