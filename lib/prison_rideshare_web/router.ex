@@ -126,4 +126,8 @@ defmodule PrisonRideshareWeb.Router do
 
     resources("/commitments", CommitmentController, only: [:show, :create, :delete])
   end
+
+  if Mix.env == :dev do
+    forward "/sent_emails", Bamboo.SentEmailViewerPlug
+  end
 end

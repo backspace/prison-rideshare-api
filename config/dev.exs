@@ -39,4 +39,6 @@ config :prison_rideshare, PrisonRideshare.Repo,
   hostname: "localhost",
   pool_size: 10
 
+config :prison_rideshare, PrisonRideshare.Mailer, adapter: Bamboo.LocalAdapter
+
 import_config "dev.secret.exs"
