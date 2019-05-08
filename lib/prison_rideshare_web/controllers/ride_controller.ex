@@ -26,12 +26,15 @@ defmodule PrisonRideshareWeb.RideController do
   end
 
   def index(conn, _) do
+    now = Timex.now()
+
     rides =
       Repo.all(
         from(
           r in Ride,
           where:
             r.enabled and is_nil(r.combined_with_ride_id) and
+              r.start < ^now and
               not r.complete and
               not is_nil(r.driver_id),
           preload: [:institution, :driver]

@@ -54,6 +54,12 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     })
 
     Repo.insert!(%Ride{
+      driver: driver,
+      start: Ecto.DateTime.cast!(Timex.shift(Timex.local(), [days: 10])),
+      end: Ecto.DateTime.cast!(Timex.shift(Timex.local(), [days: 20])),
+    })
+
+    Repo.insert!(%Ride{
       combined_with: ride
     })
 
