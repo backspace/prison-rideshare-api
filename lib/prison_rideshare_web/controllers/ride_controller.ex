@@ -210,7 +210,7 @@ defmodule PrisonRideshareWeb.RideController do
       {:ok, %{model: ride}} ->
         ride = preload(ride)
 
-        if (Ecto.Changeset.get_change(changeset, :distance) || Ecto.Changeset.get_change(changeset, :car_expenses)) do
+        if (Ecto.Changeset.get_change(changeset, :complete)) do
           PrisonRideshare.Email.report(ride)
           |> PrisonRideshare.Mailer.deliver_later()
         end

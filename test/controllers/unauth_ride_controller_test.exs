@@ -281,4 +281,38 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
 
     assert_no_emails_delivered()
   end
+
+  test "does not send an email when the update marks the ride not complete",
+       %{conn: conn} do
+    ride_institution = Repo.insert!(%Institution{name: "Stony Mountain"})
+    driver = Repo.insert!(%Person{name: "Chelsea Manning"})
+
+    ride =
+      Repo.insert!(%Ride{
+        start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+        institution: ride_institution,
+        driver: driver,
+        rate: ~M[44],
+        distance: 77,
+        car_expenses: ~M[3388],
+        complete: true
+      })
+
+    conn =
+      put(conn, ride_path(conn, :update, ride), %{
+        "meta" => %{},
+        "data" => %{
+          "type" => "rides",
+          "id" => ride.id,
+          "attributes" => %{
+            "distance" => 0,
+            "car_expenses" => 0,
+            "complete" => false,
+          },
+        }
+      })
+
+    assert_no_emails_delivered()
+  end
 end

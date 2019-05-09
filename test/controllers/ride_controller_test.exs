@@ -11,7 +11,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     address: "some content",
     contact: "some content",
     distance: 120,
-    complete: true,
+    complete: false,
     end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0},
     food_expenses: 42,
     name: "some content",
@@ -412,7 +412,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         "data" => %{
           "type" => "rides",
           "id" => ride.id,
-          "attributes" => @valid_attrs,
+          "attributes" => Map.merge(@valid_attrs, %{complete: true}),
           "relationships" => relationships()
         }
       })
@@ -482,7 +482,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     assert_delivered_email(PrisonRideshare.Email.report(saved))
   end
 
-  test "updates and sends an email when only car expenses are changed", %{conn: conn} do
+  test "updates when only car expenses are changed", %{conn: conn} do
     other_driver = Repo.insert!(%Person{name: "Other Driver"})
 
     ride = Repo.insert!(%Ride{
@@ -519,7 +519,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     data = json_response(conn, 200)["data"]
 
     assert data["attributes"]["car-expenses"] == 2000
-    assert_delivered_email(PrisonRideshare.Email.report(saved))
+    assert_no_emails_delivered()
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
