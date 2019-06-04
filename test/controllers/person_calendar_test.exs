@@ -61,7 +61,6 @@ defmodule PrisonRideshare.PersonCalendarTest do
       start: Ecto.DateTime.from_erl({{2017, 1, 16}, {18, 0, 0}}),
       end: Ecto.DateTime.from_erl({{2017, 1, 16}, {20, 0, 0}}),
       enabled: false,
-      institution: institution,
       driver: driver
     })
 
@@ -120,7 +119,7 @@ defmodule PrisonRideshare.PersonCalendarTest do
            DTEND;TZID=Etc/UTC:20170116T200000
            DTSTART;TZID=Etc/UTC:20170116T180000
            LOCATION:
-           SUMMARY:CANCELLED Visit to Stony Mountain
+           SUMMARY:CANCELLED Visit to missing institution
            END:VEVENT
            BEGIN:VEVENT
            DESCRIPTION:\\n421 Osborne\\n\\n

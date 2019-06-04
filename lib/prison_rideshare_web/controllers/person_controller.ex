@@ -74,13 +74,20 @@ defmodule PrisonRideshareWeb.PersonController do
               Enum.map(rides, fn ride -> ride.end end)
               |> Enum.max()
 
+            institution_name =
+              if ride.institution do
+                ride.institution.name
+              else
+                "missing institution"
+              end
+
             %ICalendar.Event{
               summary:
                 "#{
                   unless ride.enabled do
                     "CANCELLED "
                   end
-                }Visit to #{ride.institution.name}",
+                }Visit to #{institution_name}",
               description:
                 Enum.join(
                   Enum.map([ride] ++ ride.children, fn ride ->
