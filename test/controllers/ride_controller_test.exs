@@ -21,6 +21,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0},
     first_time: true,
     medium: "email",
+    request_confirmed: true,
     overridable: true
   }
   @invalid_attrs %{}
@@ -96,6 +97,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         address: "114 Spence St.",
         first_time: true,
         medium: "txt",
+        request_confirmed: true,
         cancellation_reason: "",
         car_expenses: 44,
         distance: 55,
@@ -126,6 +128,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
                  "address" => ride.address,
                  "first-time" => true,
                  "medium" => "txt",
+                 "request-confirmed" => true,
                  "cancellation-reason" => ride.cancellation_reason,
                  "car-expenses" => ride.car_expenses,
                  "distance" => ride.distance,
@@ -336,7 +339,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    ride = Repo.insert!(%Ride{rate: 35, first_time: true, medium: "phone", complete: true})
+    ride = Repo.insert!(%Ride{rate: 35, first_time: true, medium: "phone", request_confirmed: true, complete: true})
     conn = get(conn, ride_path(conn, :show, ride))
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{ride.id}"
@@ -349,6 +352,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     assert data["attributes"]["contact"] == ride.contact
     assert data["attributes"]["first-time"]
     assert data["attributes"]["medium"] == ride.medium
+    assert data["attributes"]["request-confirmed"]
     assert data["attributes"]["passengers"] == ride.passengers
     assert data["attributes"]["request_notes"] == ride.request_notes
     assert data["attributes"]["distance"] == ride.distance

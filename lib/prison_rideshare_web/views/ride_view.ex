@@ -11,6 +11,7 @@ defmodule PrisonRideshareWeb.RideView do
     :contact,
     :first_time,
     :medium,
+    :request_confirmed,
     :passengers,
     :request_notes,
     :enabled,

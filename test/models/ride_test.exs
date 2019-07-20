@@ -14,7 +14,8 @@ defmodule PrisonRideshareWeb.RideTest do
     passengers: 42,
     start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0},
     first_time: true,
-    medium: "phone"
+    medium: "phone",
+    request_confirmed: true
   }
   @invalid_attrs %{}
 

@@ -9,6 +9,7 @@ defmodule PrisonRideshareWeb.Ride do
     field(:contact, :string)
     field(:first_time, :boolean, default: false)
     field(:medium, :string)
+    field(:request_confirmed, :boolean, default: false)
     field(:passengers, :integer, default: 1)
     field(:request_notes, :string)
     field(:enabled, :boolean, default: true)
@@ -57,6 +58,7 @@ defmodule PrisonRideshareWeb.Ride do
       :contact,
       :first_time,
       :medium,
+      :request_confirmed,
       :passengers,
       :request_notes,
       :enabled,
