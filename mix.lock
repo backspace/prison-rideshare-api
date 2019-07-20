@@ -35,6 +35,7 @@
   "metrics": {:hex, :metrics, "1.0.1", "25f094dea2cda98213cecc3aeff09e940299d950904393b2a29d191c346a8486", [:rebar3], []},
   "mime": {:hex, :mime, "1.3.1", "30ce04ab3175b6ad0bdce0035cba77bba68b813d523d1aac73d9781b4d193cf8", [:mix], []},
   "mimerl": {:hex, :mimerl, "1.2.0", "67e2d3f571088d5cfd3e550c383094b47159f3eee8ffa08e64106cdf5e981be3", [:rebar3], []},
+  "mix_test_watch": {:hex, :mix_test_watch, "0.9.0", "c72132a6071261893518fa08e121e911c9358713f62794a90c95db59042af375", [:mix], [{:file_system, "~> 0.2.1 or ~> 0.3", [hex: :file_system, repo: "hexpm", optional: false]}], "hexpm"},
   "mock": {:hex, :mock, "0.3.1", "994f00150f79a0ea50dc9d86134cd9ebd0d177ad60bd04d1e46336cdfdb98ff9", [:mix], [{:meck, "~> 0.8.8", [hex: :meck, optional: false]}]},
   "money": {:hex, :money, "1.2.1", "fdcc7b021b894dbcc2cd0f57d2ccdd2224eced747231337a849424ffaa196b13", [:mix], [{:ecto, "~> 1.0 or ~> 2.0 or ~> 2.1", [hex: :ecto, optional: true]}, {:phoenix_html, "~> 2.0", [hex: :phoenix_html, optional: true]}]},
   "paper_trail": {:hex, :paper_trail, "0.7.7", "05ee6cbf5e3693c74be48a6b4724aea76a72798aa754cbfea021f0fd29ea1fc9", [:mix], [{:ecto, ">= 2.1.0", [hex: :ecto, optional: false]}, {:poison, ">= 3.1.0 or >= 2.0.0", [hex: :poison, optional: false]}, {:postgrex, "~> 0.13.0", [hex: :postgrex, optional: false]}]},
