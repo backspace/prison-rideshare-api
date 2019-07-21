@@ -30,7 +30,8 @@ defmodule Lol do
         address: Faker.Address.street_address(),
         contact: Faker.Phone.EnUs.phone(),
         name: Faker.Name.first_name(),
-        institution_id: params.institution.id
+        institution_id: params.institution.id,
+        request_confirmed: true,
       })
 
     merged =
@@ -48,6 +49,12 @@ defmodule Lol do
     merged =
       case Map.has_key?(merged, :first_time) do
         true -> Map.merge(merged, %{first_time: params.first_time})
+        false -> merged
+      end
+    
+    merged =
+      case Map.has_key?(params, :request_confirmed) do
+        true -> Map.merge(merged, %{request_confirmed: params.request_confirmed})
         false -> merged
       end
 
@@ -160,7 +167,8 @@ similarRide =
     relative_start: [days: 7, hours: 15, minutes: 15],
     relative_end: [hours: 3, minutes: 30],
     institution: milner_ridge,
-    medium: "phone"
+    medium: "phone",
+    request_confirmed: false
   })
 
 Lol.createRide(%{
