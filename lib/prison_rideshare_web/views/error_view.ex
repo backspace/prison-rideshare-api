@@ -3,8 +3,10 @@ defmodule PrisonRideshareWeb.ErrorView do
   # Or use in web/web.ex
   use JaSerializer.PhoenixView
 
-  def render("401.json", _assigns) do
-    %{title: "Unauthorized", code: 401}
+  def render("401.json", assigns) do
+    assigns
+    |> Map.take([:detail])
+    |> Map.merge(%{title: "Unauthorized", code: 401})
     |> JaSerializer.ErrorSerializer.format()
   end
 

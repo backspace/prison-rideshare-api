@@ -14,6 +14,11 @@ defmodule PrisonRideshareWeb.PersonSessionController do
         conn
         |> put_status(401)
         |> render(PrisonRideshareWeb.ErrorView, "401.json")
+
+      {:error, :token_expired} ->
+        conn
+        |> put_status(401)
+        |> render(PrisonRideshareWeb.ErrorView, "401.json", detail: "That token is expired. Did you click an old link?")
     end
   end
 

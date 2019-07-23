@@ -1,6 +1,8 @@
 defmodule PrisonRideshareWeb.PersonSessionControllerTest do
   use PrisonRideshareWeb.ConnCase
 
+  import Mock
+
   alias PrisonRideshareWeb.Person
 
   setup do
@@ -47,6 +49,22 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
              "jsonapi" => %{"version" => "1.0"},
              "errors" => [%{"title" => "Unauthorized", "code" => 401}]
            }
+  end
+
+  # It seems to not be possible to construct an expired token, as only positive numbers are accepted
+  test "returns a 401 when the token is expired", %{conn: conn} do
+    with_mock PrisonRideshare.PersonGuardian, [exchange_magic: fn(_) -> {:error, :token_expired} end] do
+      conn =
+        post(conn, person_login_path(conn, :create), %{
+          grant_type: "magic",
+          token: "anything"
+        })
+
+      assert json_response(conn, 401) == %{
+              "jsonapi" => %{"version" => "1.0"},
+              "errors" => [%{"title" => "Unauthorized", "code" => 401, "detail" => "That token is expired. Did you click an old link?"}]
+            }
+    end
   end
 
   test "returns the person an access token belongs to", %{conn: conn} do
