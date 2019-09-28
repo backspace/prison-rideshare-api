@@ -200,38 +200,46 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   test "returns descending-by-start rides that match the visitor search", %{conn: conn} do
     institution = Repo.insert!(%Institution{})
 
+    francine = Repo.insert!(%Person{name: "Francine"})
+
     francine_ride =
       Repo.insert!(%Ride{
-        name: "Francine",
+        visitor: francine,
         start: NaiveDateTime.from_erl!({{2015, 1, 15}, {18, 0, 0}}),
         institution_id: institution.id
       })
 
+    pascal = Repo.insert!(%Person{name: "Pascal"})
+
     Repo.insert!(%Ride{
-      name: "Pascal",
+      visitor: pascal,
       institution_id: institution.id
     })
 
+    frank = Repo.insert!(%Person{name: "Frank"})
     frank_ride =
       Repo.insert!(%Ride{
-        name: "frank",
+        visitor: frank,
         start: NaiveDateTime.from_erl!({{2017, 1, 15}, {18, 0, 0}}),
         institution_id: institution.id
       })
 
+    safran = Repo.insert!(%Person{name: "Safran"})
+
     Repo.insert!(%Ride{
-      name: "Safran",
+      visitor: safran,
       institution_id: institution.id
     })
 
+    francesca = Repo.insert!(%Person{name: "francesca"})
     francesca_ride =
       Repo.insert!(%Ride{
-        name: "francesca",
+        visitor: francesca,
         start: NaiveDateTime.from_erl!({{2016, 1, 15}, {18, 0, 0}}),
         institution_id: institution.id
       })
 
-    conn = get(conn, Routes.ride_path(conn, :index, "filter[name]": "fran"))
+    conn = get(conn, Routes.ride_path(conn, :index, "filter[visitor]": "fran"))
 
     [ride1, ride2, ride3] = json_response(conn, 200)["data"]
 

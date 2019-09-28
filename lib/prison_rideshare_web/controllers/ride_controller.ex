@@ -1,7 +1,7 @@
 defmodule PrisonRideshareWeb.RideController do
   use PrisonRideshareWeb, :controller
 
-  alias PrisonRideshareWeb.{Commitment, Ride}
+  alias PrisonRideshareWeb.{Commitment, Person, Ride}
   alias JaSerializer.Params
 
   import Ecto.Query
@@ -12,9 +12,13 @@ defmodule PrisonRideshareWeb.RideController do
   def index(%{private: %{guardian_default_resource: %{admin: true}}} = conn, params) do
     rides =
       case params do
-        %{"filter" => %{"name" => name}} ->
-          Repo.all(from(r in Ride, where: ilike(r.name, ^"#{name}%"), order_by: [desc: r.start]))
-
+        %{"filter" => %{"visitor" => name}} ->
+          Repo.all(
+            from r in Ride,
+            join: v in Person, on: v.id == r.visitor_id,
+            where: ilike(v.name, ^"#{name}%"),
+            order_by: [desc: r.start]
+          )
         _ ->
           Repo.all(Ride)
       end
