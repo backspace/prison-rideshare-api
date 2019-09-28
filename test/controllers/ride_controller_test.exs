@@ -41,6 +41,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     combined_with_ride = Repo.insert!(%Ride{institution: institution, request_notes: "Combined"})
     driver = Repo.insert!(%Person{name: "Driver Name"})
     car_owner = Repo.insert!(%Person{name: "Car Owner"})
+    visitor = Repo.insert!(%Person{name: "Visitor"})
     reimbursement = Repo.insert!(%Reimbursement{food_expenses: 2010, car_expenses: 2017})
 
     %{
@@ -68,6 +69,12 @@ defmodule PrisonRideshareWeb.RideControllerTest do
           "id" => car_owner.id
         }
       },
+      "visitor" => %{
+        "data" => %{
+          "type" => "person",
+          "id" => visitor.id
+        }
+      },
       "reimbursements" => %{
         "data" => [
           %{
@@ -83,6 +90,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     institution = Repo.insert!(%Institution{name: "Stony Mountain"})
     driver = Repo.insert!(%Person{name: "Driver Name"})
     car_owner = Repo.insert!(%Person{name: "Car Owner"})
+    visitor = Repo.insert!(%Person{name: "Visitor"})
     reimbursement = Repo.insert!(%Reimbursement{})
 
     ride =
@@ -109,6 +117,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         overridable: true,
         driver: driver,
         car_owner: car_owner,
+        visitor: visitor,
         reimbursements: [reimbursement]
       })
 
@@ -161,6 +170,12 @@ defmodule PrisonRideshareWeb.RideControllerTest do
                    "data" => %{
                      "type" => "people",
                      "id" => car_owner.id
+                   }
+                 },
+                 "visitor" => %{
+                   "data" => %{
+                     "type" => "people",
+                     "id" => visitor.id
                    }
                  },
                  "combined-with" => %{
@@ -494,6 +509,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
 
     driver = Repo.get_by(Person, name: "Driver Name")
     car_owner = Repo.get_by(Person, name: "Car Owner")
+    visitor = Repo.get_by(Person, name: "Visitor")
 
     [_reimbursement] = Repo.all(Reimbursement)
 
@@ -533,7 +549,13 @@ defmodule PrisonRideshareWeb.RideControllerTest do
                  "id" => car_owner.id
                }
              },
-             "combined-with" => %{
+             "visitor" => %{
+               "data" => %{
+                 "type" => "people",
+                 "id" => visitor.id
+               }
+            },
+            "combined-with" => %{
                "data" => %{
                  "type" => "ride",
                  "id" => combined_with_ride.id
