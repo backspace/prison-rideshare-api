@@ -37,6 +37,8 @@ defmodule PrisonRideshareWeb.Ride do
     belongs_to(:car_owner, PrisonRideshareWeb.Person, foreign_key: :car_owner_id)
     belongs_to(:driver, PrisonRideshareWeb.Person, foreign_key: :driver_id)
 
+    belongs_to(:visitor, PrisonRideshareWeb.Person, foreign_key: :visitor_id)
+
     has_many(:reimbursements, PrisonRideshareWeb.Reimbursement)
 
     field(:commitments, {:array, :binary_id}, virtual: true)
@@ -66,6 +68,7 @@ defmodule PrisonRideshareWeb.Ride do
       :cancellation_reason,
       :combined_with_ride_id,
       :institution_id,
+      :visitor_id,
       :driver_id,
       :car_owner_id,
       :distance,

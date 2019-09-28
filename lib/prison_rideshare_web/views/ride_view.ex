@@ -62,6 +62,12 @@ defmodule PrisonRideshareWeb.RideView do
     serializer: PrisonRideshareWeb.PersonView
   )
 
+  has_one(
+    :visitor,
+    include: true,
+    serializer: PrisonRideshareWeb.PersonView
+  )
+
   money_amount(:rate)
   money_amount(:food_expenses)
   money_amount(:car_expenses)

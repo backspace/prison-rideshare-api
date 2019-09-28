@@ -21,6 +21,8 @@ defmodule PrisonRideshareWeb.Person do
     has_many(:car_uses, PrisonRideshareWeb.Ride, foreign_key: :car_owner_id)
     has_many(:drivings, PrisonRideshareWeb.Ride, foreign_key: :driver_id)
 
+    has_many(:visitings, PrisonRideshareWeb.Ride, foreign_key: :visitor_id)
+
     has_many(:reimbursements, PrisonRideshareWeb.Reimbursement)
 
     has_many(:commitments, PrisonRideshareWeb.Commitment)

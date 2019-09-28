@@ -252,7 +252,7 @@ defmodule PrisonRideshareWeb.RideController do
   defp preload(model) do
     model
     |> Repo.preload(
-      [:institution, :driver, :car_owner, :children, [reimbursements: [:person, :ride]]],
+      [:institution, :visitor, :driver, :car_owner, :children, [reimbursements: [:person, :ride]]],
       force: true
     )
   end
