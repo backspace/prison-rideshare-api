@@ -114,6 +114,6 @@ defmodule PrisonRideshareWeb.DebtController do
   end
 
   defp ride_preloads do
-    [:car_owner, :driver, :children, :institution, reimbursements: [:person, :ride]]
+    [:car_owner, :driver, :visitor, :children, :institution, reimbursements: [:person, :ride]]
   end
 end
