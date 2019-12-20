@@ -4,6 +4,6 @@ Here is your unique calendar link for <%= @month %>: <%= @link %>
 
 If you don’t know how the calendar works, visit https://barnoneblog.wordpress.com/rideshare/driver-calendar/
 
-Does this feature work for you? Do you have suggestions on how it could be better? Let us know.
+Does this feature work for you? Do you have suggestions on how it could be better? Let us know. If you’d like to stop receiving these emails, visit the link and let us know under the “Edit Communication Details” button.
 
 Thanks for volunteering 🤩
