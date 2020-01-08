@@ -130,8 +130,7 @@ defmodule PrisonRideshareWeb.RideController do
           Enum.map([ride] ++ ride.children, fn ride -> ride.passengers end)
           |> Enum.sum()
 
-        institution_name =
-          if ride.institution, do: ride.institution.name, else: "Unknown institution"
+        institution_name = ride.institution.name
 
         summary =
           "#{institution_name}: #{request_count} request#{

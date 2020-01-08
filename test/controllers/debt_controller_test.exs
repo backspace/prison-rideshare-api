@@ -3,7 +3,7 @@ import Money.Sigils
 defmodule PrisonRideshareWeb.DebtControllerTest do
   use PrisonRideshareWeb.ConnCase
 
-  alias PrisonRideshareWeb.{Person, Reimbursement, Ride}
+  alias PrisonRideshareWeb.{Institution, Person, Reimbursement, Ride}
   alias PrisonRideshare.Repo
 
   setup do
@@ -21,8 +21,11 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
     cnuth = Repo.insert!(%Person{name: "Cnuth"})
     chelsea = Repo.insert!(%Person{name: "Chelsea Manning"})
 
+    institution = Repo.insert!(%Institution{})
+
     unreimbursed_ride =
       Repo.insert!(%Ride{
+        institution: institution,
         driver: cnuth,
         car_owner: cnuth,
         food_expenses: 100,
@@ -31,6 +34,7 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
 
     cnuth_ride_sara_car =
       Repo.insert!(%Ride{
+        institution: institution,
         driver: cnuth,
         car_owner: sara,
         food_expenses: 50,
@@ -39,6 +43,7 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
 
     reimbursed_ride =
       Repo.insert!(%Ride{
+        institution: institution,
         driver: sara,
         car_owner: sara,
         food_expenses: 2006,
@@ -47,6 +52,7 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
 
     other_reimbursed_ride =
       Repo.insert!(%Ride{
+        institution: institution,
         driver: chelsea,
         car_owner: chelsea,
         food_expenses: 2017,
@@ -126,8 +132,11 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
     cnuth = Repo.insert!(%Person{name: "Cnuth"})
     other = Repo.insert!(%Person{})
 
+    institution = Repo.insert!(%Institution{})
+
     ride =
       Repo.insert!(%Ride{
+        institution: institution,
         driver: cnuth,
         car_owner: cnuth,
         food_expenses: 100,
@@ -136,6 +145,7 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
 
     donation_ride =
       Repo.insert!(%Ride{
+        institution: institution,
         driver: cnuth,
         car_owner: cnuth,
         food_expenses: 0,
@@ -145,6 +155,7 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
 
     food_ride =
       Repo.insert!(%Ride{
+        institution: institution,
         driver: cnuth,
         car_owner: cnuth,
         food_expenses: 200,
@@ -152,6 +163,7 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
       })
 
     Repo.insert!(%Ride{
+      institution: institution,
       driver: cnuth,
       car_owner: other,
       food_expenses: 0,

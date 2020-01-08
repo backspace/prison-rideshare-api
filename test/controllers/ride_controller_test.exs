@@ -22,7 +22,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     first_time: true,
     medium: "email",
     request_confirmed: true,
-    overridable: true
+    overridable: true,
   }
   @invalid_attrs %{}
 
@@ -37,8 +37,8 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   end
 
   defp relationships do
-    combined_with_ride = Repo.insert!(%Ride{request_notes: "Combined"})
     institution = Repo.insert!(%Institution{})
+    combined_with_ride = Repo.insert!(%Ride{institution: institution, request_notes: "Combined"})
     driver = Repo.insert!(%Person{name: "Driver Name"})
     car_owner = Repo.insert!(%Person{name: "Car Owner"})
     reimbursement = Repo.insert!(%Reimbursement{food_expenses: 2010, car_expenses: 2017})
@@ -183,26 +183,37 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   end
 
   test "returns descending-by-start rides that match the visitor search", %{conn: conn} do
+    institution = Repo.insert!(%Institution{})
+
     francine_ride =
       Repo.insert!(%Ride{
         name: "Francine",
-        start: Ecto.DateTime.from_erl({{2015, 1, 15}, {18, 0, 0}})
+        start: Ecto.DateTime.from_erl({{2015, 1, 15}, {18, 0, 0}}),
+        institution_id: institution.id
       })
 
-    Repo.insert!(%Ride{name: "Pascal"})
+    Repo.insert!(%Ride{
+      name: "Pascal",
+      institution_id: institution.id
+    })
 
     frank_ride =
       Repo.insert!(%Ride{
         name: "frank",
-        start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}})
+        start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
+        institution_id: institution.id
       })
 
-    Repo.insert!(%Ride{name: "Safran"})
+    Repo.insert!(%Ride{
+      name: "Safran",
+      institution_id: institution.id
+    })
 
     francesca_ride =
       Repo.insert!(%Ride{
         name: "francesca",
-        start: Ecto.DateTime.from_erl({{2016, 1, 15}, {18, 0, 0}})
+        start: Ecto.DateTime.from_erl({{2016, 1, 15}, {18, 0, 0}}),
+        institution_id: institution.id
       })
 
     conn = get(conn, ride_path(conn, :index, "filter[name]": "fran"))
@@ -215,9 +226,12 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   end
 
   test "returns rides with corresponding commitments", %{conn: conn} do
+    institution = Repo.insert!(%Institution{})
+
     contained_ride =
       Repo.insert!(%Ride{
         name: "R",
+        institution: institution,
         start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}})
       })
@@ -225,6 +239,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     overlapping_start_ride =
       Repo.insert!(%Ride{
         name: "R",
+        institution: institution,
         start: Ecto.DateTime.from_erl({{2118, 11, 24}, {17, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}})
       })
@@ -247,6 +262,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     _also_overlapping_but_ignored_ride =
       Repo.insert!(%Ride{
         name: "R",
+        institution: institution,
         start: Ecto.DateTime.from_erl({{2118, 11, 24}, {17, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
         ignored_commitment_ids: [commitment.id]
@@ -255,6 +271,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     _past_ride =
       Repo.insert!(%Ride{
         name: "R",
+        institution: institution,
         start: Ecto.DateTime.from_erl({{1918, 11, 24}, {19, 0, 0}}),
         end: Ecto.DateTime.from_erl({{1918, 11, 24}, {20, 0, 0}})
       })
@@ -275,6 +292,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     _after_ride =
       Repo.insert!(%Ride{
         name: "R",
+        institution: institution,
         start: Ecto.DateTime.from_erl({{2100, 1, 1}, {12, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2100, 1, 1}, {13, 0, 0}})
       })
@@ -282,6 +300,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     _invalid_interval_ride =
       Repo.insert!(%Ride{
         name: "R",
+        institution: institution,
         start: Ecto.DateTime.from_erl({{2100, 1, 1}, {14, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2100, 1, 1}, {13, 0, 0}})
       })
@@ -289,6 +308,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     _combined_ride =
       Repo.insert!(%Ride{
         name: "R",
+        institution: institution,
         start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}}),
         combined_with: contained_ride
@@ -297,6 +317,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     _disabled_ride =
       Repo.insert!(%Ride{
         name: "R",
+        institution: institution,
         start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}}),
         enabled: false
@@ -305,6 +326,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     _assigned_ride =
       Repo.insert!(%Ride{
         name: "R",
+        institution: institution,
         start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}}),
         driver: person       
@@ -321,8 +343,11 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   end
 
   test "lets a commitment be ignored for a ride", %{conn: conn} do
+    institution = Repo.insert!(%Institution{})
+
     ride = Repo.insert!(%Ride{
       name: "R",
+      institution: institution,
       start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
       end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}})
     })
@@ -339,7 +364,17 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    ride = Repo.insert!(%Ride{rate: 35, first_time: true, medium: "phone", request_confirmed: true, complete: true})
+    institution = Repo.insert!(%Institution{})
+
+    ride = Repo.insert!(%Ride{
+      rate: 35,
+      institution: institution,
+      first_time: true,
+      medium: "phone",
+      request_confirmed: true,
+      complete: true
+    })
+
     conn = get(conn, ride_path(conn, :show, ride))
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{ride.id}"
@@ -362,9 +397,10 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     assert data["attributes"]["car-expenses"] == ride.car_expenses
     assert data["attributes"]["report_notes"] == ride.report_notes
     assert data["attributes"]["combined_with_ride_id"] == ride.combined_with_ride_id
-    assert data["attributes"]["institution_id"] == ride.institution_id
     assert data["attributes"]["driver_id"] == ride.driver_id
     assert data["attributes"]["car_owner_id"] == ride.car_owner_id
+
+    assert data["relationships"]["institution"]["data"]["id"] == ride.institution_id
   end
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
@@ -405,10 +441,38 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     assert json_response(conn, 422)["errors"] != %{}
   end
 
+  test "does not create resource and renders errors when institution is missing", %{conn: conn} do
+    conn =
+      post(conn, ride_path(conn, :create), %{
+        "meta" => %{},
+        "data" => %{
+          "type" => "rides",
+          "attributes" => @valid_attrs,
+          "relationships" => Map.put(relationships(), "institution", %{
+            "data" => %{
+              "type" => "institution",
+              "id" => 45
+            }
+          })
+        }
+      })
+
+    assert json_response(conn, 422)["errors"] == [%{
+      "detail" => "Institution is invalid",
+      "source" => %{"pointer" => "/data/relationships/institution"},
+      "title" => "is invalid"
+    }]
+  end
+
   test "updates and renders chosen resource when data is valid, sending an email", %{conn: conn} do
     other_driver = Repo.insert!(%Person{name: "Other Driver"})
+    institution = Repo.insert!(%Institution{})
 
-    ride = Repo.insert!(%Ride{driver: other_driver, rate: ~M[22]})
+    ride = Repo.insert!(%Ride{
+      institution: institution,
+      driver: other_driver,
+      rate: ~M[22]
+    })
 
     conn =
       put(conn, ride_path(conn, :update, ride), %{
@@ -491,6 +555,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
 
     ride = Repo.insert!(%Ride{
       driver: other_driver,
+      institution: Repo.insert!(%Institution{}),
       rate: ~M[22],
       end: Ecto.DateTime.utc(),
       name: "some content",
@@ -546,7 +611,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    ride = Repo.insert!(%Ride{})
+    ride = Repo.insert!(%Ride{institution: Repo.insert!(%Institution{})})
 
     conn =
       put(conn, ride_path(conn, :update, ride), %{
@@ -563,7 +628,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    ride = Repo.insert!(%Ride{})
+    ride = Repo.insert!(%Ride{institution: Repo.insert!(%Institution{})})
     conn = delete(conn, ride_path(conn, :delete, ride))
     assert response(conn, 204)
     refute Repo.get(Ride, ride.id)

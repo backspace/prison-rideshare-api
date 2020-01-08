@@ -41,6 +41,7 @@ defmodule PrisonRideshare.RideCalendarTest do
       })
 
     Repo.insert!(%Ride{
+      institution: institution,
       combined_with: ride,
       name: "Tina",
       passengers: 1,
@@ -51,6 +52,7 @@ defmodule PrisonRideshare.RideCalendarTest do
     Repo.insert!(%Ride{
       start: Ecto.DateTime.from_erl({{2017, 1, 16}, {18, 0, 0}}),
       end: Ecto.DateTime.from_erl({{2017, 1, 16}, {20, 0, 0}}),
+      institution: institution,
       name: "Tom",
       passengers: 1,
       address: "421 Osborne",
@@ -115,7 +117,7 @@ defmodule PrisonRideshare.RideCalendarTest do
            DESCRIPTION:Please email barnone.coordinator@gmail.com to get assigned to this ride.
            DTEND;TZID=Etc/UTC:20170116T200000
            DTSTART;TZID=Etc/UTC:20170116T180000
-           SUMMARY:Unknown institution: 1 request
+           SUMMARY:Stony Mountain: 1 request
            END:VEVENT
            END:VCALENDAR
            """

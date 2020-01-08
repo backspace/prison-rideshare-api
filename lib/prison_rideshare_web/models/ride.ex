@@ -77,7 +77,8 @@ defmodule PrisonRideshareWeb.Ride do
       :donation,
       :overridable
     ])
-    |> validate_required([:start, :end, :name, :address, :contact, :passengers])
+    |> validate_required([:start, :end, :name, :address, :contact, :passengers, :institution_id])
+    |> assoc_constraint(:institution)
     |> calculate_car_expenses(struct)
   end
 

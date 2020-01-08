@@ -31,6 +31,7 @@ defmodule PrisonRideshare.PersonCalendarTest do
     Repo.insert!(%Ride{
       start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
       end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+      institution: institution,
       combined_with: ride,
       name: "Tina",
       address: "414 Osborne",
@@ -51,6 +52,7 @@ defmodule PrisonRideshare.PersonCalendarTest do
     Repo.insert!(%Ride{
       start: Ecto.DateTime.from_erl({{2017, 1, 16}, {11, 15, 0}}),
       end: Ecto.DateTime.from_erl({{2017, 1, 16}, {13, 15, 0}}),
+      institution: institution,
       combined_with: different_parent_ride,
       name: "Tina",
       address: "414 Osborne",
@@ -60,6 +62,7 @@ defmodule PrisonRideshare.PersonCalendarTest do
     Repo.insert!(%Ride{
       start: Ecto.DateTime.from_erl({{2017, 1, 16}, {18, 0, 0}}),
       end: Ecto.DateTime.from_erl({{2017, 1, 16}, {20, 0, 0}}),
+      institution: institution,
       enabled: false,
       driver: driver
     })
@@ -79,7 +82,8 @@ defmodule PrisonRideshare.PersonCalendarTest do
     Repo.insert!(%Ride{
       name: "Tom",
       address: "421 Osborne",
-      contact: "2877433"
+      contact: "2877433",
+      institution: institution
     })
 
     committed_slot =
@@ -119,7 +123,7 @@ defmodule PrisonRideshare.PersonCalendarTest do
            DTEND;TZID=Etc/UTC:20170116T200000
            DTSTART;TZID=Etc/UTC:20170116T180000
            LOCATION:
-           SUMMARY:CANCELLED Visit to missing institution
+           SUMMARY:CANCELLED Visit to Stony Mountain
            END:VEVENT
            BEGIN:VEVENT
            DESCRIPTION:\\n421 Osborne\\n\\n

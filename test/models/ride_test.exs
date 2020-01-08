@@ -19,13 +19,18 @@ defmodule PrisonRideshareWeb.RideTest do
   }
   @invalid_attrs %{}
 
-  test "changeset with valid attributes" do
-    changeset = Ride.changeset(%Ride{}, @valid_attrs)
+  setup do
+    {:ok, %{institution: PrisonRideshare.Repo.insert!(%PrisonRideshareWeb.Institution{})}}
+  end
+
+  test "changeset with valid attributes", %{institution: institution} do
+    changeset = Ride.changeset(%Ride{institution_id: institution.id}, @valid_attrs)
+    assert changeset.errors == []
     assert changeset.valid?
   end
 
-  test "changeset with invalid attributes" do
-    changeset = Ride.changeset(%Ride{}, @invalid_attrs)
+  test "changeset with invalid attributes", %{institution: institution} do
+    changeset = Ride.changeset(%Ride{institution_id: institution.id}, @invalid_attrs)
     refute changeset.valid?
   end
 
@@ -56,9 +61,9 @@ defmodule PrisonRideshareWeb.RideTest do
     assert Ecto.Changeset.get_field(changeset, :car_expenses) == ~M[100]
   end
 
-  test "changeset without a distance does not calculate car expenses" do
+  test "changeset without a distance does not calculate car expenses", %{institution: institution} do
     changeset =
-      Ride.changeset(%Ride{rate: ~M[40]}, %{
+      Ride.changeset(%Ride{institution_id: institution.id, rate: ~M[40]}, %{
         start: @valid_attrs.start,
         end: @valid_attrs.end,
         name: @valid_attrs.name,
@@ -73,9 +78,9 @@ defmodule PrisonRideshareWeb.RideTest do
     assert Ecto.Changeset.get_field(changeset, :car_expenses) == 0
   end
 
-  test "changeset with overridable does not calculate car expenses" do
+  test "changeset with overridable does not calculate car expenses", %{institution: institution} do
     changeset = 
-      Ride.changeset(%Ride{rate: ~M[40], overridable: true}, %{
+      Ride.changeset(%Ride{institution_id: institution.id, rate: ~M[40], overridable: true}, %{
         start: @valid_attrs.start,
         end: @valid_attrs.end,
         name: @valid_attrs.name,
@@ -87,6 +92,7 @@ defmodule PrisonRideshareWeb.RideTest do
         car_expenses: ~M[1001]
       })
 
+      assert changeset.errors == []
       assert changeset.valid?
       assert Ecto.Changeset.get_field(changeset, :car_expenses) == ~M[1001]
   end
