@@ -1,9 +1,9 @@
 Hello <%= @person.name %>,
 
-Here is your unique calendar link for <%= @month %>: <%= @link %>
+Visits have resumed for now at Stony Mountain/Rockwood and as you can imagine, riders are eager to see their loved ones on the inside after all this time! Here is your unique calendar link for <%= @month %>: <%= @link %>
 
 If you don’t know how the calendar works, visit https://barnoneblog.wordpress.com/rideshare/driver-calendar/
 
-Does this feature work for you? Do you have suggestions on how it could be better? Let us know. If you’d like to stop receiving these emails, visit the link and let us know under the “Edit Communication Details” button.
+We know everyone is contending with the pandemic in their own ways, so we appreciate if you can still give rides, but we understand if your circumstances prevent that. If you’d like to stop receiving these emails, visit the link and let us know under the “Edit Communication Details” button.
 
 Thanks for volunteering 🤩
