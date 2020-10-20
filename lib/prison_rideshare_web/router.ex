@@ -23,6 +23,7 @@ defmodule PrisonRideshareWeb.Router do
   pipeline :authenticated_api do
     plug(:accepts, ["json", "json-api"])
     plug(PrisonRideshare.Guardian.EnsuredAuthPipeline)
+    plug(PrisonRideshareWeb.Plugs.LastSeen)
     plug(JaSerializer.Deserializer)
   end
 

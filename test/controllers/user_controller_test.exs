@@ -40,12 +40,18 @@ defmodule PrisonRideshareWeb.UserControllerTest do
     assert data["attributes"]["admin"] == user.admin
   end
 
-  test "shows the current user", %{conn: conn} do
+  test "shows the current user and updates last_seen_at", %{conn: conn} do
+    last_seen_before = Repo.get_by(User, %{email: "test@example.com"}).last_seen_at
+
     conn = get(conn, user_path(conn, :current))
     data = json_response(conn, 200)["data"]
 
     assert data["attributes"]["email"] == "test@example.com"
     assert data["attributes"]["admin"]
+
+    last_seen_after = Repo.get_by(User, %{email: "test@example.com"}).last_seen_at
+
+    assert NaiveDateTime.compare(last_seen_after, last_seen_before) == :gt
   end
 
   test "returns a 401 if the token is unrecognised" do

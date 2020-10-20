@@ -11,6 +11,7 @@ defmodule PrisonRideshareWeb.User do
     field(:password_confirmation, :string, virtual: true)
 
     timestamps(type: :utc_datetime)
+    field(:last_seen_at, :naive_datetime)
   end
 
   @doc """
