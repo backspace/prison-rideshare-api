@@ -5,13 +5,13 @@ require Logger
 defmodule Ugh do
   def date_to_day_type(date) do
     case Timex.weekday(date) do
-      1 -> :monday_tuesday
-      2 -> :monday_tuesday
-      3 -> :wednesday_thursday
-      4 -> :wednesday_thursday
-      5 -> :friday
-      6 -> :saturday
-      7 -> :sunday
+      1 -> :monday_wednesday_thursday
+      2 -> :tuesday
+      3 -> :monday_wednesday_thursday
+      4 -> :monday_wednesday_thursday
+      5 -> :friday_saturday_sunday
+      6 -> :friday_saturday_sunday
+      7 -> :friday_saturday_sunday
     end
   end
 
@@ -23,24 +23,14 @@ defmodule Ugh do
 end
 
 day_type_slots = %{
-  monday_tuesday: [
-    "2*17-22"
-  ],
-  wednesday_thursday: [
-    "1*12-16",
-    "2*17-22"
-  ],
-  friday: [
-    "1*12-16"
-  ],
-  saturday: [
-    "1*08-12",
-    "2*12-17",
+  monday_wednesday_thursday: [
     "1*18-22"
   ],
-  sunday: [
-    "1*08-12",
-    "3*12-17"
+  tuesday: [
+    "2*18-22"
+  ],
+  friday_saturday_sunday: [
+    "2*12-16"
   ]
 }
 
