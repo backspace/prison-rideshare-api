@@ -35,7 +35,7 @@ config :prison_rideshare, PrisonRideshare.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "prison_rideshare_dev",
+  database: "prison_rideshare_dev_visitors",
   hostname: "localhost",
   pool_size: 10
 
