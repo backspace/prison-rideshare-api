@@ -33,7 +33,17 @@ defmodule PrisonRideshareWeb.Person do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :email, :mobile, :landline, :address, :notes, :self_notes, :medium, :active])
+    |> cast(params, [
+      :name,
+      :email,
+      :mobile,
+      :landline,
+      :address,
+      :notes,
+      :self_notes,
+      :medium,
+      :active
+    ])
     |> validate_required([:name, :email])
   end
 

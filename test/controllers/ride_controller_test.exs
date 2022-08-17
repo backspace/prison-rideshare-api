@@ -22,7 +22,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     first_time: true,
     medium: "email",
     request_confirmed: true,
-    overridable: true,
+    overridable: true
   }
   @invalid_attrs %{}
 
@@ -243,7 +243,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         start: Ecto.DateTime.from_erl({{2118, 11, 24}, {17, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}})
       })
-  
+
     slot =
       Repo.insert!(%Slot{
         start: Ecto.DateTime.from_erl({{2118, 11, 24}, {18, 0, 0}}),
@@ -256,7 +256,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     commitment =
       Repo.insert!(%Commitment{
         slot_id: slot.id,
-        person_id: person.id,
+        person_id: person.id
       })
 
     _also_overlapping_but_ignored_ride =
@@ -275,7 +275,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         start: Ecto.DateTime.from_erl({{1918, 11, 24}, {19, 0, 0}}),
         end: Ecto.DateTime.from_erl({{1918, 11, 24}, {20, 0, 0}})
       })
-    
+
     past_slot =
       Repo.insert!(%Slot{
         start: Ecto.DateTime.from_erl({{1918, 11, 24}, {18, 0, 0}}),
@@ -288,7 +288,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         slot_id: past_slot.id,
         person_id: person.id
       })
-    
+
     _after_ride =
       Repo.insert!(%Ride{
         name: "R",
@@ -296,7 +296,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         start: Ecto.DateTime.from_erl({{2100, 1, 1}, {12, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2100, 1, 1}, {13, 0, 0}})
       })
-    
+
     _invalid_interval_ride =
       Repo.insert!(%Ride{
         name: "R",
@@ -329,7 +329,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         institution: institution,
         start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
         end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}}),
-        driver: person       
+        driver: person
       })
 
     conn = get(conn, ride_path(conn, :overlaps))
@@ -338,26 +338,28 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     [overlapping_start_ride_response, contained_ride_response] = response["data"]
 
     assert contained_ride_response["id"] == contained_ride.id
-    assert hd(contained_ride_response["relationships"]["commitments"]["data"])["id"] == commitment.id
+
+    assert hd(contained_ride_response["relationships"]["commitments"]["data"])["id"] ==
+             commitment.id
+
     assert overlapping_start_ride_response["id"] == overlapping_start_ride.id
   end
 
   test "lets a commitment be ignored for a ride", %{conn: conn} do
     institution = Repo.insert!(%Institution{})
 
-    ride = Repo.insert!(%Ride{
-      name: "R",
-      institution: institution,
-      start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}})
-    })
-
-    commitment =
-      Repo.insert!(%Commitment{
+    ride =
+      Repo.insert!(%Ride{
+        name: "R",
+        institution: institution,
+        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
+        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}})
       })
 
+    commitment = Repo.insert!(%Commitment{})
+
     post(conn, ride_path(conn, :ignore_commitment, ride.id, commitment.id), %{})
-    
+
     [ride_after] = Repo.all(Ride)
 
     assert ride_after.ignored_commitment_ids == [commitment.id]
@@ -366,14 +368,15 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   test "shows chosen resource", %{conn: conn} do
     institution = Repo.insert!(%Institution{})
 
-    ride = Repo.insert!(%Ride{
-      rate: 35,
-      institution: institution,
-      first_time: true,
-      medium: "phone",
-      request_confirmed: true,
-      complete: true
-    })
+    ride =
+      Repo.insert!(%Ride{
+        rate: 35,
+        institution: institution,
+        first_time: true,
+        medium: "phone",
+        request_confirmed: true,
+        complete: true
+      })
 
     conn = get(conn, ride_path(conn, :show, ride))
     data = json_response(conn, 200)["data"]
@@ -448,31 +451,35 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         "data" => %{
           "type" => "rides",
           "attributes" => @valid_attrs,
-          "relationships" => Map.put(relationships(), "institution", %{
-            "data" => %{
-              "type" => "institution",
-              "id" => 45
-            }
-          })
+          "relationships" =>
+            Map.put(relationships(), "institution", %{
+              "data" => %{
+                "type" => "institution",
+                "id" => 45
+              }
+            })
         }
       })
 
-    assert json_response(conn, 422)["errors"] == [%{
-      "detail" => "Institution is invalid",
-      "source" => %{"pointer" => "/data/relationships/institution"},
-      "title" => "is invalid"
-    }]
+    assert json_response(conn, 422)["errors"] == [
+             %{
+               "detail" => "Institution is invalid",
+               "source" => %{"pointer" => "/data/relationships/institution"},
+               "title" => "is invalid"
+             }
+           ]
   end
 
   test "updates and renders chosen resource when data is valid, sending an email", %{conn: conn} do
     other_driver = Repo.insert!(%Person{name: "Other Driver"})
     institution = Repo.insert!(%Institution{})
 
-    ride = Repo.insert!(%Ride{
-      institution: institution,
-      driver: other_driver,
-      rate: ~M[22]
-    })
+    ride =
+      Repo.insert!(%Ride{
+        institution: institution,
+        driver: other_driver,
+        rate: ~M[22]
+      })
 
     conn =
       put(conn, ride_path(conn, :update, ride), %{
@@ -553,16 +560,18 @@ defmodule PrisonRideshareWeb.RideControllerTest do
   test "updates when only car expenses are changed", %{conn: conn} do
     other_driver = Repo.insert!(%Person{name: "Other Driver"})
 
-    ride = Repo.insert!(%Ride{
-      driver: other_driver,
-      institution: Repo.insert!(%Institution{}),
-      rate: ~M[22],
-      end: Ecto.DateTime.utc(),
-      name: "some content",
-      address: "an address",
-      contact: "a contact",
-      start: Ecto.DateTime.utc(),
-      overridable: true})
+    ride =
+      Repo.insert!(%Ride{
+        driver: other_driver,
+        institution: Repo.insert!(%Institution{}),
+        rate: ~M[22],
+        end: Ecto.DateTime.utc(),
+        name: "some content",
+        address: "an address",
+        contact: "a contact",
+        start: Ecto.DateTime.utc(),
+        overridable: true
+      })
 
     conn =
       put(conn, ride_path(conn, :update, ride), %{

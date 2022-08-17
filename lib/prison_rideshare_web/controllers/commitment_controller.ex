@@ -6,7 +6,9 @@ defmodule PrisonRideshareWeb.CommitmentController do
 
   plug(:scrub_params, "data" when action in [:create])
 
-  def create(%{private: %{guardian_default_resource: %{admin: true}}} = conn, %{"data" => data = %{"type" => "commitments"}}) do
+  def create(%{private: %{guardian_default_resource: %{admin: true}}} = conn, %{
+        "data" => data = %{"type" => "commitments"}
+      }) do
     changeset = Commitment.changeset(%Commitment{}, Params.to_attributes(data))
 
     case PaperTrail.insert(changeset, version_information(conn)) do
@@ -30,7 +32,7 @@ defmodule PrisonRideshareWeb.CommitmentController do
         conn
         |> put_status(:unauthorized)
         |> render(PrisonRideshareWeb.ErrorView, "401.json")
-        
+
       person.id != data["relationships"]["person"]["data"]["id"] ->
         conn
         |> put_status(:unauthorized)

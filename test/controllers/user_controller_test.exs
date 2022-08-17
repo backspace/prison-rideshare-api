@@ -66,7 +66,10 @@ defmodule PrisonRideshareWeb.UserControllerTest do
   end
 
   test "returns a 400 if the token decodes to a non-existent user" do
-    {:ok, jwt, _} = PrisonRideshare.Guardian.encode_and_sign(%PrisonRideshareWeb.User{id: "00000000-0000-0000-0000-000000000000"})
+    {:ok, jwt, _} =
+      PrisonRideshare.Guardian.encode_and_sign(%PrisonRideshareWeb.User{
+        id: "00000000-0000-0000-0000-000000000000"
+      })
 
     conn =
       build_conn()
@@ -74,8 +77,8 @@ defmodule PrisonRideshareWeb.UserControllerTest do
       |> put_req_header("content-type", "application/vnd.api+json")
       |> put_req_header("authorization", "Bearer #{jwt}")
 
-      conn = get(conn, user_path(conn, :current))
-      assert json_response(conn, 400)
+    conn = get(conn, user_path(conn, :current))
+    assert json_response(conn, 400)
   end
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
@@ -108,35 +111,36 @@ defmodule PrisonRideshareWeb.UserControllerTest do
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    conn = post(conn, user_path(conn, :create), %{
-      "meta" => %{},
-      "data" => %{
-        "type" => "users",
-        "attributes" => %{
-          "password" => "abc",
-          "password-confirmation" => "def"
-        },
-        "relationships" => relationships()
-      }
-    })
-  
+    conn =
+      post(conn, user_path(conn, :create), %{
+        "meta" => %{},
+        "data" => %{
+          "type" => "users",
+          "attributes" => %{
+            "password" => "abc",
+            "password-confirmation" => "def"
+          },
+          "relationships" => relationships()
+        }
+      })
+
     assert json_response(conn, 422)["errors"] == [
-      %{
-        "detail" => "Password confirmation does not match confirmation",
-        "source" => %{"pointer" => "/data/attributes/password-confirmation"},
-        "title" => "does not match confirmation"
-      },
-      %{
-        "detail" => "Password should be at least 8 character(s)",
-        "source" => %{"pointer" => "/data/attributes/password"},
-        "title" => "should be at least 8 character(s)"
-      },
-      %{
-        "detail" => "Email can't be blank",
-        "source" => %{"pointer" => "/data/attributes/email"},
-        "title" => "can't be blank"
-      }
-    ]
+             %{
+               "detail" => "Password confirmation does not match confirmation",
+               "source" => %{"pointer" => "/data/attributes/password-confirmation"},
+               "title" => "does not match confirmation"
+             },
+             %{
+               "detail" => "Password should be at least 8 character(s)",
+               "source" => %{"pointer" => "/data/attributes/password"},
+               "title" => "should be at least 8 character(s)"
+             },
+             %{
+               "detail" => "Email can't be blank",
+               "source" => %{"pointer" => "/data/attributes/email"},
+               "title" => "can't be blank"
+             }
+           ]
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
@@ -183,7 +187,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
     user = Repo.insert!(%User{email: "user@example.com"})
     token = "token for #{user.email}"
 
-    with_mock Phoenix.Token, [sign: fn(PrisonRideshareWeb.Endpoint, "reset salt", _) -> token end] do
+    with_mock Phoenix.Token, sign: fn PrisonRideshareWeb.Endpoint, "reset salt", _ -> token end do
       conn = post(conn, user_path(conn, :reset, email: "user@example.com"))
 
       assert_delivered_email(PrisonRideshare.Email.reset(user, token))

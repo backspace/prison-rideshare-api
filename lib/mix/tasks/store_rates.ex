@@ -28,8 +28,7 @@ defmodule Mix.Tasks.StoreRates do
     gas_prices = Repo.all(GasPrice, order_by: :inserted_at)
 
     Enum.each(rides, fn ride ->
-      window_before_ride_start =
-        Timex.subtract(ride.start, Duration.from_days(1))
+      window_before_ride_start = Timex.subtract(ride.start, Duration.from_days(1))
 
       window_after_ride_start = Timex.add(ride.start, Duration.from_days(1))
 

@@ -36,7 +36,8 @@ defmodule PrisonRideshareWeb.UnauthUserControllerTest do
   test "refuses to update a resource with an invalid token", %{conn: conn} do
     user = Repo.insert!(%User{})
 
-    with_mock Phoenix.Token, [verify: fn(PrisonRideshareWeb.Endpoint, "reset salt", _, _) -> {:error, :invalid} end] do
+    with_mock Phoenix.Token,
+      verify: fn PrisonRideshareWeb.Endpoint, "reset salt", _, _ -> {:error, :invalid} end do
       conn =
         put(conn, user_path(conn, :update, user), %{
           "meta" => %{},
@@ -58,7 +59,8 @@ defmodule PrisonRideshareWeb.UnauthUserControllerTest do
 
     token = "TOKEN!"
 
-    with_mock Phoenix.Token, [verify: fn(PrisonRideshareWeb.Endpoint, "reset salt", _, _) -> {:ok, user_id} end] do
+    with_mock Phoenix.Token,
+      verify: fn PrisonRideshareWeb.Endpoint, "reset salt", _, _ -> {:ok, user_id} end do
       conn =
         put(conn, user_path(conn, :update, token), %{
           "data" => %{
@@ -69,7 +71,7 @@ defmodule PrisonRideshareWeb.UnauthUserControllerTest do
             }
           }
         })
-      
+
       user = Repo.get_by(User, %{email: "user@example.com"})
       assert json_response(conn, 200)["data"]["id"] == user.id
 
@@ -80,13 +82,15 @@ defmodule PrisonRideshareWeb.UnauthUserControllerTest do
     end
   end
 
-  test "does not update a user's password if the confirmation doesn't match and the password isn't long enough", %{conn: conn} do
+  test "does not update a user's password if the confirmation doesn't match and the password isn't long enough",
+       %{conn: conn} do
     user = Repo.insert!(%User{email: "user@example.com"})
     user_id = user.id
 
     token = "TOKEN!"
 
-    with_mock Phoenix.Token, [verify: fn(PrisonRideshareWeb.Endpoint, "reset salt", _, _) -> {:ok, user_id} end] do
+    with_mock Phoenix.Token,
+      verify: fn PrisonRideshareWeb.Endpoint, "reset salt", _, _ -> {:ok, user_id} end do
       conn =
         put(conn, user_path(conn, :update, token), %{
           "data" => %{
@@ -98,21 +102,20 @@ defmodule PrisonRideshareWeb.UnauthUserControllerTest do
             }
           }
         })
-      
 
       assert json_response(conn, 422)["errors"] == [
-        %{
-          "detail" => "Password confirmation does not match confirmation",
-          "source" => %{"pointer" => "/data/attributes/password-confirmation"},
-          "title" => "does not match confirmation"
-        },
-        %{
-          "detail" => "Password should be at least 8 character(s)",
-          "source" => %{"pointer" => "/data/attributes/password"},
-          "title" => "should be at least 8 character(s)"
-        },
-      ]
-  
+               %{
+                 "detail" => "Password confirmation does not match confirmation",
+                 "source" => %{"pointer" => "/data/attributes/password-confirmation"},
+                 "title" => "does not match confirmation"
+               },
+               %{
+                 "detail" => "Password should be at least 8 character(s)",
+                 "source" => %{"pointer" => "/data/attributes/password"},
+                 "title" => "should be at least 8 character(s)"
+               }
+             ]
+
       assert Repo.all(PaperTrail.Version) == []
     end
   end

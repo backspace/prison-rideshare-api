@@ -46,7 +46,6 @@ defmodule PrisonRideshareWeb.UserController do
         "id" => id,
         "data" => data = %{"type" => "users", "attributes" => _user_params}
       }) do
-
     case conn do
       %{private: %{guardian_default_resource: %{admin: true}}} ->
         user = Repo.get!(User, id)
@@ -55,13 +54,13 @@ defmodule PrisonRideshareWeb.UserController do
         case PaperTrail.update(changeset, version_information(conn)) do
           {:ok, %{model: user}} ->
             render(conn, "show.json-api", data: user)
-    
+
           {:error, changeset} ->
             conn
             |> put_status(:unprocessable_entity)
             |> render(:errors, data: changeset)
         end
-      
+
       _ ->
         token = id
 
@@ -85,9 +84,9 @@ defmodule PrisonRideshareWeb.UserController do
           {:error, _} ->
             conn
             |> put_status(:unauthorized)
-            |> render(PrisonRideshareWeb.ErrorView, "401.json")    
+            |> render(PrisonRideshareWeb.ErrorView, "401.json")
         end
-      end
+    end
   end
 
   def delete(conn, %{"id" => id}) do
@@ -104,12 +103,13 @@ defmodule PrisonRideshareWeb.UserController do
     case Repo.get_by(User, email: email) do
       nil ->
         nil
+
       user ->
         token = Phoenix.Token.sign(PrisonRideshareWeb.Endpoint, "reset salt", user.id)
 
         PrisonRideshare.Email.reset(user, token)
         |> PrisonRideshare.Mailer.deliver_later()
-    
+
         PrisonRideshare.Email.reset_report(user)
         |> PrisonRideshare.Mailer.deliver_later()
     end

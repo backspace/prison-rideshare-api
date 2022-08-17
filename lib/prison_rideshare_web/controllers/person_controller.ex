@@ -34,7 +34,8 @@ defmodule PrisonRideshareWeb.PersonController do
     # FIXME this is copied from the email
     {:ok, magic_token, _claims} = PrisonRideshare.PersonGuardian.encode_magic(person)
 
-    link = "#{Application.get_env(:prison_rideshare, :ui_root)}/calendar/#{month}?token=#{magic_token}"
+    link =
+      "#{Application.get_env(:prison_rideshare, :ui_root)}/calendar/#{month}?token=#{magic_token}"
 
     text(conn, link)
   end
@@ -96,9 +97,15 @@ defmodule PrisonRideshareWeb.PersonController do
                 ),
               # FIXME really?
               dtstart:
-                DateTime.from_naive!(NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(earliest_start)), "Etc/UTC"),
+                DateTime.from_naive!(
+                  NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(earliest_start)),
+                  "Etc/UTC"
+                ),
               dtend:
-                DateTime.from_naive!(NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(latest_end)), "Etc/UTC"),
+                DateTime.from_naive!(
+                  NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(latest_end)),
+                  "Etc/UTC"
+                ),
               location:
                 Enum.join(
                   [ride.address] ++ Enum.map(ride.children, fn child -> child.address end),

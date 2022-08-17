@@ -59,8 +59,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     Repo.insert!(%Ride{
       institution: institution,
       driver: driver,
-      start: Ecto.DateTime.cast!(Timex.shift(Timex.local(), [days: 10])),
-      end: Ecto.DateTime.cast!(Timex.shift(Timex.local(), [days: 20])),
+      start: Ecto.DateTime.cast!(Timex.shift(Timex.local(), days: 10)),
+      end: Ecto.DateTime.cast!(Timex.shift(Timex.local(), days: 20))
     })
 
     Repo.insert!(%Ride{
@@ -261,9 +261,10 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    ride = Repo.insert!(%Ride{
-      institution: Repo.insert!(%Institution{})
-    })
+    ride =
+      Repo.insert!(%Ride{
+        institution: Repo.insert!(%Institution{})
+      })
 
     conn =
       put(conn, ride_path(conn, :update, ride), %{
@@ -315,8 +316,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
           "attributes" => %{
             "distance" => 0,
             "car_expenses" => 0,
-            "complete" => false,
-          },
+            "complete" => false
+          }
         }
       })
 

@@ -78,7 +78,9 @@ defmodule PrisonRideshareWeb.DebtController do
     rides_to_food_expenses = total_ride_attributes(person.drivings, :food_expenses)
 
     rides_with_expenses =
-      Enum.uniq_by(Map.keys(rides_to_car_expenses) ++ Map.keys(rides_to_food_expenses), fn ride -> ride.id end)
+      Enum.uniq_by(Map.keys(rides_to_car_expenses) ++ Map.keys(rides_to_food_expenses), fn ride ->
+        ride.id
+      end)
 
     %{
       food_expenses: sum_money(Map.values(rides_to_food_expenses)),

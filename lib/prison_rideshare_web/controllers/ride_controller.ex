@@ -33,9 +33,7 @@ defmodule PrisonRideshareWeb.RideController do
         from(
           r in Ride,
           where:
-            r.enabled and is_nil(r.combined_with_ride_id) and
-              r.start < ^now and
-              not r.complete and
+            r.enabled and is_nil(r.combined_with_ride_id) and r.start < ^now and not r.complete and
               not is_nil(r.driver_id),
           preload: [:institution, :driver]
         )
@@ -47,52 +45,67 @@ defmodule PrisonRideshareWeb.RideController do
   end
 
   def overlaps(conn, _) do
-    slot_intervals = Repo.all(Commitment)
-    |> Repo.preload([:person, slot: [commitments: [:person, :slot]]])
-    |> Enum.map(fn commitment -> commitment.slot end)
-    |> Enum.uniq()
-    |> Enum.map(fn slot -> %{slot: slot, interval: Timex.Interval.new(from: slot.start, until: slot.end)} end)
+    slot_intervals =
+      Repo.all(Commitment)
+      |> Repo.preload([:person, slot: [commitments: [:person, :slot]]])
+      |> Enum.map(fn commitment -> commitment.slot end)
+      |> Enum.uniq()
+      |> Enum.map(fn slot ->
+        %{slot: slot, interval: Timex.Interval.new(from: slot.start, until: slot.end)}
+      end)
 
     now = NaiveDateTime.utc_now()
 
-    rides = Repo.all(
-      from(
-        r in Ride,
-        where:
-          r.enabled and is_nil(r.combined_with_ride_id) and 
-          r.start >= ^now and is_nil(r.driver_id)
+    rides =
+      Repo.all(
+        from(
+          r in Ride,
+          where:
+            r.enabled and is_nil(r.combined_with_ride_id) and r.start >= ^now and
+              is_nil(r.driver_id)
+        )
       )
-    )
-    |> preload
-    |> Enum.reduce([], fn ride, rides ->
+      |> preload
+      |> Enum.reduce([], fn ride, rides ->
         ride_interval = Timex.Interval.new(from: ride.start, until: ride.end)
 
         if ride_interval != {:error, :invalid_until} do
-          commitments = Enum.reduce(slot_intervals, [], fn slot_interval, commitments ->
-            commitments = commitments ++ case Timex.Interval.overlaps?(slot_interval[:interval], ride_interval) do
-              true -> 
-                slot_interval[:slot].commitments
-                |> Enum.reject(fn commitment -> Enum.member?(ride.ignored_commitment_ids, commitment.id) end)
-                |> Enum.map(fn commitment -> Map.put(commitment, :slot, slot_interval[:slot]) end)
-              _ -> []
-            end
+          commitments =
+            Enum.reduce(slot_intervals, [], fn slot_interval, commitments ->
+              commitments =
+                commitments ++
+                  case Timex.Interval.overlaps?(slot_interval[:interval], ride_interval) do
+                    true ->
+                      slot_interval[:slot].commitments
+                      |> Enum.reject(fn commitment ->
+                        Enum.member?(ride.ignored_commitment_ids, commitment.id)
+                      end)
+                      |> Enum.map(fn commitment ->
+                        Map.put(commitment, :slot, slot_interval[:slot])
+                      end)
 
-            commitments
-          end)
+                    _ ->
+                      []
+                  end
+
+              commitments
+            end)
 
           ride = Map.put(ride, :commitments, commitments)
 
-          rides = rides ++ case Enum.empty?(commitments) do
-            true -> []
-            false -> [ride]
-          end
+          rides =
+            rides ++
+              case Enum.empty?(commitments) do
+                true -> []
+                false -> [ride]
+              end
 
           rides
         else
           rides
         end
-    end)
-  
+      end)
+
     conn
     |> put_view(PrisonRideshareWeb.OverlapRideView)
     |> render("index.json-api", data: rides)
@@ -102,7 +115,7 @@ defmodule PrisonRideshareWeb.RideController do
     ride =
       Repo.get!(Ride, ride_id)
       |> preload
-    
+
     changeset = Ride.ignore_commitment_changeset(ride, commitment_id)
     PaperTrail.update(changeset, version_information(conn))
 
@@ -115,9 +128,8 @@ defmodule PrisonRideshareWeb.RideController do
         from(
           r in Ride,
           where:
-            r.enabled and is_nil(r.combined_with_ride_id) and
-              is_nil(r.distance) and not(r.car_expenses > 0) and
-              is_nil(r.driver_id),
+            r.enabled and is_nil(r.combined_with_ride_id) and is_nil(r.distance) and
+              not (r.car_expenses > 0) and is_nil(r.driver_id),
           preload: [:institution, :driver, :children]
         )
       )
@@ -147,9 +159,15 @@ defmodule PrisonRideshareWeb.RideController do
           summary: summary,
           description: "Please email barnone.coordinator@gmail.com to get assigned to this ride.",
           dtstart:
-            DateTime.from_naive!(NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(ride.start)), "Etc/UTC"),
+            DateTime.from_naive!(
+              NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(ride.start)),
+              "Etc/UTC"
+            ),
           dtend:
-            DateTime.from_naive!(NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(ride.end)), "Etc/UTC")
+            DateTime.from_naive!(
+              NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(ride.end)),
+              "Etc/UTC"
+            )
         }
       end)
 
@@ -209,7 +227,7 @@ defmodule PrisonRideshareWeb.RideController do
       {:ok, %{model: ride}} ->
         ride = preload(ride)
 
-        if (Ecto.Changeset.get_change(changeset, :complete)) do
+        if Ecto.Changeset.get_change(changeset, :complete) do
           PrisonRideshare.Email.report(ride)
           |> PrisonRideshare.Mailer.deliver_later()
         end

@@ -130,7 +130,8 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
   end
 
   test "sends a calendar email to a person", %{conn: conn} do
-    with_mock PrisonRideshare.PersonGuardian, [encode_magic: fn(person) -> {:ok, "token for #{person.name}", "claims"} end] do
+    with_mock PrisonRideshare.PersonGuardian,
+      encode_magic: fn person -> {:ok, "token for #{person.name}", "claims"} end do
       person = Repo.insert!(%Person{name: "Chelsea Manning", email: "chelsea@example.com"})
 
       conn = post(conn, person_calendar_email_path(conn, :email_calendar_link, person, "2017-12"))
