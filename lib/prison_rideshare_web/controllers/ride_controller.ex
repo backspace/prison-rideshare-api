@@ -35,6 +35,7 @@ defmodule PrisonRideshareWeb.RideController do
           where:
             r.enabled and is_nil(r.combined_with_ride_id) and r.start < ^now and not r.complete and
               not is_nil(r.driver_id),
+          order_by: [desc: r.start],
           preload: [:institution, :driver]
         )
       )
@@ -108,7 +109,7 @@ defmodule PrisonRideshareWeb.RideController do
 
     conn
     |> put_view(PrisonRideshareWeb.OverlapRideView)
-    |> render("index.json-api", data: rides)
+    |> render("index.json-api", data: Enum.sort_by(rides, fn ride -> ride.start end))
   end
 
   def ignore_commitment(conn, %{"id" => ride_id, "commitment_id" => commitment_id}) do
