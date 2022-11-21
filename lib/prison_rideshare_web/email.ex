@@ -23,7 +23,7 @@ defmodule PrisonRideshare.Email do
     new_email(
       to: person.email,
       from: {"Bar None Bot", "bot@barnonewpg.org"},
-      subject: "Commit to bringing visitors to their loved ones for #{full_month}"
+      subject: "Rides to prison calendar for #{full_month}"
     )
     |> assign(:person, person)
     |> assign(:month, full_month)
