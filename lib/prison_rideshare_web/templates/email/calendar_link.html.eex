@@ -1,8 +1,10 @@
 <p>Hey, <%= @person.name %>!</p>
 
-<p>This calendar more closely reflects the patterns of times people have traveled to Stony Mountain/Rockwood for since the jailers started allowing visitors again. Hopefully that’ll mean fewer commitments that don’t end up turning into rides. <a href='<%= @link %>'>Here</a> is your unique calendar link for <%= @month %>.</p>
+<p><a href='<%= @link %>'>Here</a> is your unique calendar link for <%= @month %>.</p>
 
-<p>If you don’t know how the calendar works, <a href='https://barnoneblog.wordpress.com/rideshare/driver-calendar/'>here</a> is an explanation.</p>
+<p>You can use this to share availability in advance with the coordinator, they will ask you first if a ride request comes for a slot you’ve chosen.</p>
+
+<p>For operational details visit <a href='https://barnoneblog.wordpress.com/rideshare/driver-calendar/'>here</a></p>
 
 <p>If you’d like to stop receiving these emails or change your contact information, visit the link and let us know under the “Edit Communication Details” button.</p>
 
