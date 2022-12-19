@@ -2,8 +2,8 @@ defmodule PrisonRideshareWeb.Ride do
   use PrisonRideshareWeb, :model
 
   schema "rides" do
-    field(:start, Ecto.DateTime)
-    field(:end, Ecto.DateTime)
+    field(:start, :naive_datetime)
+    field(:end, :naive_datetime)
     field(:name, :string)
     field(:address, :string)
     field(:contact, :string)
@@ -18,11 +18,11 @@ defmodule PrisonRideshareWeb.Ride do
 
     field(:distance, :integer)
 
-    field(:rate, Money.Ecto.Type)
+    field(:rate, Money.Ecto.Amount.Type)
     belongs_to(:gas_price, PrisonRideshareWeb.GasPrice)
 
-    field(:food_expenses, Money.Ecto.Type, default: 0)
-    field(:car_expenses, Money.Ecto.Type, default: 0)
+    field(:food_expenses, Money.Ecto.Amount.Type, default: 0)
+    field(:car_expenses, Money.Ecto.Amount.Type, default: 0)
     field(:report_notes, :string)
     field(:donation, :boolean, default: false)
 
@@ -39,10 +39,10 @@ defmodule PrisonRideshareWeb.Ride do
 
     has_many(:reimbursements, PrisonRideshareWeb.Reimbursement)
 
-    field(:commitments, {:array, :commitment}, virtual: true)
+    field(:commitments, {:array, :binary_id}, virtual: true)
     field(:ignored_commitment_ids, {:array, :binary_id}, default: [])
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :naive_datetime)
   end
 
   @doc """

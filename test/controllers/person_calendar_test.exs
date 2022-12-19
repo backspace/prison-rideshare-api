@@ -19,8 +19,8 @@ defmodule PrisonRideshare.PersonCalendarTest do
 
     ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2017, 1, 15}, {18, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2017, 1, 15}, {20, 0, 0}}),
         institution: institution,
         driver: driver,
         name: "Tom",
@@ -29,8 +29,8 @@ defmodule PrisonRideshare.PersonCalendarTest do
       })
 
     Repo.insert!(%Ride{
-      start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+      start: NaiveDateTime.from_erl!({{2017, 1, 15}, {18, 0, 0}}),
+      end: NaiveDateTime.from_erl!({{2017, 1, 15}, {20, 0, 0}}),
       institution: institution,
       combined_with: ride,
       name: "Tina",
@@ -40,8 +40,8 @@ defmodule PrisonRideshare.PersonCalendarTest do
 
     different_parent_ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2017, 1, 16}, {11, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2017, 1, 16}, {13, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2017, 1, 16}, {11, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2017, 1, 16}, {13, 0, 0}}),
         institution: institution,
         driver: driver,
         name: "Tom",
@@ -50,8 +50,8 @@ defmodule PrisonRideshare.PersonCalendarTest do
       })
 
     Repo.insert!(%Ride{
-      start: Ecto.DateTime.from_erl({{2017, 1, 16}, {11, 15, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 1, 16}, {13, 15, 0}}),
+      start: NaiveDateTime.from_erl!({{2017, 1, 16}, {11, 15, 0}}),
+      end: NaiveDateTime.from_erl!({{2017, 1, 16}, {13, 15, 0}}),
       institution: institution,
       combined_with: different_parent_ride,
       name: "Tina",
@@ -60,8 +60,8 @@ defmodule PrisonRideshare.PersonCalendarTest do
     })
 
     Repo.insert!(%Ride{
-      start: Ecto.DateTime.from_erl({{2017, 1, 16}, {18, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 1, 16}, {20, 0, 0}}),
+      start: NaiveDateTime.from_erl!({{2017, 1, 16}, {18, 0, 0}}),
+      end: NaiveDateTime.from_erl!({{2017, 1, 16}, {20, 0, 0}}),
       institution: institution,
       enabled: false,
       driver: driver
@@ -72,8 +72,8 @@ defmodule PrisonRideshare.PersonCalendarTest do
     # }
 
     Repo.insert!(%Ride{
-      start: Ecto.DateTime.from_erl({{2017, 1, 17}, {18, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 1, 17}, {20, 0, 0}}),
+      start: NaiveDateTime.from_erl!({{2017, 1, 17}, {18, 0, 0}}),
+      end: NaiveDateTime.from_erl!({{2017, 1, 17}, {20, 0, 0}}),
       institution: institution,
       driver: driver,
       address: "421 Osborne"
@@ -88,8 +88,8 @@ defmodule PrisonRideshare.PersonCalendarTest do
 
     committed_slot =
       Repo.insert!(%Slot{
-        start: Ecto.DateTime.from_erl({{2017, 12, 8}, {13, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2017, 12, 8}, {17, 0, 0}})
+        start: NaiveDateTime.from_erl!({{2017, 12, 8}, {13, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2017, 12, 8}, {17, 0, 0}})
       })
 
     Repo.insert!(%Commitment{

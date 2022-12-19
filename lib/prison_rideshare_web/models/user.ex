@@ -10,7 +10,7 @@ defmodule PrisonRideshareWeb.User do
     field(:password, :string, virtual: true)
     field(:password_confirmation, :string, virtual: true)
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :naive_datetime)
     field(:last_seen_at, :naive_datetime)
   end
 

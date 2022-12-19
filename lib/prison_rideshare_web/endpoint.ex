@@ -1,7 +1,7 @@
 defmodule PrisonRideshareWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :prison_rideshare
 
-  socket("/socket", PrisonRideshareWeb.UserSocket)
+  socket("/socket", PrisonRideshareWeb.UserSocket, websocket: true)
 
   # Serve at "/" the static files from "priv/static" directory.
   #

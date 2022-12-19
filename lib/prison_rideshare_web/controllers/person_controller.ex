@@ -95,15 +95,14 @@ defmodule PrisonRideshareWeb.PersonController do
                   end),
                   "\n\n"
                 ),
-              # FIXME really?
               dtstart:
                 DateTime.from_naive!(
-                  NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(earliest_start)),
+                  earliest_start,
                   "Etc/UTC"
                 ),
               dtend:
                 DateTime.from_naive!(
-                  NaiveDateTime.from_erl!(Ecto.DateTime.to_erl(latest_end)),
+                  latest_end,
                   "Etc/UTC"
                 ),
               location:

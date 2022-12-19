@@ -23,6 +23,6 @@ defmodule PrisonRideshareWeb.Plugs.LastSeen do
   defp persist_last_seen(user) do
     q = from(u in PrisonRideshareWeb.User, where: u.id == ^user.id)
 
-    Repo.update_all(q, set: [last_seen_at: DateTime.utc_now()])
+    Repo.update_all(q, set: [last_seen_at: NaiveDateTime.utc_now()])
   end
 end

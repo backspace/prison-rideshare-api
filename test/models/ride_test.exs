@@ -9,10 +9,10 @@ defmodule PrisonRideshareWeb.RideTest do
     name: "some content",
     address: "some content",
     contact: "some content",
-    end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0},
+    end: ~N[2010-04-17 14:00:00],
     notes: "some content",
     passengers: 42,
-    start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0},
+    start: ~N[2010-04-17 14:00:00],
     first_time: true,
     medium: "phone",
     request_confirmed: true

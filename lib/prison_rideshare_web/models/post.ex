@@ -6,7 +6,7 @@ defmodule PrisonRideshareWeb.Post do
     field(:readings, {:array, :binary_id}, default: [])
     belongs_to(:poster, PrisonRideshareWeb.User, foreign_key: :poster_id)
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :naive_datetime)
   end
 
   def changeset(struct, params \\ %{}) do

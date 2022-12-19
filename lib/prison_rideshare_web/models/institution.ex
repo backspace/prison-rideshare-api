@@ -5,7 +5,7 @@ defmodule PrisonRideshareWeb.Institution do
     field(:name, :string)
     field(:far, :boolean)
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :naive_datetime)
   end
 
   @doc """

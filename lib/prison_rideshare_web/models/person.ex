@@ -25,7 +25,7 @@ defmodule PrisonRideshareWeb.Person do
 
     has_many(:commitments, PrisonRideshareWeb.Commitment)
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :naive_datetime)
   end
 
   @doc """

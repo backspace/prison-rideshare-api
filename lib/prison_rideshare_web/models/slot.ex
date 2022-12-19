@@ -8,6 +8,6 @@ defmodule PrisonRideshareWeb.Slot do
 
     has_many(:commitments, PrisonRideshareWeb.Commitment)
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :naive_datetime)
   end
 end

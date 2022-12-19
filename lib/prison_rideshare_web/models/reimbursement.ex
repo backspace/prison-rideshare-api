@@ -2,15 +2,15 @@ defmodule PrisonRideshareWeb.Reimbursement do
   use PrisonRideshareWeb, :model
 
   schema "reimbursements" do
-    field(:car_expenses, Money.Ecto.Type, default: 0)
-    field(:food_expenses, Money.Ecto.Type, default: 0)
+    field(:car_expenses, Money.Ecto.Amount.Type, default: 0)
+    field(:food_expenses, Money.Ecto.Amount.Type, default: 0)
     belongs_to(:person, PrisonRideshareWeb.Person)
     belongs_to(:ride, PrisonRideshareWeb.Ride)
 
     field(:donation, :boolean, default: false)
     field(:processed, :boolean, default: false)
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :naive_datetime)
   end
 
   @doc """

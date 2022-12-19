@@ -23,8 +23,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
 
     ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2017, 1, 15}, {18, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2017, 1, 15}, {20, 0, 0}}),
         institution: institution,
         rate: ~M[33],
         driver: driver
@@ -32,8 +32,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
 
     donatable_ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2017, 2, 15}, {18, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2017, 2, 15}, {20, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2017, 2, 15}, {18, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2017, 2, 15}, {20, 0, 0}}),
         institution: institution,
         driver: driver,
         car_owner: driver,
@@ -59,8 +59,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     Repo.insert!(%Ride{
       institution: institution,
       driver: driver,
-      start: Ecto.DateTime.cast!(Timex.shift(Timex.local(), days: 10)),
-      end: Ecto.DateTime.cast!(Timex.shift(Timex.local(), days: 20))
+      start: Timex.to_naive_datetime(Timex.shift(Timex.local(), days: 10)) |> NaiveDateTime.truncate(:second),
+      end: Timex.to_naive_datetime(Timex.shift(Timex.local(), days: 20)) |> NaiveDateTime.truncate(:second)
     })
 
     Repo.insert!(%Ride{
@@ -69,8 +69,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     })
 
     Repo.insert!(%Ride{
-      start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+      start: NaiveDateTime.from_erl!({{2017, 1, 15}, {18, 0, 0}}),
+      end: NaiveDateTime.from_erl!({{2017, 1, 15}, {20, 0, 0}}),
       institution: institution,
       car_owner: driver
     })
@@ -128,8 +128,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
 
     ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2017, 1, 15}, {18, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2017, 1, 15}, {20, 0, 0}}),
         institution: ride_institution,
         rate: ~M[44],
         driver: driver,
@@ -209,8 +209,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
 
     ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2017, 1, 15}, {18, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2017, 1, 15}, {20, 0, 0}}),
         institution: ride_institution,
         rate: ~M[44],
         driver: driver,
@@ -297,8 +297,8 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
 
     ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2017, 1, 15}, {18, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2017, 1, 15}, {20, 0, 0}}),
         institution: ride_institution,
         driver: driver,
         rate: ~M[44],

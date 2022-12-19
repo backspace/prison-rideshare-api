@@ -2,9 +2,9 @@ defmodule PrisonRideshareWeb.GasPrice do
   use PrisonRideshareWeb, :model
 
   schema "gas_prices" do
-    field(:price, Money.Ecto.Type)
+    field(:price, Money.Ecto.Amount.Type)
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :naive_datetime)
   end
 
   def changeset(struct, params \\ %{}) do

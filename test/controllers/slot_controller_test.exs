@@ -24,8 +24,8 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
                "id" => later.id,
                "type" => "slots",
                "attributes" => %{
-                 "start" => "2117-12-10T13:00:00.000000Z",
-                 "end" => "2117-12-10T17:00:00.000000Z",
+                 "start" => "2117-12-10T13:00:00Z",
+                 "end" => "2117-12-10T17:00:00Z",
                  "count" => 4
                },
                "relationships" => %{
@@ -36,8 +36,8 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
                "id" => earlier.id,
                "type" => "slots",
                "attributes" => %{
-                 "start" => "2117-12-08T13:00:00.000000Z",
-                 "end" => "2117-12-08T17:00:00.000000Z",
+                 "start" => "2117-12-08T13:00:00Z",
+                 "end" => "2117-12-08T17:00:00Z",
                  "count" => 0
                },
                "relationships" => %{
@@ -385,15 +385,15 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
   defp create_data(year \\ 2117) do
     later =
       Repo.insert!(%Slot{
-        start: Ecto.DateTime.from_erl({{year, 12, 10}, {13, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{year, 12, 10}, {17, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{year, 12, 10}, {13, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{year, 12, 10}, {17, 0, 0}}),
         count: 4
       })
 
     earlier =
       Repo.insert!(%Slot{
-        start: Ecto.DateTime.from_erl({{year, 12, 8}, {13, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{year, 12, 8}, {17, 0, 0}})
+        start: NaiveDateTime.from_erl!({{year, 12, 8}, {13, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{year, 12, 8}, {17, 0, 0}})
       })
 
     person =

@@ -24,8 +24,8 @@ defmodule PrisonRideshareWeb.PostControllerTest do
       Repo.insert!(%Post{
         content: "hello read",
         readings: [logged_in_user.id],
-        updated_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 1}}),
-        inserted_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 0}}),
+        updated_at: NaiveDateTime.from_erl!({{2018, 7, 6}, {9, 29, 1}}),
+        inserted_at: NaiveDateTime.from_erl!({{2018, 7, 6}, {9, 29, 0}}),
         poster: user
       })
 
@@ -33,8 +33,8 @@ defmodule PrisonRideshareWeb.PostControllerTest do
       Repo.insert!(%Post{
         content: "hello unread",
         readings: [user.id],
-        updated_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 0}}),
-        inserted_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 0}}),
+        updated_at: NaiveDateTime.from_erl!({{2018, 7, 6}, {9, 29, 0}}),
+        inserted_at: NaiveDateTime.from_erl!({{2018, 7, 6}, {9, 29, 0}}),
         poster: user
       })
 
@@ -47,8 +47,8 @@ defmodule PrisonRideshareWeb.PostControllerTest do
                "attributes" => %{
                  "content" => "hello read",
                  "unread" => false,
-                 "updated-at" => "2018-07-06T09:29:01.000000Z",
-                 "inserted-at" => "2018-07-06T09:29:00.000000Z"
+                 "updated-at" => "2018-07-06T09:29:01",
+                 "inserted-at" => "2018-07-06T09:29:00"
                },
                "relationships" => %{
                  "poster" => %{
@@ -65,8 +65,8 @@ defmodule PrisonRideshareWeb.PostControllerTest do
                "attributes" => %{
                  "content" => "hello unread",
                  "unread" => true,
-                 "updated-at" => "2018-07-06T09:29:00.000000Z",
-                 "inserted-at" => "2018-07-06T09:29:00.000000Z"
+                 "updated-at" => "2018-07-06T09:29:00",
+                 "inserted-at" => "2018-07-06T09:29:00"
                },
                "relationships" => %{
                  "poster" => %{

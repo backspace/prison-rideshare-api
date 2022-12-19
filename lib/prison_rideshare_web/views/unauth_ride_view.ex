@@ -22,10 +22,10 @@ defmodule PrisonRideshareWeb.UnauthRideView do
 
   # FIXME these are duplicated in RideView ugh
   def start(%{start: nil}, _conn), do: nil
-  def start(%{start: start}, _conn), do: "#{Ecto.DateTime.to_iso8601(start)}Z"
+  def start(%{start: start}, _conn), do: "#{NaiveDateTime.to_iso8601(start)}Z"
 
   def unquote(:end)(%{end: nil}, _conn), do: nil
-  def unquote(:end)(%{end: end_time}, _conn), do: "#{Ecto.DateTime.to_iso8601(end_time)}Z"
+  def unquote(:end)(%{end: end_time}, _conn), do: "#{NaiveDateTime.to_iso8601(end_time)}Z"
 
   money_amount(:rate, false)
 end

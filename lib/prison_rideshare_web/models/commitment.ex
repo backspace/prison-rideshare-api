@@ -5,7 +5,7 @@ defmodule PrisonRideshareWeb.Commitment do
     belongs_to(:slot, PrisonRideshareWeb.Slot)
     belongs_to(:person, PrisonRideshareWeb.Person)
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :naive_datetime)
   end
 
   def changeset(struct, params \\ %{}) do

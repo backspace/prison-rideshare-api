@@ -22,11 +22,8 @@ defmodule Lol do
 
     merged =
       Map.merge(params, %{
-        start: Ecto.DateTime.cast!(Timex.shift(today, params.relative_start)),
-        end:
-          Ecto.DateTime.cast!(
-            Timex.shift(Timex.shift(today, params.relative_start), params.relative_end)
-          ),
+        start: Timex.shift(today, params.relative_start),
+        end: Timex.shift(Timex.shift(today, params.relative_start), params.relative_end),
         address: Faker.Address.street_address(),
         contact: Faker.Phone.EnUs.phone(),
         name: Faker.Name.first_name(),
@@ -77,10 +74,8 @@ defmodule Lol do
     today = Timex.beginning_of_day(Timex.local())
 
     Repo.insert!(%Slot{
-      start: Ecto.DateTime.cast!(Timex.shift(today, params.relative_start)),
-      end: Ecto.DateTime.cast!(
-        Timex.shift(Timex.shift(today, params.relative_start), params.relative_end)
-      ),
+      start: Timex.shift(today, params.relative_start),
+      end: Timex.shift(Timex.shift(today, params.relative_start), params.relative_end),
       count: params.count
     })
   end
@@ -96,7 +91,7 @@ user =
     email: "jorts@jants.ca",
     password: "password",
     password_confirmation: "password",
-    confirmed_at: Ecto.DateTime.utc()
+    confirmed_at: DateTime.utc_now()
   })
   |> PaperTrail.insert!(Lol.version_information())
 
@@ -109,7 +104,7 @@ other_user =
     email: "other@example.com",
     password: "password",
     password_confirmation: "password",
-    confirmed_at: Ecto.DateTime.utc()
+    confirmed_at: DateTime.utc_now()
   })
   |> PaperTrail.insert!(Lol.version_information())
 
@@ -367,7 +362,7 @@ today = Timex.beginning_of_day(Timex.local())
 
 Enum.reduce(-60..0, ~M[110], fn days_ago, price ->
   PaperTrail.insert!(%GasPrice{
-    inserted_at: Ecto.DateTime.cast!(Timex.add(today, Timex.Duration.from_days(days_ago))),
+    inserted_at: Timex.add(today, Timex.Duration.from_days(days_ago)),
     price: price
   })
 
@@ -432,12 +427,12 @@ today = Timex.beginning_of_day(Timex.local())
 
 PaperTrail.insert!(%Post{
   poster: user,
-  inserted_at: Ecto.DateTime.cast!(Timex.shift(today, [days: -9, hours: 9, minutes: 22])),
+  inserted_at: Timex.shift(today, [days: -9, hours: 9, minutes: 22]),
   content: "{\"version\":\"0.3.1\",\"atoms\":[],\"cards\":[],\"markups\":[[\"strong\"]],\"sections\":[[1,\"p\",[[0,[],0,\"Here is a blog post with some \"],[0,[0],1,\"bold text\"],[0,[],0,\".\"]]]]}"
 })
 
 PaperTrail.insert!(%Post{
   poster: other_user,
-  inserted_at: Ecto.DateTime.cast!(Timex.shift(today, [days: -2, hours: 1, minutes: 33])),
+  inserted_at: Timex.shift(today, [days: -2, hours: 1, minutes: 33]),
   content: "{\"version\":\"0.3.1\",\"atoms\":[],\"cards\":[],\"markups\":[],\"sections\":[[1,\"h1\",[[0,[],0,\"A heading\"]]],[1,\"p\",[[0,[],0,\"This is another blog post by a different user.\"]]]]}"
 })

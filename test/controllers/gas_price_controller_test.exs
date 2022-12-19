@@ -20,7 +20,7 @@ defmodule PrisonRideshareWeb.GasPriceControllerTest do
     price =
       Repo.insert!(%GasPrice{
         price: ~M[105],
-        inserted_at: Ecto.DateTime.from_erl({{2018, 7, 6}, {9, 29, 0}})
+        inserted_at: NaiveDateTime.from_erl!({{2018, 7, 6}, {9, 29, 0}})
       })
 
     conn = get(conn, gas_price_path(conn, :index))
@@ -33,7 +33,7 @@ defmodule PrisonRideshareWeb.GasPriceControllerTest do
                  "price" => 105,
                  "far-rate" => 21,
                  "close-rate" => 26,
-                 "inserted-at" => "2018-07-06T09:29:00.000000Z"
+                 "inserted-at" => "2018-07-06T09:29:00"
                }
              }
            ]

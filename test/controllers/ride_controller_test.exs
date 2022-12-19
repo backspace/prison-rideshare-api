@@ -12,13 +12,13 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     contact: "some content",
     distance: 120,
     complete: false,
-    end: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0},
+    end: ~N[2010-04-17 14:00:00],
     food_expenses: 42,
     name: "some content",
     passengers: 42,
     report_notes: "some content",
     request_notes: "some content",
-    start: %{day: 17, month: 4, year: 2010, hour: 14, min: 0, sec: 0},
+    start: ~N[2010-04-17 14:00:00],
     first_time: true,
     medium: "email",
     request_confirmed: true,
@@ -87,8 +87,8 @@ defmodule PrisonRideshareWeb.RideControllerTest do
 
     ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2017, 1, 15}, {18, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2017, 1, 15}, {20, 0, 0}}),
         institution: institution,
         rate: 35,
         passengers: 2,
@@ -141,8 +141,8 @@ defmodule PrisonRideshareWeb.RideControllerTest do
                  "donation" => true,
                  "overridable" => true,
                  "initials" => "DN",
-                 "inserted-at" => DateTime.to_iso8601(ride.inserted_at),
-                 "updated-at" => DateTime.to_iso8601(ride.updated_at)
+                 "inserted-at" => NaiveDateTime.to_iso8601(ride.inserted_at),
+                 "updated-at" => NaiveDateTime.to_iso8601(ride.updated_at)
                },
                "relationships" => %{
                  "institution" => %{
@@ -188,7 +188,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     francine_ride =
       Repo.insert!(%Ride{
         name: "Francine",
-        start: Ecto.DateTime.from_erl({{2015, 1, 15}, {18, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2015, 1, 15}, {18, 0, 0}}),
         institution_id: institution.id
       })
 
@@ -200,7 +200,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     frank_ride =
       Repo.insert!(%Ride{
         name: "frank",
-        start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2017, 1, 15}, {18, 0, 0}}),
         institution_id: institution.id
       })
 
@@ -212,7 +212,7 @@ defmodule PrisonRideshareWeb.RideControllerTest do
     francesca_ride =
       Repo.insert!(%Ride{
         name: "francesca",
-        start: Ecto.DateTime.from_erl({{2016, 1, 15}, {18, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2016, 1, 15}, {18, 0, 0}}),
         institution_id: institution.id
       })
 
@@ -232,22 +232,22 @@ defmodule PrisonRideshareWeb.RideControllerTest do
       Repo.insert!(%Ride{
         name: "R",
         institution: institution,
-        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}})
+        start: NaiveDateTime.from_erl!({{2118, 11, 24}, {19, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2118, 11, 24}, {20, 0, 0}})
       })
 
     overlapping_start_ride =
       Repo.insert!(%Ride{
         name: "R",
         institution: institution,
-        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {17, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}})
+        start: NaiveDateTime.from_erl!({{2118, 11, 24}, {17, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2118, 11, 24}, {19, 0, 0}})
       })
 
     slot =
       Repo.insert!(%Slot{
-        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {18, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {21, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2118, 11, 24}, {18, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2118, 11, 24}, {21, 0, 0}}),
         count: 400
       })
 
@@ -263,8 +263,8 @@ defmodule PrisonRideshareWeb.RideControllerTest do
       Repo.insert!(%Ride{
         name: "R",
         institution: institution,
-        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {17, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2118, 11, 24}, {17, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2118, 11, 24}, {19, 0, 0}}),
         ignored_commitment_ids: [commitment.id]
       })
 
@@ -272,14 +272,14 @@ defmodule PrisonRideshareWeb.RideControllerTest do
       Repo.insert!(%Ride{
         name: "R",
         institution: institution,
-        start: Ecto.DateTime.from_erl({{1918, 11, 24}, {19, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{1918, 11, 24}, {20, 0, 0}})
+        start: NaiveDateTime.from_erl!({{1918, 11, 24}, {19, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{1918, 11, 24}, {20, 0, 0}})
       })
 
     past_slot =
       Repo.insert!(%Slot{
-        start: Ecto.DateTime.from_erl({{1918, 11, 24}, {18, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{1918, 11, 24}, {21, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{1918, 11, 24}, {18, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{1918, 11, 24}, {21, 0, 0}}),
         count: 400
       })
 
@@ -293,24 +293,24 @@ defmodule PrisonRideshareWeb.RideControllerTest do
       Repo.insert!(%Ride{
         name: "R",
         institution: institution,
-        start: Ecto.DateTime.from_erl({{2100, 1, 1}, {12, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2100, 1, 1}, {13, 0, 0}})
+        start: NaiveDateTime.from_erl!({{2100, 1, 1}, {12, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2100, 1, 1}, {13, 0, 0}})
       })
 
     _invalid_interval_ride =
       Repo.insert!(%Ride{
         name: "R",
         institution: institution,
-        start: Ecto.DateTime.from_erl({{2100, 1, 1}, {14, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2100, 1, 1}, {13, 0, 0}})
+        start: NaiveDateTime.from_erl!({{2100, 1, 1}, {14, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2100, 1, 1}, {13, 0, 0}})
       })
 
     _combined_ride =
       Repo.insert!(%Ride{
         name: "R",
         institution: institution,
-        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2118, 11, 24}, {19, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2118, 11, 24}, {20, 0, 0}}),
         combined_with: contained_ride
       })
 
@@ -318,8 +318,8 @@ defmodule PrisonRideshareWeb.RideControllerTest do
       Repo.insert!(%Ride{
         name: "R",
         institution: institution,
-        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2118, 11, 24}, {19, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2118, 11, 24}, {20, 0, 0}}),
         enabled: false
       })
 
@@ -327,8 +327,8 @@ defmodule PrisonRideshareWeb.RideControllerTest do
       Repo.insert!(%Ride{
         name: "R",
         institution: institution,
-        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2118, 11, 24}, {19, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2118, 11, 24}, {20, 0, 0}}),
         driver: person
       })
 
@@ -352,8 +352,8 @@ defmodule PrisonRideshareWeb.RideControllerTest do
       Repo.insert!(%Ride{
         name: "R",
         institution: institution,
-        start: Ecto.DateTime.from_erl({{2118, 11, 24}, {19, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2118, 11, 24}, {20, 0, 0}})
+        start: NaiveDateTime.from_erl!({{2118, 11, 24}, {19, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2118, 11, 24}, {20, 0, 0}})
       })
 
     commitment = Repo.insert!(%Commitment{})
@@ -565,11 +565,11 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         driver: other_driver,
         institution: Repo.insert!(%Institution{}),
         rate: ~M[22],
-        end: Ecto.DateTime.utc(),
+        end: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second),
         name: "some content",
         address: "an address",
         contact: "a contact",
-        start: Ecto.DateTime.utc(),
+        start: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second),
         overridable: true
       })
 

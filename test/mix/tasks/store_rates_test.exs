@@ -42,9 +42,9 @@ defmodule Mix.Tasks.StoreRatesTest do
 
     _old_ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2018, 5, 23}, {11, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2018, 5, 23}, {11, 0, 0}}),
         institution: close_institution,
-        end: Ecto.DateTime.from_erl({{2018, 5, 23}, {12, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2018, 5, 23}, {12, 0, 0}}),
         address: "address",
         contact: "contact",
         name: "name"
@@ -52,9 +52,9 @@ defmodule Mix.Tasks.StoreRatesTest do
 
     _yesterday_ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2018, 6, 23}, {11, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2018, 6, 23}, {11, 0, 0}}),
         institution: close_institution,
-        end: Ecto.DateTime.from_erl({{2018, 6, 23}, {12, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2018, 6, 23}, {12, 0, 0}}),
         address: "address",
         contact: "contact",
         name: "name"
@@ -62,10 +62,10 @@ defmodule Mix.Tasks.StoreRatesTest do
 
     _zero_set_rate_ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2018, 6, 23}, {11, 0, 1}}),
+        start: NaiveDateTime.from_erl!({{2018, 6, 23}, {11, 0, 1}}),
         institution: close_institution,
         rate: ~M[0],
-        end: Ecto.DateTime.from_erl({{2018, 6, 23}, {12, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2018, 6, 23}, {12, 0, 0}}),
         address: "address",
         contact: "contact",
         name: "name"
@@ -73,9 +73,9 @@ defmodule Mix.Tasks.StoreRatesTest do
 
     _today_ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2018, 6, 24}, {11, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2018, 6, 24}, {11, 0, 0}}),
         institution: far_institution,
-        end: Ecto.DateTime.from_erl({{2018, 6, 24}, {12, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2018, 6, 24}, {12, 0, 0}}),
         address: "address",
         contact: "contact",
         name: "name"
@@ -83,9 +83,9 @@ defmodule Mix.Tasks.StoreRatesTest do
 
     _tomorrow_ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2018, 6, 25}, {17, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2018, 6, 25}, {17, 0, 0}}),
         institution: far_institution,
-        end: Ecto.DateTime.from_erl({{2018, 6, 25}, {18, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2018, 6, 25}, {18, 0, 0}}),
         address: "address",
         contact: "contact",
         name: "name"
@@ -93,10 +93,10 @@ defmodule Mix.Tasks.StoreRatesTest do
 
     _already_set_gas_price_ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2018, 6, 28}, {11, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2018, 6, 28}, {11, 0, 0}}),
         institution: far_institution,
         gas_price: other_price,
-        end: Ecto.DateTime.from_erl({{2018, 6, 28}, {12, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2018, 6, 28}, {12, 0, 0}}),
         address: "address",
         contact: "contact",
         name: "name"
@@ -104,10 +104,10 @@ defmodule Mix.Tasks.StoreRatesTest do
 
     _already_set_rate_ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2018, 6, 23}, {11, 1, 0}}),
+        start: NaiveDateTime.from_erl!({{2018, 6, 23}, {11, 1, 0}}),
         institution: close_institution,
         rate: ~M[100],
-        end: Ecto.DateTime.from_erl({{2018, 6, 23}, {12, 1, 0}}),
+        end: NaiveDateTime.from_erl!({{2018, 6, 23}, {12, 1, 0}}),
         address: "address",
         contact: "contact",
         name: "name"

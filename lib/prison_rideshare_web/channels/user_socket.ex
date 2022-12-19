@@ -19,10 +19,6 @@ defmodule PrisonRideshareWeb.UserSocket do
   ## Channels
   channel("user:*", PrisonRideshareWeb.UserChannel)
 
-  ## Transports
-  transport(:websocket, Phoenix.Transports.WebSocket)
-  # transport :longpoll, Phoenix.Transports.LongPoll
-
   # Socket id's are topics that allow you to identify all sockets for a given user:
   #
   #     def id(socket), do: "users_socket:#{socket.assigns.user_id}"

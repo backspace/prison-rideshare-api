@@ -20,7 +20,7 @@ user =
     email: "testuser@example.com",
     password: "secretsecret",
     password_confirmation: "secretsecret",
-    confirmed_at: Ecto.DateTime.utc()
+    confirmed_at: NaiveDateTime.utc_now()
   })
   |> PaperTrail.insert!(version_information)
 

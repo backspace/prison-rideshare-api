@@ -20,8 +20,8 @@ defmodule PrisonRideshare.RideCalendarTest do
     driver = Repo.insert!(%Person{name: "Chelsea Manning"})
 
     Repo.insert!(%Ride{
-      start: Ecto.DateTime.from_erl({{2017, 1, 14}, {18, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 1, 14}, {20, 0, 0}}),
+      start: NaiveDateTime.from_erl!({{2017, 1, 14}, {18, 0, 0}}),
+      end: NaiveDateTime.from_erl!({{2017, 1, 14}, {20, 0, 0}}),
       institution: institution,
       name: "Tom",
       passengers: 1,
@@ -31,8 +31,8 @@ defmodule PrisonRideshare.RideCalendarTest do
 
     ride =
       Repo.insert!(%Ride{
-        start: Ecto.DateTime.from_erl({{2017, 1, 15}, {18, 0, 0}}),
-        end: Ecto.DateTime.from_erl({{2017, 1, 15}, {20, 0, 0}}),
+        start: NaiveDateTime.from_erl!({{2017, 1, 15}, {18, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2017, 1, 15}, {20, 0, 0}}),
         institution: institution,
         name: "Tom",
         passengers: 2,
@@ -50,8 +50,8 @@ defmodule PrisonRideshare.RideCalendarTest do
     })
 
     Repo.insert!(%Ride{
-      start: Ecto.DateTime.from_erl({{2017, 1, 16}, {18, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 1, 16}, {20, 0, 0}}),
+      start: NaiveDateTime.from_erl!({{2017, 1, 16}, {18, 0, 0}}),
+      end: NaiveDateTime.from_erl!({{2017, 1, 16}, {20, 0, 0}}),
       institution: institution,
       name: "Tom",
       passengers: 1,
@@ -61,16 +61,16 @@ defmodule PrisonRideshare.RideCalendarTest do
 
     # This ride should not be visible since it was cancelled.
     Repo.insert!(%Ride{
-      start: Ecto.DateTime.from_erl({{2017, 1, 16}, {18, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 1, 16}, {20, 0, 0}}),
+      start: NaiveDateTime.from_erl!({{2017, 1, 16}, {18, 0, 0}}),
+      end: NaiveDateTime.from_erl!({{2017, 1, 16}, {20, 0, 0}}),
       enabled: false,
       institution: institution
     })
 
     # This ride should not be visible since it has a driver.
     Repo.insert!(%Ride{
-      start: Ecto.DateTime.from_erl({{2017, 1, 17}, {18, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 1, 17}, {20, 0, 0}}),
+      start: NaiveDateTime.from_erl!({{2017, 1, 17}, {18, 0, 0}}),
+      end: NaiveDateTime.from_erl!({{2017, 1, 17}, {20, 0, 0}}),
       institution: institution,
       driver: driver,
       address: "421 Osborne"
@@ -78,8 +78,8 @@ defmodule PrisonRideshare.RideCalendarTest do
 
     # This ride should not be visible since it has a distance.
     Repo.insert!(%Ride{
-      start: Ecto.DateTime.from_erl({{2017, 1, 17}, {18, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 1, 17}, {20, 0, 0}}),
+      start: NaiveDateTime.from_erl!({{2017, 1, 17}, {18, 0, 0}}),
+      end: NaiveDateTime.from_erl!({{2017, 1, 17}, {20, 0, 0}}),
       institution: institution,
       address: "421 Osborne",
       distance: 44
@@ -87,8 +87,8 @@ defmodule PrisonRideshare.RideCalendarTest do
 
     # This ride should not be visible since it has car expenses.
     Repo.insert!(%Ride{
-      start: Ecto.DateTime.from_erl({{2017, 1, 17}, {18, 0, 0}}),
-      end: Ecto.DateTime.from_erl({{2017, 1, 17}, {20, 0, 0}}),
+      start: NaiveDateTime.from_erl!({{2017, 1, 17}, {18, 0, 0}}),
+      end: NaiveDateTime.from_erl!({{2017, 1, 17}, {20, 0, 0}}),
       institution: institution,
       address: "421 Osborne",
       car_expenses: ~M[11]

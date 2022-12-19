@@ -5,7 +5,7 @@ defmodule PrisonRideshare.Mixfile do
     [
       app: :prison_rideshare,
       version: "0.0.1",
-      elixir: "~> 1.7",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       build_embedded: Mix.env() == :prod,
@@ -39,7 +39,9 @@ defmodule PrisonRideshare.Mixfile do
       :comeonin,
       :timex,
       :sentry,
-      :logger
+      :logger,
+      :money,
+      :paper_trail
     ]
 
   # Specifies which paths to compile per environment.
@@ -51,27 +53,29 @@ defmodule PrisonRideshare.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.3.0"},
+      {:phoenix, "~> 1.4.0"},
       {:phoenix_pubsub, "~> 1.0"},
-      {:phoenix_ecto, "~> 3.0"},
+      {:ecto_sql, "~> 3.0"},
+      {:phoenix_ecto, "~> 4.0"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.6"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
-      {:plug_cowboy, "~> 1.0"},
+      {:plug_cowboy, "~> 2.0"},
       {:comeonin, "~> 3.0"},
       {:cors_plug, "~> 1.2.1"},
       {:csv, "~> 1.4.2"},
       {:guardian, "~> 1.0"},
       {:sans_password, "~> 1.0.0-beta"},
       {:ja_serializer, "~> 0.12.0"},
-      {:money, "~> 1.2.1"},
+      {:money, "~> 1.12.1"},
       {:timex, "~> 3.5.0"},
       {:bamboo, "~> 1.2.0"},
       {:icalendar, "~> 0.5.0"},
+      {:jason, "~> 1.0"},
       {:poison, "~> 3.1"},
       {:httpoison, "~> 1.0"},
-      {:paper_trail, "~> 0.7.7"},
+      {:paper_trail, "~> 0.14"},
       {:blacksmith, "~> 0.1"},
       {:excoveralls, "~> 0.6", only: :test},
       {:mix_test_watch, "~> 0.9", only: :dev, runtime: false},
