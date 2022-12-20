@@ -23,6 +23,9 @@ defmodule PrisonRideshareWeb.UserChannelTest do
       socket(UserSocket, "user_id", %{guardian_default_claims: guardian_default_claims})
       |> subscribe_and_join(UserChannel, "user:presence")
 
+
+    Process.unlink(socket.channel_pid)
+
     leave(socket)
 
     other_user_id_string = "User:" <> other_user.id
