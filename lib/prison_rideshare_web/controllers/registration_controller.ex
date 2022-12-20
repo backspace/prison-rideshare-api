@@ -24,12 +24,14 @@ defmodule PrisonRideshareWeb.RegistrationController do
       {:ok, %{model: user}} ->
         conn
         |> put_status(:created)
-        |> render(PrisonRideshareWeb.UserView, "show.json-api", data: user)
+        |> put_view(PrisonRideshareWeb.UserView)
+        |> render("show.json-api", data: user)
 
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(PrisonRideshareWeb.ChangesetView, :errors, data: changeset)
+        |> put_view(PrisonRideshareWeb.ChangesetView)
+        |> render(:errors, data: changeset)
     end
   end
 

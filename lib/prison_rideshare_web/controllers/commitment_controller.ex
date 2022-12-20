@@ -31,12 +31,14 @@ defmodule PrisonRideshareWeb.CommitmentController do
       !person ->
         conn
         |> put_status(:unauthorized)
-        |> render(PrisonRideshareWeb.ErrorView, "401.json")
+        |> put_view(PrisonRideshareWeb.ErrorView)
+        |> render("401.json")
 
       person.id != data["relationships"]["person"]["data"]["id"] ->
         conn
         |> put_status(:unauthorized)
-        |> render(PrisonRideshareWeb.ErrorView, "401.json")
+        |> put_view(PrisonRideshareWeb.ErrorView)
+        |> render("401.json")
 
       slot.count != 0 && length(slot.commitments) + 1 > slot.count ->
         conn
@@ -131,7 +133,8 @@ defmodule PrisonRideshareWeb.CommitmentController do
       true ->
         conn
         |> put_status(:unauthorized)
-        |> render(PrisonRideshareWeb.ErrorView, "401.json")
+        |> put_view(PrisonRideshareWeb.ErrorView)
+        |> render("401.json")
     end
   end
 end

@@ -32,7 +32,9 @@ defmodule PrisonRideshareWeb.SessionController do
           # 401
           conn
           |> put_status(401)
-          |> render(PrisonRideshareWeb.ErrorView, "401.json")
+          |> put_view(PrisonRideshareWeb.ErrorView)
+          |> render("401.json")
+
       end
     rescue
       e ->
@@ -42,7 +44,8 @@ defmodule PrisonRideshareWeb.SessionController do
         # 401
         conn
         |> put_status(401)
-        |> render(PrisonRideshareWeb.ErrorView, "401.json")
+        |> put_view(PrisonRideshareWeb.ErrorView)
+        |> render("401.json")
     end
   end
 

@@ -12,6 +12,7 @@ defmodule PrisonRideshare.Guardian.AuthErrorHandler do
 
     conn
     |> put_status(status)
-    |> render(PrisonRideshareWeb.ErrorView, "#{status}.json")
+    |> put_view(PrisonRideshareWeb.ErrorView)
+    |> render("#{status}.json")
   end
 end

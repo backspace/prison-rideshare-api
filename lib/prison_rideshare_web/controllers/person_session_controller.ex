@@ -13,12 +13,14 @@ defmodule PrisonRideshareWeb.PersonSessionController do
       {:error, %CaseClauseError{term: {:error, {:badarg, _}}}} ->
         conn
         |> put_status(401)
-        |> render(PrisonRideshareWeb.ErrorView, "401.json")
+        |> put_view(PrisonRideshareWeb.ErrorView)
+        |> render("401.json")
 
       {:error, :token_expired} ->
         conn
         |> put_status(401)
-        |> render(PrisonRideshareWeb.ErrorView, "401.json",
+        |> put_view(PrisonRideshareWeb.ErrorView)
+        |> render("401.json",
           detail: "That token is expired. Did you click an old link?"
         )
     end
@@ -29,7 +31,10 @@ defmodule PrisonRideshareWeb.PersonSessionController do
       PrisonRideshare.PersonGuardian.decode_and_verify(access_token, %{"typ" => "access"})
 
     person = Repo.get!(Person, id)
-    render(conn, PrisonRideshareWeb.PersonCalendarView, "show.json-api", data: person)
+
+    conn
+    |> put_view(PrisonRideshareWeb.PersonCalendarView)
+    |> render("show.json-api", data: person)
   end
 
   def update(conn, %{
@@ -45,12 +50,15 @@ defmodule PrisonRideshareWeb.PersonSessionController do
 
     case PaperTrail.update(changeset, version_information(conn)) do
       {:ok, %{model: person}} ->
-        render(conn, PrisonRideshareWeb.PersonCalendarView, "show.json-api", data: person)
-
+        conn
+        |> put_view(PrisonRideshareWeb.PersonCalendarView)
+        |> render("show.json-api", data: person)
+     
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(PrisonRideshareWeb.PersonCalendarView, :errors, data: changeset)
+        |> put_view(PrisonRideshareWeb.PersonCalendarView)
+        |> render(:errors, data: changeset)
     end
   end
 end

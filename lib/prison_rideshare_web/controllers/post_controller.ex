@@ -76,7 +76,8 @@ defmodule PrisonRideshareWeb.PostController do
     else
       conn
       |> put_status(:forbidden)
-      |> render(PrisonRideshareWeb.ErrorView, "403.json")
+      |> put_view(PrisonRideshareWeb.ErrorView)
+      |> render("403.json")
     end
   end
 
@@ -91,7 +92,8 @@ defmodule PrisonRideshareWeb.PostController do
     else
       conn
       |> put_status(:unauthorized)
-      |> render(PrisonRideshareWeb.ErrorView, "401.json")
+      |> put_view(PrisonRideshareWeb.ErrorView)
+      |> render("401.json")
     end
   end
 

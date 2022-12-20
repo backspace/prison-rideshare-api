@@ -13,7 +13,7 @@ defmodule PrisonRideshareWeb.UserChannel do
 
     {:ok, _} =
       Presence.track(socket, socket.assigns.guardian_default_claims["sub"], %{
-        online_at: inspect(System.system_time(:seconds))
+        online_at: inspect(System.system_time(:second))
       })
 
     {:noreply, socket}

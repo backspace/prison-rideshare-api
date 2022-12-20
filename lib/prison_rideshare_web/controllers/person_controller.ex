@@ -134,7 +134,8 @@ defmodule PrisonRideshareWeb.PersonController do
       true ->
         conn
         |> put_status(401)
-        |> render(PrisonRideshareWeb.ErrorView, "401.json")
+        |> put_view(PrisonRideshareWeb.ErrorView)
+        |> render("401.json")
     end
   end
 

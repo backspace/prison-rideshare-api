@@ -307,19 +307,18 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
         complete: true
       })
 
-    conn =
-      put(conn, ride_path(conn, :update, ride), %{
-        "meta" => %{},
-        "data" => %{
-          "type" => "rides",
-          "id" => ride.id,
-          "attributes" => %{
-            "distance" => 0,
-            "car_expenses" => 0,
-            "complete" => false
-          }
+    put(conn, ride_path(conn, :update, ride), %{
+      "meta" => %{},
+      "data" => %{
+        "type" => "rides",
+        "id" => ride.id,
+        "attributes" => %{
+          "distance" => 0,
+          "car_expenses" => 0,
+          "complete" => false
         }
-      })
+      }
+    })
 
     assert_no_emails_delivered()
   end

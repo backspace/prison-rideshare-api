@@ -41,7 +41,13 @@ defmodule PrisonRideshare.Mixfile do
       :sentry,
       :logger,
       :money,
-      :paper_trail
+      :paper_trail,
+      :cors_plug,
+      :guardian,
+      :ja_serializer,
+      :sans_password,
+      :icalendar,
+      :httpoison
     ]
 
   # Specifies which paths to compile per environment.
