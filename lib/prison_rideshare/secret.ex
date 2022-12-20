@@ -1,5 +1,5 @@
 defmodule PrisonRideshare.Secret do
-  @behaviour Ecto.Type
+  use Ecto.Type
 
   def type, do: :string
 
@@ -14,8 +14,6 @@ defmodule PrisonRideshare.Secret do
   def dump(string) do
     {:ok, string}
   end
-
-  def embed_as(format), do: :self
 
   def autogenerate do
     :crypto.strong_rand_bytes(32) |> Base.encode64() |> binary_part(0, 32)
