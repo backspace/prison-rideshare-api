@@ -19,8 +19,8 @@ config :prison_rideshare, ui_root: System.get_env("UI_ROOT") || "https://ridesha
 
 config :prison_rideshare, gas_price_endpoint: System.get_env("GAS_PRICE_ENDPOINT")
 
-config :phoenix, :json_library, Poison
-config :phoenix, :format_encoders, "json-api": Poison
+config :phoenix, :json_library, Jason
+config :phoenix, :format_encoders, "json-api": Jason
 
 config :mime, :types, %{
   "application/vnd.api+json" => ["json-api"],
@@ -64,7 +64,7 @@ config :sentry,
   root_source_code_path: File.cwd!(),
   included_environments: [:prod],
   environment_name: Mix.env(),
-  json_library: Poison
+  json_library: Jason
 
 config :paper_trail,
   repo: PrisonRideshare.Repo,
