@@ -23,8 +23,6 @@ defmodule PrisonRideshare.Mixfile do
     [mod: {PrisonRideshare.Application, []}, applications: applications(Mix.env())]
   end
 
-  defp applications(:test), do: applications(:all) ++ [:blacksmith]
-
   defp applications(_all),
     do: [
       :bamboo,
@@ -82,7 +80,6 @@ defmodule PrisonRideshare.Mixfile do
       {:poison, "~> 3.1"},
       {:httpoison, "~> 1.0"},
       {:paper_trail, "~> 0.14"},
-      {:blacksmith, "~> 0.1"},
       {:excoveralls, "~> 0.6", only: :test},
       {:mix_test_watch, "~> 0.9", only: :dev, runtime: false},
       {:mock, "~> 0.3.4", only: :test},

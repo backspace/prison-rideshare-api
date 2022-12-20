@@ -19,13 +19,3 @@ config :prison_rideshare, PrisonRideshare.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :prison_rideshare, PrisonRideshare.Mailer, adapter: Bamboo.TestAdapter
-
-defmodule Blacksmith.Config do
-  def save(map) do
-    PrisonRideshare.Repo.insert(map)
-  end
-
-  def save_all(list) do
-    Enum.map(list, &PrisonRideshare.Repo.insert/1)
-  end
-end
