@@ -20,35 +20,8 @@ defmodule PrisonRideshare.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {PrisonRideshare.Application, []}, applications: applications(Mix.env())]
+    [mod: {PrisonRideshare.Application, []}, extra_applications: [:logger]]
   end
-
-  defp applications(_all),
-    do: [
-      :bamboo,
-      :phoenix,
-      :phoenix_live_view,
-      :phoenix_pubsub,
-      :phoenix_html,
-      :cowboy,
-      :logger,
-      :gettext,
-      :phoenix_ecto,
-      :postgrex,
-      :comeonin,
-      :timex,
-      :sentry,
-      :logger,
-      :money,
-      :paper_trail,
-      :cors_plug,
-      :guardian,
-      :guardian_phoenix,
-      :ja_serializer,
-      :sans_password,
-      :icalendar,
-      :httpoison
-    ]
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
