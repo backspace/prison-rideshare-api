@@ -67,7 +67,7 @@ defmodule PrisonRideshare.Mixfile do
       {:phoenix_html, "~> 2.6"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
-      {:plug_cowboy, "~> 2.0"},
+      {:plug_cowboy, "~> 2.3"},
       {:comeonin, "~> 3.0"},
       {:cors_plug, "~> 1.2.1"},
       {:csv, "~> 1.4.2"},
@@ -86,7 +86,8 @@ defmodule PrisonRideshare.Mixfile do
       {:excoveralls, "~> 0.6", only: :test},
       {:mix_test_watch, "~> 0.9", only: :dev, runtime: false},
       {:mock, "~> 0.3.4", only: :test},
-      {:sentry, "~> 7.0.6"}
+      {:sentry, "~> 8.0"},
+      {:hackney, "~> 1.8"}
     ]
   end
 

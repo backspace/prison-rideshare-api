@@ -1,4 +1,5 @@
 defmodule PrisonRideshareWeb.Endpoint do
+  use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :prison_rideshare
 
   socket("/socket", PrisonRideshareWeb.UserSocket, websocket: true)
@@ -32,6 +33,8 @@ defmodule PrisonRideshareWeb.Endpoint do
     pass: ["*/*"],
     json_decoder: Poison
   )
+
+  plug Sentry.PlugContext
 
   plug(Plug.MethodOverride)
   plug(Plug.Head)
