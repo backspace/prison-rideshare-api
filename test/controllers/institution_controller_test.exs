@@ -22,13 +22,13 @@ defmodule PrisonRideshareWeb.InstitutionControllerTest do
   end
 
   test "lists all entries on index", %{conn: conn} do
-    conn = get(conn, institution_path(conn, :index))
+    conn = get(conn, Routes.institution_path(conn, :index))
     assert json_response(conn, 200)["data"] == []
   end
 
   test "shows chosen resource", %{conn: conn} do
     institution = Repo.insert!(%Institution{far: true})
-    conn = get(conn, institution_path(conn, :show, institution))
+    conn = get(conn, Routes.institution_path(conn, :show, institution))
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{institution.id}"
     assert data["type"] == "institution"
@@ -38,13 +38,13 @@ defmodule PrisonRideshareWeb.InstitutionControllerTest do
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
     assert_error_sent(404, fn ->
-      get(conn, institution_path(conn, :show, "00000000-0000-0000-0000-000000000000"))
+      get(conn, Routes.institution_path(conn, :show, "00000000-0000-0000-0000-000000000000"))
     end)
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
     conn =
-      post(conn, institution_path(conn, :create), %{
+      post(conn, Routes.institution_path(conn, :create), %{
         "meta" => %{},
         "data" => %{
           "type" => "institutions",
@@ -60,7 +60,7 @@ defmodule PrisonRideshareWeb.InstitutionControllerTest do
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     conn =
-      post(conn, institution_path(conn, :create), %{
+      post(conn, Routes.institution_path(conn, :create), %{
         "meta" => %{},
         "data" => %{
           "type" => "institutions",
@@ -76,7 +76,7 @@ defmodule PrisonRideshareWeb.InstitutionControllerTest do
     institution = Repo.insert!(%Institution{})
 
     conn =
-      put(conn, institution_path(conn, :update, institution), %{
+      put(conn, Routes.institution_path(conn, :update, institution), %{
         "meta" => %{},
         "data" => %{
           "type" => "institutions",
@@ -95,7 +95,7 @@ defmodule PrisonRideshareWeb.InstitutionControllerTest do
     institution = Repo.insert!(%Institution{})
 
     conn =
-      put(conn, institution_path(conn, :update, institution), %{
+      put(conn, Routes.institution_path(conn, :update, institution), %{
         "meta" => %{},
         "data" => %{
           "type" => "institutions",
@@ -110,7 +110,7 @@ defmodule PrisonRideshareWeb.InstitutionControllerTest do
 
   test "deletes chosen resource", %{conn: conn} do
     institution = Repo.insert!(%Institution{})
-    conn = delete(conn, institution_path(conn, :delete, institution))
+    conn = delete(conn, Routes.institution_path(conn, :delete, institution))
     assert response(conn, 204)
     refute Repo.get(Institution, institution.id)
   end

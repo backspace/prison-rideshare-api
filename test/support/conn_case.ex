@@ -25,7 +25,7 @@ defmodule PrisonRideshareWeb.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import PrisonRideshareWeb.Router.Helpers
+      alias PrisonRideshareWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
       @endpoint PrisonRideshareWeb.Endpoint

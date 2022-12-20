@@ -23,7 +23,7 @@ defmodule PrisonRideshareWeb.SessionControllerTest do
 
   test "returns a token when the password matches the user", %{conn: conn} do
     conn =
-      post(conn, login_path(conn, :create), %{
+      post(conn, Routes.login_path(conn, :create), %{
         grant_type: "password",
         username: "hello@example.com",
         password: "aaaaaaaaa"
@@ -34,7 +34,7 @@ defmodule PrisonRideshareWeb.SessionControllerTest do
 
   test "returns a 401 when the password is wrong", %{conn: conn} do
     conn =
-      post(conn, login_path(conn, :create), %{
+      post(conn, Routes.login_path(conn, :create), %{
         grant_type: "password",
         username: "hello@example.com",
         password: "bbbbbbbbb"
@@ -48,7 +48,7 @@ defmodule PrisonRideshareWeb.SessionControllerTest do
 
   test "returns a 401 when the user doesn't exist", %{conn: conn} do
     conn =
-      post(conn, login_path(conn, :create), %{
+      post(conn, Routes.login_path(conn, :create), %{
         grant_type: "password",
         username: "x@example.com",
         password: "bbbbbbbbb"
@@ -62,7 +62,7 @@ defmodule PrisonRideshareWeb.SessionControllerTest do
 
   test "fails when the grant type is not password", %{conn: conn} do
     try do
-      post(conn, login_path(conn, :create), %{grant_type: "jorts"})
+      post(conn, Routes.login_path(conn, :create), %{grant_type: "jorts"})
     catch
       _ -> assert true
     end

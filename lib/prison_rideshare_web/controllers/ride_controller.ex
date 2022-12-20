@@ -183,7 +183,7 @@ defmodule PrisonRideshareWeb.RideController do
       {:ok, %{model: ride}} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", ride_path(conn, :show, ride))
+        |> put_resp_header("location", Routes.ride_path(conn, :show, ride))
         |> render("show.json-api", data: ride |> preload)
 
       {:error, changeset} ->

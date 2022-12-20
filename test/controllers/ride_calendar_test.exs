@@ -94,7 +94,7 @@ defmodule PrisonRideshare.RideCalendarTest do
       car_expenses: ~M[11]
     })
 
-    conn = get(conn, ride_path(conn, :calendar))
+    conn = get(conn, Routes.ride_path(conn, :calendar))
     assert response_content_type(conn, :calendar)
 
     assert response(conn, 200) == """

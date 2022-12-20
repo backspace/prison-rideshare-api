@@ -24,7 +24,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
   end
 
   test "lists all entries on index", %{conn: conn} do
-    conn = get(conn, user_path(conn, :index))
+    conn = get(conn, Routes.user_path(conn, :index))
 
     [user | _] = json_response(conn, 200)["data"]
     assert user |> Map.get("attributes") |> Map.get("admin")
@@ -32,7 +32,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
 
   test "shows chosen resource", %{conn: conn} do
     user = Repo.insert!(%User{admin: true})
-    conn = get(conn, user_path(conn, :show, user))
+    conn = get(conn, Routes.user_path(conn, :show, user))
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{user.id}"
     assert data["type"] == "user"
@@ -43,7 +43,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
   test "shows the current user and updates last_seen_at", %{conn: conn} do
     last_seen_before = Repo.get_by(User, %{email: "test@example.com"}).last_seen_at
 
-    conn = get(conn, user_path(conn, :current))
+    conn = get(conn, Routes.user_path(conn, :current))
     data = json_response(conn, 200)["data"]
 
     assert data["attributes"]["email"] == "test@example.com"
@@ -61,7 +61,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
       |> put_req_header("content-type", "application/vnd.api+json")
       |> put_req_header("authorization", "Bearer XXX")
 
-    conn = get(conn, user_path(conn, :current))
+    conn = get(conn, Routes.user_path(conn, :current))
     assert json_response(conn, 401)
   end
 
@@ -77,19 +77,19 @@ defmodule PrisonRideshareWeb.UserControllerTest do
       |> put_req_header("content-type", "application/vnd.api+json")
       |> put_req_header("authorization", "Bearer #{jwt}")
 
-    conn = get(conn, user_path(conn, :current))
+    conn = get(conn, Routes.user_path(conn, :current))
     assert json_response(conn, 400)
   end
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
     assert_error_sent(404, fn ->
-      get(conn, user_path(conn, :show, "00000000-0000-0000-0000-000000000000"))
+      get(conn, Routes.user_path(conn, :show, "00000000-0000-0000-0000-000000000000"))
     end)
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
     conn =
-      post(conn, user_path(conn, :create), %{
+      post(conn, Routes.user_path(conn, :create), %{
         "meta" => %{},
         "data" => %{
           "type" => "users",
@@ -112,7 +112,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     conn =
-      post(conn, user_path(conn, :create), %{
+      post(conn, Routes.user_path(conn, :create), %{
         "meta" => %{},
         "data" => %{
           "type" => "users",
@@ -147,7 +147,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
     user = Repo.insert!(%User{})
 
     conn =
-      put(conn, user_path(conn, :update, user), %{
+      put(conn, Routes.user_path(conn, :update, user), %{
         "meta" => %{},
         "data" => %{
           "type" => "users",
@@ -163,7 +163,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
 
   # test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
   #   user = Repo.insert! %User{}
-  #   conn = put conn, user_path(conn, :update, user), %{
+  #   conn = put conn, Routes.user_path(conn, :update, user), %{
   #     "meta" => %{},
   #     "data" => %{
   #       "type" => "user",
@@ -178,7 +178,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
 
   test "deletes chosen resource", %{conn: conn} do
     user = Repo.insert!(%User{})
-    conn = delete(conn, user_path(conn, :delete, user))
+    conn = delete(conn, Routes.user_path(conn, :delete, user))
     assert response(conn, 204)
     refute Repo.get(User, user.id)
   end
@@ -188,7 +188,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
     token = "token for #{user.email}"
 
     with_mock Phoenix.Token, sign: fn PrisonRideshareWeb.Endpoint, "reset salt", _ -> token end do
-      conn = post(conn, user_path(conn, :reset, email: "user@example.com"))
+      conn = post(conn, Routes.user_path(conn, :reset, email: "user@example.com"))
 
       assert_delivered_email(PrisonRideshare.Email.reset(user, token))
       assert_delivered_email(PrisonRideshare.Email.reset_report(user))
@@ -197,7 +197,7 @@ defmodule PrisonRideshareWeb.UserControllerTest do
   end
 
   test "reports success triggering a reset even when the user doesn't exist", %{conn: conn} do
-    conn = post(conn, user_path(conn, :reset, email: "user@example.com"))
+    conn = post(conn, Routes.user_path(conn, :reset, email: "user@example.com"))
     assert response(conn, 204)
   end
 end

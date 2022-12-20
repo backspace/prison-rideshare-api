@@ -38,7 +38,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
         poster: user
       })
 
-    conn = get(conn, post_path(conn, :index))
+    conn = get(conn, Routes.post_path(conn, :index))
 
     assert json_response(conn, 200)["data"] == [
              %{
@@ -82,7 +82,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
 
   test "creates and renders resource when data is valid", %{conn: conn} do
     conn =
-      post(conn, post_path(conn, :create), %{
+      post(conn, Routes.post_path(conn, :create), %{
         "meta" => %{},
         "data" => %{
           "type" => "posts",
@@ -112,7 +112,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
     conn: conn
   } do
     conn =
-      post(conn, post_path(conn, :create), %{
+      post(conn, Routes.post_path(conn, :create), %{
         "meta" => %{},
         "data" => %{
           "type" => "posts",
@@ -145,7 +145,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
     other_user = Repo.insert!(%User{admin: true})
 
     conn =
-      put(conn, post_path(conn, :update, post), %{
+      put(conn, Routes.post_path(conn, :update, post), %{
         "meta" => %{},
         "data" => %{
           "type" => "posts",
@@ -187,7 +187,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
       })
 
     conn =
-      put(conn, post_path(conn, :update, post), %{
+      put(conn, Routes.post_path(conn, :update, post), %{
         "meta" => %{},
         "data" => %{
           "type" => "posts",
@@ -218,7 +218,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
 
     conn =
       conn
-      |> delete(post_path(conn, :delete, post))
+      |> delete(Routes.post_path(conn, :delete, post))
 
     assert response(conn, 204)
     assert Repo.all(Post) == []
@@ -239,7 +239,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
 
     conn =
       conn
-      |> delete(post_path(conn, :delete, post))
+      |> delete(Routes.post_path(conn, :delete, post))
 
     assert json_response(conn, 401) == %{
              "jsonapi" => %{"version" => "1.0"},
@@ -253,7 +253,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
     Repo.insert!(%Post{})
     Repo.insert!(%Post{})
 
-    post(conn, post_path(conn, :read_all_posts))
+    post(conn, Routes.post_path(conn, :read_all_posts))
 
     [post_0, post_1] = Repo.all(Post)
     [user] = Repo.all(User)
@@ -267,7 +267,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
 
     post = Repo.insert!(%Post{})
 
-    conn = post(conn, post_path(conn, :read_post, post))
+    conn = post(conn, Routes.post_path(conn, :read_post, post))
 
     post = Repo.one(Post)
 
@@ -283,7 +283,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
         readings: [user.id]
       })
 
-    post(conn, post_path(conn, :read_post, post))
+    post(conn, Routes.post_path(conn, :read_post, post))
 
     post = Repo.one(Post)
 
@@ -298,7 +298,7 @@ defmodule PrisonRideshareWeb.PostControllerTest do
         readings: [user.id]
       })
 
-    conn = delete(conn, post_path(conn, :unread_post, post))
+    conn = delete(conn, Routes.post_path(conn, :unread_post, post))
 
     post = Repo.one(Post)
 

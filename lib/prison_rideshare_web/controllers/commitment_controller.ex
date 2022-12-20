@@ -15,7 +15,7 @@ defmodule PrisonRideshareWeb.CommitmentController do
       {:ok, %{model: commitment}} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", commitment_path(conn, :show, commitment))
+        |> put_resp_header("location", Routes.commitment_path(conn, :show, commitment))
         |> render("show.json-api", data: commitment |> Repo.preload([:person, :slot]))
     end
   end
@@ -89,7 +89,7 @@ defmodule PrisonRideshareWeb.CommitmentController do
           {:ok, %{model: commitment}} ->
             conn
             |> put_status(:created)
-            |> put_resp_header("location", commitment_path(conn, :show, commitment))
+            |> put_resp_header("location", Routes.commitment_path(conn, :show, commitment))
             |> render("show.json-api", data: commitment |> Repo.preload([:person, :slot]))
         end
     end

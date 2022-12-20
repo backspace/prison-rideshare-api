@@ -23,7 +23,7 @@ defmodule PrisonRideshareWeb.GasPriceControllerTest do
         inserted_at: NaiveDateTime.from_erl!({{2018, 7, 6}, {9, 29, 0}})
       })
 
-    conn = get(conn, gas_price_path(conn, :index))
+    conn = get(conn, Routes.gas_price_path(conn, :index))
 
     assert json_response(conn, 200)["data"] == [
              %{

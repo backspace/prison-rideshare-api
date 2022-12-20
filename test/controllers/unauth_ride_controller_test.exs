@@ -75,7 +75,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       car_owner: driver
     })
 
-    conn = get(conn, ride_path(conn, :index))
+    conn = get(conn, Routes.ride_path(conn, :index))
 
     assert json_response(conn, 200)["data"] == [
              %{
@@ -139,7 +139,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     attempted_institution = Repo.insert!(%Institution{name: "Toys R Us"})
 
     conn =
-      put(conn, ride_path(conn, :update, ride), %{
+      put(conn, Routes.ride_path(conn, :update, ride), %{
         "meta" => %{},
         "data" => %{
           "type" => "rides",
@@ -218,7 +218,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       })
 
     conn =
-      put(conn, ride_path(conn, :update, ride), %{
+      put(conn, Routes.ride_path(conn, :update, ride), %{
         "meta" => %{},
         "data" => %{
           "type" => "rides",
@@ -267,7 +267,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       })
 
     conn =
-      put(conn, ride_path(conn, :update, ride), %{
+      put(conn, Routes.ride_path(conn, :update, ride), %{
         "meta" => %{},
         "data" => %{
           "type" => "rides",
@@ -307,7 +307,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
         complete: true
       })
 
-    put(conn, ride_path(conn, :update, ride), %{
+    put(conn, Routes.ride_path(conn, :update, ride), %{
       "meta" => %{},
       "data" => %{
         "type" => "rides",

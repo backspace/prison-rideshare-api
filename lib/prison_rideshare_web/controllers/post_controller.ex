@@ -33,7 +33,7 @@ defmodule PrisonRideshareWeb.PostController do
       {:ok, %{model: post}} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", post_path(conn, :show, post))
+        |> put_resp_header("location", Routes.post_path(conn, :show, post))
         |> render("show.json-api", data: post)
 
       {:error, changeset} ->

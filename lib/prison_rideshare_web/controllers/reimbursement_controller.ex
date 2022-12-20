@@ -23,7 +23,7 @@ defmodule PrisonRideshareWeb.ReimbursementController do
       {:ok, %{model: reimbursement}} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", reimbursement_path(conn, :show, reimbursement))
+        |> put_resp_header("location", Routes.reimbursement_path(conn, :show, reimbursement))
         |> render("show.json-api", data: reimbursement |> Repo.preload([:person, :ride]))
 
       {:error, changeset} ->

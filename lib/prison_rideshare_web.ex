@@ -37,7 +37,7 @@ defmodule PrisonRideshareWeb do
       import Ecto
       import Ecto.Query
 
-      import PrisonRideshareWeb.Router.Helpers
+      alias PrisonRideshareWeb.Router.Helpers, as: Routes
       import PrisonRideshareWeb.Gettext
 
       import PrisonRideshare.VersionInformation

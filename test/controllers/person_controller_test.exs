@@ -34,7 +34,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
   end
 
   test "lists all entries on index", %{conn: conn} do
-    conn = get(conn, person_path(conn, :index))
+    conn = get(conn, Routes.person_path(conn, :index))
     assert json_response(conn, 200)["data"] == []
   end
 
@@ -52,7 +52,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
         address: "91 Albert"
       })
 
-    conn = get(conn, person_path(conn, :show, person))
+    conn = get(conn, Routes.person_path(conn, :show, person))
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{person.id}"
     assert data["type"] == "people"
@@ -71,13 +71,13 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
     assert_error_sent(404, fn ->
-      get(conn, person_path(conn, :show, "00000000-0000-0000-0000-000000000000"))
+      get(conn, Routes.person_path(conn, :show, "00000000-0000-0000-0000-000000000000"))
     end)
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
     conn =
-      post(conn, person_path(conn, :create), %{
+      post(conn, Routes.person_path(conn, :create), %{
         "meta" => %{},
         "data" => %{
           "type" => "people",
@@ -109,7 +109,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     conn: conn
   } do
     conn =
-      post(conn, person_path(conn, :create), %{
+      post(conn, Routes.person_path(conn, :create), %{
         "meta" => %{},
         "data" => %{
           "type" => "people",
@@ -134,7 +134,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
       encode_magic: fn person -> {:ok, "token for #{person.name}", "claims"} end do
       person = Repo.insert!(%Person{name: "Chelsea Manning", email: "chelsea@example.com"})
 
-      conn = post(conn, person_calendar_email_path(conn, :email_calendar_link, person, "2017-12"))
+      conn = post(conn, Routes.person_calendar_email_path(conn, :email_calendar_link, person, "2017-12"))
 
       assert response(conn, 204)
       assert_delivered_email(PrisonRideshare.Email.calendar_link(person, "2017-12"))
@@ -143,7 +143,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
 
   test "returns a calendar link", %{conn: conn} do
     person = Repo.insert!(%Person{name: "Jortle", email: "jortle@example.com"})
-    conn = get(conn, person_calendar_link_path(conn, :calendar_link, person, "2018-02"))
+    conn = get(conn, Routes.person_calendar_link_path(conn, :calendar_link, person, "2018-02"))
     assert String.contains?(response(conn, 200), "2018-02")
   end
 
@@ -151,7 +151,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
     person = Repo.insert!(%Person{name: "oldname"})
 
     conn =
-      put(conn, person_path(conn, :update, person), %{
+      put(conn, Routes.person_path(conn, :update, person), %{
         "meta" => %{},
         "data" => %{
           "type" => "people",
@@ -179,7 +179,7 @@ defmodule PrisonRideshareWeb.PersonControllerTest do
 
   test "deletes chosen resource", %{conn: conn} do
     person = Repo.insert!(%Person{name: "deletedname"})
-    conn = delete(conn, person_path(conn, :delete, person))
+    conn = delete(conn, Routes.person_path(conn, :delete, person))
     assert response(conn, 204)
     refute Repo.get(Person, person.id)
 

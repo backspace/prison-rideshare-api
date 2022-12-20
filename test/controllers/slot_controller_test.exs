@@ -17,7 +17,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
   test "lists all slots and their commitments", %{conn: conn} do
     [later, earlier, _, commitment] = create_data()
 
-    conn = get(conn, slot_path(conn, :index))
+    conn = get(conn, Routes.slot_path(conn, :index))
 
     assert json_response(conn, 200)["data"] == [
              %{
@@ -64,7 +64,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     conn =
       conn
       |> auth_as_person(person)
-      |> post(commitment_path(conn, :create), %{
+      |> post(Routes.commitment_path(conn, :create), %{
         "data" => %{
           "type" => "commitments",
           "attributes" => %{},
@@ -102,7 +102,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     [_, earlier, person, _] = create_data()
 
     conn =
-      post(conn, commitment_path(conn, :create), %{
+      post(conn, Routes.commitment_path(conn, :create), %{
         "data" => %{
           "type" => "commitments",
           "attributes" => %{},
@@ -135,7 +135,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     conn =
       conn
       |> auth_as_person()
-      |> post(commitment_path(conn, :create), %{
+      |> post(Routes.commitment_path(conn, :create), %{
         "data" => %{
           "type" => "commitments",
           "relationships" => %{
@@ -171,7 +171,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     conn =
       conn
       |> auth_as_person(person)
-      |> post(commitment_path(conn, :create), %{
+      |> post(Routes.commitment_path(conn, :create), %{
         "data" => %{
           "type" => "commitments",
           "attributes" => %{},
@@ -207,7 +207,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     conn =
       conn
       |> auth_as_person(person)
-      |> post(commitment_path(conn, :create), %{
+      |> post(Routes.commitment_path(conn, :create), %{
         "data" => %{
           "type" => "commitments",
           "attributes" => %{},
@@ -245,7 +245,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     conn =
       conn
       |> auth_as_person(person)
-      |> post(commitment_path(conn, :create), %{
+      |> post(Routes.commitment_path(conn, :create), %{
         "data" => %{
           "type" => "commitments",
           "attributes" => %{},
@@ -287,7 +287,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     conn =
       conn
       |> auth_as_admin()
-      |> post(commitment_path(conn, :create), %{
+      |> post(Routes.commitment_path(conn, :create), %{
         "data" => %{
           "type" => "commitments",
           "attributes" => %{},
@@ -321,7 +321,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     conn =
       conn
       |> auth_as_person(person)
-      |> delete(commitment_path(conn, :delete, commitment))
+      |> delete(Routes.commitment_path(conn, :delete, commitment))
 
     assert response(conn, 204)
 
@@ -338,7 +338,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     conn =
       conn
       |> auth_as_person()
-      |> delete(commitment_path(conn, :delete, commitment))
+      |> delete(Routes.commitment_path(conn, :delete, commitment))
 
     assert json_response(conn, 401) == %{
              "jsonapi" => %{"version" => "1.0"},
@@ -352,7 +352,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     conn =
       conn
       |> auth_as_admin()
-      |> delete(commitment_path(conn, :delete, commitment))
+      |> delete(Routes.commitment_path(conn, :delete, commitment))
 
     assert response(conn, 204)
 
@@ -369,7 +369,7 @@ defmodule PrisonRideshareWeb.SlotControllerTest do
     conn =
       conn
       |> auth_as_person(person)
-      |> delete(commitment_path(conn, :delete, commitment))
+      |> delete(Routes.commitment_path(conn, :delete, commitment))
 
     assert json_response(conn, 422)["errors"] == [
              %{

@@ -18,7 +18,7 @@ defmodule PrisonRideshareWeb.PersonController do
       {:ok, %{model: person}} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", person_path(conn, :show, person))
+        |> put_resp_header("location", Routes.person_path(conn, :show, person))
         |> render("show.json-api", data: person)
 
       {:error, changeset} ->

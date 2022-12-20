@@ -89,7 +89,7 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
       food_expenses: 2017
     })
 
-    conn = get(conn, debt_path(conn, :index))
+    conn = get(conn, Routes.debt_path(conn, :index))
 
     assert json_response(conn, 200)["data"] == [
              %{
@@ -176,7 +176,7 @@ defmodule PrisonRideshareWeb.DebtControllerTest do
       ride: ride
     })
 
-    conn = delete(conn, debt_path(conn, :delete, cnuth))
+    conn = delete(conn, Routes.debt_path(conn, :delete, cnuth))
 
     [
       _existingreimbursement,

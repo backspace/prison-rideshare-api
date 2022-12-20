@@ -97,7 +97,7 @@ defmodule PrisonRideshare.PersonCalendarTest do
       person_id: driver.id
     })
 
-    conn = get(conn, person_path(conn, :calendar, driver.id, secret: driver.calendar_secret))
+    conn = get(conn, Routes.person_path(conn, :calendar, driver.id, secret: driver.calendar_secret))
     assert response_content_type(conn, :calendar)
 
     assert response(conn, 200) == """
@@ -143,7 +143,7 @@ defmodule PrisonRideshare.PersonCalendarTest do
 
   test "returns a 401 when the secret is wrong", %{conn: conn} do
     driver = Repo.insert!(%Person{name: "Chelsea Manning"})
-    conn = get(conn, person_path(conn, :calendar, driver.id))
+    conn = get(conn, Routes.person_path(conn, :calendar, driver.id))
 
     assert json_response(conn, 401) == %{
              "jsonapi" => %{"version" => "1.0"},

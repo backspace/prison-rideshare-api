@@ -20,7 +20,7 @@ defmodule PrisonRideshareWeb.InstitutionController do
       {:ok, %{model: institution}} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", institution_path(conn, :show, institution))
+        |> put_resp_header("location", Routes.institution_path(conn, :show, institution))
         |> render("show.json-api", data: institution)
 
       {:error, changeset} ->

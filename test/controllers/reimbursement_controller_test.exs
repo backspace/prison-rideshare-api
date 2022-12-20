@@ -30,7 +30,7 @@ defmodule PrisonRideshareWeb.ReimbursementControllerTest do
   end
 
   test "lists all entries on index", %{conn: conn} do
-    conn = get(conn, reimbursement_path(conn, :index))
+    conn = get(conn, Routes.reimbursement_path(conn, :index))
     assert json_response(conn, 200)["data"] == []
   end
 
@@ -38,7 +38,7 @@ defmodule PrisonRideshareWeb.ReimbursementControllerTest do
     reimbursement =
       Repo.insert!(%Reimbursement{car_expenses: 1919, donation: true, processed: true})
 
-    conn = get(conn, reimbursement_path(conn, :show, reimbursement))
+    conn = get(conn, Routes.reimbursement_path(conn, :show, reimbursement))
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{reimbursement.id}"
     assert data["type"] == "reimbursement"
@@ -50,13 +50,13 @@ defmodule PrisonRideshareWeb.ReimbursementControllerTest do
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
     assert_error_sent(404, fn ->
-      get(conn, reimbursement_path(conn, :show, "00000000-0000-0000-0000-000000000000"))
+      get(conn, Routes.reimbursement_path(conn, :show, "00000000-0000-0000-0000-000000000000"))
     end)
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
     conn =
-      post(conn, reimbursement_path(conn, :create), %{
+      post(conn, Routes.reimbursement_path(conn, :create), %{
         "meta" => %{},
         "data" => %{
           "type" => "reimbursements",
@@ -74,7 +74,7 @@ defmodule PrisonRideshareWeb.ReimbursementControllerTest do
     reimbursement = Repo.insert!(%Reimbursement{processed: false})
 
     conn =
-      put(conn, reimbursement_path(conn, :update, reimbursement), %{
+      put(conn, Routes.reimbursement_path(conn, :update, reimbursement), %{
         "meta" => %{},
         "data" => %{
           "type" => "reimbursements",
@@ -91,7 +91,7 @@ defmodule PrisonRideshareWeb.ReimbursementControllerTest do
 
   test "deletes chosen resource", %{conn: conn} do
     reimbursement = Repo.insert!(%Reimbursement{})
-    conn = delete(conn, reimbursement_path(conn, :delete, reimbursement))
+    conn = delete(conn, Routes.reimbursement_path(conn, :delete, reimbursement))
     assert response(conn, 204)
     refute Repo.get(Reimbursement, reimbursement.id)
   end

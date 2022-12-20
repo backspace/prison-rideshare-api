@@ -23,13 +23,13 @@ defmodule PrisonRideshareWeb.UnauthUserControllerTest do
   end
 
   test "refuses to list all users when unauthenticated", %{conn: conn} do
-    conn = get(conn, user_path(conn, :index))
+    conn = get(conn, Routes.user_path(conn, :index))
     assert json_response(conn, 401)
   end
 
   test "refuses to show a resource when unauthenticated", %{conn: conn} do
     user = Repo.insert!(%User{admin: true})
-    conn = get(conn, user_path(conn, :show, user))
+    conn = get(conn, Routes.user_path(conn, :show, user))
     assert json_response(conn, 401)
   end
 
@@ -39,7 +39,7 @@ defmodule PrisonRideshareWeb.UnauthUserControllerTest do
     with_mock Phoenix.Token,
       verify: fn PrisonRideshareWeb.Endpoint, "reset salt", _, _ -> {:error, :invalid} end do
       conn =
-        put(conn, user_path(conn, :update, user), %{
+        put(conn, Routes.user_path(conn, :update, user), %{
           "meta" => %{},
           "data" => %{
             "type" => "users",
@@ -62,7 +62,7 @@ defmodule PrisonRideshareWeb.UnauthUserControllerTest do
     with_mock Phoenix.Token,
       verify: fn PrisonRideshareWeb.Endpoint, "reset salt", _, _ -> {:ok, user_id} end do
       conn =
-        put(conn, user_path(conn, :update, token), %{
+        put(conn, Routes.user_path(conn, :update, token), %{
           "data" => %{
             "type" => "users",
             "attributes" => %{
@@ -92,7 +92,7 @@ defmodule PrisonRideshareWeb.UnauthUserControllerTest do
     with_mock Phoenix.Token,
       verify: fn PrisonRideshareWeb.Endpoint, "reset salt", _, _ -> {:ok, user_id} end do
       conn =
-        put(conn, user_path(conn, :update, token), %{
+        put(conn, Routes.user_path(conn, :update, token), %{
           "data" => %{
             "type" => "users",
             "attributes" => %{

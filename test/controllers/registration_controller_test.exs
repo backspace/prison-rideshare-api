@@ -20,7 +20,7 @@ defmodule PrisonRideshareWeb.RegistrationControllerTest do
 
   test "creates and renders resource when data is valid", %{conn: conn} do
     conn =
-      post(conn, registration_path(conn, :create), %{
+      post(conn, Routes.registration_path(conn, :create), %{
         data: %{type: "users", attributes: @valid_attrs}
       })
 
@@ -35,7 +35,7 @@ defmodule PrisonRideshareWeb.RegistrationControllerTest do
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     conn =
-      post(conn, registration_path(conn, :create), %{
+      post(conn, Routes.registration_path(conn, :create), %{
         data: %{
           type: "users",
           attributes: %{

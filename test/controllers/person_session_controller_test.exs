@@ -30,7 +30,7 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
     {:ok, magic_token, _claims} = PrisonRideshare.PersonGuardian.encode_magic(person)
 
     conn =
-      post(conn, person_login_path(conn, :create), %{
+      post(conn, Routes.person_login_path(conn, :create), %{
         grant_type: "magic",
         token: magic_token
       })
@@ -40,7 +40,7 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
 
   test "returns a 401 when the token is wrong", %{conn: conn} do
     conn =
-      post(conn, person_login_path(conn, :create), %{
+      post(conn, Routes.person_login_path(conn, :create), %{
         grant_type: "magic",
         token: "jorts"
       })
@@ -55,7 +55,7 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
   test "returns a 401 when the token is expired", %{conn: conn} do
     with_mock PrisonRideshare.PersonGuardian, exchange_magic: fn _ -> {:error, :token_expired} end do
       conn =
-        post(conn, person_login_path(conn, :create), %{
+        post(conn, Routes.person_login_path(conn, :create), %{
           grant_type: "magic",
           token: "anything"
         })
@@ -78,7 +78,7 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
     {:ok, magic_token, _claims} = PrisonRideshare.PersonGuardian.encode_magic(person)
     {:ok, access_token, _claims} = PrisonRideshare.PersonGuardian.exchange_magic(magic_token)
 
-    conn = get(conn, person_identify_path(conn, :show, token: access_token))
+    conn = get(conn, Routes.person_identify_path(conn, :show, token: access_token))
 
     data = json_response(conn, 200)["data"]
     assert data["id"] == "#{person.id}"
@@ -102,7 +102,7 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
     conn =
       conn
       |> put_req_header("authorization", "Person Bearer #{access_token}")
-      |> patch(person_patch_path(conn, :update), %{
+      |> patch(Routes.person_patch_path(conn, :update), %{
         "data" => %{
           "type" => "people",
           "id" => person.id,
@@ -148,7 +148,7 @@ defmodule PrisonRideshareWeb.PersonSessionControllerTest do
     conn =
       conn
       |> put_req_header("authorization", "Person Bearer #{access_token}")
-      |> patch(person_patch_path(conn, :update), %{
+      |> patch(Routes.person_patch_path(conn, :update), %{
         "data" => %{
           "type" => "people",
           "id" => person.id,
