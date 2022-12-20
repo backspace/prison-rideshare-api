@@ -2,7 +2,6 @@ defmodule PrisonRideshareWeb.SessionController do
   use PrisonRideshareWeb, :controller
 
   import Ecto.Query, only: [where: 2]
-  import Comeonin.Bcrypt
   require Logger
 
   alias PrisonRideshareWeb.User
@@ -17,7 +16,7 @@ defmodule PrisonRideshareWeb.SessionController do
         |> Repo.one!()
 
       cond do
-        checkpw(password, user.password_hash) ->
+        Bcrypt.verify_pass(password, user.password_hash) ->
           # Successful login
           Logger.info("User " <> username <> " just logged in")
           # Encode a JWT

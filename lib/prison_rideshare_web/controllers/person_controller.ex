@@ -44,7 +44,7 @@ defmodule PrisonRideshareWeb.PersonController do
     person = Repo.get!(Person, id)
 
     PrisonRideshare.Email.calendar_link(person, month)
-    |> PrisonRideshare.Mailer.deliver_later()
+    |> PrisonRideshare.Mailer.deliver_later!()
 
     send_resp(conn, :no_content, "")
   end

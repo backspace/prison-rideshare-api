@@ -227,7 +227,7 @@ defmodule PrisonRideshareWeb.RideController do
 
         if Ecto.Changeset.get_change(changeset, :complete) do
           PrisonRideshare.Email.report(ride)
-          |> PrisonRideshare.Mailer.deliver_later()
+          |> PrisonRideshare.Mailer.deliver_later!()
         end
 
         render(conn, "show.json-api", data: ride)
