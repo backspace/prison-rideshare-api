@@ -13,12 +13,13 @@ config :prison_rideshare, PrisonRideshareWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "Cs7GQrRAb0eRHwFHrArQ14GQFFHTitFITDF8igX3AHoewb8zo2z0/KCteAdK1EIe",
   render_errors: [view: PrisonRideshareWeb.ErrorView, accepts: ~w(json-api)],
-  pubsub: [name: PrisonRideshare.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub_server: PrisonRideshare.PubSub
 
 config :prison_rideshare, ui_root: System.get_env("UI_ROOT") || "https://rideshare.barnonewpg.org"
 
 config :prison_rideshare, gas_price_endpoint: System.get_env("GAS_PRICE_ENDPOINT")
 
+config :phoenix, :json_library, Poison
 config :phoenix, :format_encoders, "json-api": Poison
 
 config :mime, :types, %{
