@@ -7,7 +7,7 @@ defmodule PrisonRideshare.PersonGuardian.EnsuredAuthPipeline do
     error_handler: PrisonRideshare.Guardian.AuthErrorHandler
 
   plug(Guardian.Plug.VerifySession, claims: @claims)
-  plug(Guardian.Plug.VerifyHeader, claims: @claims, realm: "Person Bearer")
+  plug(Guardian.Plug.VerifyHeader, claims: @claims, scheme: "Person Bearer")
   plug(Guardian.Plug.EnsureAuthenticated)
   plug(Guardian.Plug.LoadResource, ensure: true)
 end

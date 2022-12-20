@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :prison_rideshare, PrisonRideshareWeb.Endpoint,
   http: [port: {:system, "PORT"}, compress: true],
