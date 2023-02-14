@@ -59,6 +59,7 @@ defmodule PrisonRideshare.Mixfile do
       {:httpoison, "~> 1.0"},
       {:paper_trail, "~> 0.14"},
       {:excoveralls, "~> 0.6", only: :test},
+      {:faker, "~> 0.17"},
       {:mix_test_watch, "~> 1.1", only: :dev, runtime: false},
       {:mock, "~> 0.3.4", only: :test},
       {:sentry, "~> 8.0"},
