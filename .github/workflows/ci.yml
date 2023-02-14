@@ -69,14 +69,6 @@ jobs:
             deps
             _build
           key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: 'assets/package.json'
-          cache: 'npm'
-          cache-dependency-path: 'assets/package-lock.json'
-      - run: npm install -g npm@6.14.18
-      - run: npm install --prefix assets
-      - run: npm run deploy --prefix assets
       - run: mix test
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v2
