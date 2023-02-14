@@ -362,7 +362,7 @@ today = Timex.beginning_of_day(Timex.local())
 
 Enum.reduce(-60..0, ~M[110], fn days_ago, price ->
   PaperTrail.insert!(%GasPrice{
-    inserted_at: Timex.add(today, Timex.Duration.from_days(days_ago)),
+    inserted_at: Timex.add(today, Timex.Duration.from_days(days_ago)) |> DateTime.to_naive |> NaiveDateTime.truncate(:second),
     price: price
   })
 
@@ -427,12 +427,12 @@ today = Timex.beginning_of_day(Timex.local())
 
 PaperTrail.insert!(%Post{
   poster: user,
-  inserted_at: Timex.shift(today, [days: -9, hours: 9, minutes: 22]),
+  inserted_at: Timex.shift(today, [days: -9, hours: 9, minutes: 22]) |> DateTime.to_naive |> NaiveDateTime.truncate(:second),
   content: "{\"version\":\"0.3.1\",\"atoms\":[],\"cards\":[],\"markups\":[[\"strong\"]],\"sections\":[[1,\"p\",[[0,[],0,\"Here is a blog post with some \"],[0,[0],1,\"bold text\"],[0,[],0,\".\"]]]]}"
 })
 
 PaperTrail.insert!(%Post{
   poster: other_user,
-  inserted_at: Timex.shift(today, [days: -2, hours: 1, minutes: 33]),
+  inserted_at: Timex.shift(today, [days: -2, hours: 1, minutes: 33]) |> DateTime.to_naive |> NaiveDateTime.truncate(:second),
   content: "{\"version\":\"0.3.1\",\"atoms\":[],\"cards\":[],\"markups\":[],\"sections\":[[1,\"h1\",[[0,[],0,\"A heading\"]]],[1,\"p\",[[0,[],0,\"This is another blog post by a different user.\"]]]]}"
 })
