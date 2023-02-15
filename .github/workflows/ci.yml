@@ -2,11 +2,11 @@ on: push
 
 jobs:
   mix-test:
-    runs-on: ubuntu-20.04
     strategy:
       matrix:
         elixir: ['1.14.0']
         otp: ['23.3.4.16']
+    runs-on: ubuntu-latest
     services:
       db:
         image: postgres:latest
