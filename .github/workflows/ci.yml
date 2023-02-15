@@ -29,14 +29,13 @@ jobs:
           mix local.hex --force
           mix deps.get
           mix deps.compile
-      - run: mix test
+      - name: Run Tests
+        run: mix coveralls.github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
           check_name: "test results"
           files: _build/test/lib/adventure_registrations/test-junit-report.xml
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
