@@ -2,10 +2,6 @@ on: push
 
 jobs:
   mix-test:
-    strategy:
-      matrix:
-        elixir: ['1.14.0']
-        otp: ['23.3.4.16']
     runs-on: ubuntu-latest
     services:
       db:
@@ -24,8 +20,8 @@ jobs:
       - name: Sets up an Erlang/OTP environment
         uses: erlef/setup-beam@v1
         with:
-          elixir-version: '1.14.0'
-          otp-version: '23.3.4.16'
+          elixir-version: "1.14.0"
+          otp-version: "23.3.4.16"
       - name: Install dependencies
         if: steps.mix-cache.outputs.cache-hit != 'true'
         run: |
