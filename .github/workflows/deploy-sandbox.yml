@@ -16,6 +16,7 @@ jobs:
       - uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
+      # FIXME remove deployment step for cron
       - name: Deploy
         run: |
           git remote add deploy ${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }}:${{ secrets.DEPLOYMENT_APP }}
