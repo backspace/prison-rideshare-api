@@ -11,6 +11,8 @@ jobs:
   deploy-sandbox:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Github repo
+        uses: actions/checkout@v3
       - uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
