@@ -7,17 +7,17 @@ on:
       - actions
   # FIXME change to only deploy on main
 
-  jobs:
-    deploy-sandbox:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: webfactory/ssh-agent@v0.7.0
-          with:
-            ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
-        - name: Deploy
-          run: |
-            git remote add deploy ${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }}:${{ secrets.DEPLOYMENT_APP }}
-            git config --global push.default simple
-            git push deploy HEAD:primary
-        - name: Reset sandbox
-          run: ssh -t ${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }} -- run ${{ secrets.DEPLOYMENT_APP }} mix reset_sandbox
+jobs:
+  deploy-sandbox:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
+      - name: Deploy
+        run: |
+          git remote add deploy ${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }}:${{ secrets.DEPLOYMENT_APP }}
+          git config --global push.default simple
+          git push deploy HEAD:primary
+      - name: Reset sandbox
+        run: ssh -t ${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }} -- run ${{ secrets.DEPLOYMENT_APP }} mix reset_sandbox
