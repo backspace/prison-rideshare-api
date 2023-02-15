@@ -36,3 +36,7 @@ jobs:
         with:
           check_name: "test results"
           files: _build/test/lib/adventure_registrations/test-junit-report.xml
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
