@@ -13,14 +13,11 @@ jobs:
     steps:
       - name: Checkout Github repo
         uses: actions/checkout@v3
-      - uses: webfactory/ssh-agent@v0.7.0
+      - name: Push to dokku
+        uses: dokku/github-action@v1.4.0
         with:
-          ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
-      # FIXME remove deployment step for cron
-      - name: Deploy
-        run: |
-          git remote add deploy ${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }}:${{ secrets.DEPLOYMENT_APP }}
-          git config --global push.default simple
-          git push deploy HEAD:primary
+          branch: "primary"
+          git_remote_url: "ssh://${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }}:22/${{ secrets.DEPLOYMENT_APP }}"
+          ssh_private_key: ${{ secrets.DEPLOYMENT_KEY }}
       - name: Reset sandbox
         run: ssh -t ${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }} -- run ${{ secrets.DEPLOYMENT_APP }} mix reset_sandbox
