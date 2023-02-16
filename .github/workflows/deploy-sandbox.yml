@@ -16,7 +16,7 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@v1.4.0
         with:
-          branch: "primary"
+          branch: "actions"
           git_remote_url: "ssh://${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }}:22/${{ secrets.DEPLOYMENT_APP }}"
           ssh_private_key: ${{ secrets.DEPLOYMENT_KEY }}
       - name: Reset sandbox
