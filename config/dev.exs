@@ -41,4 +41,6 @@ config :prison_rideshare, PrisonRideshare.Repo,
 
 config :prison_rideshare, PrisonRideshare.Mailer, adapter: Bamboo.LocalAdapter
 
-import_config "dev.secret.exs"
+if File.exists?("dev.secret.exs") do
+  import_config "dev.secret.exs"
+end

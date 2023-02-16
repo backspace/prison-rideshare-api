@@ -58,12 +58,13 @@ defmodule PrisonRideshare.Mixfile do
       {:poison, "~> 3.1"},
       {:httpoison, "~> 1.0"},
       {:paper_trail, "~> 0.14"},
-      {:excoveralls, "~> 0.6", only: :test},
+      {:excoveralls, "~> 0.15", only: :test},
       {:faker, "~> 0.17"},
       {:mix_test_watch, "~> 1.1", only: :dev, runtime: false},
       {:mock, "~> 0.3.4", only: :test},
       {:sentry, "~> 8.0"},
-      {:hackney, "~> 1.8"}
+      {:hackney, "~> 1.8"},
+      {:junit_formatter, "~> 3.3", only: [:test]}
     ]
   end
 
