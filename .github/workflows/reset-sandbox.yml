@@ -10,8 +10,10 @@ jobs:
   reset-sandbox:
     runs-on: ubuntu-latest
     steps:
-      - uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
       - name: Reset sandbox
-        run: ssh -v -v -v -t ${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }} -- run ${{ secrets.DEPLOYMENT_APP }} mix reset_sandbox
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.DEPLOYMENT_HOST }}
+          username: ${{ secrets.DEPLOYMENT_USER }}
+          key: ${{ secrets.DEPLOYMENT_KEY }}
+          script: dokku run ${{ secrets.DEPLOYMENT_APP }} mix reset_sandbox
