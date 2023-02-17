@@ -14,4 +14,4 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
       - name: Reset sandbox
-        run: ssh -t ${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }} -- run ${{ secrets.DEPLOYMENT_APP }} mix reset_sandbox
+        run: ssh -v -v -v -t ${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }} -- run ${{ secrets.DEPLOYMENT_APP }} mix reset_sandbox
