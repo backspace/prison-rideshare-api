@@ -10,7 +10,7 @@ The initial target feature set will cover:
 * collecting and calculating gas and food expenses from the reports
 * tracking reïmbursements of expenses
 
-It’s currently specific to [Bar None’s prison rideshare project](https://barnoneblog.wordpress.com/rideshare/) but if you’re
+It’s currently specific to [Bar None’s prison rideshare project](https://barnonewpg.org/rideshare/) but if you’re
 interested in adapting it, please let us know, we are interested in making it useful for others!
 
 ## Deployment
