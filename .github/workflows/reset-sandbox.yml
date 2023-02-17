@@ -16,4 +16,4 @@ jobs:
           host: ${{ secrets.DEPLOYMENT_HOST }}
           username: ${{ secrets.DEPLOYMENT_USER }}
           key: ${{ secrets.DEPLOYMENT_KEY }}
-          script: dokku run ${{ secrets.DEPLOYMENT_APP }} mix reset_sandbox
+          script: run ${{ secrets.DEPLOYMENT_APP }} mix reset_sandbox
