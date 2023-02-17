@@ -1,0 +1,17 @@
+on:
+  schedule:
+    - cron: "30 10 * * *"
+  push:
+    branches:
+      - reset-sandbox
+  # FIXME change to only cron
+
+jobs:
+  reset-sandbox:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
+      - name: Reset sandbox
+        run: ssh -t ${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }} -- run ${{ secrets.DEPLOYMENT_APP }} mix reset_sandbox
