@@ -1,10 +1,6 @@
 on:
   schedule:
     - cron: "30 10 * * *"
-  push:
-    branches:
-      - reset-sandbox
-  # FIXME change to only cron
 
 jobs:
   reset-sandbox:
