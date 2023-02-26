@@ -31,6 +31,8 @@ defmodule PrisonRideshareWeb.ConnCase do
       # The default endpoint for testing
       @endpoint PrisonRideshareWeb.Endpoint
 
+      use PrisonRideshareWeb, :verified_routes
+
       defp auth_as_admin(conn) do
         user =
           Repo.insert!(%PrisonRideshareWeb.User{

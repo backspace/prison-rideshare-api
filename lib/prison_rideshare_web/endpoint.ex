@@ -13,7 +13,7 @@ defmodule PrisonRideshareWeb.Endpoint do
     at: "/",
     from: :prison_rideshare,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: PrisonRideshareWeb.static_paths()
   )
 
   # Code reloading can be explicitly enabled under the

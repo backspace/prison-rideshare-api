@@ -7,7 +7,6 @@ defmodule PrisonRideshare.Mixfile do
       version: "0.0.1",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix] ++ Mix.compilers(),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -20,7 +19,7 @@ defmodule PrisonRideshare.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {PrisonRideshare.Application, []}, extra_applications: [:logger]]
+    [mod: {PrisonRideshare.Application, []}, extra_applications: [:logger, :phoenix]]
   end
 
   # Specifies which paths to compile per environment.
@@ -32,14 +31,15 @@ defmodule PrisonRideshare.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.6.0"},
+      {:phoenix, "~> 1.7.0"},
       {:phoenix_pubsub, "~> 2.0"},
       {:ecto_sql, "~> 3.0"},
       {:phoenix_ecto, "~> 4.0"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:phoenix_live_view, "~> 0.16.4"},
+      {:phoenix_live_view, "~> 0.18"},
+      {:phoenix_view, "~> 2.0"},
       {:gettext, "~> 0.11"},
       {:plug_cowboy, "~> 2.3"},
       {:bcrypt_elixir, "~> 3.0"},
