@@ -4,6 +4,8 @@ Here is your unique calendar link for <%= @month %>: <%= @link %>
 
 You can use this to share availability in advance with the coordinator, they will ask you first if a ride request comes for a slot you’ve chosen.
 
+There’s a bug fix this month: the slot no longer disappears when you commit to it, which inadvertently prevented canceling a commitment. Remember that we can’t fix bugs without knowing what they are, so thanks to the user who reported this!
+
 For operational details visit https://barnoneblog.wordpress.com/rideshare/driver-calendar/
 
 If you’d like to stop receiving these emails or change your contact information, visit the link and let us know under the “Edit Communication Details” button.
