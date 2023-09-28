@@ -78,6 +78,7 @@ defmodule PrisonRideshareWeb.Ride do
       :overridable
     ])
     |> validate_required([:start, :end, :name, :address, :contact, :passengers, :institution_id])
+    |> validate_start_before_end()
     |> assoc_constraint(:institution)
     |> calculate_car_expenses(struct)
   end
@@ -147,5 +148,17 @@ defmodule PrisonRideshareWeb.Ride do
 
   defp calculate_car_expenses(changeset, distance, rate) do
     Ecto.Changeset.put_change(changeset, :car_expenses, Money.multiply(rate, distance))
+  end
+
+  defp validate_start_before_end(changeset) do
+    start = Ecto.Changeset.get_field(changeset, :start)
+    endtime = Ecto.Changeset.get_field(changeset, :end)
+
+    if start && endtime && NaiveDateTime.compare(start, endtime) == :gt do
+      changeset
+      |> add_error(:end, "must be after start")
+    else
+      changeset
+    end
   end
 end

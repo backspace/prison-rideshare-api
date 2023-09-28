@@ -34,6 +34,21 @@ defmodule PrisonRideshareWeb.RideTest do
     refute changeset.valid?
   end
 
+  test "changeset where end is before start", %{institution: institution} do
+    changeset =
+      Ride.changeset(%Ride{institution_id: institution.id}, %{
+        name: "name",
+        address: "address",
+        contact: "contact",
+        start: ~N[2010-04-17 14:00:00],
+        end: ~N[2010-04-17 13:00:00],
+        passengers: 42
+      })
+
+    refute changeset.valid?
+    assert changeset.errors == [{:end, {"must be after start", []}}]
+  end
+
   @valid_report_attrs %{
     distance: 10,
     report_notes: "Notes!",
