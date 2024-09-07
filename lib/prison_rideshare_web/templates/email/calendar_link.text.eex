@@ -1,12 +1,13 @@
-Hey, <%= @person.name %>!
+<%= @person.name %>,
 
 Here is your unique calendar link for <%= @month %>: <%= @link %>
 
 You can use this to share availability in advance with the coordinator, they will ask you first if a ride request comes for a slot you’ve chosen.
+
+The bug where boxes would not check is fixed, thanks to those who reported it. Please always let us know if something doesn’t work as expected!
 
 For operational details visit https://barnoneblog.wordpress.com/rideshare/driver-calendar/
 
 If you’d like to stop receiving these emails or change your contact information, visit the link and let us know under the “Edit Communication Details” button.
 
 Thanks for volunteering 💞 #FreeThemAll
-driver
