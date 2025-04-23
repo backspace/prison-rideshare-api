@@ -21,7 +21,7 @@ jobs:
         uses: erlef/setup-beam@v1
         with:
           elixir-version: "1.14.0"
-          otp-version: "23.3.4.16"
+          otp-version: "25.3.2.20"
       - name: Install dependencies
         if: steps.mix-cache.outputs.cache-hit != 'true'
         run: |
