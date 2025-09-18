@@ -52,8 +52,10 @@ defmodule PrisonRideshare.ExtractGasPriceTest do
 
     parsed = Poison.decode!(example)
 
-    assert ExtractGasPrice.extract_gas_price(parsed) == %{
-             price: 124.917
-           }
+    assert ExtractGasPrice.extract_gas_price(parsed) ==
+             {:ok,
+              %{
+                price: 124.917
+              }}
   end
 end

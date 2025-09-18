@@ -56,4 +56,23 @@ defmodule PrisonRideshare.Email do
       text_body: "yes"
     )
   end
+
+  def archive_gas_price_failure_report(reason \\ :unknown) do
+    body = "Gas price archiving failed. Reason: #{format_gas_price_failure_reason(reason)}"
+
+    new_email(
+      to: ["barnone.coordinator+gas+failure@gmail.com", "bot@barnonewpg.org"],
+      from: {"Bar None Bot", "bot@barnonewpg.org"},
+      subject: "Gas price archiving failed",
+      html_body: body,
+      text_body: body
+    )
+  end
+
+  defp format_gas_price_failure_reason(:missing_value), do: "missing pageFunctionResult"
+  defp format_gas_price_failure_reason(:invalid_number), do: "invalid number format"
+  defp format_gas_price_failure_reason(:invalid_format), do: "invalid response format"
+  defp format_gas_price_failure_reason(:unknown), do: "unknown"
+  defp format_gas_price_failure_reason(other) when is_binary(other), do: other
+  defp format_gas_price_failure_reason(other), do: inspect(other)
 end

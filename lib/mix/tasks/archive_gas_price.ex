@@ -14,11 +14,22 @@ defmodule Mix.Tasks.ArchiveGasPrice do
 
     response = HTTPoison.get!(Application.get_env(:prison_rideshare, :gas_price_endpoint))
 
-    price =
-      response.body
-      |> Poison.decode!()
-      |> ExtractGasPrice.extract_gas_price()
+    with {:ok, parsed} <- Poison.decode(response.body),
+         result <- ExtractGasPrice.extract_gas_price(parsed) do
+      case result do
+        {:ok, %{price: price}} ->
+          Repo.insert!(GasPrice.changeset(%GasPrice{}, %{price: round(price)}))
 
-    Repo.insert!(GasPrice.changeset(%GasPrice{}, %{price: round(price.price)}))
+        {:error, reason} ->
+          PrisonRideshare.Email.archive_gas_price_failure_report(reason)
+          |> PrisonRideshare.Mailer.deliver_now()
+      end
+    else
+      {:error, decode_reason} ->
+        PrisonRideshare.Email.archive_gas_price_failure_report(
+          {:json_decode_error, decode_reason}
+        )
+        |> PrisonRideshare.Mailer.deliver_now()
+    end
   end
 end
