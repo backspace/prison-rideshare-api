@@ -69,6 +69,34 @@ defmodule PrisonRideshare.Email do
     )
   end
 
+  def store_rates_gap_warning_report(ride, gas_price) do
+    diff_seconds =
+      Timex.diff(gas_price.inserted_at, ride.start, :seconds)
+      |> abs()
+
+    gap_days = div(diff_seconds, 86_400)
+
+    body =
+      [
+        "Gas price assignment gap warning: the gas price assigned to a ride is #{gap_days} days apart from the ride start, is archival broken?",
+        "",
+        "Ride ID: #{ride.id}",
+        "Visitor: #{ride.name}",
+        "Ride start: #{ride.start}",
+        "Assigned gas price timestamp: #{gas_price.inserted_at}",
+        "Gap: #{gap_days} days"
+      ]
+      |> Enum.join("\n")
+
+    new_email(
+      to: ["barnone.coordinator+gap+warning@gmail.com", "bot@barnonewpg.org"],
+      from: {"Bar None Bot", "bot@barnonewpg.org"},
+      subject: "Gas price assignment gap warning",
+      html_body: body,
+      text_body: body
+    )
+  end
+
   defp format_gas_price_failure_reason(:missing_value), do: "missing pageFunctionResult"
   defp format_gas_price_failure_reason(:invalid_number), do: "invalid number format"
   defp format_gas_price_failure_reason(:invalid_format), do: "invalid response format"
