@@ -7,8 +7,6 @@ defmodule Mix.Tasks.StoreRates do
   alias PrisonRideshareWeb.{GasPrice, Ride}
   alias PrisonRideshare.CalculateRatesFromGasPrice
 
-  alias Timex.Duration
-
   import Ecto.Query
 
   def run(_) do
@@ -28,15 +26,18 @@ defmodule Mix.Tasks.StoreRates do
     gas_prices = Repo.all(GasPrice, order_by: :inserted_at)
 
     Enum.each(rides, fn ride ->
-      window_before_ride_start = Timex.subtract(ride.start, Duration.from_days(1))
-
-      window_after_ride_start = Timex.add(ride.start, Duration.from_days(1))
+      # Choose the nearest gas price by proximity to start time
 
       closest_gas_price =
-        Enum.find(gas_prices, fn gas_price ->
-          Timex.after?(gas_price.inserted_at, window_before_ride_start) &&
-            Timex.before?(gas_price.inserted_at, window_after_ride_start)
-        end)
+        case gas_prices do
+          [] ->
+            nil
+
+          _ ->
+            Enum.min_by(gas_prices, fn gp ->
+              abs(Timex.diff(gp.inserted_at, ride.start, :seconds))
+            end)
+        end
 
       if closest_gas_price do
         rate =

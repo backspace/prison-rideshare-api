@@ -22,7 +22,7 @@ defmodule Mix.Tasks.StoreRatesTest do
         inserted_at: NaiveDateTime.from_erl!({{2018, 6, 24}, {16, 37, 0}})
       })
 
-    other_price =
+    ancient_price =
       Repo.insert!(%GasPrice{
         price: 5,
         inserted_at: NaiveDateTime.from_erl!({{2017, 1, 1}, {0, 0, 0}})
@@ -38,6 +38,16 @@ defmodule Mix.Tasks.StoreRatesTest do
       Repo.insert!(%Institution{
         name: "Far",
         far: true
+      })
+
+    _ancient_ride =
+      Repo.insert!(%Ride{
+        start: NaiveDateTime.from_erl!({{2017, 2, 2}, {11, 0, 0}}),
+        institution: close_institution,
+        end: NaiveDateTime.from_erl!({{2017, 2, 2}, {12, 0, 0}}),
+        address: "address",
+        contact: "contact",
+        name: "name"
       })
 
     _old_ride =
@@ -95,7 +105,7 @@ defmodule Mix.Tasks.StoreRatesTest do
       Repo.insert!(%Ride{
         start: NaiveDateTime.from_erl!({{2018, 6, 28}, {11, 0, 0}}),
         institution: far_institution,
-        gas_price: other_price,
+        gas_price: ancient_price,
         end: NaiveDateTime.from_erl!({{2018, 6, 28}, {12, 0, 0}}),
         address: "address",
         contact: "contact",
@@ -116,6 +126,7 @@ defmodule Mix.Tasks.StoreRatesTest do
     Mix.Tasks.StoreRates.run([])
 
     [
+      ancient,
       old,
       yesterday,
       zero_rate_ride,
@@ -129,7 +140,10 @@ defmodule Mix.Tasks.StoreRatesTest do
       |> preload(:gas_price)
       |> Repo.all()
 
-    refute old.gas_price
+    assert ancient.gas_price.id == ancient_price.id
+
+    assert old.gas_price.id == yesterday_price.id
+    assert old.rate == ~M[23]
 
     assert yesterday.gas_price.id == yesterday_price.id
     assert yesterday.rate == ~M[23]
@@ -140,14 +154,16 @@ defmodule Mix.Tasks.StoreRatesTest do
     assert today.gas_price.id == today_price.id
     assert today.rate == ~M[20]
 
-    refute tomorrow.gas_price
+    assert tomorrow.gas_price.id == today_price.id
+    assert tomorrow.rate == ~M[20]
 
-    assert already_set_gas_price.gas_price.id == other_price.id
+    assert already_set_gas_price.gas_price.id == ancient_price.id
     refute already_set_rate.gas_price
 
-    [yesterday_version, _zero_version, _today_version] = Repo.all(PaperTrail.Version)
-    assert yesterday_version.event == "update"
-    assert yesterday_version.origin == "StoreRates"
-    assert yesterday_version.item_id == yesterday.id
+    ancient_version = hd(Repo.all(PaperTrail.Version))
+
+    assert ancient_version.event == "update"
+    assert ancient_version.origin == "StoreRates"
+    assert ancient_version.item_id == ancient.id
   end
 end
