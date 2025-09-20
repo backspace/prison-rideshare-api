@@ -1,6 +1,7 @@
 defmodule Mix.Tasks.StoreRatesTest do
   use ExUnit.Case
   use PrisonRideshareWeb.ConnCase
+  use Bamboo.Test
 
   alias PrisonRideshare.Repo
 
@@ -165,5 +166,13 @@ defmodule Mix.Tasks.StoreRatesTest do
     assert ancient_version.event == "update"
     assert ancient_version.origin == "StoreRates"
     assert ancient_version.item_id == ancient.id
+
+    assert_delivered_email(
+      PrisonRideshare.Email.store_rates_gap_warning_report(ancient, ancient_price)
+    )
+
+    assert_delivered_email(
+      PrisonRideshare.Email.store_rates_gap_warning_report(old, yesterday_price)
+    )
   end
 end

@@ -6,6 +6,7 @@ defmodule Mix.Tasks.StoreRates do
   alias PrisonRideshare.Repo
   alias PrisonRideshareWeb.{GasPrice, Ride}
   alias PrisonRideshare.CalculateRatesFromGasPrice
+  alias PrisonRideshare.Email
 
   import Ecto.Query
 
@@ -40,6 +41,16 @@ defmodule Mix.Tasks.StoreRates do
         end
 
       if closest_gas_price do
+        # send a warning if the assigned gas price is 5 days or more from the ride start
+        diff_seconds =
+          Timex.diff(closest_gas_price.inserted_at, ride.start, :seconds)
+          |> abs()
+
+        if diff_seconds >= 5 * 24 * 60 * 60 do
+          Email.store_rates_gap_warning_report(ride, closest_gas_price)
+          |> PrisonRideshare.Mailer.deliver_now()
+        end
+
         rate =
           if ride.institution.far,
             do: CalculateRatesFromGasPrice.far_rate(closest_gas_price),
