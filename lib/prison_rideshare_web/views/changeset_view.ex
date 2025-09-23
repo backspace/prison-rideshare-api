@@ -1,5 +1,6 @@
 defmodule PrisonRideshareWeb.ChangesetView do
   use PrisonRideshareWeb, :view
+  use JaSerializer.PhoenixView
 
   @doc """
   Traverses and translates changeset errors.

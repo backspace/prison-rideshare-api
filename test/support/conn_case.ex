@@ -18,24 +18,52 @@ defmodule PrisonRideshareWeb.ConnCase do
   using do
     quote do
       # Import conveniences for testing with connections
-      use Phoenix.ConnTest
+      import Plug.Conn
+      import Phoenix.ConnTest
 
       alias PrisonRideshare.Repo
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
 
-      import PrisonRideshareWeb.Router.Helpers
+      alias PrisonRideshareWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
       @endpoint PrisonRideshareWeb.Endpoint
 
+      use PrisonRideshareWeb, :verified_routes
+
       defp auth_as_admin(conn) do
-        user = Repo.insert! %PrisonRideshareWeb.User{email: "test@example.com", admin: true, id: Ecto.UUID.generate}
-        { :ok, jwt, _ } = Guardian.encode_and_sign(user, :token)
+        user =
+          Repo.insert!(%PrisonRideshareWeb.User{
+            email: "test@example.com",
+            admin: true,
+            id: Ecto.UUID.generate()
+          })
+
+        {:ok, jwt, _} = PrisonRideshare.Guardian.encode_and_sign(user)
 
         conn
         |> put_req_header("authorization", "Bearer #{jwt}")
+      end
+
+      defp auth_as_person(conn, person \\ nil) do
+        person =
+          case person do
+            nil ->
+              Repo.insert!(%PrisonRideshareWeb.Person{
+                email: "person@example.com",
+                id: Ecto.UUID.generate()
+              })
+
+            _ ->
+              person
+          end
+
+        {:ok, jwt, _} = PrisonRideshare.PersonGuardian.encode_and_sign(person)
+
+        conn
+        |> put_req_header("authorization", "Person Bearer #{jwt}")
       end
     end
   end

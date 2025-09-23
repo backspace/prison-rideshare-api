@@ -1,0 +1,7 @@
+<%= @person.name %>, here’s your personal calendar link for <%= @month %>: <%= @link %>
+
+You can use this to share availability in advance for the coordinator, they confirm with you if a ride request comes for a slot you’ve chosen.
+
+Documentation: https://barnoneblog.wordpress.com/rideshare/driver-calendar/
+
+If you’d like to stop receiving these emails or change your contact information, visit the link and let us know under the “Edit Communication Details” button.

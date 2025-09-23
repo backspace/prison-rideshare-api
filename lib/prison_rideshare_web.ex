@@ -29,6 +29,8 @@ defmodule PrisonRideshareWeb do
     end
   end
 
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: PrisonRideshareWeb
@@ -37,17 +39,20 @@ defmodule PrisonRideshareWeb do
       import Ecto
       import Ecto.Query
 
-      import PrisonRideshareWeb.Router.Helpers
+      alias PrisonRideshareWeb.Router.Helpers, as: Routes
       import PrisonRideshareWeb.Gettext
 
       import PrisonRideshare.VersionInformation
+
+      unquote(verified_routes())
     end
   end
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/prison_rideshare_web/templates",
-                        namespace: PrisonRideshareWeb
+      use Phoenix.View,
+        root: "lib/prison_rideshare_web/templates",
+        namespace: PrisonRideshareWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
@@ -60,6 +65,17 @@ defmodule PrisonRideshareWeb do
       import PrisonRideshareWeb.Gettext
 
       import PrisonRideshareWeb.MoneyHelper
+
+      unquote(verified_routes())
+    end
+  end
+
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+        endpoint: PrisonRideshareWeb.Endpoint,
+        router: PrisonRideshareWeb.Router,
+        statics: PrisonRideshareWeb.static_paths()
     end
   end
 

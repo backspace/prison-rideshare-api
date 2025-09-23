@@ -18,14 +18,13 @@ defmodule PrisonRideshareWeb.ChannelCase do
   using do
     quote do
       # Import conveniences for testing with channels
-      use Phoenix.ChannelTest
+      import Phoenix.ChannelTest
 
       alias PrisonRideshare.Repo
       alias PrisonRideshareWeb.User
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-
 
       # The default endpoint for testing
       @endpoint PrisonRideshareWeb.Endpoint

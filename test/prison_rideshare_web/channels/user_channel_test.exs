@@ -2,36 +2,42 @@ defmodule PrisonRideshareWeb.UserChannelTest do
   use PrisonRideshareWeb.ChannelCase
 
   alias PrisonRideshareWeb.UserChannel
+  alias PrisonRideshareWeb.UserSocket
 
   setup do
-    user = Repo.insert! %User{email: "test@example.com", admin: true, id: Ecto.UUID.generate}
-    { :ok, _, guardian_default_claims } = Guardian.encode_and_sign(user, :token)
+    user = Repo.insert!(%User{email: "test@example.com", admin: true, id: Ecto.UUID.generate()})
+    {:ok, _, guardian_default_claims} = PrisonRideshare.Guardian.encode_and_sign(user)
 
     {:ok, _, socket} =
-      socket("user_id", %{guardian_default_claims: guardian_default_claims})
+      socket(UserSocket, "user_id", %{guardian_default_claims: guardian_default_claims})
       |> subscribe_and_join(UserChannel, "user:presence")
 
     {:ok, socket: socket}
   end
 
-  test "announces joins and leaves", %{socket: socket} do
-    other_user = Repo.insert! %User{email: "other@example.com", id: Ecto.UUID.generate}
-    { :ok, _, guardian_default_claims } = Guardian.encode_and_sign(other_user, :token)
+  test "announces joins and leaves", %{socket: _} do
+    other_user = Repo.insert!(%User{email: "other@example.com", id: Ecto.UUID.generate()})
+    {:ok, _, guardian_default_claims} = PrisonRideshare.Guardian.encode_and_sign(other_user)
 
     {:ok, _, socket} =
-      socket("user_id", %{guardian_default_claims: guardian_default_claims})
+      socket(UserSocket, "user_id", %{guardian_default_claims: guardian_default_claims})
       |> subscribe_and_join(UserChannel, "user:presence")
+
+
+    Process.unlink(socket.channel_pid)
 
     leave(socket)
 
     other_user_id_string = "User:" <> other_user.id
 
-    assert_push "presence_diff", %{
-      joins: %{^other_user_id_string => _}, leaves: %{}
-    }
+    assert_push("presence_diff", %{
+      joins: %{^other_user_id_string => _},
+      leaves: %{}
+    })
 
-    assert_push "presence_diff", %{
-      joins: %{}, leaves: %{^other_user_id_string => _}
-    }
+    assert_push("presence_diff", %{
+      joins: %{},
+      leaves: %{^other_user_id_string => _}
+    })
   end
 end

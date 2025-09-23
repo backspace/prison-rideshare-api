@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -11,7 +11,6 @@ config :prison_rideshare, PrisonRideshareWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: []
-
 
 # Watch static and templates for browser reloading.
 config :prison_rideshare, PrisonRideshareWeb.Endpoint,
@@ -40,4 +39,8 @@ config :prison_rideshare, PrisonRideshare.Repo,
   hostname: "localhost",
   pool_size: 10
 
-import_config "dev.secret.exs"
+config :prison_rideshare, PrisonRideshare.Mailer, adapter: Bamboo.LocalAdapter
+
+if File.exists?("dev.secret.exs") do
+  import_config "dev.secret.exs"
+end

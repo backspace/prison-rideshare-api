@@ -4,17 +4,31 @@ defmodule PrisonRideshareWeb.PersonTest do
   alias PrisonRideshareWeb.Person
 
   test "changeset with name/email and landline is valid" do
-    changeset = Person.changeset(%Person{}, %{name: "chelsea", email: "chelsea@example.com", landline: "5145551313"})
+    changeset =
+      Person.changeset(%Person{}, %{
+        name: "chelsea",
+        email: "chelsea@example.com",
+        landline: "5145551313"
+      })
+
     assert changeset.valid?
   end
 
   test "changeset with name/email and mobile is valid" do
-    changeset = Person.changeset(%Person{}, %{name: "manning", email: "manning@example.com", mobile: "5145551313"})
+    changeset =
+      Person.changeset(%Person{}, %{
+        name: "manning",
+        email: "manning@example.com",
+        mobile: "5145551313"
+      })
+
     assert changeset.valid?
   end
 
   test "changeset with name/email and no phone is valid" do
-    changeset = Person.changeset(%Person{}, %{name: "chelsea manning", email: "chelsea.manning@example.com"})
+    changeset =
+      Person.changeset(%Person{}, %{name: "chelsea manning", email: "chelsea.manning@example.com"})
+
     assert changeset.valid?
   end
 

@@ -1,4 +1,4 @@
-# Prison Rideshare [![Build Status](https://travis-ci.org/backspace/prison-rideshare-api.svg?branch=primary)](https://travis-ci.org/backspace/prison-rideshare-api) [![Coverage Status](https://coveralls.io/repos/github/backspace/prison-rideshare-api/badge.svg?branch=primary)](https://coveralls.io/github/backspace/prison-rideshare-api?branch=primary)
+# Prison Rideshare [![pipeline status](https://github.com/backspace/prison-rideshare-api/actions/workflows/ci.yml/badge.svg)](https://github.com/backspace/prison-rideshare-api) [![Coverage Status](https://coveralls.io/repos/github/backspace/prison-rideshare-api/badge.svg?branch=primary)](https://coveralls.io/github/backspace/prison-rideshare-api?branch=primary)
 
 This is a database to track reïmbursements and miscellania for a prison rideshare project. It serves the API for the [Ember UI](https://github.com/backspace/prison-rideshare-ui).
 
@@ -10,7 +10,7 @@ The initial target feature set will cover:
 * collecting and calculating gas and food expenses from the reports
 * tracking reïmbursements of expenses
 
-It’s currently specific to [Bar None’s prison rideshare project](https://barnoneblog.wordpress.com/rideshare/) but if you’re
+It’s currently specific to [Bar None’s prison rideshare project](https://barnonewpg.org/rideshare/) but if you’re
 interested in adapting it, please let us know, we are interested in making it useful for others!
 
 ## Deployment

@@ -1,0 +1,7 @@
+Driver: <%= @ride.driver.name %>
+Institution: <%= @ride.institution.name %>
+Start of visit: <%= @start %>
+Distance: <%= @ride.distance %>
+Donation?: <%= @ride.donation %>
+Food expenses: <%= @ride.food_expenses %>
+Notes: <%= @ride.report_notes %>
