@@ -31,13 +31,14 @@ dokku postgres:link rideshare-api rideshare-api
 ### Add environment variables
 
 - `DATABASE_URL` (set automatically by `postgres:link`)
-- `MAILGUN_KEY`: to send transactional email (ride reports, calendar links, warnings)
+- `MAILGUN_DOMAIN`, `MAILGUN_KEY`: to send transactional email (ride reports, calendar links, warnings)
 - `ORIGIN_HOST`: domain application will be served at
 - `SECRET_KEY_BASE`: use `mix phx.gen.secret` to generate
 - `SENTRY_DSN`: for error-monitoring
 
 ```bash
 dokku config:set rideshare-api \
+  MAILGUN_DOMAIN= \
   MAILGUN_KEY= \
   ORIGIN_HOST= \
   SECRET_KEY_BASE= \
@@ -46,7 +47,6 @@ dokku config:set rideshare-api \
 
 Currently hardcoded:
 
-- Mailgun domain
 - currency
 
 ### Deploy
