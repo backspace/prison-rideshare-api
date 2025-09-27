@@ -5,10 +5,11 @@ This is a database to track reïmbursements and miscellania for a prison ridesha
 It’s intended to replace an increasingly unwieldy and brittle set of spreadsheets.
 
 The initial target feature set will cover:
-* coördinators recording ride requests
-* ride-givers completing reports on their rides
-* collecting and calculating gas and food expenses from the reports
-* tracking reïmbursements of expenses
+
+- coördinators recording ride requests
+- ride-givers completing reports on their rides
+- collecting and calculating gas and food expenses from the reports
+- tracking reïmbursements of expenses
 
 It’s currently specific to [Bar None’s prison rideshare project](https://barnonewpg.org/rideshare/) but if you’re
 interested in adapting it, please let us know, we are interested in making it useful for others!
@@ -45,8 +46,8 @@ dokku config:set \
 
 Currently hardcoded:
 
-* Mailgun domain
-* currency
+- Mailgun domain
+- currency
 
 ### Deploy
 
@@ -59,10 +60,10 @@ git push [remote name] primary
 
 To start your Phoenix app:
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Install Node.js dependencies with `npm install`
-  * Start Phoenix endpoint with `mix phoenix.server`
+- Install dependencies with `mix deps.get`
+- Create and migrate your database with `mix ecto.create && mix ecto.migrate`
+- Install Node.js dependencies with `npm install`
+- Start Phoenix endpoint with `mix phoenix.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
@@ -70,8 +71,8 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 
 ## Learn more
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+- Official website: http://www.phoenixframework.org/
+- Guides: http://phoenixframework.org/docs/overview
+- Docs: https://hexdocs.pm/phoenix
+- Mailing list: http://groups.google.com/group/phoenix-talk
+- Source: https://github.com/phoenixframework/phoenix
