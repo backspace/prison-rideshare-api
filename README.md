@@ -37,7 +37,7 @@ dokku postgres:link rideshare-api rideshare-api
 - `SENTRY_DSN`: for error-monitoring
 
 ```bash
-dokku config:set \
+dokku config:set rideshare-api \
   MAILGUN_KEY= \
   ORIGIN_HOST= \
   SECRET_KEY_BASE= \
