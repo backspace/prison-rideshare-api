@@ -26,6 +26,8 @@ dokku buildpacks:add rideshare-api https://github.com/gigalixir/gigalixir-buildp
 
 dokku postgres:create rideshare-api
 dokku postgres:link rideshare-api rideshare-api
+
+dokku domains:add rideshare-api [ORIGIN_HOST]
 ```
 
 ### Add environment variables
@@ -59,6 +61,12 @@ Currently hardcoded:
 ```bash
 git remote add [remote name] dokku@[host]:rideshare-api
 git push [remote name] primary
+```
+
+Encryption recommended:
+
+```bash
+dokku letsencrypt:enable rideshare-api
 ```
 
 ## Running
