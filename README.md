@@ -31,6 +31,8 @@ dokku postgres:link rideshare-api rideshare-api
 ### Add environment variables
 
 - `DATABASE_URL` (set automatically by `postgres:link`)
+- `GAS_PRICE_ENDPOINT`: fetched to determine daily gas prices
+- `GUARDIAN_SECRET`, `PERSON_GUARDIAN_SECRET`: use `mix phx.gen.secret` to generate
 - `MAILGUN_DOMAIN`, `MAILGUN_KEY`: to send transactional email (ride reports, calendar links, warnings)
 - `ORIGIN_HOST`: domain application will be served at
 - `SECRET_KEY_BASE`: use `mix phx.gen.secret` to generate
@@ -38,9 +40,12 @@ dokku postgres:link rideshare-api rideshare-api
 
 ```bash
 dokku config:set rideshare-api \
+  GAS_PRICE_ENDPOINT= \
+  GUARDIAN_SECRET= \
   MAILGUN_DOMAIN= \
   MAILGUN_KEY= \
   ORIGIN_HOST= \
+  PERSON_GUARDIAN_SECRET= \
   SECRET_KEY_BASE= \
   SENTRY_DSN=
 ```
