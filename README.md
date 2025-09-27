@@ -15,14 +15,45 @@ interested in adapting it, please let us know, we are interested in making it us
 
 ## Deployment
 
-This can be deployed to Heroku and Postgres. More on that to come. Required environment variables:
+This can be deployed to various environments but [Dokku](https://dokku.com) is the current iteration.
 
-* `MAILGUN_KEY`
+## Set up
+
+```bash
+dokku apps:create rideshare-api
+dokku buildpacks:add rideshare-api https://github.com/gigalixir/gigalixir-buildpack-elixir.git
+
+dokku postgres:create rideshare-api
+dokku postgres:link rideshare-api rideshare-api
+```
+
+### Add environment variables
+
+- `DATABASE_URL` (set automatically by `postgres:link`)
+- `MAILGUN_KEY`: to send transactional email (ride reports, calendar links, warnings)
+- `ORIGIN_HOST`: domain application will be served at
+- `SECRET_KEY_BASE`: use `mix phx.gen.secret` to generate
+- `SENTRY_DSN`: for error-monitoring
+
+```bash
+dokku config:set \
+  MAILGUN_KEY= \
+  ORIGIN_HOST= \
+  SECRET_KEY_BASE= \
+  SENTRY_DSN=
+```
 
 Currently hardcoded:
 
 * Mailgun domain
 * currency
+
+### Deploy
+
+```bash
+git remote add [remote name] dokku@[host]:rideshare-api
+git push [remote name] primary
+```
 
 ## Running
 
