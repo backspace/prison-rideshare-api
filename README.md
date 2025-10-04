@@ -66,6 +66,7 @@ git push [remote name] primary
 Encryption recommended:
 
 ```bash
+dokku domains:add rideshare-api [ORIGIN_HOST]
 dokku letsencrypt:enable rideshare-api
 ```
 
