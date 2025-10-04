@@ -61,7 +61,7 @@ defmodule PrisonRideshare.Email do
     body = "Gas price archiving failed. Reason: #{format_gas_price_failure_reason(reason)}"
 
     new_email(
-      to: ["barnone.coordinator+gas+failure@gmail.com", "bot@barnonewpg.org"],
+      to: ["bot@barnonewpg.org"],
       from: {"Bar None Bot", "bot@barnonewpg.org"},
       subject: "Gas price archiving failed",
       html_body: body,
@@ -89,7 +89,7 @@ defmodule PrisonRideshare.Email do
       |> Enum.join("\n")
 
     new_email(
-      to: ["barnone.coordinator+gap+warning@gmail.com", "bot@barnonewpg.org"],
+      to: ["bot@barnonewpg.org"],
       from: {"Bar None Bot", "bot@barnonewpg.org"},
       subject: "Gas price assignment gap warning",
       html_body: body,
