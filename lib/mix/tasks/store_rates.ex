@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.StoreRates do
   use Mix.Task
 
-  @shortdoc "Store ride rates"
+  @shortdoc "Store ride gas price for today and older and calculate reimbursement rate"
 
   alias PrisonRideshare.Repo
   alias PrisonRideshareWeb.{GasPrice, Ride}
@@ -26,43 +26,49 @@ defmodule Mix.Tasks.StoreRates do
 
     gas_prices = Repo.all(GasPrice, order_by: :inserted_at)
 
+    today = Timex.today()
+
     Enum.each(rides, fn ride ->
-      # Choose the nearest gas price by proximity to start time
+      ride_date = Timex.to_date(ride.start)
 
-      closest_gas_price =
-        case gas_prices do
-          [] ->
-            nil
+      if Date.compare(ride_date, today) in [:lt, :eq] do
+        # Choose the nearest gas price by proximity to start time
 
-          _ ->
-            Enum.min_by(gas_prices, fn gp ->
-              abs(Timex.diff(gp.inserted_at, ride.start, :seconds))
-            end)
+        closest_gas_price =
+          case gas_prices do
+            [] ->
+              nil
+
+            _ ->
+              Enum.min_by(gas_prices, fn gp ->
+                abs(Timex.diff(gp.inserted_at, ride.start, :seconds))
+              end)
+          end
+
+        if closest_gas_price do
+          # send a warning if the assigned gas price is 5 days or more from the ride start
+          diff_seconds =
+            Timex.diff(closest_gas_price.inserted_at, ride.start, :seconds)
+            |> abs()
+
+          if diff_seconds >= 5 * 24 * 60 * 60 do
+            Email.store_rates_gap_warning_report(ride, closest_gas_price)
+            |> PrisonRideshare.Mailer.deliver_now()
+          end
+
+          rate =
+            if ride.institution.far,
+              do: CalculateRatesFromGasPrice.far_rate(closest_gas_price),
+              else: CalculateRatesFromGasPrice.close_rate(closest_gas_price)
+
+          changeset =
+            Ride.changeset(ride, %{
+              gas_price_id: closest_gas_price.id,
+              rate: rate
+            })
+
+          PaperTrail.update!(changeset, origin: "StoreRates")
         end
-
-      if closest_gas_price do
-        # send a warning if the assigned gas price is 5 days or more from the ride start
-        diff_seconds =
-          Timex.diff(closest_gas_price.inserted_at, ride.start, :seconds)
-          |> abs()
-
-        if diff_seconds >= 5 * 24 * 60 * 60 do
-          Email.store_rates_gap_warning_report(ride, closest_gas_price)
-          |> PrisonRideshare.Mailer.deliver_now()
-        end
-
-        rate =
-          if ride.institution.far,
-            do: CalculateRatesFromGasPrice.far_rate(closest_gas_price),
-            else: CalculateRatesFromGasPrice.close_rate(closest_gas_price)
-
-        changeset =
-          Ride.changeset(ride, %{
-            gas_price_id: closest_gas_price.id,
-            rate: rate
-          })
-
-        PaperTrail.update!(changeset, origin: "StoreRates")
       end
     end)
   end
