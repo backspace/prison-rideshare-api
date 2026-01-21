@@ -15,4 +15,8 @@ config :prison_rideshare, PrisonRideshare.Repo,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   ssl: true
 
+config :prison_rideshare, PrisonRideshare.Mailer,
+  deliver_later_strategy: PrisonRideshare.MailerRateLimiter,
+  rate_limit_ms: String.to_integer(System.get_env("MAILER_RATE_LIMIT_MS") || "30000")
+
 config :prison_rideshare, gas_price_endpoint: System.get_env("GAS_PRICE_ENDPOINT")
