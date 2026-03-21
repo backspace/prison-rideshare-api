@@ -28,6 +28,8 @@ defmodule PrisonRideshare.MailerRateLimiter do
   @impl GenServer
   def handle_cast({:enqueue, adapter, email, config}, state) do
     state = %{state | queue: :queue.in({adapter, email, config}, state.queue)}
+    queue_size = :queue.len(state.queue)
+    Logger.info("Mail queued: to=#{inspect(email.to)} subject=#{inspect(email.subject)} queue_size=#{queue_size}")
     {:noreply, maybe_schedule(state)}
   end
 
@@ -35,12 +37,16 @@ defmodule PrisonRideshare.MailerRateLimiter do
   def handle_info(:deliver_next, state) do
     case :queue.out(state.queue) do
       {{:value, {adapter, email, config}}, queue} ->
+        remaining = :queue.len(queue)
+        Logger.info("Mail sending: to=#{inspect(email.to)} subject=#{inspect(email.subject)} remaining=#{remaining}")
         deliver(adapter, email, config)
         state = %{state | queue: queue}
 
         if :queue.is_empty(queue) do
+          Logger.info("Mail queue drained")
           {:noreply, %{state | in_flight: false}}
         else
+          Logger.info("Mail queue scheduling next delivery in #{state.interval_ms}ms remaining=#{remaining}")
           Process.send_after(self(), :deliver_next, state.interval_ms)
           {:noreply, state}
         end
@@ -64,7 +70,7 @@ defmodule PrisonRideshare.MailerRateLimiter do
           Logger.error("Email delivery failed: #{inspect(error)}")
 
         _ ->
-          :ok
+          Logger.info("Mail sent: to=#{inspect(email.to)} subject=#{inspect(email.subject)}")
       end
     rescue
       exception ->
