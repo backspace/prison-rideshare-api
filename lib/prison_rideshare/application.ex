@@ -10,6 +10,7 @@ defmodule PrisonRideshare.Application do
       {Phoenix.PubSub, name: PrisonRideshare.PubSub},
       # Start the Ecto repository
       PrisonRideshare.Repo,
+      PrisonRideshare.MailerRateLimiter,
       # Start the endpoint when the application starts
       PrisonRideshareWeb.Endpoint,
       # Start your own worker by calling: PrisonRideshare.Worker.start_link(arg1, arg2, arg3)
