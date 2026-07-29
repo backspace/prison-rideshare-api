@@ -18,10 +18,21 @@ jobs:
       - name: Checkout Github repo
         uses: actions/checkout@v3
       - name: Sets up an Erlang/OTP environment
+        id: beam
         uses: erlef/setup-beam@v1
         with:
           elixir-version: "1.14.0"
           otp-version: "25.3.2.20"
+      - name: Cache mix dependencies
+        id: mix-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-
       - name: Install dependencies
         if: steps.mix-cache.outputs.cache-hit != 'true'
         run: |
