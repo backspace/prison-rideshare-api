@@ -16,7 +16,7 @@ defmodule PrisonRideshareWeb.Ride do
     field(:complete, :boolean, default: false)
     field(:cancellation_reason, :string)
 
-    field(:distance, :integer)
+    field(:distance, :decimal)
 
     field(:rate, Money.Ecto.Amount.Type)
     belongs_to(:gas_price, PrisonRideshareWeb.GasPrice)

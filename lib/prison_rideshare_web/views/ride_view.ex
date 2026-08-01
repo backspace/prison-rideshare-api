@@ -66,6 +66,10 @@ defmodule PrisonRideshareWeb.RideView do
   money_amount(:food_expenses)
   money_amount(:car_expenses)
 
+  def distance(%{distance: nil}, _conn), do: nil
+  def distance(%{distance: %Decimal{} = distance}, _conn), do: Decimal.to_float(distance)
+  def distance(%{distance: distance}, _conn), do: distance
+
   def initials(ride, _conn) do
     PrisonRideshareWeb.Person.initials(ride.driver)
   end

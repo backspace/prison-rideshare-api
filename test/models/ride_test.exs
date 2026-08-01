@@ -62,6 +62,23 @@ defmodule PrisonRideshareWeb.RideTest do
     assert Ecto.Changeset.get_field(changeset, :car_expenses) == ~M[400]
   end
 
+  test "report changeset accepts a decimal distance and calculates the car expenses" do
+    changeset = Ride.report_changeset(%Ride{rate: ~M[40]}, %{distance: 84.2, food_expenses: 100})
+
+    assert changeset.valid?
+    assert Decimal.equal?(Ecto.Changeset.get_field(changeset, :distance), Decimal.new("84.2"))
+    assert Ecto.Changeset.get_field(changeset, :car_expenses) == ~M[3368]
+  end
+
+  test "report changeset accepts a decimal distance string and calculates the car expenses" do
+    changeset =
+      Ride.report_changeset(%Ride{rate: ~M[40]}, %{distance: "84.2", food_expenses: 100})
+
+    assert changeset.valid?
+    assert Decimal.equal?(Ecto.Changeset.get_field(changeset, :distance), Decimal.new("84.2"))
+    assert Ecto.Changeset.get_field(changeset, :car_expenses) == ~M[3368]
+  end
+
   test "report changeset ignores submitted car expenses when not overridable" do
     changeset = Ride.report_changeset(%Ride{rate: ~M[40]}, %{distance: 10, car_expenses: 100})
 

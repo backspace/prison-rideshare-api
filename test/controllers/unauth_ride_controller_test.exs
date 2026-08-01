@@ -59,8 +59,12 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     Repo.insert!(%Ride{
       institution: institution,
       driver: driver,
-      start: Timex.to_naive_datetime(Timex.shift(Timex.local(), days: 10)) |> NaiveDateTime.truncate(:second),
-      end: Timex.to_naive_datetime(Timex.shift(Timex.local(), days: 20)) |> NaiveDateTime.truncate(:second)
+      start:
+        Timex.to_naive_datetime(Timex.shift(Timex.local(), days: 10))
+        |> NaiveDateTime.truncate(:second),
+      end:
+        Timex.to_naive_datetime(Timex.shift(Timex.local(), days: 20))
+        |> NaiveDateTime.truncate(:second)
     })
 
     Repo.insert!(%Ride{
@@ -190,7 +194,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       |> Repo.preload([:institution, :driver])
 
     assert ride.institution_id == ride_institution.id
-    assert ride.distance == 77
+    assert Decimal.equal?(ride.distance, 77)
     assert ride.food_expenses == ~M[1000]
     assert ride.car_expenses == ~M[3388]
     assert ride.report_notes == "Some report notes"
@@ -200,6 +204,44 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
     refute ride.overridable
 
     assert_delivered_email(PrisonRideshare.Email.report(ride))
+  end
+
+  test "accepts a decimal distance and calculates car expenses from it",
+       %{conn: conn} do
+    ride_institution = Repo.insert!(%Institution{name: "Stony Mountain"})
+    driver = Repo.insert!(%Person{name: "Chelsea Manning"})
+
+    ride =
+      Repo.insert!(%Ride{
+        start: NaiveDateTime.from_erl!({{2017, 1, 15}, {18, 0, 0}}),
+        end: NaiveDateTime.from_erl!({{2017, 1, 15}, {20, 0, 0}}),
+        institution: ride_institution,
+        rate: ~M[44],
+        driver: driver
+      })
+
+    conn =
+      put(conn, Routes.ride_path(conn, :update, ride), %{
+        "meta" => %{},
+        "data" => %{
+          "type" => "rides",
+          "id" => ride.id,
+          "attributes" => %{
+            "distance" => 84.2,
+            "food_expenses" => 1000
+          }
+        }
+      })
+
+    assert json_response(conn, 200)
+
+    ride =
+      Repo.get!(Ride, ride.id)
+      |> Repo.preload([:institution, :driver])
+
+    assert Decimal.equal?(ride.distance, Decimal.new("84.2"))
+    assert ride.car_expenses == ~M[3705]
+    assert ride.complete
   end
 
   test "updates car expenses when overridable",
@@ -255,7 +297,7 @@ defmodule PrisonRideshare.UnauthRideControllerTest do
       Repo.get!(Ride, ride.id)
       |> Repo.preload([:institution, :driver])
 
-    assert ride.distance == 77
+    assert Decimal.equal?(ride.distance, 77)
     assert ride.car_expenses == ~M[100]
     assert ride.complete
   end
