@@ -78,6 +78,7 @@ defmodule PrisonRideshareWeb.Ride do
       :overridable
     ])
     |> validate_required([:start, :end, :name, :address, :contact, :passengers, :institution_id])
+    |> validate_distance()
     |> validate_start_before_end()
     |> assoc_constraint(:institution)
     |> calculate_car_expenses(struct)
@@ -121,6 +122,7 @@ defmodule PrisonRideshareWeb.Ride do
     struct
     |> cast(params, [:distance, :car_expenses, :food_expenses, :report_notes, :donation])
     |> validate_required([:distance, :food_expenses])
+    |> validate_distance()
     |> put_change(:complete, true)
   end
 
@@ -128,8 +130,20 @@ defmodule PrisonRideshareWeb.Ride do
     struct
     |> cast(params, [:distance, :food_expenses, :report_notes, :donation])
     |> validate_required([:distance, :food_expenses])
+    |> validate_distance()
     |> calculate_car_expenses(struct)
     |> put_change(:complete, true)
+  end
+
+  # Bounding distance also guards against decimal's unbounded-exponent DoS
+  # (CVE-2026-32686): a value like 1e999999999 passes cast but would exhaust
+  # memory once arithmetic or database encoding materializes its digits.
+  # Decimal.compare is exponent-safe, so rejecting here is cheap.
+  defp validate_distance(changeset) do
+    validate_number(changeset, :distance,
+      greater_than_or_equal_to: 0,
+      less_than_or_equal_to: 100_000
+    )
   end
 
   defp calculate_car_expenses(%{valid?: false} = changeset, _), do: changeset

@@ -1,7 +1,6 @@
 defmodule PrisonRideshareWeb.Plugs.LastSeen do
   alias PrisonRideshare.Repo
   import Ecto.Query
-  require Logger
 
   def init(opts) do
     opts

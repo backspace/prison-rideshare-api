@@ -137,4 +137,24 @@ defmodule PrisonRideshareWeb.RideTest do
     changeset = Ride.report_changeset(%Ride{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+  test "report changeset rejects out-of-bounds distances" do
+    # decimal 3 rejects unbounded exponents at cast (CVE-2026-32686)
+    changeset =
+      Ride.report_changeset(%Ride{rate: ~M[40]}, %{distance: "1e999999999", food_expenses: 100})
+
+    refute changeset.valid?
+    assert [{:distance, _}] = changeset.errors
+
+    changeset =
+      Ride.report_changeset(%Ride{rate: ~M[40]}, %{distance: 200_000, food_expenses: 100})
+
+    refute changeset.valid?
+    assert [distance: {"must be less than or equal to %{number}", _}] = changeset.errors
+
+    changeset = Ride.report_changeset(%Ride{rate: ~M[40]}, %{distance: -5, food_expenses: 100})
+
+    refute changeset.valid?
+    assert [distance: {"must be greater than or equal to %{number}", _}] = changeset.errors
+  end
 end

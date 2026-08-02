@@ -27,13 +27,12 @@ defmodule PrisonRideshareWeb.SessionController do
 
         true ->
           # Unsuccessful login
-          Logger.warn("User " <> username <> " just failed to login")
+          Logger.warning("User " <> username <> " just failed to login")
           # 401
           conn
           |> put_status(401)
           |> put_view(PrisonRideshareWeb.ErrorView)
           |> render("401.json")
-
       end
     rescue
       e ->
