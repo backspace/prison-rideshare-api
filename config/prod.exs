@@ -13,7 +13,12 @@ config :prison_rideshare, PrisonRideshare.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
-  ssl: true
+  # `ssl: true` used to mean "encrypt, don't verify". Since postgrex 0.18 it
+  # also verifies against the system CA store, which the dokku postgres link
+  # can never satisfy: it presents a self-signed cert on the host's private
+  # docker network, where no public CA applies. Keep the encryption, drop the
+  # verification, as before.
+  ssl: [verify: :verify_none]
 
 config :prison_rideshare, PrisonRideshare.Mailer,
   deliver_later_strategy: PrisonRideshare.MailerRateLimiter,
