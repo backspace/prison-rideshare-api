@@ -1,6 +1,28 @@
-on: push
+on:
+  push:
+  schedule:
+    # Catches advisories published against code nobody touched
+    - cron: "0 9 * * 1"
 
 jobs:
+  deps-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Github repo
+        uses: actions/checkout@v3
+      - name: Sets up an Erlang/OTP environment
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.20.2"
+          otp-version: "28.5.0.4"
+      - name: Install dependencies
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+      - name: Audit dependencies for security advisories
+        run: mix hex.audit
+
   mix-test:
     runs-on: ubuntu-latest
     services:
@@ -51,3 +73,9 @@ jobs:
         with:
           check_name: "test results"
           files: _build/test/lib/prison_rideshare/test-junit-report.xml
+      # The test env alone would not catch a dev-only dependency that fails to compile
+      - name: Check the dev build compiles cleanly
+        if: always()
+        run: mix compile --warnings-as-errors
+        env:
+          MIX_ENV: dev

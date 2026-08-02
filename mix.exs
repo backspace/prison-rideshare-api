@@ -11,7 +11,28 @@ defmodule PrisonRideshare.Mixfile do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      hex: hex(),
       test_coverage: [tool: ExCoveralls]
+    ]
+  end
+
+  # Advisories with no upgrade path, acknowledged so `mix hex.audit` can gate CI
+  # on anything new. Revisit whenever these packages move.
+  defp hex do
+    [
+      ignore_advisories: [
+        # cowlib 2.19.0 is the latest release and has no fix available; neither
+        # the cookie encoder nor structured-header escaping is reachable here.
+        "CVE-2026-43969",
+        "CVE-2026-43966",
+        # hackney is fixed only in 4.x, but httpoison 1.x and sentry 8.x both
+        # require ~> 1.8. Outbound HTTP is limited to the configured gas-price
+        # endpoint and Sentry, so no user input reaches these paths.
+        "CVE-2026-47071",
+        "CVE-2026-47075",
+        "CVE-2026-47076",
+        "CVE-2026-47069"
+      ]
     ]
   end
 
