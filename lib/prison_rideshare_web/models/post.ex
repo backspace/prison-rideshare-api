@@ -3,6 +3,9 @@ defmodule PrisonRideshareWeb.Post do
 
   schema "posts" do
     field(:content, :string)
+    # Pre-Markdown mobiledoc, kept so the conversion can be undone. Not exposed
+    # by the API and not writable through any changeset.
+    field(:content_mobiledoc, :string)
     field(:readings, {:array, :binary_id}, default: [])
     belongs_to(:poster, PrisonRideshareWeb.User, foreign_key: :poster_id)
 
