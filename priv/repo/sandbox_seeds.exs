@@ -414,8 +414,10 @@ overlapRide =
   })
 
 overlapSlot = PaperTrail.insert!(%Slot{
-  start: Timex.shift(overlapRide.start, [hours: -1]),
-  end: Timex.shift(overlapRide.end, [minutes: 30]),
+  # Inserted as a bare struct rather than a changeset, so nothing casts these
+  # for us: :naive_datetime rejects the microseconds Timex carries along.
+  start: Timex.shift(overlapRide.start, [hours: -1]) |> NaiveDateTime.truncate(:second),
+  end: Timex.shift(overlapRide.end, [minutes: 30]) |> NaiveDateTime.truncate(:second),
 })
 
 PaperTrail.insert!(%Commitment{
@@ -428,11 +430,11 @@ today = Timex.beginning_of_day(Timex.local())
 PaperTrail.insert!(%Post{
   poster: user,
   inserted_at: Timex.shift(today, [days: -9, hours: 9, minutes: 22]) |> DateTime.to_naive |> NaiveDateTime.truncate(:second),
-  content: "{\"version\":\"0.3.1\",\"atoms\":[],\"cards\":[],\"markups\":[[\"strong\"]],\"sections\":[[1,\"p\",[[0,[],0,\"Here is a blog post with some \"],[0,[0],1,\"bold text\"],[0,[],0,\".\"]]]]}"
+  content: "Here is a blog post with some **bold text**."
 })
 
 PaperTrail.insert!(%Post{
   poster: other_user,
   inserted_at: Timex.shift(today, [days: -2, hours: 1, minutes: 33]) |> DateTime.to_naive |> NaiveDateTime.truncate(:second),
-  content: "{\"version\":\"0.3.1\",\"atoms\":[],\"cards\":[],\"markups\":[],\"sections\":[[1,\"h1\",[[0,[],0,\"A heading\"]]],[1,\"p\",[[0,[],0,\"This is another blog post by a different user.\"]]]]}"
+  content: "# A heading\n\nThis is another blog post by a different user."
 })
