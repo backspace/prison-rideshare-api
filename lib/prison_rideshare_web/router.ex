@@ -129,4 +129,26 @@ defmodule PrisonRideshareWeb.Router do
   if Mix.env() == :dev do
     forward("/sent_emails", Bamboo.SentEmailViewerPlug)
   end
+
+  # Parallel/staging deployments run with MAILER_LOCAL (see config/prod.exs);
+  # the viewer shows what would have been sent. Basic auth because the
+  # captured mail contains real addresses when seeded from production data.
+  if Mix.env() == :prod && System.get_env("MAILER_LOCAL") do
+    pipeline :sent_email_viewer do
+      plug(:sent_email_viewer_auth)
+    end
+
+    scope "/sent_emails" do
+      pipe_through(:sent_email_viewer)
+
+      forward("/", Bamboo.SentEmailViewerPlug)
+    end
+
+    defp sent_email_viewer_auth(conn, _opts) do
+      Plug.BasicAuth.basic_auth(conn,
+        username: "coordinator",
+        password: System.fetch_env!("SENT_EMAILS_PASSWORD")
+      )
+    end
+  end
 end

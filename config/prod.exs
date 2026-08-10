@@ -20,7 +20,15 @@ config :prison_rideshare, PrisonRideshare.Repo,
   # verification, as before.
   ssl: [verify: :verify_none]
 
+# MAILER_LOCAL is read at compile time: set it on the app before deploying
+# (changing it later requires a rebuild). It keeps parallel/staging
+# deployments seeded with real data from emailing real users.
 config :prison_rideshare, PrisonRideshare.Mailer,
+  adapter:
+    if(System.get_env("MAILER_LOCAL"),
+      do: Bamboo.LocalAdapter,
+      else: Bamboo.MailgunAdapter
+    ),
   deliver_later_strategy: PrisonRideshare.MailerRateLimiter,
   rate_limit_ms: String.to_integer(System.get_env("MAILER_RATE_LIMIT_MS") || "30000")
 
