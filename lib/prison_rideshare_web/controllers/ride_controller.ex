@@ -13,10 +13,12 @@ defmodule PrisonRideshareWeb.RideController do
     rides =
       case params do
         %{"filter" => %{"visitor" => name}} ->
+          # Falls back to the legacy name column for rides that predate
+          # visitor records, so search keeps working until the backfill runs
           Repo.all(
             from r in Ride,
-            join: v in Person, on: v.id == r.visitor_id,
-            where: ilike(v.name, ^"#{name}%"),
+            left_join: v in Person, on: v.id == r.visitor_id,
+            where: ilike(coalesce(v.name, r.name), ^"#{name}%"),
             order_by: [desc: r.start]
           )
         _ ->

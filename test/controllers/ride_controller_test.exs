@@ -239,13 +239,28 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         institution_id: institution.id
       })
 
+    legacy_ride =
+      Repo.insert!(%Ride{
+        name: "franny",
+        start: NaiveDateTime.from_erl!({{2014, 1, 15}, {18, 0, 0}}),
+        institution_id: institution.id
+      })
+
+    Repo.insert!(%Ride{
+      name: "Legacy Other",
+      institution_id: institution.id
+    })
+
     conn = get(conn, Routes.ride_path(conn, :index, "filter[visitor]": "fran"))
 
-    [ride1, ride2, ride3] = json_response(conn, 200)["data"]
+    [ride1, ride2, ride3, ride4] = json_response(conn, 200)["data"]
 
     assert ride1["id"] == frank_ride.id
     assert ride2["id"] == francesca_ride.id
     assert ride3["id"] == francine_ride.id
+
+    assert ride4["id"] == legacy_ride.id,
+           "expected the search to fall back to the name of rides without visitors"
   end
 
   test "returns rides with corresponding commitments", %{conn: conn} do
@@ -446,11 +461,67 @@ defmodule PrisonRideshareWeb.RideControllerTest do
         }
       })
 
-    ride = Repo.get_by(Ride, @valid_attrs)
+    ride = Repo.get_by(Ride, Map.put(@valid_attrs, :name, "Visitor"))
     assert json_response(conn, 201)["data"]["id"] == ride.id
     assert json_response(conn, 201)["data"]["attributes"]["address"] == "some content"
     assert json_response(conn, 201)["data"]["attributes"]["medium"] == "email"
     assert json_response(conn, 201)["data"]["attributes"]["overridable"]
+
+    assert json_response(conn, 201)["data"]["attributes"]["name"] == "Visitor",
+           "expected the name to be derived from the visitor, not the submitted attribute"
+  end
+
+  test "creates a ride with no name when a visitor supplies one", %{conn: conn} do
+    institution = Repo.insert!(%Institution{})
+    visitor = Repo.insert!(%Person{name: "Frida"})
+
+    conn =
+      post(conn, Routes.ride_path(conn, :create), %{
+        "meta" => %{},
+        "data" => %{
+          "type" => "rides",
+          "attributes" => Map.delete(@valid_attrs, :name),
+          "relationships" => %{
+            "institution" => %{
+              "data" => %{"type" => "institution", "id" => institution.id}
+            },
+            "visitor" => %{
+              "data" => %{"type" => "person", "id" => visitor.id}
+            }
+          }
+        }
+      })
+
+    assert json_response(conn, 201)["data"]["attributes"]["name"] == "Frida"
+
+    ride = Repo.get!(Ride, json_response(conn, 201)["data"]["id"])
+    assert ride.visitor_id == visitor.id
+    assert ride.name == "Frida"
+  end
+
+  test "the name cannot skew away from an associated visitor", %{conn: conn} do
+    institution = Repo.insert!(%Institution{})
+    visitor = Repo.insert!(%Person{name: "Frida"})
+
+    ride =
+      Repo.insert!(%Ride{
+        institution: institution,
+        visitor: visitor,
+        name: "Frida"
+      })
+
+    conn =
+      put(conn, Routes.ride_path(conn, :update, ride), %{
+        "meta" => %{},
+        "data" => %{
+          "type" => "rides",
+          "id" => ride.id,
+          "attributes" => Map.put(@valid_attrs, :name, "Someone Else")
+        }
+      })
+
+    assert json_response(conn, 200)["data"]["attributes"]["name"] == "Frida"
+    assert Repo.get!(Ride, ride.id).name == "Frida"
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
