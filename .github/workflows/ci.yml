@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Github repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
       - name: Sets up an Erlang/OTP environment
         uses: erlef/setup-beam@v1
         with:
@@ -34,11 +34,11 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.11.0
+        uses: styfle/cancel-workflow-action@0.13.1
         with:
           access_token: ${{ github.token }}
       - name: Checkout Github repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
       - name: Sets up an Erlang/OTP environment
         id: beam
         uses: erlef/setup-beam@v1
@@ -47,7 +47,7 @@ jobs:
           otp-version: "28.5.0.4"
       - name: Cache mix dependencies
         id: mix-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           path: |
             deps
