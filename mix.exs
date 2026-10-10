@@ -78,7 +78,7 @@ defmodule PrisonRideshare.Mixfile do
       {:jason, "~> 1.0"},
       {:poison, "~> 3.1"},
       {:httpoison, "~> 1.0"},
-      {:paper_trail, "~> 0.14"},
+      {:paper_trail, "~> 1.1"},
       {:excoveralls, "~> 0.15", only: :test},
       {:faker, "~> 0.17"},
       {:mix_test_watch, "~> 1.1", only: :dev, runtime: false},
