@@ -65,7 +65,7 @@ defmodule PrisonRideshare.Mixfile do
       {:plug_cowboy, "~> 2.9"},
       {:bcrypt_elixir, "~> 3.0"},
       {:cors_plug, "~> 3.0"},
-      {:csv, "~> 3.0.5"},
+      {:csv, "~> 3.2.2"},
       {:guardian, "~> 2.1"},
       {:guardian_phoenix, "~> 2.0"},
       {:sans_password, "~> 1.1.0"},
